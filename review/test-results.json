@@ -1,0 +1,137 @@
+{
+  "build": "19.0",
+  "browser": "Chromium 133 / headless SwiftShader",
+  "checks": [
+    {
+      "name": "Independent keyboard movement",
+      "passed": true,
+      "detail": [
+        {
+          "pos": [
+            3.0840808221925893,
+            0,
+            10.035341727824477
+          ],
+          "clip": "walk"
+        },
+        {
+          "pos": [
+            5.593574256022964,
+            0,
+            10.035341727824477
+          ],
+          "clip": "walk"
+        }
+      ]
+    },
+    {
+      "name": "Look renders in idle and walk",
+      "passed": true,
+      "detail": "tee"
+    },
+    {
+      "name": "Look renders in idle and walk",
+      "passed": true,
+      "detail": "ankara"
+    },
+    {
+      "name": "Look renders in idle and walk",
+      "passed": true,
+      "detail": "kaftan"
+    },
+    {
+      "name": "Both players and all assets load",
+      "passed": true,
+      "detail": {
+        "rigs": [
+          "hero",
+          "hero"
+        ],
+        "wardrobe": 13,
+        "props": 30,
+        "failed": {},
+        "render": {
+          "frame": 2,
+          "calls": 321,
+          "triangles": 219582,
+          "points": 0,
+          "lines": 37
+        }
+      }
+    },
+    {
+      "name": "Crate push clears the passage",
+      "passed": true,
+      "detail": {
+        "before": [
+          -1.75,
+          0,
+          1
+        ],
+        "after": [
+          -1.75,
+          0,
+          -1.7300000000000018
+        ]
+      }
+    },
+    {
+      "name": "Two-person pickup and carryLow",
+      "passed": true,
+      "detail": [
+        "carryLow",
+        "carryLow"
+      ]
+    },
+    {
+      "name": "Carry through gate, turn and home doorway",
+      "passed": true,
+      "detail": {
+        "frames": 222,
+        "status": "placed",
+        "idx": 148,
+        "sofa": "placed",
+        "positions": [
+          [
+            -6.2,
+            0,
+            4.4
+          ],
+          [
+            -5.2,
+            0,
+            4.4
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Save and reload both looks, headwear and placed sofa",
+      "passed": true,
+      "detail": {
+        "looks": [
+          {
+            "hair": "low",
+            "headwear": "none",
+            "outfit": "tee",
+            "skin": "#905F3F"
+          },
+          {
+            "hair": "locs",
+            "headwear": "wrap",
+            "outfit": "kaftan",
+            "skin": "#C9926A"
+          }
+        ],
+        "sofa": "placed"
+      }
+    }
+  ],
+  "errors": [],
+  "replay": {
+    "file": "carry-replay.mp4",
+    "durationSeconds": 22.2,
+    "exportFps": 10,
+    "method": "Scripted movement through existing collision and interaction functions; crate cleared before capture; not a real-time performance measurement."
+  }
+}

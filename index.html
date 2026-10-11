@@ -7,7 +7,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600..900&family=Figtree:wght@400;500;600;700&family=Caveat:wght@500;600&display=swap" rel="stylesheet">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script src="assets/vendor/three-r128.min.js"></script>
 <script>/* three.js r128 examples/js/loaders/GLTFLoader.js (MIT), inlined */
 ( function () {
 
@@ -5734,6 +5734,10 @@ function propStatusText(){ const n=Object.keys(PROPS.cache).length, f=Object.key
 function initRenderer(){ renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,powerPreference:'high-performance'}); renderer.setPixelRatio(Math.min(devicePixelRatio||1,navigator.maxTouchPoints>0?1.6:2)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,160); window.addEventListener('resize',()=>{ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }); }
 window.addEventListener('pagehide',()=>save()); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
 function boot(){ try{ QUALITY.full=qualityOn(); initRenderer(); heroLoad(); buildWorld(); buildContactShadows(); buildGroundVariation(); dioramaLoad(); wardrobePrefetch(); propPrefetch(); propDressWorld(); buildAmbient(); applyShadows(); buildVendors(); const allSigns=()=>{ if(SIGNS.length){ buildSigns(); buildSigns2(); } }; if(document.fonts&&document.fonts.ready){ document.fonts.ready.then(allSigns); setTimeout(allSigns,2500); } else allSigns(); setupTouch(); const s=load(); S=null; if(s&&s.p&&s.phase==='play'){ /* title offers continue */ } document.getElementById('loading').style.display='none'; openTitle(); updateHUD(); requestAnimationFrame(tick); netDetect(); }catch(e){ document.getElementById('loading').textContent='Could not start the 3D world here: '+e.message; } }
+</script>
+<link rel="stylesheet" href="src/visual-v19.css?v=19">
+<script src="src/visual-v19.js?v=19"></script>
+<script>
 if(typeof THREE==='undefined'){ document.getElementById('loading').textContent='The 3D library did not load. Check your connection and reload.'; } else { boot(); }
 </script>
 </body>
