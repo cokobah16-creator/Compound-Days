@@ -1,17 +1,22 @@
-/* Compound Days v19: shared character pipeline, interaction framing and foliage.
+/* Compound Days v21: shared character pipeline, interaction framing and foliage.
    Loaded after the existing game definitions and before boot. Save/input/network
    schemas remain the same. Models and thumbnails use the same equipped assets. */
 'use strict';
-const VISUAL_BUILD='19.0';
+const VISUAL_BUILD=BUILD_ID;
 document.documentElement.dataset.visualBuild=VISUAL_BUILD;
 
-const v19LookFor=lookFor;
-lookFor=function(i){return Object.assign(v19LookFor(i),{rig:'hero'});};
+Object.assign(WARDROBE.hair,{afro:'hair_afro',twists:'hair_twists',wig:'hair_wig'});
+
+const v21LookFor=lookFor;
+lookFor=function(i){return Object.assign(v21LookFor(i),{rig:'hero'});};
+// The v20 veranda sofa overlaps Mrs. Oyelaran's original standing spots.
+NPC_SPOTS.oyelaran.morning=[-.35,-3.45,0];
+NPC_SPOTS.oyelaran.evening=[-.35,-3.45,0];
 
 // Retain glTF cutout masks and material maps during the game's material conversion.
-const v19HeroMaterial=heroLambert;
+const v21HeroMaterial=heroLambert;
 heroLambert=function(m,skinned){
-  const out=v19HeroMaterial(m,skinned);
+  const out=v21HeroMaterial(m,skinned);
   out.alphaTest=m.alphaTest||0;out.vertexColors=!!m.vertexColors;
   out.depthWrite=m.depthWrite;out.alphaMap=m.alphaMap||null;
   if(out.isMeshStandardMaterial){
@@ -43,41 +48,42 @@ wardrobePrefetch=function(){
   const add=n=>{if(!want.includes(n))want.push(n);};
   if(S&&S.p)both().forEach(i=>wardrobeNames(lookFor(i)).forEach(add));
   Object.values(WARDROBE.hair).forEach(add);Object.values(WARDROBE.outfits).flat().forEach(add);
-  const next=()=>{const n=want.shift();if(!n)return;
+  const next=()=>{const n=want.shift();if(!n){if(S&&players.length)spawnNPCs();return;}
     wardrobeLoad(n,g=>{
       if(g&&S&&S.p){both().forEach(i=>{
         if(!wardrobeNames(lookFor(i)).includes(n))return;
         if(players[i])refreshAvatar(i);
         const pv=document.getElementById('pv3d'+i);if(pv)mountPreview(pv,lookFor(i));
       });}
+      
       if(S&&S.setup&&/^p[01]$/.test(S.setup.step))thumbsLater(Number(S.setup.step[1]));
       next();
     });
   };next();
 };
 
-const v19Outfit=heroOutfit;
+const v21Outfit=heroOutfit;
 heroOutfit=function(look){
-  const fit=v19Outfit(look);
+  const fit=v21Outfit(look);
   if(look.outfit==='kaftan')fit.bottom=fit.top;
   return fit;
 };
 
 // Frame a complete carrying interaction within the usable area of each viewport.
 // Bounds include shoes, hair and the sofa, independent of portrait/landscape.
-const v19Right=new THREE.Vector3(CAM_DIR.z,0,-CAM_DIR.x).normalize();
-const v19Up=new THREE.Vector3().crossVectors(CAM_DIR,v19Right).normalize();
-const v19Dist=[8.2,8.2];
-function v19JointView(){return !!(S&&players.length===2&&sofa&&sofa.carrying&&singleIdx()<0);}
-function v19Viewport(i){
-  const single=singleIdx()>=0||v19JointView(),portrait=innerHeight>innerWidth;
+const v21Right=new THREE.Vector3(CAM_DIR.z,0,-CAM_DIR.x).normalize();
+const v21Up=new THREE.Vector3().crossVectors(CAM_DIR,v21Right).normalize();
+const v21Dist=[8.2,8.2];
+function v21JointView(){return false;} // v20 uses independently framed split views
+function v21Viewport(i){
+  const single=singleIdx()>=0||v21JointView(),portrait=innerHeight>innerWidth;
   const shortTouch=navigator.maxTouchPoints>0&&!portrait&&innerHeight<=520;
   return {w:single||portrait?innerWidth:Math.floor(innerWidth/2),
     h:single||!portrait?innerHeight:Math.floor(innerHeight/2),
     top:shortTouch?88:(single||!portrait||i===0?100:62),
     bottom:shortTouch?150:navigator.maxTouchPoints>0&&(single||!portrait||i===1)?224:96};
 }
-function v19InteractionPoints(i,joint){
+function v21InteractionPoints(i,joint){
   const pts=[];
   const addBox=(mn,mx)=>{for(const x of [mn.x,mx.x])for(const y of [mn.y,mx.y])for(const z of [mn.z,mx.z])pts.push(new THREE.Vector3(x,y,z));};
   (joint?players:[players[i]]).forEach(p=>{
@@ -91,21 +97,21 @@ updateCameras=function(dt){
   if(players.length<2)return;
   const joint=!!(sofa&&sofa.carrying),alpha=1-Math.pow(.002,dt);
   for(let i=0;i<2;i++){
-    const vp=v19Viewport(i),pts=v19InteractionPoints(i,joint);
+    const vp=v21Viewport(i),pts=v21InteractionPoints(i,joint);
     const bounds=new THREE.Box3().setFromPoints(pts),centre=bounds.getCenter(new THREE.Vector3());
     const tanV=Math.tan(THREE.MathUtils.degToRad(cams[i].fov/2)),tanH=tanV*vp.w/vp.h;
     const usableY=Math.max(.30,1-(vp.top+vp.bottom)/vp.h),usableX=.82;
     const screenY=(vp.bottom-vp.top)/vp.h;
     let fit=joint?5.5:(innerHeight>innerWidth?7.1:7.3);
     pts.forEach(p=>{const q=p.clone().sub(centre),depth=q.dot(CAM_DIR);
-      fit=Math.max(fit,depth+Math.abs(q.dot(v19Right))/(tanH*usableX),depth+Math.abs(q.dot(v19Up))/(tanV*usableY));
+      fit=Math.max(fit,depth+Math.abs(q.dot(v21Right))/(tanH*usableX),depth+Math.abs(q.dot(v21Up))/(tanV*usableY));
     });
     fit+=joint?.45:.10;
     // Widen immediately; ease back in after a carry ends.
-    v19Dist[i]=fit>v19Dist[i]?fit:lerp(v19Dist[i],fit,alpha);
-    const aim=centre.clone().addScaledVector(v19Up,-screenY*v19Dist[i]*tanV);
+    v21Dist[i]=fit>v21Dist[i]?fit:lerp(v21Dist[i],fit,alpha);
+    const aim=centre.clone().addScaledVector(v21Up,-screenY*v21Dist[i]*tanV);
     focus[i].lerp(aim,joint?Math.max(alpha,.35):alpha);
-    const target=focus[i].clone().addScaledVector(CAM_DIR,v19Dist[i]);
+    const target=focus[i].clone().addScaledVector(CAM_DIR,v21Dist[i]);
     camPosS[i].copy(target);cams[i].position.copy(target);cams[i].lookAt(focus[i]);
   }
   camFocus.copy(focus[0]).add(focus[1]).multiplyScalar(.5);camFocus.y=0;
@@ -113,18 +119,6 @@ updateCameras=function(dt){
   const sc=sun.shadow.camera;
   if(Math.abs(sc.right-half)>.5){sc.left=-half;sc.right=half;sc.top=half;sc.bottom=-half;sc.updateProjectionMatrix();}
   sun.target.position.copy(camFocus);sun.position.copy(camFocus).addScaledVector(sunDir,40);
-};
-
-const v19RenderFrame=renderFrame;
-renderFrame=function(){
-  const shared=v19JointView();document.body.classList.toggle('joint-view',shared);
-  if(!shared){v19RenderFrame();return;}
-  document.getElementById('divider').classList.remove('on');
-  renderer.setScissorTest(false);renderer.getSize(_size);renderer.setViewport(0,0,_size.x,_size.y);
-  cams[0].aspect=_size.x/_size.y;cams[0].updateProjectionMatrix();
-  cams[1].aspect=cams[0].aspect;cams[1].updateProjectionMatrix();
-  if(rainPts)rainPts.position.set(focus[0].x,0,focus[0].z);
-  renderer.render(scene,cams[0]);
 };
 
 // Merge small, curved leaf silhouettes into two meshes per tree. No faceted
@@ -161,7 +155,7 @@ tree=function(x,z,h,c){
 };
 
 bougainvillea=function(x,z,r,h,noObs){
-  r=r||.8;h=h||1.1;const g=new THREE.Group();g.name='bougainvillea_v19';g.position.set(x,0,z);
+  r=r||.8;h=h||1.1;const g=new THREE.Group();g.name='bougainvillea_v21';g.position.set(x,0,z);
   const pos=[],col=[],idx=[];let seed=((x*739+z*311)*1000)|0;
   const rand=()=>{seed=(Math.imul(seed,1664525)+1013904223)|0;return(seed>>>0)/4294967296;};
   const greens=['#335B38','#477846','#608949'].map(c=>new THREE.Color(c));
@@ -189,47 +183,82 @@ bougainvillea=function(x,z,r,h,noObs){
   return g;
 };
 
-const v19UpdateHUD=updateHUD;
+const v21UpdateHUD=updateHUD;
 updateHUD=function(){
-  v19UpdateHUD();if(!S||!S.p||!players.length)return;
+  v21UpdateHUD();if(!S||!S.p||!players.length)return;
   const items=document.querySelectorAll('#tasklist li');let shown=false;
   items.forEach(li=>{const show=!shown&&!li.classList.contains('done');li.hidden=!show;if(show)shown=true;});
   if(!shown&&items.length)items[items.length-1].hidden=false;
 };
 
-const v19BuildWorld=buildWorld;
+const v21BuildWorld=buildWorld;
 buildWorld=function(){
-  v19BuildWorld();
+  v21BuildWorld();
   // Fill lifts faces out of the morning shadows without washing out materials.
   amb.intensity=.34;sun.shadow.normalBias=.014;sun.shadow.radius=2;
 };
 
-const v19DressWorld=propDressWorld;
-propDressWorld=function(){
-  v19DressWorld();
-  // A modest seating corner outside the entrance. All new obstacles stay west
-  // of x=2.5; the original gate, passage and furniture route remain clear.
-  box(.90,.73,.025,'#324E70',1.15,.63,6.125,{noCol:true,noShadow:true});
-  windowBars(1.15,.995,6.15,.82,.65,0);
-  const paving=new THREE.Mesh(new THREE.BoxGeometry(2.55,.025,1.65),mat('#BFB29C'));
-  paving.position.set(1.20,.026,7.22);paving.receiveShadow=true;scene.add(paving);
-  propPlace('armchair_woven',.35,.04,6.98,.25,{col:true});
-  propPlace('coffee_table',1.18,.04,7.55,0,{col:true,scale:.8});
-  propPlace('chair_plastic',2.03,.04,7.02,-.24,{col:true});
-  propPlace('cooler_food',1.30,.04,6.48,0,{col:true,scale:.85});
-  propPlace('plant_terracotta',.12,.04,7.90,0,{col:true,scale:.85});
-};
-
-const v19PropInstance=propInstance;
+const v21PropInstance=propInstance;
 propInstance=function(name,opts){
-  const inst=v19PropInstance(name,opts);if(!inst)return inst;
+  const inst=v21PropInstance(name,opts);if(!inst)return inst;
   inst.traverse(o=>{if(!o.isMesh||o.material.name!=='teal_fabric')return;
     const m=o.material.clone();m.color.set('#69B4AE');m.roughness=.92;o.material=m;
   });return inst;
 };
-const v19PropSofa=propSofa;
+const v21PropSofa=propSofa;
 propSofa=function(){
-  v19PropSofa();if(!sofa||!sofa.g.userData.propped)return;
+  v21PropSofa();if(!sofa||!sofa.g.userData.propped)return;
   // The visible catalogue sofa is slightly deeper than the old block sofa.
   sofa.L=1.657;sofa.W=.837;
+};
+
+// Named neighbours share the main model; distant background walkers keep the
+// existing lighter body. Each neighbour owns its skeleton and animation mixer.
+spawnNPCs=function(){
+  Object.keys(npcs).forEach(k=>scene.remove(npcs[k].g));npcs={};
+  for(const k in CAST){
+    const look=Object.assign({},CAST[k].look,{rig:'hero'});
+    const g=makeAvatar(look);npcs[k]={g,k,t:Math.random()*5};scene.add(g);
+  }
+  placeNPCs();
+};
+// Report both actors rather than retaining the old "Player 1" assumption.
+heroHairLine=function(){
+  return players.map((p,i)=>{if(p.g.rig!=='hero')return ` Player ${i+1}: fallback body.`;
+    const r=heroHairReport(p.g),w=p.g.hero.wardrobe||{};
+    return ` Player ${i+1}: modelled body; hair ${esc(w.hair||'fallback')}; clothes ${esc((w.garments||[]).join(', ')||'base slots')}.`;
+  }).join('');
+};
+
+// Keep dark hair dark under the warm PBR environment, with restrained specular
+// highlights. Face, scalp-part and fabric colours retain their own materials.
+const v21Equip=wardrobeEquip;
+wardrobeEquip=function(g,look,fit,skin,hairC){
+  const result=v21Equip(g,look,fit,skin,hairC);
+  g.traverse(o=>{if(o.isMesh&&/^wearhair_/.test(o.name)&&/^hair/.test(o.material.name)){
+    o.material.color.setRGB(.024,.020,.016);o.material.roughness=.88;
+  }});return result;
+};
+
+// Keep the selected skin range readable under the inherited bright lighting.
+// The partial linearisation is an art calibration for this renderer/exposure;
+// it is deliberately local to skin, rather than changing the entire palette.
+const v21MakeHero=makeHeroAvatar;
+makeHeroAvatar=function(look){
+  const g=v21MakeHero(look);if(!g)return g;
+  g.traverse(o=>{if(!o.isMesh)return;
+    for(const m of (Array.isArray(o.material)?o.material:[o.material])){
+      if(m.name==='skin'||m.name==='skin_dark'){
+        const selected=m.color.clone();m.color.convertSRGBToLinear().lerp(selected,.30);
+      }
+    }
+  });return g;
+};
+
+// Three normally resets this counter for each render call. A split-screen
+// frame renders twice, so the menu needs the sum of both views.
+const v21Frame=renderFrame;
+renderFrame=function(){
+  if(renderer){renderer.info.autoReset=false;renderer.info.reset();}
+  v21Frame();
 };

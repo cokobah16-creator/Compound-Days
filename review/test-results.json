@@ -1,66 +1,158 @@
 {
-  "build": "19.0",
-  "browser": "Chromium 133 / headless SwiftShader",
+  "build": "v21-ed74a8eb",
+  "browser": "Playwright Chromium; controlled game clock",
   "checks": [
+    {
+      "name": "Two independent models, five neighbours and all assets load",
+      "passed": true,
+      "detail": {
+        "players": [
+          "hero",
+          "hero"
+        ],
+        "neighbours": [
+          "hero",
+          "hero",
+          "hero",
+          "hero",
+          "hero"
+        ],
+        "separateSkeletons": true,
+        "separateMixers": true,
+        "wardrobe": 16,
+        "props": 33,
+        "failed": {}
+      }
+    },
     {
       "name": "Independent keyboard movement",
       "passed": true,
       "detail": [
         {
           "pos": [
-            3.0840808221925893,
+            3.08437118648866,
             0,
-            10.035341727824477
+            10.035649172377557
           ],
           "clip": "walk"
         },
         {
           "pos": [
-            5.593574256022964,
+            5.5940098024542095,
             0,
-            10.035341727824477
+            10.035649172377557
           ],
           "clip": "walk"
         }
       ]
     },
     {
-      "name": "Look renders in idle and walk",
+      "name": "All six hair options and headwrap equip on both players",
+      "passed": true,
+      "detail": [
+        {
+          "player": 0,
+          "hair": "low",
+          "equipped": "hair_lowtaper",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "low",
+          "equipped": "hair_lowtaper",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "afro",
+          "equipped": "hair_afro",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "afro",
+          "equipped": "hair_afro",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "braids",
+          "equipped": "hair_boxbraids",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "braids",
+          "equipped": "hair_boxbraids",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "locs",
+          "equipped": "hair_locs",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "locs",
+          "equipped": "hair_locs",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "twists",
+          "equipped": "hair_twists",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "twists",
+          "equipped": "hair_twists",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "wig",
+          "equipped": "hair_wig",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "wig",
+          "equipped": "hair_wig",
+          "generated": false
+        },
+        {
+          "player": 0,
+          "hair": "wrap",
+          "equipped": "headwrap_everyday",
+          "generated": false
+        },
+        {
+          "player": 1,
+          "hair": "wrap",
+          "equipped": "headwrap_everyday",
+          "generated": false
+        }
+      ]
+    },
+    {
+      "name": "Actual turnaround and walk pose",
       "passed": true,
       "detail": "tee"
     },
     {
-      "name": "Look renders in idle and walk",
+      "name": "Actual turnaround and walk pose",
       "passed": true,
       "detail": "ankara"
     },
     {
-      "name": "Look renders in idle and walk",
+      "name": "Actual turnaround and walk pose",
       "passed": true,
       "detail": "kaftan"
     },
     {
-      "name": "Both players and all assets load",
-      "passed": true,
-      "detail": {
-        "rigs": [
-          "hero",
-          "hero"
-        ],
-        "wardrobe": 13,
-        "props": 30,
-        "failed": {},
-        "render": {
-          "frame": 2,
-          "calls": 321,
-          "triangles": 219582,
-          "points": 0,
-          "lines": 37
-        }
-      }
-    },
-    {
-      "name": "Crate push clears the passage",
+      "name": "Crate clears the passage through normal pushing",
       "passed": true,
       "detail": {
         "before": [
@@ -76,7 +168,7 @@
       }
     },
     {
-      "name": "Two-person pickup and carryLow",
+      "name": "Both actors use the low carry animation",
       "passed": true,
       "detail": [
         "carryLow",
@@ -84,13 +176,13 @@
       ]
     },
     {
-      "name": "Carry through gate, turn and home doorway",
+      "name": "Carry through gate, narrow passage and into home",
       "passed": true,
       "detail": {
-        "frames": 222,
-        "status": "placed",
-        "idx": 148,
-        "sofa": "placed",
+        "state": "placed",
+        "index": 148,
+        "steps": 886,
+        "stuck": 0,
         "positions": [
           [
             -6.2,
@@ -106,18 +198,26 @@
       }
     },
     {
-      "name": "Save and reload both looks, headwear and placed sofa",
+      "name": "Step away from a set-down rotated sofa",
+      "passed": true,
+      "detail": {
+        "before": 4.25,
+        "after": 5.330000000000009
+      }
+    },
+    {
+      "name": "Save/reload both looks, headwear and sofa",
       "passed": true,
       "detail": {
         "looks": [
           {
-            "hair": "low",
+            "hair": "afro",
             "headwear": "none",
             "outfit": "tee",
             "skin": "#905F3F"
           },
           {
-            "hair": "locs",
+            "hair": "twists",
             "headwear": "wrap",
             "outfit": "kaftan",
             "skin": "#C9926A"
@@ -125,13 +225,14 @@
         ],
         "sofa": "placed"
       }
+    },
+    {
+      "name": "Menu shows the tested build id",
+      "passed": true,
+      "detail": "v21-ed74a8eb"
     }
   ],
   "errors": [],
-  "replay": {
-    "file": "carry-replay.mp4",
-    "durationSeconds": 22.2,
-    "exportFps": 10,
-    "method": "Scripted movement through existing collision and interaction functions; crate cleared before capture; not a real-time performance measurement."
-  }
+  "physicalPhoneTest": false,
+  "onlineTest": false
 }
