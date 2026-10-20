@@ -1,0 +1,299 @@
+{
+  "build": "v33a-746fd1c4",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Hero loads from efe.gltf.json (fetched with the build revision query) with 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras",
+      "passed": true,
+      "details": {
+        "joints": 27,
+        "clips": [
+          "idle",
+          "walk",
+          "carry",
+          "carryLow",
+          "walkCarry",
+          "walkCarryLow",
+          "pick",
+          "wave"
+        ],
+        "inverseBindSha": "a0658cd22403",
+        "hairMount": {
+          "x": 0,
+          "y": 0.215,
+          "z": 0,
+          "scale": 0.6767,
+          "headR": 0.3
+        },
+        "headCentre": [
+          0,
+          1.645,
+          0
+        ],
+        "requestUrl": "assets/characters/efe.gltf.json?v=v33a-746fd1c4"
+      }
+    },
+    {
+      "name": "Exactly the 16 v21 wardrobe pieces are referenced and parse, and every skinned piece carries the hero inverse bind matrices byte for byte",
+      "passed": true,
+      "details": {
+        "pieces": 16,
+        "skins": 14,
+        "rigidMeshes": 14
+      }
+    },
+    {
+      "name": "lookFor(0) and lookFor(1) both use rig hero and makeHeroAvatar builds both with finite geometry and the calibrated skin and hair colours",
+      "passed": true,
+      "details": {
+        "meshes": [
+          42,
+          45
+        ],
+        "looks": [
+          [
+            "locs",
+            "tee"
+          ],
+          [
+            "braids",
+            "ankara"
+          ]
+        ],
+        "skinShade": 0.78,
+        "hairColour": "#17110C",
+        "colours": {
+          "#905F3F": {
+            "skinMaterials": 7,
+            "hairMaterials": 2,
+            "skinLinear": [
+              0.2175,
+              0.0893,
+              0.0388
+            ]
+          },
+          "#C9926A": {
+            "skinMaterials": 8,
+            "hairMaterials": 1,
+            "skinLinear": [
+              0.4556,
+              0.2242,
+              0.1124
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "Every hair id equips rigid Head-space meshes, every outfit equips bound wear_ meshes and hides its slots; office, track and lounge build as painted slots",
+      "passed": true,
+      "details": {
+        "hair": {
+          "low": 1,
+          "braids": 3,
+          "locs": 2,
+          "wrap": 1,
+          "afro": 2,
+          "twists": 2,
+          "wig": 3
+        },
+        "outfits": {
+          "tee": 6,
+          "ankara": 8,
+          "kaftan": 7
+        },
+        "painted": [
+          "lounge",
+          "office",
+          "track"
+        ]
+      }
+    },
+    {
+      "name": "Legacy outfit and hair ids migrate to v21 ids on load, over the network (setchar and applyState) and in defaults; migrated saves build full wardrobes",
+      "passed": true,
+      "details": {
+        "saves": 5,
+        "avatars": 10,
+        "applyState": [
+          "braidsup/everydaytunde",
+          "none/basics"
+        ]
+      }
+    },
+    {
+      "name": "spawnNPCs builds the five named neighbours plus walkers and sellers on the hero rig with environment-v23 statures",
+      "passed": true,
+      "details": {
+        "neighbours": 5,
+        "walkers": 6,
+        "sellers": 7
+      }
+    },
+    {
+      "name": "World keeps the surface registry, four-batch staircase, eight courtyard presets, on-disk material textures, idempotent studio stage and the 34-degree lens",
+      "passed": true,
+      "details": {
+        "surfaces": 237,
+        "stairMeshes": 4,
+        "routeHeights": [
+          0.05090000000000072,
+          0.7125999999999992,
+          1.4252000000000005,
+          2.1377999999999995,
+          2.8504,
+          3.44084
+        ],
+        "presets": 8,
+        "textures": 20,
+        "studioChildren": 6
+      }
+    },
+    {
+      "name": "Seated avatars rest hips and feet at the retuned v21 heights in all four sofa orientations with soles on the floor and the trouser sink within the documented limit, and saves keep standing positions",
+      "passed": true,
+      "details": {
+        "hipAboveCushion": 0.1,
+        "footAboveFloor": 0.1,
+        "soleTolerance": 0.01,
+        "thighBandSinkLimit": 0.2,
+        "cases": 8,
+        "maxThighBandSink": 0.113,
+        "seated": [
+          {
+            "rotation": 0,
+            "player": 0,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              -0.002
+            ],
+            "thighBandBelowCushion": [
+              -0.063,
+              0.104
+            ]
+          },
+          {
+            "rotation": 0,
+            "player": 1,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              0
+            ],
+            "thighBandBelowCushion": [
+              0.113
+            ]
+          },
+          {
+            "rotation": 1.57,
+            "player": 0,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              -0.002
+            ],
+            "thighBandBelowCushion": [
+              -0.063,
+              0.104
+            ]
+          },
+          {
+            "rotation": 1.57,
+            "player": 1,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              0
+            ],
+            "thighBandBelowCushion": [
+              0.113
+            ]
+          },
+          {
+            "rotation": 3.14,
+            "player": 0,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              -0.002
+            ],
+            "thighBandBelowCushion": [
+              -0.063,
+              0.104
+            ]
+          },
+          {
+            "rotation": 3.14,
+            "player": 1,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              0
+            ],
+            "thighBandBelowCushion": [
+              0.113
+            ]
+          },
+          {
+            "rotation": 4.71,
+            "player": 0,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              -0.002
+            ],
+            "thighBandBelowCushion": [
+              -0.063,
+              0.104
+            ]
+          },
+          {
+            "rotation": 4.71,
+            "player": 1,
+            "hips": 0.1,
+            "feet": [
+              0.1,
+              0.1
+            ],
+            "soleAboveFloor": [
+              0
+            ],
+            "thighBandBelowCushion": [
+              0.113
+            ]
+          }
+        ]
+      }
+    },
+    {
+      "name": "Menu shows the build id and the id carries the authored-character prefix",
+      "passed": true,
+      "details": {
+        "build": "v33a-746fd1c4"
+      }
+    }
+  ],
+  "method": "Actual runtime geometry and state in Node with the shipped Three.js and glTF loader. No browser, GPU or phone test; colour and framing need a browser pass."
+}

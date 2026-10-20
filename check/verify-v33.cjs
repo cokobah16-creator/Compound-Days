@@ -1,10 +1,11 @@
 const assert=require('assert/strict'),fs=require('fs'),path=require('path');
 const {load}=require('./runtime-harness.cjs');
+const checks=[];let runFn=null;
 (async()=>{
- const {run}=await load(),checks=[];
+ const {run}=await load();runFn=run;
  const pass=n=>{checks.push({name:n,passed:true});console.log('PASS',n);};
  run("buildTextures();buildTextures2();S=newState();S.phase='play';S.p[0].name='Chika';S.p[1].name='Obi';players=S.p.map((p,i)=>({i,g:makeHeroAvatar(lookFor(i)),y:0,t:0}));players.forEach(p=>{scene.add(p.g);p.g.position.set(-6,0,4);});rebuildFurniture();spawnNPCs();ensureMarket();courtLight=new THREE.PointLight();");
- assert.equal(run('S.time'),15);assert.equal(run('guided33()'),true);run('save()');assert.equal(run('load().firstEvening.stage'),'move');pass('Fresh household starts with neutral bases and persistent first-evening guide');
+ assert.equal(run('S.time'),15);assert.equal(run('guided33()'),true);run('save()');assert.equal(run('load().firstEvening.stage'),'move');pass('Fresh household starts at 3pm with the persistent first-evening guide');
  run('advanceClock33(30)');assert.equal(run('S.time'),18.5);run("S.firstEvening.enabled=false;advanceClock33(1)");assert.equal(run('S.time'),19.5);run('S.firstEvening.enabled=true;S.time=16');pass('Guided clock holds before market closing; free play continues normally');
  run("S.sofa.state='placed';dispatch('eveningHelp');");assert.equal(run('load().firstEvening.stage'),'cook');const pantry=run('JSON.stringify(S.pantry)');run("dispatch('eveningHelp')");assert.equal(run('JSON.stringify(S.pantry)'),pantry);pass('Welcome basket supplies only missing ingredients and cannot be claimed twice');
  run("dispatch('cook',{r:'jollof'});dispatch('cookans',{i:0,ix:0});ACTIONS.continue();");assert.equal(run('S.ck.ans[0].length'),1);assert.equal(run('S.ck.ans[1].length'),0);
@@ -20,4 +21,6 @@ const {load}=require('./runtime-harness.cjs');
  run("S=newState();S.phase='play';S.sofa.state='placed';S.firstEvening.done.shop=true;S.firstEvening.done.cook=true;S.cooked.jollof=1;S.dishes=[];journal33();");assert(run("panel.innerHTML.includes('Cook another dish')"));run("dispatch('eveningGift',{v:'rug'});dispatch('eveningPlan',{v:'photo'});");assert.equal(run('S.firstEvening.reward'),undefined);assert.equal(run('S.firstEvening.plan'),undefined);pass('Eaten dinner has a recovery path; rewards cannot be claimed before hosting');
  run("S.flags.parties=1;const realPlace=placeAuto;placeAuto=()=>false;dispatch('eveningGift',{v:'plant'});placeAuto=realPlace;");assert(run("S.home.storage.includes('plant')"));pass('Full flat sends the gift to storage without loss');
  const report={build:run('BUILD_ID'),passed:true,checks,method:'Actual runtime state/actions in Node with shipped Three.js. No browser or phone test.'};fs.writeFileSync(path.join(__dirname,'results-v33.json'),JSON.stringify(report,null,2)+'\n');
-})().catch(e=>{console.error(e);process.exitCode=1});
+})().catch(e=>{console.error(e);let build=null;try{build=runFn&&runFn('BUILD_ID');}catch(_){}
+ // A failing run must not leave a stale passed:true file behind (the manifest hashes it).
+ fs.writeFileSync(path.join(__dirname,'results-v33.json'),JSON.stringify({build,passed:false,checks,failure:String(e&&e.stack||e)},null,2)+'\n');process.exitCode=1;});

@@ -1,52 +1,7 @@
 /* Compound Days v30: body-bound starters, furniture-relative seating and creator controls. */
 'use strict';
 
-// Eye parts use two coordinate spaces in the supplied asset. Resolve both in Head space.
-presSide=function(o){o.geometry.computeBoundingBox();return o.geometry.boundingBox.getCenter(new THREE.Vector3()).multiply(o.scale).add(o.position).x<0?0:1;};
-const v30PresPaint=presPaint;
-presPaint=function(mesh,entry,kind){
-  if(kind!=='iris') return v30PresPaint(mesh,entry,kind);
-  const original=presIrisColor, p=mesh.position;
-  presIrisColor=function(x,y,z,out){original(x+p.x,y+p.y,z+p.z,out);};
-  try{return v30PresPaint(mesh,entry,kind);}finally{presIrisColor=original;}
-};
-PRESENCE.skinRoughness=.70;PRESENCE.rim=.20;PRESENCE.rimU.value=.20;
-
-// A closed, continuous mouth follows the actual morphed face surface.
-// The inherited detached lip meshes intersected the base variants.
-const MOUTH30=new Map();
-function mouthSurface30(g){
-  const head=g.hero?.bones.head,body=g.hero?.body;if(!head||!body)return;
-  const key=g.userData.residentShape||'neutral';let geometry=MOUTH30.get(key);
-  if(!geometry){
-    const P=body.geometry.attributes.position,I=body.geometry.index.array,triangles=[];
-    for(let k=0;k<I.length;k+=3){const ids=[I[k],I[k+1],I[k+2]];
-      if(ids.some(i=>Math.abs(P.getX(i))<.045&&P.getY(i)>1.57&&P.getY(i)<1.62&&P.getZ(i)>.045))triangles.push(ids);
-    }
-    const surface=(x,y)=>{let z=.07;for(const ids of triangles){
-      const [a,b,c]=ids,ax=P.getX(a),ay=P.getY(a),bx=P.getX(b),by=P.getY(b),cx=P.getX(c),cy=P.getY(c);
-      const det=(by-cy)*(ax-cx)+(cx-bx)*(ay-cy);if(Math.abs(det)<1e-12)continue;
-      const u=((by-cy)*(x-cx)+(cx-bx)*(y-cy))/det,v=((cy-ay)*(x-cx)+(ax-cx)*(y-cy))/det,w=1-u-v;
-      if(u>=-1e-5&&v>=-1e-5&&w>=-1e-5)z=Math.max(z,u*P.getZ(a)+v*P.getZ(b)+w*P.getZ(c));
-    }return z;};
-    const pos=[],colors=[],idx=[],columns=48,width=key.includes('base_b')?.026:.024;
-    const shades=[[1,1,1],[.77,.53,.49],[.43,.27,.25],[.43,.27,.25],[.90,.67,.60],[1,1,1]];
-    for(let row=0;row<6;row++)for(let i=0;i<=columns;i++){
-      const t=i/columns*2-1,x=t*width,fade=Math.max(0,1-t*t),line=1.594+.0014*t*t;
-      const top=.0039*fade,bottom=.0051*fade;
-      const offset=[top,top*.5,.00035*fade,-.00035*fade,-bottom*.55,-bottom][row];
-      const y=line+offset,z=surface(x,y)+.00065;
-      pos.push(x,y-SCULPT29.joints.Head[1],z-SCULPT29.joints.Head[2]);colors.push(...shades[row]);
-    }
-    for(let r=0;r<5;r++)for(let i=0;i<columns;i++){const a=r*(columns+1)+i,b=a+columns+1;idx.push(a,b,a+1,a+1,b,b+1);}
-    geometry=new THREE.BufferGeometry();geometry.setAttribute('position',new THREE.Float32BufferAttribute(pos,3));geometry.setAttribute('color',new THREE.Float32BufferAttribute(colors,3));geometry.setIndex(idx);geometry.computeVertexNormals();MOUTH30.set(key,geometry);
-  }
-  for(const o of head.children)if(o.name==='lip'||o.name==='lip_top')o.visible=false;
-  const material=new THREE.MeshStandardMaterial({color:body.material.color.clone(),roughness:.66,metalness:0,vertexColors:true,side:THREE.DoubleSide,name:'lip_surface'});
-  const mouth=new THREE.Mesh(geometry,material);mouth.name='mouth_surface';head.add(mouth);
-}
-const v30MakeHero=makeHeroAvatar;
-makeHeroAvatar=function(look){const g=v30MakeHero(look);if(g)mouthSurface30(g);return g;};
+// v33a: presence iris fix, PRESENCE tuning and the mouthSurface30 makeHeroAvatar wrapper removed (presence-v25/sculpt-v29 retired with the authored v21 character).
 
 // Tag the furniture actually rendered; seating uses its transform, including prop scale.
 const v30BuildFurn=buildFurn;
@@ -91,23 +46,24 @@ function seatPose(g){
   g.updateWorldMatrix(true,true);
   const cushion=seatPoint(seat,seat.x,seat.height,seat.depth);
   const pelvis=bones.hips.getWorldPosition(new THREE.Vector3());
-  g.position.y+=cushion.y+.105*scale-pelvis.y;
+  // v33a: seat constants retuned for the authored v21 rig (Hips .86, Foot .10; was Hips .96, Foot .085): hips .105->.10 above the cushion.
+  g.position.y+=cushion.y+.10*scale-pelvis.y;
   g.updateWorldMatrix(true,true);
   const rotation=seat.frame.getWorldQuaternion(new THREE.Quaternion());
   const forward=new THREE.Vector3(0,0,1).applyQuaternion(rotation);
   const sideways=new THREE.Vector3(1,0,0).applyQuaternion(rotation);
   const centre=seatPoint(seat,seat.x,0,seat.depth);
   for(const [side,sign] of [['left',1],['right',-1]]){
-    const ankle=centre.clone().addScaledVector(sideways,sign*.097*scale).addScaledVector(forward,.42*scale);
-    ankle.y=seat.floorY+.085*scale;
+    const ankle=centre.clone().addScaledVector(sideways,sign*.10*scale).addScaledVector(forward,.35*scale); // v33a: was .097/.42
+    ankle.y=seat.floorY+.10*scale; // v33a: was .085 (v21 Foot joint sits .10 above the sole)
     seatIK(bones[side+'upleg'],bones[side+'leg'],bones[side+'foot'],ankle,forward);
     const foot=bones[side+'foot'];
     foot.quaternion.copy(foot.parent.getWorldQuaternion(new THREE.Quaternion()).invert().multiply(rotation));
     if(bones[side+'toebase'])bones[side+'toebase'].quaternion.identity();
     g.updateWorldMatrix(true,true);
     // Rest the palms over the thighs, with clearance above the cushion and front rail.
-    const hand=cushion.clone().addScaledVector(sideways,sign*.17*scale).addScaledVector(forward,.26*scale);
-    hand.y+=.16*scale;
+    const hand=cushion.clone().addScaledVector(sideways,sign*.17*scale).addScaledVector(forward,.22*scale); // v33a: was .26 (shorter v21 arms)
+    hand.y+=.18*scale; // v33a: was .16
     const bend=sideways.clone().multiplyScalar(sign).addScaledVector(forward,-.5);
     seatIK(bones[side+'arm'],bones[side+'forearm'],bones[side+'hand'],hand,bend);
   }
@@ -139,7 +95,7 @@ function sitStop(){
 const v30AnimAvatar=animAvatar;
 animAvatar=function(g,t,moving,carrying,speed,dt){
   v30AnimAvatar(g,t,moving,carrying,speed,dt);
-  if(g?.sitting){presenceUpdate(g,dt||.016,false);seatPose(g);}
+  if(g?.sitting)seatPose(g); // v33a: presenceUpdate call dropped (presence-v25 retired)
 };
 const v30IdleFace=idleFace;
 idleFace=function(p,dt){if(!p.g.sitting)v30IdleFace(p,dt);};
@@ -156,17 +112,13 @@ save=function(){
 
 // Creator: a persistent, player-controlled view and one understandable category at a time.
 const CREATOR30={tab:'body',yaw:-.30,zoom:'body',pose:'idle'};
-const HAIR30_ORDER=['none','low','curls','braidbun'];
-HAIRS.sort((a,b)=>{const ai=HAIR30_ORDER.indexOf(a.id),bi=HAIR30_ORDER.indexOf(b.id);return (ai<0?99:ai)-(bi<0?99:bi);});
-const CREATOR_SECTIONS=[['body','Body'],['face','Face'],['hair','Hair'],['clothes','Clothes'],['story','About you']];
+// v33a: HAIR30_ORDER sort and the Face tab removed; the authored character has no base/build/face/beard/accessory options.
+const CREATOR_SECTIONS=[['body','Body'],['hair','Hair'],['clothes','Clothes'],['story','About you']];
 function creator30Section(field){
   const input=field.querySelector('[data-k]'),key=input?.dataset.k;
-  if(['bodyBase','bodyBuild','skin'].includes(key))return 'body';
-  if(['face','beard'].includes(key))return 'face';
+  if(key==='skin')return 'body';
   if(['hair','headwear'].includes(key))return 'hair';
-  if(['outfit','acc','topColor'].includes(key))return 'clothes';
-  const label=(field.querySelector('label')?.textContent||'').toLowerCase();
-  if(/accessor/.test(label))return 'clothes';
+  if(key==='outfit')return 'clothes';
   return 'story';
 }
 function creator30Apply(){
@@ -205,8 +157,9 @@ function creator30Preview(now,dt){
   if(!prevChar)return;
   prevChar.rotation.y=CREATOR30.yaw;
   const scale=prevChar.scale.y||1;
-  if(CREATOR30.zoom==='face'){prevCam.position.set(0,1.66*scale,.72);prevCam.lookAt(0,1.655*scale,0);}
-  else{prevCam.position.set(0,1.26,3.9);prevCam.lookAt(0,.92,0);}
+  // v33a: face framing retuned to the authored v21 head (centre 1.645 m, skull about .35 m wide, hair up to about 1.95 m).
+  if(CREATOR30.zoom==='face'){prevCam.position.set(0,1.68*scale,1.40);prevCam.lookAt(0,1.655*scale,0);}
+  else{prevCam.position.set(0,1.34,4.3);prevCam.lookAt(0,.96,0);} // v33a: body view framed for the authored figure (hair top ~1.95 m, walk bob)
   animAvatar(prevChar,now/1000,CREATOR30.pose==='walk',false,CREATOR30.pose==='walk'?1:0,dt);
 }
 

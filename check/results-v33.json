@@ -1,9 +1,9 @@
 {
-  "build": "v33-8df2a65a",
+  "build": "v33a-746fd1c4",
   "passed": true,
   "checks": [
     {
-      "name": "Fresh household starts with neutral bases and persistent first-evening guide",
+      "name": "Fresh household starts at 3pm with the persistent first-evening guide",
       "passed": true
     },
     {

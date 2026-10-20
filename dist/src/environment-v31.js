@@ -161,34 +161,7 @@ updateCameras=function(dt){art31Cameras(dt);if(!players.length||!sun)return;cons
  sun.target.position.copy(centre);sun.position.copy(centre).add(sunDir.clone().multiplyScalar(40));const c=sun.shadow.camera;c.left=-half;c.right=half;c.top=half;c.bottom=-half;c.updateProjectionMatrix();
 };
 
-// The plain starter outfit makes the new bases readable before styling.
-Object.assign(OUTFIT_COLORS.starter,{top:'#E6DCC8',bottom:'#46534C',shoe:'#EAE4D5',sole:'#C9C5B6'});
-Object.assign(OUTFIT_COLORS.basics,{top:'#7E9787',bottom:'#424D47'});
-const art31LookColors=lookColors;
-lookColors=function(look){const c=art31LookColors(look);if(look.outfit==='starter'){if(!look.colors?.top)c.top='#E6DCC8';if(!look.colors?.bottom)c.bottom='#46534C';}return c;};
-const art31HeroFinish=makeHeroAvatar;
-makeHeroAvatar=function(look){const g=art31HeroFinish(look);if(!g)return g;
- g.traverse(o=>{if(!o.isMesh)return;for(const m of(Array.isArray(o.material)?o.material:[o.material])){
-   if(!m?.isMeshStandardMaterial)continue;
-   if(/^wear_/.test(o.name)&&/top|bottom|tee_rib|piping|shoe|sole/.test(m.name||'')&&!m.map){
-     if(!o.geometry.userData.art31UV){const P=o.geometry.attributes.position,U=[];for(let i=0;i<P.count;i++)U.push(P.getX(i)*3,P.getY(i)*3);o.geometry.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));o.geometry.userData.art31UV=true;}
-     if(!/shoe|sole/.test(m.name)){m.map=texture31('cloth');m.bumpMap=texture31('cloth-height',true);m.bumpScale=.0007;m.roughnessMap=texture31('cloth-roughness',true);m.roughness=.94;m.envMapIntensity=.35;}
-   }
-   if(/^wearhair_/.test(o.name)&&m.name==='hair'){
-     if(!o.geometry.userData.art31UV){const P=o.geometry.attributes.position,U=[];for(let i=0;i<P.count;i++){U.push(Math.atan2(P.getX(i),P.getZ(i)+.025)/Math.PI*4,(P.getY(i)+.04)*14);}o.geometry.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));o.geometry.userData.art31UV=true;}
-     m.map=texture31('hair');m.bumpMap=texture31('hair-height',true);m.bumpScale=.0006;m.roughness=.84;m.envMapIntensity=.40;
-   }
-   if(m.name==='beard31'){
-     if(!o.geometry.attributes.uv){const P=o.geometry.attributes.position,U=[];for(let i=0;i<P.count;i++)U.push(P.getX(i)*12,P.getY(i)*12);o.geometry.setAttribute('uv',new THREE.Float32BufferAttribute(U,2));}
-     m.map=texture31('hair');m.bumpMap=texture31('hair-height',true);m.bumpScale=.0004;
-   }
-   m.needsUpdate=true;
- }});return g;
-};
-// Show the hairstyles built to the new head; older saved hair choices still load.
-HAIRS.splice(0,HAIRS.length,...[{id:'none',name:'Bald'},{id:'low',name:'Tapered crop'},{id:'curls',name:'Natural coils'},{id:'braidbun',name:'Scalp braids & bun'}]);
-for(const [key,hair]of Object.entries({ada:'braidbun',tunde:'curls',bassey:'low',nkechi:'braidbun',oyelaran:'low'}))CAST[key].look.hair=hair;
-ENV23_LOOKS.forEach((look,i)=>look.hair=['curls','braidbun','low'][i%3]);
+// v33a: OUTFIT_COLORS/lookColors starter lines, the hero cloth/hair texture pass and the HAIRS/CAST/ENV23_LOOKS hair reassignment removed (presets-v26/bases-v29/art-v31 retired; the authored v21 wardrobe carries its own textures).
 
 const art31RenderSetup=renderSetup;
 renderSetup=function(){art31RenderSetup();const p=document.getElementById('panel');if(p)p.classList.toggle('studio31',S?.setup?.step==='p0'||S?.setup?.step==='p1');};
@@ -208,6 +181,7 @@ mountPreview=function(container,look){const old=prevChar,out=art31MountPreview(c
  }return out;};
 thumbRender=function(look,kind){if(!thumbInit())return null;studio31(THUMB.scene);const g=makeAvatar(look);if(!g)return null;const head=['hair','headwear','face','beard'].includes(kind),scale=g.scale.y||1;
  g.rotation.y=-.24;THUMB.scene.add(g);
- if(head){THUMB.cam.position.set(.09,1.685*scale,.72);THUMB.cam.lookAt(0,1.665*scale,0);}else{THUMB.cam.position.set(0,1.26,3.9);THUMB.cam.lookAt(0,.92,0);}
+ // v33a: head thumbnails framed on the authored v21 head (centre 1.645 m, skull about .35 m wide, hair up to about 1.95 m).
+ if(head){THUMB.cam.position.set(.05,1.69*scale,1.42);THUMB.cam.lookAt(0,1.66*scale,0);}else{THUMB.cam.position.set(0,1.38,4.6);THUMB.cam.lookAt(0,.98,0);}
  try{animAvatar(g,.4,false,false,0,.016);THUMB.r.render(THUMB.scene,THUMB.cam);return THUMB.r.domElement.toDataURL('image/png');}finally{THUMB.scene.remove(g);disposeAvatar31(g);}
 };
