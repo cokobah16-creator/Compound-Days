@@ -26,8 +26,10 @@ movePlayer=function(p,dx,dz){
 // The sofa itself (centre, quarter points and both ends) may not rest over the stairs either; with `from` (the highest level it rests on now) it may come down but not go up.
 function sofaLevelHit34(cx,cz,yaw,from){ const dx=Math.cos(yaw),dz=-Math.sin(yaw),h=(sofa?sofa.L:1.6)/2; for(const t of [-h,-h/2,0,h/2,h]) if(!carryLevelOK34(cx+dx*t,cz+dz*t,from)) return true; return false; }
 function sofaLevelNow34(){ if(!sofa||!sofa.g) return 0; const yaw=sofa.g.rotation.y,dx=Math.cos(yaw),dz=-Math.sin(yaw),h=sofa.L/2; let m=0; for(const t of [-h,-h/2,0,h/2,h]) m=Math.max(m,levelAt(sofa.g.position.x+dx*t,sofa.g.position.z+dz*t)); return m; }
+// The reference level for a carried sofa is the highest of its own resting samples and the two holders' current levels: the holders cannot rise, so the sofa can never climb above them, and a pair that grabbed from the upper grab window on the ramp (holder at z about 8.6) moves on the first frame instead of freezing.
+function sofaRefLevel34(){ let m=sofaLevelNow34(); if(sofa&&sofa.holder) for(const i of sofa.holder){ const p=i===null||i===undefined?null:players[i]; if(p&&p.g) m=Math.max(m,levelAt(p.g.position.x,p.g.position.z)); } return m; }
 const collides34=sofaCollides;
-sofaCollides=function(cx,cz,yaw){ return collides34(cx,cz,yaw)||sofaLevelHit34(cx,cz,yaw,sofaLevelNow34()); };
+sofaCollides=function(cx,cz,yaw){ return collides34(cx,cz,yaw)||sofaLevelHit34(cx,cz,yaw,sofaRefLevel34()); };
 // Same maths as the base carry; the distance correction also respects the level rule, and in companion mode the companion takes the whole correction when it can, so the human is not halved.
 const carryUpdate34=updateSofaCarry;
 updateSofaCarry=function(){
@@ -42,7 +44,7 @@ updateSofaCarry=function(){
   dx=b.g.position.x-a.g.position.x; dz=b.g.position.z-a.g.position.z; d=Math.hypot(dx,dz)||0.001;
  }
  const cx=(a.g.position.x+b.g.position.x)/2, cz=(a.g.position.z+b.g.position.z)/2; const yaw=Math.atan2(-dz,dx);
- if(sofaCollides(cx,cz,yaw)){ if(sofaLevelHit34(cx,cz,yaw,sofaLevelNow34())) stairsToast34(); const comp=carryCompanion34(); if(comp){ const h=comp===a?b:a; h.g.position.set(h.prev[0],0,h.prev[1]); } /* the companion keeps walking toward its clear spot; only the human is held */ else { if(!NET.on||a.i===NET.myIndex) a.g.position.set(a.prev[0],0,a.prev[1]); if(!NET.on||b.i===NET.myIndex) b.g.position.set(b.prev[0],0,b.prev[1]); } sofa.bump=(sofa.bump||0)+1; return; }
+ if(sofaCollides(cx,cz,yaw)){ if(sofaLevelHit34(cx,cz,yaw,sofaRefLevel34())) stairsToast34(); const comp=carryCompanion34(); if(comp){ const h=comp===a?b:a; h.g.position.set(h.prev[0],0,h.prev[1]); } /* the companion keeps walking toward its clear spot; only the human is held */ else { if(!NET.on||a.i===NET.myIndex) a.g.position.set(a.prev[0],0,a.prev[1]); if(!NET.on||b.i===NET.myIndex) b.g.position.set(b.prev[0],0,b.prev[1]); } sofa.bump=(sofa.bump||0)+1; return; }
  sofa.g.position.x=cx; sofa.g.position.z=cz; sofa.g.rotation.y=yaw; sofa.g.position.y=0.35;
  a.g.rotation.y=Math.atan2(dx,dz); b.g.rotation.y=Math.atan2(-dx,-dz);
  if(sofaInFlat()) sofaSuccess();
@@ -82,12 +84,28 @@ function carryFollow34(p,dt){
 // While the companion holds its end it runs the follower; aiGoal, the stuck rescue and detours are never consulted.
 const drive34=aiDrive;
 aiDrive=function(p,dt){ if(AI.on&&p.i===AI.i&&carryHolder34(p)&&!p.g.sitting){ carryFollow34(p,dt); return; } return drive34(p,dt); };
-// A save from before v34 could leave the sofa resting on the stairs or the landing, where the rule now forbids every grab from going up. Such a sofa slides back to the stair foot (placed as buildProps places it) on entering the world or on the first grab, once.
+// A save from before v34 could leave the sofa resting on the stairs or the landing, where the rule now forbids every grab from going up. Such a sofa slides back to a validated courtyard spot on entering the world or on the first grab, once.
+// The spot is never the stair foot itself: a sofa there seals the corridor between the stair rails (x 5.9-7.5, z to 9.6) for a player coming down the ramp. Candidates in order: the delivery spot by the gate, two courtyard spots, then a short search of nearby ground points. A candidate is taken only when the sofa box there collides with nothing (walls, furniture, the crate and the pushables, through the base sofaCollides), rests on level ground, keeps a player's width clear of the stair corridor, and no player stands inside it.
+const RESCUE_SPOTS34=[[4,8.6,0],[5.0,11.2,0],[3.0,11.0,0]];
+function sofaBoxAt34(x,z,rot){ const c=Math.abs(Math.cos(rot)), s=Math.abs(Math.sin(rot)); const L=sofa?sofa.L:1.6, W=sofa?sofa.W:0.7; const hx=(L*c+W*s)/2, hz=(L*s+W*c)/2; return {x1:x-hx,x2:x+hx,z1:z-hz,z2:z+hz}; }
+function sofaSpotFree34(x,z,rot){
+ if(collides34(x,z,rot)||sofaLevelHit34(x,z,rot)) return false;
+ const b=sofaBoxAt34(x,z,rot); const m=PR*2+0.05; /* a player's width between the box and the stair corridor */
+ if(!(b.x2+m<5.9||b.x1-m>7.5||b.z1-m>9.6)) return false;
+ for(const p of players){ if(p&&p.g&&hitAABB(p.g.position.x,p.g.position.z,PR,b)) return false; }
+ return true;
+}
+function sofaRescueSpot34(){
+ for(const [x,z,rot] of RESCUE_SPOTS34) if(sofaSpotFree34(x,z,rot)) return [x,z,rot];
+ const pts=[]; for(let x=2.5;x<=5.5;x+=0.5) for(let z=9.5;z<=12.5;z+=0.5) pts.push([x,z,Math.hypot(x-4,z-10.5)]); pts.sort((a,b)=>a[2]-b[2]);
+ for(const [x,z] of pts) for(const rot of [0,Math.PI/2]) if(sofaSpotFree34(x,z,rot)) return [x,z,rot];
+ return RESCUE_SPOTS34[0]; /* nothing validated (every spot occupied): the delivery spot, which is still clear of the corridor */
+}
 function sofaRescue34(){
  if(!S||!S.sofa||!S.sofa.pos||S.sofa.state==='placed'||(sofa&&sofa.carrying)) return false;
  const x=sofa?sofa.g.position.x:S.sofa.pos[0], z=sofa?sofa.g.position.z:S.sofa.pos[1], rot=sofa?sofa.g.rotation.y:(S.sofa.rot||0);
  if(!sofaLevelHit34(x,z,rot)) return false;
- S.sofa.pos=[6.7,10.6]; S.sofa.rot=Math.PI/2; if(sofa){ sofa.g.position.set(S.sofa.pos[0],0,S.sofa.pos[1]); sofa.g.rotation.y=S.sofa.rot; }
+ const [sx,sz,srot]=sofaRescueSpot34(); S.sofa.pos=[sx,sz]; S.sofa.rot=srot; if(sofa){ sofa.g.position.set(sx,0,sz); sofa.g.rotation.y=srot; }
  save(); toast('The sofa slid back down to the courtyard.'); return true;
 }
 const enter34=enterWorld;
@@ -138,16 +156,18 @@ aiGoal=function(p,dt){
 };
 
 /* ---------- 3. Stage timing log ---------- */
+// The timeline is kept for local and companion households only; in online play (NET.on) nothing is seeded, counted or shown, so it is absent there, not merely stripped from the shared document.
+function online34(){ return typeof NET!=='undefined'&&!!NET.on; }
 // One entry per stage transition in S.firstEvening.log: {stage, at (wall-clock ms), played (seconds with the tab visible, panels included), day, time}.
 const reconcileBase34=reconcile33;
 reconcile33=function(){
- const e=evening33(); const prev=e?e.stage:undefined; reconcileBase34(); if(!e) return;
+ const e=evening33(); const prev=e?e.stage:undefined; reconcileBase34(); if(!e||online34()) return; /* online households get no timeline at all: nothing is seeded or logged */
  // A save from before v34 has no log: the first reconcile seeds the stage it is on (played 0) so the timeline is anchored where v34 first ran. A completed evening gets no timeline.
  if(!e.log&&!e.completed) e.log=[{stage:e.stage,at:Date.now(),played:0,day:S.day,time:+S.time.toFixed(2)}];
  if(e.stage!==prev){ e.log=e.log||[]; if(!e.log.length||e.log[e.log.length-1].stage!==e.stage) e.log.push({stage:e.stage,at:Date.now(),played:+(e.played||0).toFixed(1),day:S.day,time:+S.time.toFixed(2)}); }
 };
 // Play seconds for the log: the tick's dt is already clamped; seconds count while the tab is visible, panels included (the shop, kitchen and party are part of the evening), and nothing while the tab is hidden.
-function feelPlayHook34(dt){ const e=evening33(); if(e&&!e.completed&&S.phase==='play'&&!(typeof document!=='undefined'&&document.hidden)) e.played=(e.played||0)+dt; }
+function feelPlayHook34(dt){ const e=evening33(); if(e&&!e.completed&&!online34()&&S.phase==='play'&&!(typeof document!=='undefined'&&document.hidden)) e.played=(e.played||0)+dt; }
 if(typeof TICK_HOOKS!=='undefined') TICK_HOOKS.push(feelPlayHook34);
 // The timing log is a local measurement kept for local and companion households; the shared household document does not carry it, so online play has no timeline.
 const strip34=stripState;
@@ -158,6 +178,8 @@ function timelineSummary34(){ const e=evening33(); if(!e||!e.log||!e.log.length)
 function eveningStatusText34(){ const e=evening33(); const t=timelineText34(); return t?`First evening: ${t} · total ${Math.round((e.played||0)/6)/10} min`:''; }
 ACTIONS.copyTimeline=()=>{ const text=timelineSummary34(); const show=()=>openPanel(`<h2>Evening timeline</h2><pre class="small" style="white-space:pre-wrap">${esc(text)}</pre><div class="actions">${btn('Back','menubtn',{},'primary block')}</div>`); if(typeof navigator!=='undefined'&&navigator.clipboard&&navigator.clipboard.writeText){ navigator.clipboard.writeText(text).then(()=>toast('Timeline copied.'),show); } else show(); };
 ACTIONS.menubtn=()=>openMenu();
+// Both are Menu buttons for this screen only: a replay on the other peer would write its clipboard or edit whatever panel it has open.
+LOCAL_ONLY.add('copyTimeline'); LOCAL_ONLY.add('menubtn');
 
 /* ---------- 4. Phone floor: step graphics down when play stays under 24 fps ---------- */
 // Pure decision: feed one-second windows of mean fps; after ten contiguous seconds under 24 the next notch is taken. Never steps up.
@@ -185,8 +207,8 @@ function feelPerfHook34(dt,playing){
 if(typeof TICK_HOOKS!=='undefined') TICK_HOOKS.push(feelPerfHook34);
 function perf34StatusText(){ const P=FEEL34.perf; const live=typeof renderer!=='undefined'&&renderer?` Render scale ${renderer.getPixelRatio().toFixed(2)}.`:''; if(!P.steps.length) return (P.mean?` Play frame rate about ${Math.round(P.mean)} fps.`:'')+live; return ` Graphics stepped down this session (${P.steps.map(s=>s==='lite'?'lighter quality, live':'render scale').join(', ')}) after play stayed under 24 fps.${live}${P.lite?' Lighter graphics will also apply next time this page opens.':''}`; }
 const menu34=openMenu;
-// The timeline is its own short paragraph directly above the actions, with 'Copy evening timeline' beside the tasks button; the perf state stays in the small print.
-openMenu=function(){ menu34(); const tiny=[...document.querySelectorAll('#panel p.tiny')].find(p=>/Build /.test(p.textContent))||document.querySelector('#panel p.tiny'); if(tiny) tiny.insertAdjacentHTML('beforeend',esc(perf34StatusText())); const actions=document.querySelector('#panel .actions'); const line=eveningStatusText34(); if(actions&&line){ actions.insertAdjacentHTML('beforebegin',`<p class="small">${esc(line)}</p>`); const copy=btn('Copy evening timeline','copyTimeline',{},'quiet'); const tasksBtn=actions.querySelector('[data-act="tasksbtn"]'); if(tasksBtn) tasksBtn.insertAdjacentHTML('afterend',copy); else actions.insertAdjacentHTML('beforeend',copy); } };
+// The timeline is its own short paragraph directly above the actions, with 'Copy evening timeline' beside the tasks button; the perf state stays in the small print. A silent (remote) replay changes nothing here, and an online household gets no timeline paragraph or Copy button.
+openMenu=function(){ menu34(); if(typeof silentMode==='function'&&silentMode()) return; const tiny=[...document.querySelectorAll('#panel p.tiny')].find(p=>/Build /.test(p.textContent))||document.querySelector('#panel p.tiny'); if(tiny) tiny.insertAdjacentHTML('beforeend',esc(perf34StatusText())); const actions=document.querySelector('#panel .actions'); const line=online34()?'':eveningStatusText34(); if(actions&&line){ actions.insertAdjacentHTML('beforebegin',`<p class="small">${esc(line)}</p>`); const copy=btn('Copy evening timeline','copyTimeline',{},'quiet'); const tasksBtn=actions.querySelector('[data-act="tasksbtn"]'); if(tasksBtn) tasksBtn.insertAdjacentHTML('afterend',copy); else actions.insertAdjacentHTML('beforeend',copy); } };
 
 /* ---------- 5. Loading: all wardrobe pieces in parallel, the players' own pieces first ---------- */
 // Same per-piece callbacks as the serial v21 chain; spawnNPCs runs once after the last piece, in any order.

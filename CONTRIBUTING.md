@@ -29,7 +29,7 @@ New behaviour goes in a new file under `dist/src/`, loaded after the existing mo
 
 ## Measurements
 
-The first-evening timeline (`S.firstEvening.log`, shown in the Menu and copied by **Copy evening timeline**) is the tester measurement. Its `played` seconds count time with the tab visible, panels included; nothing counts while the tab is hidden. The log is kept for local and companion households only; it is stripped from the shared household document, so online play has no timeline. Keep code and docs agreeing on that definition when changing it.
+The first-evening timeline (`S.firstEvening.log`, shown in the Menu and copied by **Copy evening timeline**) is the tester measurement. Its `played` seconds count time with the tab visible, panels included; nothing counts while the tab is hidden. The log is kept for local and companion households only; in online play nothing is seeded, counted or shown and it is stripped from the shared household document, so online play has no timeline. Keep code and docs agreeing on that definition when changing it.
 
 ## Branches
 

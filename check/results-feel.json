@@ -1,5 +1,5 @@
 {
-  "build": "v34a-38e54124",
+  "build": "v34a-21291430",
   "passed": true,
   "checks": [
     {
@@ -124,7 +124,7 @@
       }
     },
     {
-      "name": "A sofa saved on the landing slides back to the stair foot on enterWorld and on a grab",
+      "name": "A sofa saved on the landing slides back to the delivery spot by the gate on enterWorld and on a grab",
       "passed": true
     },
     {
@@ -140,6 +140,93 @@
     },
     {
       "name": "Perf notches that change nothing pass silently (lite after the first window at ratio 1); no lite toast when already lite",
+      "passed": true
+    },
+    {
+      "name": "The rescue picks a validated spot clear of the stair corridor; the ramp stays passable afterwards",
+      "passed": true,
+      "info": {
+        "cases": [
+          {
+            "case": "landing save, players beside it",
+            "spot": [
+              4,
+              8.6
+            ],
+            "walk": {
+              "pathPoints": 95,
+              "frames": 94,
+              "end": [
+                2.65,
+                9.95
+              ]
+            }
+          },
+          {
+            "case": "crate at the old spot, player on the gate spot",
+            "spot": [
+              5,
+              11.2
+            ],
+            "crateAfterPush": [
+              6.7,
+              13.43
+            ],
+            "walk": {
+              "pathPoints": 134,
+              "frames": 133,
+              "end": [
+                2.6,
+                10.15
+              ]
+            }
+          },
+          {
+            "case": "players on the first two spots",
+            "spot": [
+              3,
+              11
+            ]
+          },
+          {
+            "case": "all three taken, searched",
+            "spot": [
+              4,
+              10.5
+            ],
+            "rot": 1.571,
+            "walk": {
+              "pathPoints": 118,
+              "frames": 117,
+              "end": [
+                2.6,
+                9.85
+              ]
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "A grab from the upper ramp window walks down at once: the sofa reference level includes the holders",
+      "passed": true,
+      "info": {
+        "twoHumans": {
+          "startLevel": 0.916,
+          "down": 4.06,
+          "framesMoving": 59,
+          "bumps": 0
+        },
+        "companion": {
+          "startLevel": 0.916,
+          "down": 4.65,
+          "framesMoving": 59,
+          "bumps": 0
+        }
+      }
+    },
+    {
+      "name": "Online play has no timeline (no seed, no play seconds, no Menu line or Copy button); the Menu actions stay local",
       "passed": true
     }
   ],
