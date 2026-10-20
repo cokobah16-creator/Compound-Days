@@ -3951,8 +3951,8 @@ function save(){ if(typeof NET!=='undefined'&&NET.on) return; try{ if(S&&S.p){ S
 function load(){ try{ const r=localStorage.getItem(KEY); return r?JSON.parse(r):null; }catch(e){ return null; } }
 function newState(){
   return {version:2,phase:'setup',mode:'partners',household:'',
-   p:[{name:'',skin:SKINS[4],hair:'none',outfit:'basics',bodyBase:'base_a',bodyBuild:'balanced',face:'oval',beard:'none',acc:[],headwear:'none',strength:'foodie',aspiration:'stall',energy:85,mood:70,sk:{cook:0,make:0,grow:0,photo:0},pos:[2.6,8.6]},
-      {name:'',skin:SKINS[4],hair:'none',outfit:'basics',bodyBase:'base_b',bodyBuild:'balanced',face:'oval',beard:'none',acc:[],headwear:'none',strength:'creative',aspiration:'quiet',energy:85,mood:70,sk:{cook:0,make:0,grow:0,photo:0},pos:[5.4,8.6]}],
+   p:[{name:'',skin:SKINS[4],hair:'locs',outfit:'tee',strength:'foodie',aspiration:'stall',energy:85,mood:70,sk:{cook:0,make:0,grow:0,photo:0},pos:[2.6,8.6]},
+      {name:'',skin:SKINS[2],hair:'braids',outfit:'ankara',strength:'creative',aspiration:'quiet',energy:85,mood:70,sk:{cook:0,make:0,grow:0,photo:0},pos:[5.4,8.6]}],
    money:55000,day:1,time:8.0,pantry:{},dishes:[],recipes:['jollof','porridge'],cooked:{},
    home:{items:[{id:'i1',type:'mattress',x:0,y:0},{id:'i2',type:'table',x:2,y:2},{id:'i3',type:'fan',x:0,y:3},{id:'i4',type:'stove',x:5,y:0},{id:'i5',type:'fridge',x:4,y:0}],storage:[],seq:5},
    nb:{ada:{aff:0},tunde:{aff:0},bassey:{aff:0},nkechi:{aff:0},oyelaran:{aff:0}},
@@ -5510,7 +5510,7 @@ function wardrobeExtras(src){ let ex=src.scene.userData&&src.scene.userData.kind
 function wardrobeNames(look){ const out=[]; const h=WARDROBE.hair[look.hair]; if(h) out.push(h); const o=WARDROBE.outfits[look.outfit]; if(o&&look.outfit!=='asoebi') out.push(...o); return out; }
 function wardrobeReady(names){ return names.length>0&&names.every(n=>WARDROBE.cache[n]); }
 /* fetch what the players on screen need first, then the rest, refreshing avatars as pieces arrive */
-function wardrobePrefetch(){ const want=[]; if(S&&S.p){ both().forEach(i=>wardrobeNames(lookFor(i)).forEach(n=>{ if(!want.includes(n)) want.push(n); })); } const all=['tank','shorts','sneakers','hair_lowtaper','hair_curls','hair_braidbun'].concat(Object.values(WARDROBE.hair),...Object.values(WARDROBE.outfits)); all.forEach(n=>{ if(!want.includes(n)) want.push(n); });
+function wardrobePrefetch(){ const want=[]; if(S&&S.p){ both().forEach(i=>wardrobeNames(lookFor(i)).forEach(n=>{ if(!want.includes(n)) want.push(n); })); } const all=[].concat(Object.values(WARDROBE.hair),...Object.values(WARDROBE.outfits)); all.forEach(n=>{ if(!want.includes(n)) want.push(n); });
   const next=()=>{ const n=want.shift(); if(!n) return; wardrobeLoad(n,()=>{ if(typeof players!=='undefined'&&players.length) both().forEach(i=>{ if(wardrobeNames(lookFor(i)).includes(n)) refreshAvatar(i); }); if(n==='headwrap_everyday'&&typeof npcs!=='undefined'&&Object.keys(npcs).length&&typeof spawnNPCs==='function') spawnNPCs(); const pv=document.getElementById('pv3d0'); if(pv&&S&&S.p&&wardrobeNames(lookFor(0)).includes(n)) mountPreview(pv,lookFor(0)); const pv1=document.getElementById('pv3d1'); if(pv1&&S&&S.p&&wardrobeNames(lookFor(1)).includes(n)) mountPreview(pv1,lookFor(1)); next(); }); if(WARDROBE.cache[n]||WARDROBE.failed[n]) next(); }; next(); }
 /* attach the look's wardrobe pieces to a freshly built hero avatar; returns what was equipped */
 function wardrobeEquip(g,look,fit,skin,hairC){
@@ -5749,7 +5749,7 @@ const PERF={last:0,acc:0,n:0,avg:0,fps:0};
 if(typeof TICK_HOOKS!=='undefined') TICK_HOOKS.push(()=>{ const now=performance.now(); if(PERF.last){ PERF.acc+=now-PERF.last; PERF.n++; if(PERF.acc>=2000){ PERF.avg=PERF.acc/PERF.n; PERF.fps=1000/PERF.avg; PERF.acc=0; PERF.n=0; } } PERF.last=now; });
 function perfStatusText(){ if(!PERF.avg||typeof renderer==='undefined'||!renderer) return ''; const sz=renderer.getSize(new THREE.Vector2()); return ` Frame time ${PERF.avg.toFixed(1)} ms (~${Math.round(PERF.fps)} fps) at ${Math.round(sz.x*renderer.getPixelRatio())}×${Math.round(sz.y*renderer.getPixelRatio())}, ${renderer.info.render.calls} draw calls, ${Math.round(renderer.info.render.triangles/1000)}k triangles.`; }
 
-const BUILD_ID='v33-8df2a65a';
+const BUILD_ID='v33a-746fd1c4';
 /* ===================== BOOT ===================== */
 function initRenderer(){ renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,powerPreference:'high-performance'}); renderer.setPixelRatio(Math.min(devicePixelRatio||1,navigator.maxTouchPoints>0?1.6:2)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,160); window.addEventListener('resize',()=>{ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }); }
 window.addEventListener('pagehide',()=>save()); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
@@ -5758,21 +5758,12 @@ function boot(){ try{ QUALITY.full=qualityOn(); initRenderer(); heroLoad(); buil
 <link rel="stylesheet" href="src/visual-v21.css">
 <link rel="stylesheet" href="src/environment.css">
 <script src="src/visual-v21.js"></script>
-<script src="src/visual-v22.js"></script>
+<script src="src/authored-v34.js"></script>
 <script src="src/environment-presets.js"></script>
 <script src="src/environment-kit.js"></script>
 <script src="src/environment-v23.js"></script>
-<script src="src/residents-v24.js"></script>
-<script src="src/presence-data-v29.js"></script>
-<script src="src/presence-v25.js"></script>
-<script src="src/presets-v26.js"></script>
 <script src="src/color-v28.js"></script>
-<script src="src/sculpt-v29-meta.js"></script>
-<script src="src/bases-v29.js"></script>
-<script src="src/presence-v29.js"></script>
 <script src="src/polish-v30.js"></script>
-<script src="src/head-v31-data.js"></script>
-<script src="src/art-v31.js"></script>
 <script src="src/environment-v31.js"></script>
 <script src="src/polish-v32.js"></script>
 <script src="src/first-evening-v33.js"></script>

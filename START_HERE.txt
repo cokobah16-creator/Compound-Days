@@ -1,9 +1,10 @@
 COMPOUND DAYS — WATERSIDE
-Build: v33-8df2a65a
+Build: v33a-746fd1c4 (authored character)
+shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
 1. Extract this ZIP.
-2. Open a terminal inside the Compound_Days_v33 folder.
+2. Open a terminal inside the Compound_Days folder.
 3. Run: python3 -m http.server 8000 --directory dist
    On Windows, use: py -m http.server 8000 --directory dist
 4. Open http://localhost:8000 in your browser.
@@ -17,18 +18,22 @@ WASD + E for Player 1; arrow keys + Enter for Player 2; touch controls on phones
 
 CONTENTS
 - dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
-- tools/: asset-generation and build tools (some require their own dependencies).
-- check/: runtime verification scripts, results and earlier offline visual reviews.
-- README.md: features, run instructions and verification limits.
-- RIG_CONTRACT_V32.md: current character conventions; older contracts are retained.
-- PACKAGE_MANIFEST.json: source identity and SHA-256 hashes of packaged files.
+- dist/assets/characters/efe.gltf.json: the authored character; dist/assets/wardrobe/: its 16 pieces.
+- tools/: wardrobe, hair and material authoring tools, the build stamp and the manifest tool.
+- check/: the Node verification harness, verify-authored.cjs, verify-v33.cjs and their results.
+- README.md: features, what this build keeps and removes, run and verification instructions.
+- CHARACTER.md: the character and wardrobe binding contract and how to deliver a new base mesh.
+- CONTRIBUTING.md: repository layout, imports and the build stamp.
+- PACKAGE_MANIFEST.json: build id and SHA-256 hashes of packaged files.
 
 Saves belong to the browser and origin where you play. The live Site's save does
-not automatically move to localhost. Companion and same-screen play are supported;
-cross-device online play is not provided by this static build.
+not automatically move to localhost. Saves from builds v26-v33 load; their retired
+outfit and hair choices are mapped to the authored wardrobe. Companion and
+same-screen play are supported; cross-device online play is not provided by this
+static build.
 
-The v33 logic checks and existing model/scene checks passed. Browser visual QA and
-real-phone performance remain unverified. review31/review32 images, where included,
-are older CPU-rendered reviews, not v33 browser screenshots.
+The authored-character checks and the v33 logic checks passed in the Node harness
+(node check/verify-authored.cjs, node check/verify-v33.cjs). Browser visual QA and
+real-phone performance remain unverified.
 
-Source commit: 2417a7c462866590bf17d7dc95179f013b4806e1
+Source commit: unreleased (branch claude/authored-character; base v33-8df2a65a)

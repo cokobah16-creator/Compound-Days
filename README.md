@@ -1,6 +1,6 @@
 # Compound Days — Waterside
 
-Build **v33-8df2a65a**, continuing the published v32 visual foundation.
+Build **v33a**, the authored-character line: the v33 environment and first-evening gameplay with the authored v21 character model and wardrobe restored. The exact id is stamped in `dist/index.html` (`BUILD_ID`), shown in the game Menu and recorded in `PACKAGE_MANIFEST.json`.
 
 A browser life game set in a Nigerian compound. Create two independent players, move the sofa into your flat, shop, cook, learn crafts, furnish your home and host neighbours.
 
@@ -11,7 +11,7 @@ Choose **Start with a companion** to play alone, or **Start a new household on t
 - Player 1: WASD to move, E to interact.
 - Player 2: arrow keys to move, Enter to interact.
 - Phones: use the on-screen sticks and action buttons. Landscape gives both players more room.
-- Saves stay in that browser on that device. Published v30–v33 share an origin and save schema.
+- Saves stay in that browser on that device. Published v30–v33 share an origin and save schema; v33a reads those saves and maps their retired looks (see below).
 
 Cross-device play requires the inherited host's room/database API, which is unavailable on this static hosted copy. Companion and same-screen play are supported.
 
@@ -25,42 +25,27 @@ New households arrive at 3pm with six saved milestones: move the sofa, gather jo
 - Action-boundary saves preserve cooking answers and party choices. Continue reopens an unfinished recipe or party.
 - The first guided housewarming avoids the rooftop rain detour and always offers a photo until one is taken. Later parties keep their existing weather behavior.
 - A plant, rug or wall art reward can be claimed once. A full flat sends it to Build storage. The following morning delivers the player’s chosen Yard invitation.
-- This is a playable guided slice, not a measured 20-minute playtest result. No new mesh or rendering changes were made in v33.
 
-## The v32 visual pass
+## v33a — The authored character
 
-- Heads, eyes, hair, beards and accessories share a 1.24 scale with a 20 mm drop. A tapered lower-neck join gives the bases a friendlier silhouette of approximately six heads, while retaining the 27-joint skeleton and nine clips.
-- The visible torso and arms use separately authored smooth contours. The inherited implicit surface had coupled inner arms with the waist, making skin fragments and distorted clothing. Its upper surfaces are now hidden; it remains a reference for legacy garments, hands, legs and animation compatibility.
-- New tops and bottoms use a smooth fit cage for Base A / Base B and slim / balanced / fuller. The fit keeps sewn hems and shoulder seams continuous instead of following defects in the old surface.
-- A plain crew tee, shorts and cream sneakers form the starter outfit. The tank is another selectable set. Five rebuilt tops have connected torso/shoulder/sleeve surfaces and physical hem walls; detached shoulder caps are removed.
-- Signed coverage fields are composed across the complete outfit. Skin restored around one opening must remain outside every other worn piece. Waist, shorts, trouser and ankle boundaries no longer restore overlapping fragments. Wrist joins also receive a precise cut.
-- Sneakers have a continuous upper, ankle collar, rounded sole and raised lace bars.
-- A joined staircase replaces the stack of solid wall blocks. Sloped stringers, open handrails and tread nosings use four material batches. Collision boundaries and the ascending route are preserved. Rounded copings finish the terrace parapets.
-- Creator and thumbnail scenes share a lit platform and curved backdrop. A cached soft contact texture grounds avatars. Gameplay uses a 34-degree lens with the existing viewport-aware framing.
-- The v31 textured PBR materials, colour pipeline, fitted hairstyles, curved plants, environment palettes and day/evening lighting are retained. Lite quality keeps a diffuse material path.
+Both players, both creator previews and the five named neighbours use the authored humanoid model from build v21 (`dist/assets/characters/efe.gltf.json`: modelled head, face and body, 27 joints, eight clips). Background walkers and sellers use the same model through `environment-v23.js`. The sixteen v21 wardrobe pieces are restored verbatim and bound as in v21: tee, jeans, sneakers; Ankara shirt, trousers, sandals; kaftan tunic, trousers, leather sandals; low taper, box braids, locs, afro, twists, long wig and the everyday head wrap. Office shirt, tracksuit and lounge set are painted onto the body's own clothing slots, as in v21. `CHARACTER.md` documents the binding contract and how a new base mesh must be delivered.
+
+Kept from the v22–v33 line: the v23/v31 environment, materials and lighting; the v28 colour pipeline; the v30 sofa seating and creator tabs (Body with skin tone, Hair, Clothes, About you), retuned to the v21 rig; the v32 joined staircase, parapet copings, lit creator/thumbnail stage, contact shadow and 34-degree lens; the v33 first evening.
+
+Removed: the procedurally generated body, its morph bases, builds and faces, the procedural head, presence (blink, breathing, glance, rim light), the fitted v30–v32 garments and the nineteen wardrobe files that existed only for the generated body, with their modules (`visual-v22`, `residents-v24`, `presence-v25`, `presets-v26`, `presence-data-v29`, `sculpt-v29-meta`, `bases-v29`, `presence-v29`, `head-v31-data`, `art-v31`), build tools, offline review renders and rig contracts. None of it fitted the authored model (see the last section of `CHARACTER.md`). It remains in git history at build v33-8df2a65a.
+
+Saves from v26–v33 keep working: `dist/src/authored-v34.js` maps the retired outfit ids `starter`, `tankset`, `basics`, `everydayefe` to `tee` and `everydaytunde` to `ankara`, and the retired hair ids `none` to `low`, `curls` to `twists`, `braidbun` and `braidsup` to `braids`, on load, in new-game defaults and on looks received from a co-op peer. The other saved creator fields are ignored.
 
 ## Verification
 
 ```sh
-node check/verify-v32.cjs
+node check/verify-authored.cjs
 node check/verify-v33.cjs
 ```
 
-The Node harness executes the shipped JavaScript, Three.js and glTF loader. It checks 35 wardrobe assets, 33 props, 18 body/build/face combinations, 810 clip samples, 24 seating cases, saves, colour conversion, eye openings, eyelids, garment topology, composed skin boundaries, contour geometry, contact-shadow height, cuff weights and eight courtyard presets. Results are stamped in `check/results-v32.json`; inherited checks retain `check/results-v30.json`.
+The Node harness (`check/runtime-harness.cjs`) executes the shipped JavaScript with the bundled Three.js and glTF loader; nothing is rendered. `verify-authored.cjs` writes `check/results-authored.json` and checks the hero (27 joints in hero order, 8 clips, five material-named body primitives, `hairMount`/`headCentre` extras), the sixteen wardrobe files (exactly those are referenced and parse, every skinned piece carries the hero's inverse bind matrices byte for byte), both players on the hero rig, every hair and outfit id equipping and hiding its slots with the painted outfits building cleanly, the save/network/default migration, the five neighbours plus walkers and sellers with their statures, the environment (surface registry, four-batch staircase, eight courtyard presets, material textures on disk, idempotent studio stage, 34-degree lens), seating in four sofa orientations (hips and feet at the retuned heights, sole meshes on the floor, trouser sink within the documented limit) with saves keeping standing positions, and the build id in the Menu. `verify-v33.cjs` writes `check/results-v33.json` and exercises the real cooking and party actions, reloads, clock behaviour, migration, reward deduplication and recovery paths.
 
-The ten additional state-flow groups in `check/results-v33.json` exercise the real cooking and party actions, reloads, clock behavior, migration, reward deduplication and recovery paths.
-
-`check/review32/` contains **offline software renders of runtime meshes and albedo maps**. They are not WebGL gameplay screenshots and omit PBR reflections, transparency and contact-shadow composition.
-
-```sh
-node check/export-geometry.cjs check/geometry32
-node check/export-world-v31.cjs check/geometry32
-g++ -O2 -shared -fPIC check/raster.cpp -o check/raster.so
-python check/render-geometry.py check/geometry32 check/review32
-python check/make-review-v32.py
-```
-
-Browser QA was unavailable because the required browser-control capability was absent. Browser appearance, phone frame rate and audio output remain unverified. The art is procedural and has not reached the painted concept sheets. Older traditional outfits and saved hairstyles remain provisional. There is no new speech animation or finger rig.
+Browser appearance, colour under the v28/v31 lighting, phone frame rate and audio are not covered by the harness and remain unverified in this build.
 
 ## Run a local copy
 
@@ -74,18 +59,16 @@ Open `http://localhost:8000`. Opening `index.html` through `file://` can block a
 
 ## Rebuild assets
 
-Python tools require NumPy, SciPy and Pillow. Node tools use bundled Three.js. The final mask step tags new assets with the fit cage and composes bottom/foot coverage. Run it after regenerating any of these garments.
+Python tools require NumPy and Pillow. They are optional and not needed to play.
 
 ```sh
-python tools/build-head-v31.py
-python tools/build-materials-v31.py
-node tools/build-hair-v31.cjs
-python tools/build-starter-v30.py shorts office_trousers cargo_trousers
-python tools/build-sneakers-v32.py
-python tools/build-tailored-tops-v32.py
-python tools/complete-masks-v32.py
-python tools/stamp-build.py
-node check/verify-v32.cjs
+python tools/rebuild_wardrobe.py      # the six cloth shells and the low taper, on the skeleton embedded in the files
+python tools/build_hair.py            # afro, twists and wig from the low-taper scalp
+python tools/build-materials-v31.py   # the environment material maps
+python tools/stamp-build.py           # always last after any change under dist/
+node check/verify-authored.cjs        # rewrites check/results-authored.json for that stamp
+node check/verify-v33.cjs             # rewrites check/results-v33.json
+python tools/package-manifest.py      # refresh PACKAGE_MANIFEST.json after the results files
 ```
 
-See `RIG_CONTRACT_V32.md` for current render-body, garment and head conventions. Earlier contracts remain as reference for the inherited assets. Third-party library attribution remains in the supplied files.
+`tools/stamp-build.py` writes the build id (prefix `v33a-`) into `dist/index.html`; never edit it by hand. See `CHARACTER.md` for the character and wardrobe conventions and `CONTRIBUTING.md` for the repository layout. Third-party library attribution remains in the supplied files.

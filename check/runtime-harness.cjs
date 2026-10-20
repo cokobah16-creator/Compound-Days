@@ -30,7 +30,7 @@ function run(code){return vm.runInContext(code,context);}
 function parse(file){return new Promise((resolve,reject)=>new THREE.GLTFLoader().parse(fs.readFileSync(path.join(root,file),'utf8'),'',resolve,reject));}
 async function load(){
   const hero=await parse('assets/characters/efe.gltf.json');context.loadedHero=hero;
-  run("HERO.gltf=loadedHero;HERO.state='ready';HERO.clips={};for(const c of loadedHero.animations){const n=heroClipName(c.name);if(n)HERO.clips[n]=c;}presenceBakeBase();");
+  run("HERO.gltf=loadedHero;HERO.state='ready';HERO.clips={};for(const c of loadedHero.animations){const n=heroClipName(c.name);if(n)HERO.clips[n]=c;}if(typeof presenceBakeBase==='function')presenceBakeBase();if(typeof authored34Install==='function')authored34Install();");
   const ids=run("[...new Set([...Object.values(WARDROBE.hair),...Object.values(WARDROBE.outfits).flat()])]");
   for(const id of ids){context.loadedWardrobe=await parse('assets/wardrobe/'+id+'.gltf.json');context.wardrobeId=id;run('WARDROBE.cache[wardrobeId]=loadedWardrobe');}
   run('S=newState();scene=new THREE.Scene();');
