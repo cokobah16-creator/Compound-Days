@@ -1,0 +1,77 @@
+{
+  "build": "v31-1bddc75c",
+  "method": "Node + shipped Three.js/glTF; geometry and state only",
+  "checks": [
+    {
+      "name": "Prior rig, customization, animation, seating and save checks pass",
+      "passed": true,
+      "details": {
+        "checks": 13
+      }
+    },
+    {
+      "name": "Both bases and every face preserve skin colour and bounded eye openings",
+      "passed": true,
+      "details": {
+        "heads": 42,
+        "eyeVertices": 69972
+      }
+    },
+    {
+      "name": "Closed eyelids overlap across both eye openings",
+      "passed": true
+    },
+    {
+      "name": "Garment openings use normalized skin bindings below the new neck",
+      "passed": true,
+      "details": {
+        "patchVertices": 17040
+      }
+    },
+    {
+      "name": "Sewn shoulder caps stay outside both bases through all nine animation clips",
+      "passed": true,
+      "details": {
+        "samples": 71280,
+        "minGapMetres": 0.002049716952074765,
+        "maxGapMetres": 0.008000009845564336
+      }
+    },
+    {
+      "name": "Long-sleeve cuffs follow the forearms rather than the torso",
+      "passed": true
+    },
+    {
+      "name": "All eight courtyard presets build with finite geometry, curved palms and entry details",
+      "passed": true,
+      "details": {
+        "styles": 8
+      }
+    },
+    {
+      "name": "Every referenced v31 texture exists and declares its colour/data encoding",
+      "passed": true,
+      "details": {
+        "maps": 20
+      }
+    },
+    {
+      "name": "All five named neighbours use the new head with distinct proportions",
+      "passed": true,
+      "details": {
+        "distinctHeadSpecifications": 5
+      }
+    },
+    {
+      "name": "Lite quality retains a cheaper diffuse path for the new head and environment",
+      "passed": true
+    }
+  ],
+  "limits": [
+    "Browser/WebGL visual QA unavailable",
+    "No phone FPS measurement",
+    "Facial speech/finger rig not added",
+    "Older unrebuilt wardrobe remains provisional"
+  ],
+  "passed": true
+}

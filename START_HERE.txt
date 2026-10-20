@@ -1,0 +1,34 @@
+COMPOUND DAYS — WATERSIDE
+Build: v33-8df2a65a
+
+START HERE
+1. Extract this ZIP.
+2. Open a terminal inside the Compound_Days_v33 folder.
+3. Run: python3 -m http.server 8000 --directory dist
+   On Windows, use: py -m http.server 8000 --directory dist
+4. Open http://localhost:8000 in your browser.
+
+Use an HTTP server; opening index.html directly is not supported.
+No installation or build is needed to play. Python is only one way to serve the files.
+
+Choose a companion or two players sharing one screen. New households begin the
+first-evening guide. Existing households can opt in through Tasks.
+WASD + E for Player 1; arrow keys + Enter for Player 2; touch controls on phones.
+
+CONTENTS
+- dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
+- tools/: asset-generation and build tools (some require their own dependencies).
+- check/: runtime verification scripts, results and earlier offline visual reviews.
+- README.md: features, run instructions and verification limits.
+- RIG_CONTRACT_V32.md: current character conventions; older contracts are retained.
+- PACKAGE_MANIFEST.json: source identity and SHA-256 hashes of packaged files.
+
+Saves belong to the browser and origin where you play. The live Site's save does
+not automatically move to localhost. Companion and same-screen play are supported;
+cross-device online play is not provided by this static build.
+
+The v33 logic checks and existing model/scene checks passed. Browser visual QA and
+real-phone performance remain unverified. review31/review32 images, where included,
+are older CPU-rendered reviews, not v33 browser screenshots.
+
+Source commit: 2417a7c462866590bf17d7dc95179f013b4806e1

@@ -1,0 +1,25 @@
+/* A quiet studio frame keeps attention on the actual model and choices. */
+#panel.studio31{background:#F1EBDD;color:#31483F;border:1px solid #C8C6B0;box-shadow:0 24px 80px #152B2955;max-width:760px}
+#panel.studio31::before{height:4px;background:linear-gradient(90deg,#527467,#C4A15B,#527467);opacity:1}
+#panel.studio31 h1,#panel.studio31 h2,#panel.studio31 h3,#panel.studio31 .wordmark{color:#284A3E}
+#panel.studio31 .smallcaps,#panel.studio31 .muted,#panel.studio31 .tiny{color:#68786B}
+#panel.studio31 .namerow input,#panel.studio31 input{color:#30493E;background:#FAF7EE;border:1px solid #C9C9B7;box-shadow:none;border-radius:10px;min-height:44px}
+#panel.studio31 .creator30-tabs{background:#F1EBDD;padding:12px 0;gap:6px}
+#panel.studio31 .creator30-tab{border-color:#C8CBB8;background:#E7E5D6;color:#4D6558;border-radius:10px;font-weight:600;box-shadow:none}
+#panel.studio31 .creator30-tab.picked{color:#FCF8E9;background:#345B4C;border-color:#345B4C}
+#panel.studio31 .creator30-view button{background:transparent;color:#486455;border-color:#B9C1AE;font-weight:500}
+#panel.studio31 .preview3d{border:1px solid #BAC1B0;border-radius:18px;background:#D4D1C3;box-shadow:inset 0 1px 0 #FFF8;overflow:hidden}
+#panel.studio31 .field{border-bottom:1px solid #DBDDCB;padding-bottom:18px;margin-bottom:18px}
+#panel.studio31 .field label{font-size:.86rem;font-weight:700;color:#3A5446;letter-spacing:.01em}
+#panel.studio31 .opt,#panel.studio31 .aspire,#panel.studio31 .cat{background:#F9F5EB;color:#4B6052;border-color:#C8CCB8;border-radius:12px;box-shadow:none}
+#panel.studio31 .opt.picked,#panel.studio31 .aspire.picked,#panel.studio31 .cat.picked{border-color:#45725C;background:#DEE8D9;color:#274B3B;box-shadow:0 0 0 1px #45725C}
+#panel.studio31 .btn.primary{background:#345C4B;color:#FFF8E7;border-color:#345C4B;box-shadow:0 4px 14px #25433220;font-family:inherit;font-size:1rem;min-height:50px}
+#panel.studio31 .btn.quiet,#panel.studio31 .roundbtn{color:#4A6756;border-color:#BFC7B3;background:transparent}
+#panel.studio31 .sticky-act{background:linear-gradient(#F1EBDD00,#F1EBDD 20%);padding-bottom:8px!important}
+#panel.studio31 .creator30-loading{color:#486454}
+#panel.studio31 .h2row h2.brush::after{background:#C6A264;height:3px}
+#topbar{background:linear-gradient(#233E35EB,#233E35BB);border-bottom:1px solid #D1C69E44}
+.pcard,.ocard{background:#253E35D9;border-color:#CDC5A04D;border-radius:14px}
+.act{box-shadow:0 3px 14px #19372C30}
+@media(min-width:700px){#panel.studio31 .preview3d{min-height:360px}#panel.studio31{padding:22px 28px 24px}}
+@media(max-width:600px){#panel.studio31{padding-left:14px;padding-right:14px}.creator30-tabs{gap:4px}#panel.studio31 .creator30-tab{font-size:12px}}

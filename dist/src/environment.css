@@ -1,0 +1,6 @@
+.env-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:18px 0}
+.env-card{display:flex;flex-direction:column;align-items:flex-start;text-align:left;gap:8px;white-space:normal;padding:16px;border:1px solid #806147;background:#34291f;color:#efe2c8;border-radius:16px;font:inherit;cursor:pointer;min-width:0}
+.env-card strong{font-size:17px}.env-card .small{line-height:1.45;font-weight:400}.env-card .tiny{opacity:.78}
+.env-card.selected{border:2px solid #e4b356;padding:15px;background:#493724}.env-card:focus-visible{outline:3px solid #efd697;outline-offset:3px}
+.env-swatches{height:38px;width:100%;display:flex;overflow:hidden;border-radius:7px;margin-bottom:4px}.env-swatches i{flex:1}
+@media(max-width:440px){.env-grid{gap:8px}.env-card{padding:12px}.env-card.selected{padding:11px}.env-card strong{font-size:15px}.env-card .small{font-size:12px}}

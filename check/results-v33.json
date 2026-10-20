@@ -1,0 +1,47 @@
+{
+  "build": "v33-8df2a65a",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Fresh household starts with neutral bases and persistent first-evening guide",
+      "passed": true
+    },
+    {
+      "name": "Guided clock holds before market closing; free play continues normally",
+      "passed": true
+    },
+    {
+      "name": "Welcome basket supplies only missing ingredients and cannot be claimed twice",
+      "passed": true
+    },
+    {
+      "name": "Actual two-station cooking survives save/reload mid-recipe and produces dinner",
+      "passed": true
+    },
+    {
+      "name": "Actual four-round housewarming preserves choices, offers photo, and finishes without first-party rain detour",
+      "passed": true
+    },
+    {
+      "name": "Gift and tomorrow choice are idempotent and survive reload",
+      "passed": true
+    },
+    {
+      "name": "Next day delivers the selected invitation and keeps free play",
+      "passed": true
+    },
+    {
+      "name": "Older saves remain unchanged until opting in, then credit existing accomplishments",
+      "passed": true
+    },
+    {
+      "name": "Eaten dinner has a recovery path; rewards cannot be claimed before hosting",
+      "passed": true
+    },
+    {
+      "name": "Full flat sends the gift to storage without loss",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state/actions in Node with shipped Three.js. No browser or phone test."
+}
