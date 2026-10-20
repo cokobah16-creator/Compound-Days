@@ -16,12 +16,20 @@ Builds before v33 (v1, v19, v21) used a flat layout with `index.html` at the roo
 
 ## Imports
 
-A build archive is committed byte-for-byte, including `dist/index.html` and its outer artifact wrapper, because the build id is a hash over every file under `dist` and the results files in `check/` (`results-authored.json`, `results-v33.json`) record that id. `PACKAGE_MANIFEST.json` lists the SHA-256 of every packaged file; an import is only committed once every hash matches.
+A build archive is committed byte-for-byte, including `dist/index.html` and its outer artifact wrapper, because the build id is a hash over every file under `dist` and the results files in `check/` (`results-authored.json`, `results-v33.json`, `results-feel.json`) record that id. `PACKAGE_MANIFEST.json` lists the SHA-256 of every packaged file; an import is only committed once every hash matches.
 
 Before committing an import, two checks run here:
 
 - a browser smoke test under headless Chromium that boots the game, completes player creation, enters the world, moves both players and checks that every asset request succeeds;
-- the shipped Node harness, `node check/verify-authored.cjs` and `node check/verify-v33.cjs`, which executes the real game logic with the vendored three.js and no browser.
+- the shipped Node harness, `node check/verify-authored.cjs`, `node check/verify-v33.cjs` and `node check/verify-feel.cjs`, which executes the real game logic with the vendored three.js and no browser.
+
+## Modules
+
+New behaviour goes in a new file under `dist/src/`, loaded after the existing modules, that wraps the earlier function and calls the original (`const base=fn; fn=function(){ ...; return base(); }`) with a one-line comment saying what the wrapper changes. Existing modules and the base page stay untouched unless a wrapper cannot reach the goal; then make the smallest edit and comment it. Functions a harness check needs to call directly (hooks, decision functions) get a name rather than being pushed anonymously.
+
+## Measurements
+
+The first-evening timeline (`S.firstEvening.log`, shown in the Menu and copied by **Copy evening timeline**) is the tester measurement. Its `played` seconds count time with the tab visible, panels included; nothing counts while the tab is hidden. The log is kept for local and companion households only; it is stripped from the shared household document, so online play has no timeline. Keep code and docs agreeing on that definition when changing it.
 
 ## Branches
 

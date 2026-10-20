@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v33a-746fd1c4 (authored character)
+Build: v34a-38e54124 (authored character, feel the actions)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE

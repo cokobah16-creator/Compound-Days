@@ -1,15 +1,17 @@
 {
-  "build": "v33a-746fd1c4",
+  "build": "v34a-38e54124",
   "commit": "unreleased",
   "files": {
     "CHARACTER.md": "70b69ff8056b98cc6590dbae761a422b7fb69ca069b51cf30175b9b85b55b5de",
-    "CONTRIBUTING.md": "5ffce58eb1af43c8665d24e4019e97048c5ca69fd7d9088cc8644edd9716c1b2",
-    "README.md": "04a4d9a6111a189693475c4962cdaabcbb8fabaf6737ef13ee3c941e5ac849f5",
-    "START_HERE.txt": "32a618ec78753ee774a02410335d4b1a14e6e0937197c3bf455a6fe417bfbeeb",
-    "check/results-authored.json": "bf2c20a1dc555254b29dce0c0b2d28c6d84d99c161e9ad9a75442c3146866598",
-    "check/results-v33.json": "d4426236b30cad5401fb7dcd6b5239f54f0d5328c8430a0352b7293e0d329911",
+    "CONTRIBUTING.md": "33a7986df24fb1991f2fde6d63266382741c367cbf62c1118041ec4a50dfe1c1",
+    "README.md": "aa51630492a4e5fb665924caff6f542433bd51351c6fb6c7ce4b316a08db3c54",
+    "START_HERE.txt": "a30581dc60a7d439fa71475af9efad5e602b9eb1a46f7645934df12d6d12973e",
+    "check/results-authored.json": "4b5af22a907bb1dc4b37cb4f626dc172a598462a93a69fd37f309b819d73fd04",
+    "check/results-feel.json": "0ac675f483fd7e61a8e7102e3d67982ea2b9940284c3499e9a9f0eb74c39a417",
+    "check/results-v33.json": "12a1a9bac3019871f956d38a9be9f7fa0cce443c16350107a43333c9e317b0a9",
     "check/runtime-harness.cjs": "9bbe171713ba74ce28f71517c232bef7214397ac13c52ca113d6932530ba404f",
-    "check/verify-authored.cjs": "8e1b5f7bbd4c388e9084155126c9868a0cb3c5ea7b8588f641c7abcfc40d4bb8",
+    "check/verify-authored.cjs": "de4d496fdb137dfefc40c377be4a07b3b357aeff1ab8024da50c0ce3563a63a2",
+    "check/verify-feel.cjs": "d9b766d304c1b348fb74db84729bc6d686914e33bc8ed7f1a5a51517305378c3",
     "check/verify-v33.cjs": "6f414031e317986c3911456304c2dd8efd3d93d71ee7a62671f9c6acd47b5a99",
     "dist/assets/characters/efe.gltf.json": "0a50f6d1b5ff8f42f8b2f6a1ab02e98d74299e1ff6b852301df10270b3d115c3",
     "dist/assets/env/courtyard.gltf.json": "d6207f5c9b187eb241e5463da5134c90e85a4325d5b18b42128e3237ef4398e9",
@@ -85,7 +87,7 @@
     "dist/assets/wardrobe/sandals.gltf.json": "16e91febf0d1c3f7b52260f60dcd37228b90ed81b79d7a8dcd7359cd398f2953",
     "dist/assets/wardrobe/sneakers.gltf.json": "94f084b147c4052dc596fed73234b726fb96791603980b06f345c3795aa63c99",
     "dist/assets/wardrobe/tee.gltf.json": "347e1c8f0c2a4a1dd10e67ef62eb2903c53c6ee91c3a99525fdaf236c80a6a2c",
-    "dist/index.html": "ee32e7351cbf3678521d101566a3ff905509828aea691a8862239a4a9c39ab1b",
+    "dist/index.html": "57c2f9580e10e2d3b6ebf7425735ba14eafc129180c92fc13fe796cbeeac9764",
     "dist/src/art-v31.css": "f359903ead3d3f4291c3916822832b04db639759697deaf9f3ebc03b64f3db61",
     "dist/src/authored-v34.js": "37358c59a5a33503765c7b0f7e8762b4bb05e4e7c556bad57a24bcaf37fd3a61",
     "dist/src/color-v28.js": "1200e08eb5fed07b2b1523d63b3e6c9ef5769fcdc130b2236622b1c9b03540a5",
@@ -94,6 +96,7 @@
     "dist/src/environment-v23.js": "29ff40b20eed425ad712e72fa523027bbee3e80660d455ce2ab1b0783ad1195f",
     "dist/src/environment-v31.js": "6884d2b4e320bd979302a81911b121387e07bd001ee81ccb7a58ca06280b13b9",
     "dist/src/environment.css": "15fb83d6f58f922169635de7dcb33bcf76cf5d3e3930f6295171af3b7b748ba1",
+    "dist/src/feel-v34.js": "af526ec61c47885e927d2950f3fee86fff5e5c4b902589d12ace856f467252e2",
     "dist/src/first-evening-v33.css": "0faa6d073709f26af80aa7cd0d8c96d00882ca1c0d48583f8ccbf198406c0dbf",
     "dist/src/first-evening-v33.js": "031d61c27d0b0d7c98cf9b2cd774bd59ee061225f587b8a3c473ed3c7b8a30e2",
     "dist/src/polish-v30.css": "810be34b46101ac109a483b9a3b8e073943d53dde886fe455127b181cdf3bc7b",
@@ -106,6 +109,6 @@
     "tools/mesh_surface.py": "efcb63e15260d978cd89fc78b6c66b554fc26707a2eb20bf4e5beeb83ff23df1",
     "tools/package-manifest.py": "3825a75355dc477946e189039f1d5e0b69f762eb3399d32ef4504406241eeb27",
     "tools/rebuild_wardrobe.py": "b5caf57fa8ce3cca0f454c49010085e1f792a7336d09316abb194be049e6dbf9",
-    "tools/stamp-build.py": "b554927d87f112775d90952cc78083ad5f43170c2d416bdfc8e1883f8b4989b3"
+    "tools/stamp-build.py": "18397c2bc13d3afdd79e0b4f3e3eb22fcaa465287079642a104cab37e62a382d"
   }
 }

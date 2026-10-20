@@ -1,0 +1,147 @@
+{
+  "build": "v34a-38e54124",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Companion carries its end: the pair keeps 90% of solo walking speed",
+      "passed": true,
+      "info": {
+        "solo2s": 6.8,
+        "carried2s": 6.26,
+        "gap": 1.957
+      }
+    },
+    {
+      "name": "Sideways steering turns the sofa; walking into the companion makes it back up",
+      "passed": true,
+      "info": {
+        "turn": 1.57,
+        "tether": [
+          1.68,
+          1.96
+        ],
+        "retreat": 4.99
+      }
+    },
+    {
+      "name": "Neither holder nor the sofa climbs the back stairs; one rate-limited toast explains",
+      "passed": true,
+      "info": {
+        "companion": {
+          "p0z": 9.57,
+          "bumps": 0
+        },
+        "twoHumans": {
+          "p0z": 9.57,
+          "bumps": 137
+        }
+      }
+    },
+    {
+      "name": "Two-human carry is unchanged apart from the stairs rule",
+      "passed": true,
+      "info": {
+        "sofa2s": 4.76
+      }
+    },
+    {
+      "name": "Setting the sofa down releases both ends, clears the trail and cools the companion grab",
+      "passed": true
+    },
+    {
+      "name": "Gate to Flat 3 with the companion on the other end",
+      "passed": true,
+      "info": {
+        "frames": 244,
+        "seconds": 8.1,
+        "bumps": 9
+      }
+    },
+    {
+      "name": "Companion shops for jollof during the guided shop stage",
+      "passed": true,
+      "info": {
+        "companionBought": [
+          "rice",
+          "tomato",
+          "pepper"
+        ]
+      }
+    },
+    {
+      "name": "Companion comes to the kitchen, says it has arrived, and runs its own station",
+      "passed": true
+    },
+    {
+      "name": "Housewarming, gift and tomorrow complete with the companion picking its moves",
+      "passed": true
+    },
+    {
+      "name": "Stage timing log records every transition and survives reload",
+      "passed": true,
+      "info": {
+        "stages": [
+          "move@0s",
+          "shop@18.5s",
+          "cook@24.8s",
+          "host@43.9s",
+          "gift@50.1s",
+          "tomorrow@50.1s",
+          "complete@50.1s"
+        ]
+      }
+    },
+    {
+      "name": "Performance step-down decisions: 10 s under 24 fps per notch, lite last, never up",
+      "passed": true
+    },
+    {
+      "name": "Wardrobe prefetch is parallel, player-first, and keeps the per-piece callbacks",
+      "passed": true,
+      "info": {
+        "first": [
+          "hair_locs",
+          "tee",
+          "jeans",
+          "sneakers"
+        ]
+      }
+    },
+    {
+      "name": "A holder on the lower ramp walks down to level 0 while carrying; climbing is still refused",
+      "passed": true,
+      "info": {
+        "twoHumans": {
+          "startLevel": 0.204,
+          "down": 4.56,
+          "maxLevelClimbing": 0.204
+        },
+        "companion": {
+          "startLevel": 0.204,
+          "down": 4.67,
+          "maxLevelClimbing": 0.204
+        }
+      }
+    },
+    {
+      "name": "A sofa saved on the landing slides back to the stair foot on enterWorld and on a grab",
+      "passed": true
+    },
+    {
+      "name": "Kitchen summon is skipped while the companion is on the roof; otherwise it is called in",
+      "passed": true
+    },
+    {
+      "name": "First reconcile seeds the timeline for a pre-v34 save",
+      "passed": true,
+      "info": {
+        "seeded": "move"
+      }
+    },
+    {
+      "name": "Perf notches that change nothing pass silently (lite after the first window at ratio 1); no lite toast when already lite",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state/actions in Node with shipped Three.js and the companion driven by aiDrive/aiThink. No browser or phone test."
+}
