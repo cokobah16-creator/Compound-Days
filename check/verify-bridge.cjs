@@ -227,7 +227,8 @@ const checks=[];let runFn=null;
  pass('Online: the shared catch ends this device’s cast when ready, waiting or at the bite and shows in its fishing panel; the other player’s decision closes it with a toast',{toasts:said});
 
  // 25. The turned kitchen, bed and sofa spots are kept per layout: the hotspot scan (both players, every frame) does not repeat the search while
- // nothing in the flat changes, even with the players walking about; any change to the items, a rotation or a blocker recomputes it.
+ // nothing in the flat changes, even with the players walking about or the crate pushed about outside the flat; any change to the items, a rotation
+ // or a blocker in the flat recomputes it.
  run("globalThis.FS=0;globalThis.FSO=freeSpot34b;globalThis.CR0=[crate.position.x,crate.position.z];freeSpot34b=function(a,b){FS++;return FSO(a,b);};");
  const fresh=(sel,gap,base)=>J(`frontSpot34b(S.home.items.find(i=>${sel}),${gap},${base})`);
  const frames=n=>run(`(()=>{const f0=FS;for(let k=0;k<${n};k++){players[0].g.position.set(-6+(k%9)*.2,0,3.4+(k%5)*.2);players[1].g.position.set(-4.6-(k%7)*.2,0,4-(k%3)*.3);nearest(0);nearest(1);}return FS-f0;})()`);
@@ -241,9 +242,10 @@ const checks=[];let runFn=null;
  recompute('crate',"{const p=sofaPos();crate.position.set(p[0],crate.position.y,p[1]);}");assert.equal(run("(()=>{const p=sofaPos();return !!blocked(p[0],p[1],PR*.8);})()"),false,'never a spot under the crate');
  run("S.home.items=newState().home.items.filter(i=>!['stove','fridge'].includes(i.type));S.home.items.push({id:'k',type:'kitchen',x:5,y:1,rot:1});S.home.items.find(i=>i.type==='mattress').rot=1;rebuildFurniture();crate.position.set(CR0[0],crate.position.y,CR0[1]);");
  frames(1);assert.equal(frames(60),0,'turned kitchen and bed: no search while the layout stands');
+ assert.equal(run('nearFlat34b(crateBox())'),false,'the crate starts outside the flat');const crateOutside=run(`(()=>{const f0=FS;for(let k=0;k<60;k++){crate.position.x=CR0[0]+(k%50)*.02;nearest(0);nearest(1);}crate.position.x=CR0[0];return FS-f0;})()`);assert.equal(crateOutside,0,'pushing the crate about outside the flat does not search: '+crateOutside);
  assert.deepEqual(J('flatKitchenPos()'),fresh("i.id==='k'",.35,'flatKitchenPos34b()'));assert.deepEqual(J('bedPos()'),fresh("i.type==='mattress'",.35,'bedPos34b()'));
  run("S.home.items=newState().home.items;rebuildFurniture();freeSpot34b=FSO;");
- pass('Turned kitchen, bed and sofa spots are kept per layout: no search per frame while the flat stands; items, rotation and blockers recompute it',{firstFrameCalls:first,steadyCallsIn120Frames:steady,recomputed:changes});
+ pass('Turned kitchen, bed and sofa spots are kept per layout: no search per frame while the flat stands or the crate is pushed about outside it; items, rotation and blockers in the flat recompute it',{firstFrameCalls:first,steadyCallsIn120Frames:steady,crateOutsideCallsIn60Frames:crateOutside,recomputed:changes});
 
  const report={build:run('BUILD_ID'),passed:true,checks,method:'Actual runtime state/actions in Node with shipped Three.js, the authored hero and the life modules; remote play through applyRemote. Visual results were checked separately in headless Chromium (SwiftShader).'};fs.writeFileSync(path.join(__dirname,'results-bridge.json'),JSON.stringify(report,null,2)+'\n');
 })().catch(e=>{console.error(e);let build=null;try{build=runFn&&runFn('BUILD_ID');}catch(_){}

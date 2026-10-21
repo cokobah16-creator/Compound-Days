@@ -1,6 +1,6 @@
 # Compound Days — build plan v35: Three days in Palm Court
 
-Status: revised after the living-compound loop arrived and was verified in the browser. Base: branch `claude/authored-character`, build v34b-69156ba3, with the bridge module, its harness and this plan committed. This revision replaces the earlier draft, which was written against v34a before the loop existed.
+Status: revised after the living-compound loop arrived and was verified in the browser. Base: branch `claude/authored-character`, build v34b-3a5b01c3, with the bridge module, its harness and this plan committed. This revision replaces the earlier draft, which was written against v34a before the loop existed.
 
 ## 1. What this build is for
 

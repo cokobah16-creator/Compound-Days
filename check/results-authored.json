@@ -1,5 +1,5 @@
 {
-  "build": "v34b-69156ba3",
+  "build": "v34b-3a5b01c3",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v34b-69156ba3"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v34b-3a5b01c3"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v34b-69156ba3"
+        "build": "v34b-3a5b01c3"
       }
     }
   ],

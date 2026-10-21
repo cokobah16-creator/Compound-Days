@@ -155,8 +155,12 @@ function frontSpot34b(it,gap,base){const [x,z]=footCentre34b(it),d=ITEMS[it.type
 // kept per layout: the items (with their rotations) and everything blocked() tests in the flat (the furniture boxes, the crate, the loose sofa,
 // pushables). Players never block a spot (blocked() ignores them), so walking about does not recompute it.
 BRIDGE34B.reach={};
-function blockSig34b(){const n=v=>Math.round(v*1e3);let k=OBS.length+';'+(crate?n(crate.position.x)+','+n(crate.position.z):'-')+';'+(sofa&&sofa.g.visible&&!sofa.carrying?n(sofa.g.position.x)+','+n(sofa.g.position.z)+','+n(sofa.g.rotation.y):'-');
- for(const pb of PUSH)if(!pb.lvl&&!pb.gone)k+=';'+n(pb.g.position.x)+','+n(pb.g.position.z);return k;}
+// A loose blocker counts only while its box could touch a free spot (freeSpot34b's area grown by the spot radius); outside the flat it
+// reads 'out', so pushing the crate or a cooler about the courtyard does not rerun the search every frame.
+function nearFlat34b(o){const r=PR*.8+.01;return o.x2+r>FLAT.x0+.3&&o.x1-r<FLAT.x0+FLAT.cols*FLAT.cell-.3&&o.z2+r>FLAT.z0-.1&&o.z1-r<7;}
+function blockSig34b(){const n=v=>Math.round(v*1e3),bx=o=>nearFlat34b(o)?n(o.x1)+','+n(o.x2)+','+n(o.z1)+','+n(o.z2):'out';
+ let k=OBS.length+';'+(crate?bx(crateBox()):'-')+';'+(sofa&&sofa.g.visible&&!sofa.carrying?bx(sofaBox()):'-');
+ for(const pb of PUSH)if(!pb.lvl&&!pb.gone)k+=';'+bx(pushBox(pb));return k;}
 function reach34b(key,it,gap,base){const c=BRIDGE34B.reach[key],sig=JSON.stringify(S.home.items)+'|'+blockSig34b();
  if(!c||c.sig!==sig||c.furn!==FURN_OBS){BRIDGE34B.reach[key]={sig,furn:FURN_OBS,at:frontSpot34b(it,gap,base).slice()};BRIDGE34B.reachRuns=(BRIDGE34B.reachRuns||0)+1;}return BRIDGE34B.reach[key].at.slice();}
 // wrap: a turned kitchen, bed or sofa is used from its turned front (the originals assume rotation 0)
