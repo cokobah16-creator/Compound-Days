@@ -3,7 +3,7 @@
   "commit": "unreleased",
   "files": {
     "CHARACTER.md": "70b69ff8056b98cc6590dbae761a422b7fb69ca069b51cf30175b9b85b55b5de",
-    "CONTRIBUTING.md": "2c2bf9d1d580f474f7fa40e719e5f38b61b4984885b5ca4aa9c7b86642bad4e5",
+    "CONTRIBUTING.md": "d1015835d7c0a9403d6892212de1b2f66e9fcc50fd178d6d3f05908d8d97b49e",
     "README.md": "0a049d2edd5f7c7741d1ffe6d4e6a48c0da07ebfd18b34832969d920eddddbef",
     "START_HERE.txt": "40e195c953b3b32b8e13de277c1635c2f4171b7aca8eaddc2ba0bfcf7fc76250",
     "check/results-authored.json": "3a4ffc29c58a69a1f18e7fe16e8e2f7412b79590d84b7ab26fe97a77d442f18c",
@@ -109,6 +109,7 @@
     "tools/mesh_surface.py": "efcb63e15260d978cd89fc78b6c66b554fc26707a2eb20bf4e5beeb83ff23df1",
     "tools/package-manifest.py": "3825a75355dc477946e189039f1d5e0b69f762eb3399d32ef4504406241eeb27",
     "tools/rebuild_wardrobe.py": "b5caf57fa8ce3cca0f454c49010085e1f792a7336d09316abb194be049e6dbf9",
-    "tools/stamp-build.py": "18397c2bc13d3afdd79e0b4f3e3eb22fcaa465287079642a104cab37e62a382d"
+    "tools/stamp-build.py": "18397c2bc13d3afdd79e0b4f3e3eb22fcaa465287079642a104cab37e62a382d",
+    "vercel.json": "82fa05ac3ae5a07ab70e3f687ff9fe958aca477189fd6dd60e04672e9ff1355c"
   }
 }

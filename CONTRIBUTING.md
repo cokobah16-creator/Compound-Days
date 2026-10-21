@@ -38,3 +38,8 @@ The first-evening timeline (`S.firstEvening.log`, shown in the Menu and copied b
 ## Build stamp
 
 After changing anything under `dist`, run `python3 tools/stamp-build.py` so the id in the game Menu matches the files. Never edit the stamp by hand.
+
+## Hosting on Vercel
+
+The Vercel project `compound_days` deploys the `master` branch. The game lives under `dist`, so `vercel.json` at the repository root rewrites `/`, `/assets/...` and `/src/...` to the files under `dist` and marks the assets immutable (every asset request already carries the build id as a query string). If the project's Root Directory is ever set to `dist` in the Vercel dashboard, Vercel ignores this file and serves `dist` directly, which is equivalent.
+
