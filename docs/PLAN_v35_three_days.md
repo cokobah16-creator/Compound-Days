@@ -1,6 +1,6 @@
 # Compound Days — build plan v35: Three days in Palm Court
 
-Status: revised after the living-compound loop arrived. Base: branch `claude/authored-character`, commit 6b0a867 (v34b-349b770a) plus the uncommitted bridge module, build v34b-b08979b2. This revision replaces the earlier draft, which was written against v34a before the loop existed.
+Status: revised after the living-compound loop arrived and was verified in the browser. Base: branch `claude/authored-character`, build v34b-69156ba3, with the bridge module, its harness and this plan committed. This revision replaces the earlier draft, which was written against v34a before the loop existed.
 
 ## 1. What this build is for
 
@@ -22,14 +22,11 @@ Days stay session-based: no real-world deadline, a clear "Sleep until tomorrow",
 - **Neighbours:** Tunde, Mama Nkechi and Ada have three requests each, with one completion per neighbour per day and callback lines. Ada's third request (eight furnishings) unlocks a veranda visit, on day 3 at the earliest and only if her first was done on day 1.
 - Also three shells a day, a directions marker, and a Today page with three soft goals.
 
-**v34b bridge fixes (harnesses pass 10/20/9/10/17):** the float sits in open water and dips at the bite, and the rod is in the posed right hand. Request cards are readable in the talk panel. Tasks opens the evening journal during the guided evening. Undo cannot delete the sofa, and upgrades and starter furniture are guarded. Furniture has its own icons, scroll position is kept, and phone tabs wrap. The pot stands visibly on a reserved cell and shells lie on sand. Life UI stays local in online play, and the companion no longer counts as "the player is home".
+**v34b bridge fixes (all five harnesses pass: verify-v34 10, verify-feel 20, verify-authored 9, verify-v33 10, verify-bridge 25; every results file reproduces byte for byte):** the float sits in open water and dips at the bite, and the rod is in the posed right hand. Request cards are readable in the talk panel. Tasks opens the evening journal during the guided evening. Undo cannot delete the sofa, and upgrades and starter furniture are guarded. Furniture has its own icons, scroll position is kept, and phone tabs wrap. The pot stands visibly on a reserved cell and shells lie on sand. Near the shore the water no longer drops below the sand, so the float always sits in water. Journal toasts sit below the tab strip. Life UI stays local in online play. A remote shared action or a remote reel ends this device's cast in any phase and shows the shared catch, and when the other player settles that catch first, this device's catch panel closes with a toast saying what they did. A turned piece in a crowded flat keeps its reach point per layout, so the hotspot scan costs under 0.1 ms a frame again. The companion no longer counts as "the player is home".
 
 **Open issues carried in:**
-- Two online replay defects.
-- A non-reproducible `verify-bridge` value that breaks the manifest on rerun.
-- Base water dipping below the shore at the float 22 to 38% of the time.
-- The harvest toast covering the journal tabs.
-- No real-phone run yet.
+- No real-phone run yet. Everything above was seen in SwiftShader and measured in Node; the shoreline water, the float framing and the journal layout still need a look on the test phones.
+- For its 2.4 seconds a journal toast covers the page kicker, and on a phone half the heading.
 
 **Missing for the script:** a purse that says no, a morning event, an evening with the neighbours, outdoor seats, wall colour and floor, day telemetry and rating, sound, and half the dialogue.
 
@@ -39,7 +36,7 @@ A tester should manage this without coaching. Each day ends with "Sleep until to
 
 **Day 1 — Moving in (exists, tightened).** Create the household, carry the sofa in, meet Mrs. Oyelaran, shop or take the welcome basket, cook jollof together, host the small housewarming, take the photo, choose the gift and tomorrow's plan. At the party Tunde promises a seedling for the veranda pot, and Ada mentions the armchair she sold to Finds. Recap: "Tunde said he would leave something in your pot."
 
-**Day 2 — A morning that is yours.** Tunde's seedling and note are by the pot; Today and the marker point to it. Plant and water it. At the waterfront, cast, watch the float and reel in. Keep one fish for Nkechi, sell the rest from the catch card, and deliver the fish to Nkechi (recipe, ₦1,000). Ada's armchair is a day-2 find at ₦9,000, and the purse is below that (4.1), so two to four catches decide it. Buy it and place it on the veranda; Tunde and Ada credit the watering and the placing when you next talk. Recap: "The seedling will be taller by morning. Ada wants to hear where the chair went."
+**Day 2 — A morning that is yours.** Tunde's seedling and note are by the pot; Today and the marker point to it. Plant and water it. At the waterfront, cast, watch the float and reel in. Keep one fish for Nkechi, sell the rest from the catch card, and deliver the fish to Nkechi (recipe, ₦1,000). Ada's armchair is a day-2 find at ₦9,000, and the purse is below that on every day-1 path (4.1), so one to six catches decide it. Buy it and place it on the veranda; Tunde and Ada credit the watering and the placing when you next talk. Recap: "The seedling will be taller by morning. Ada wants to hear where the chair went."
 
 **Day 3 — Harvest and company.** The plant grew overnight to stage 2. Water it and it ripens on the spot (4.1). Harvest three peppers. Tell Tunde (₦1,500), take two peppers to Nkechi (₦2,000 and spices), and gather two shells for Ada (₦1,500). Buy a paint at Finds and recolour the front room. From 18:00 comes the **veranda evening** (4.4): Tunde, Nkechi and Ada each say one line that reads what you did, and Ada's is about the chair. Recap: "The lamp and the rug are back at Finds tomorrow. Tunde says the pot will fruit again."
 
@@ -59,20 +56,20 @@ The clock is not changed up front. If gate 5 shows a median day under 20 minutes
 
 ### 4.1 Everyday activities and rewards
 
-**Fishing: tune.** Keep the forgiving panel: no reaction window, no lost fish. The bite wait moves to wall-clock time so a 24 fps phone's frame clamp cannot stretch it. While the panel is open, Act (E, Enter, touch Act) presses its primary button, so the loop is one button. The world float twitches 0.6 s before the bite, and the bite gets a sound with a visual twin (4.5). Cut: the jetty, weather weights, companion fishing.
+**Fishing: tune.** Keep the forgiving panel: no reaction window, no lost fish. The bite wait moves to wall-clock time so a phone below 20 fps, where the tick clamps each frame at 0.05 s, cannot stretch it. While the panel is open, Act (E, Enter, touch Act) presses its primary button, so the loop is one button. The world float twitches 0.6 s before the bite, and the bite gets a sound with a visual twin (4.5). Cut: the jetty, weather weights, companion fishing.
 *Done when:* a new player keeps or sells a first fish within two minutes of reaching the rocks (gate 7), and the float shows on a phone.
 
 **Crop: one rule change.** The seedling arrives on the day-2 morning, so the pot is empty during the guided evening. Planting gives stage 1, and a watered day adds a stage overnight, as now. New: watering a stage-2 plant ripens it at once. So: day 2 plant and water, stage 2 overnight, day 3 water and harvest. Harvest gives three peppers and resets the same pot; there is no second tray. The Build planter keeps its base behaviour; unifying the two is deferred.
 *Done when:* the harness drives that sequence, and the stages read at phone size from the default camera.
 
-**Purse and prices: build.** New households start with ₦8,000, not ₦55,000; old saves are untouched. The welcome basket still fills missing jollof ingredients, so day 1 completes and day 2 starts below ₦9,000 on either path. Fish and pepper prices stay below a good dish (₦2,400–5,800), and request cash stays. Finds skips the both-agree prompt (₦9,000 is under the ₦10,000 threshold); the companion says one approving line.
-*Done when:* the harness shows that purse on both day-1 paths, with the armchair placed by the end of day 2.
+**Purse and prices: build.** New households start with ₦6,000, not ₦55,000; old saves are untouched. The welcome basket still fills missing jollof ingredients, so day 1 always completes. Day 2 then starts between about ₦500 (everything affordable bought at the market) and ₦6,000 (the basket taken first). With Nkechi's ₦1,000 the basket path is still ₦2,000 short of the armchair and needs one or two catches; the shopping path needs four to six. ₦8,000 was rejected because the basket path plus Nkechi's ₦1,000 reaches ₦9,000 with no catch at all. Fish and pepper prices stay below a good dish (₦2,400–5,800), and request cash stays. Finds never asks for agreement at any price; the companion says one approving line.
+*Done when:* the harness runs both day-1 extremes, shows the purse below ₦9,000 after Nkechi's errand on each, and places the armchair by the end of day 2 with the catches each path needs.
 
 **Almanac and market: verify.** Add Nkechi's recipes to the almanac. The Finds cycle is the rotation; vendors, the restorer and market quality are cut.
 
 ### 4.2 Home ownership
 
-**Decorating: verify, plus one rule.** The armchair and chairs get an `outdoor` flag for the veranda row. One veranda cell stays a walkway, marked as reserved like the pot's cell.
+**Decorating: verify, plus one rule.** The armchair and chairs get an `outdoor` flag for the veranda row. The cell in front of the only opening in the south wall stays a walkway, marked as reserved like the pot's cell, which leaves four veranda cells to decorate.
 
 **Fifteen furnishings: tune.** The fifteen are the v34 Finds list. Each gets a visible use or a neighbour line that reads it (the lamp lights at 18:00; Ada comments on the armchair). Items with neither go into the art brief.
 
@@ -87,7 +84,7 @@ The request chains are the memory and the "give" mechanic; there is no gift butt
 
 **Morning event: build.** A table keyed by day and yesterday's log. On day 2 it is the seedling, whatever plan was chosen; the plan only decides which neighbour card leads on Today. On day 3: "It grew overnight", and Nkechi asks after peppers. Days 4 to 6: returning finds, Ada's invitation, fresh shells, an evening-fish hint. It replaces the one-off v33 morning panel but keeps its gift and album line.
 
-**Veranda evening: build** (not the housewarming flow). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or on the veranda, Tunde, Nkechi and Ada walk from the gate to three reserved veranda spots clear of the pot and walkway. Each stands facing the player and gives one line; Ada's reads `lastDecor`, or the armchair if it is placed. Nobody sits: there is no sit clip, and NPC seating is deferred. The companion stands beside the player so the camera stays close, and the camera eases 25% nearer for the first line. If nobody is home, Today and the marker point there, and a missed evening repeats the next day. Guests bring no props: there is no stool model, and the cooler is not an item. Ada's chain visit stays as a later reward.
+**Veranda evening: build** (not the housewarming flow). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or on the veranda, Tunde, Nkechi and Ada walk from the gate to three standing spots in the open ground just outside the flat, facing the veranda. No veranda cell is reserved for them: the row is one cell deep and six wide, the pot holds one cell and the doorway needs another, so guest cells would leave almost nothing to decorate. The spots are chosen when the evening starts and validated against walls, placed items and the players. Each stands facing the player and gives one line; Ada's reads `lastDecor`, or the armchair if it is placed. Nobody sits: there is no sit clip, and NPC seating is deferred. The companion stands beside the player so the camera stays close, and the camera eases 25% nearer for the first line. If nobody is home, Today and the marker point there, and a missed evening repeats the next day. Guests bring no props: there is no stool model, and the cooler is not an item. Ada's chain visit stays as a later reward.
 
 **Recap and rating: build.** After sleep comes a recap naming tomorrow's event, then "How was today?" with three faces. After day 3's rating come two optional prompts: "One thing you want for your flat" and "One thing you know about a neighbour".
 
@@ -99,7 +96,7 @@ The companion carries, cooks, follows and stands with you at the evening. It doe
 
 Commit to a soft, rounded, miniature Nigerian neighbourhood: stylised characters with recognisable Black features, expressive faces and well-shaped textured hair; warm plaster, colourful gates, zinc roofs, patterned fabrics and lush plants at one consistent level of detail; a gentler, more elevated camera; soft shadows and clear silhouettes; small animations everywhere.
 
-- **Art brief in week one, before code:** cast, water and react clips for the current v21 base under `CHARACTER.md` (the bridge's arm pose stands in until then); pepper stages on the stand; the armchair and chairs on the veranda; wall and floor swatches; the shore water kept above the sand and seabed at every wave phase.
+- **Art brief in week one, before code:** cast, water and react clips for the current v21 base under `CHARACTER.md` (the bridge's arm pose stands in until then); pepper stages on the stand; the armchair and chairs on the veranda; wall and floor swatches.
 - **One base, one outfit, approved first.** Silhouette and proportions are signed off on one finished base and outfit before any other outfit or hairstyle is rebuilt; changing proportions after clothing production has already cost two rebuilds. This gate does **not** block v35's clips, which carry over through the contract.
 - Try a 30-degree lens with a higher pitch behind a flag, and keep the carry framing.
 - Judge visuals on the test phones, not in SwiftShader.
@@ -109,12 +106,11 @@ Commit to a soft, rounded, miniature Nigerian neighbourhood: stylised characters
 - **Wrap, do not edit.** New modules load after `bridge-v34b.js`:
   - `days-v35.js`: log, morning, recap, rating.
   - `evening-v35.js`
-  - `tune-v35.js`: purse, crop rule, outdoor flag, paints, wall-clock bite, Act-to-primary.
+  - `tune-v35.js`: purse, crop rule, outdoor flag, paints, wall-clock bite, Act-to-primary, and the copy that must match the new rules: the Garden page and the day-3 Today intro (both say "two watered nights"), Tunde's first request card (shown from day 1 although the seedling now arrives on day 2), and the PLANS33 titles and details, which still offer a ₦1,000 Makers' Yard lesson with seedlings for a balcony planter. The base Tunde lines about planter seedlings stay until the planter and the pot are unified.
   - `audio-v35.js`
   - `dist/data/lines-v35.js`: dialogue.
 
   Life modules stay byte-identical while the collaborator's line is live. Save fields are additive and lazy, with no version bump.
-- **First fixes:** the replay restore for shared-panel actions, a reproducible `verify-bridge`, and the remote talk card insert.
 - **Harness.** The five harnesses stay green. A new `check/verify-days-v35.cjs` drives the whole script with the companion through real actions: both purse paths, the crop sequence, fishing, buying, the armchair on the veranda, paint, deliveries, the evening, ratings and a complete day log. Its results reproduce byte for byte.
 - **Captures:** the scratch Playwright scripts (controlled clock), as used for v34b, kept out of the repo; plus reviewer phone screenshots (d2-bite, d2-chair, d3-harvest, d3-evening).
 - **Phones:** 30 fps median target. Gate: no `perfDecide34` step-down (under 24 fps for 10 s) during fishing or the evening. All timings are wall-clock.
@@ -139,17 +135,17 @@ The real-time clock; cross-device play (the static host cannot run it) and accou
 ## 9. Risks
 
 - **Content:** seventy-five lines. The table and tooling come first, in week one.
-- **Purse:** ₦8,000 may starve free play. Gate 1 and the harness watch for testers stuck below a price; the fallback is ₦12,000.
+- **Purse:** ₦6,000 may starve free play on the shopping path. Gate 1 and gate 5 watch for testers stuck below a price or days running long. The fallback raises catch prices rather than the purse, so the armchair still costs at least one catch.
 - **Ada's chain:** for most testers the unlock lands on day 4. The evening carries the moment, so the chain is off the critical path.
-- **Art:** if the clips slip, the procedural pose ships. If the water fix slips, the float moves further out.
+- **Art:** if the clips slip, the procedural pose ships.
 - **Phones:** v34 and v34b have only run in SwiftShader. A real-phone pass comes before testers.
 - **The base page:** still one 450 KB file and a wrapper chain. The dialogue data split is the first step toward modules.
 
 ## 10. Order of work
 
 0. Art brief and the dialogue table (week one).
-1. First fixes and a real-phone smoke test of v34b.
-2. Tuning: purse, crop rule, wall-clock bite, Act-to-primary, outdoor seats with the walkway cell, toast and price-pill polish.
+1. A real-phone smoke test of v34b: the float and shoreline, the journal layout, decorating by touch, and the frame rate during fishing.
+2. Tuning: purse, crop rule, wall-clock bite, Act-to-primary, outdoor seats with the walkway cell, and the crop and plan copy.
 3. Day log, recap, rating, copy button.
 4. Morning table and the day-2 seedling.
 5. Veranda evening (the largest code item).
@@ -159,15 +155,16 @@ The real-time clock; cross-device play (the static host cannot run it) and accou
 
 ## Changelog (critique findings)
 
-- **Producer, applied:** P1 crop rule. P2 purse and prices. P3 veranda evening. P5 day log and gates. P6 day budget, with the clock tied to gate 5. P7 Ada stands. P8 no stool. P9 no second tray. P10 cuts (jetty, weather, second sale point, companion fishing, storage, quality, restorer, courtyard zone, almanac fabrics). P11 paint in the script, curtains deferred. P12 restoring and sewing deferred with reasons; the food order is Nkechi's dish request. P13 no gift or preference system. P14 art brief at step 0; clips do not wait for a new base. P16 visit trigger. P17 twenty-five lines each. P18 the plan choice only orders Today. P19 no migration. P20 walkway cell.
+- **Producer, applied:** P1 crop rule. P2 purse and prices. P3 veranda evening, with guests standing in the open ground just outside the flat rather than on reserved veranda cells. P5 day log and gates. P6 day budget, with the clock tied to gate 5. P7 Ada stands. P8 no stool. P9 no second tray. P10 cuts (jetty, weather, second sale point, companion fishing, storage, quality, restorer, courtyard zone, almanac fabrics). P11 paint in the script, curtains deferred. P12 restoring and sewing deferred with reasons; the food order is Nkechi's dish request. P13 no gift or preference system. P14 art brief at step 0; clips do not wait for a new base. P16 visit trigger. P17 twenty-five lines each. P18 the plan choice only orders Today. P19 no migration. P20 walkway cell.
 - **Producer, rejected:**
   - P4 WEEK change: weekday prose is removed instead. The loop runs on day ordinals, and shifting WEEK alters old saves for no gain.
   - P15 "no capture automation": the scratch Playwright scripts are used, kept out of the repo.
-- **Design, applied:** D1 stage rule. D2 planter ownership (the v34 pot). D3 Ada's trigger, pose and framing. D4 one Act button, wall-clock wait, nibble, sound with twin, no jetty. D6 purse (₦8,000, not ₦25,000) and Ada's armchair. D7 tomorrow in the recap, morning rows to day 6. D8 the Finds fifteen with a use or a line. D9 the evening. D10 the seedling regardless of the plan. D13 frame-rate gate. D14 companion role, human-only tap.
+- **Design, applied:** D1 stage rule. D2 planter ownership (the v34 pot). D3 Ada's trigger, pose and framing. D4 one Act button, wall-clock wait, nibble, sound with twin, no jetty. D6 purse (₦6,000; the critique's ₦25,000 and a later ₦8,000 were both rejected, see section 4.1) and Ada's armchair. D7 tomorrow in the recap, morning rows to day 6. D8 the Finds fifteen with a use or a line. D9 the evening. D10 the seedling regardless of the plan. D13 frame-rate gate. D14 companion role, human-only tap.
 - **Design, deferred:**
   - D5 slower clock, until gate 5.
   - D11 drooping and rain-as-watering, until a second crop.
 - **Design, rejected:**
-  - D4's 800 ms window and lost fish (cosy direction; 24 fps phones with a frame clamp).
+  - D4's 800 ms window and lost fish (cosy direction; a phone below 20 fps clamps each frame at 0.05 s, which would also stretch a reaction window).
   - D12 is moot: the v34 request gives a new recipe.
+- **Plan review, applied:** the purse and day-2 money paths recomputed from the real prices; Finds never asks for agreement; the risk fallback raises catch prices instead of the purse; the walkway cell and the courtyard staging for the evening; the wall-clock bite wording; crop copy and the guided-evening plan list added to the tuning pass; shore water, toasts and the remote catch moved from open issues to fixed.
 - **Engineering:** the critique is absent; the v34b inspection and re-verification inform sections 2 and 6.

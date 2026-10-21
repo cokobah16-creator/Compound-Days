@@ -42,10 +42,10 @@ function fishTick34b(){const g=LIFE34.fishingWorld,f=LIFE34.fish,p=f&&players[f.
  if(f.phase==='bite'){bob.position.y=.03+Math.sin(t*11)*.05;if(ring){const s=1.25+Math.sin(t*6)*.25;ring.scale.set(s,s,s);}}else if(ring)ring.scale.set(1,1,1);
  fishPose34b(p,g);}
 // wrap: a waiting cast pauses while another panel (the Menu) is open, so the bite never replaces it;
-// it also notes what this device's panel now shows (a journal tab such as 'fish', or 'other') for the online rules below
-BRIDGE34B.panelSeq=0;BRIDGE34B.shown=null;
+// it also notes what this device's panel now shows (a journal tab such as 'fish', or 'other', and whether it is the catch panel) for the online rules below
+BRIDGE34B.panelSeq=0;BRIDGE34B.shown=null;BRIDGE34B.catchShown=false;
 const openPanel34b=openPanel;openPanel=function(html){const quiet=silentMode(),life=String(html).startsWith('<section class="life34">');if(!quiet&&LIFE34.fish&&LIFE34.fish.phase==='waiting'&&!life)LIFE34.tab='paused34b';
- const r=openPanel34b(html);if(!quiet){BRIDGE34B.panelSeq++;BRIDGE34B.shown=life?LIFE34.tab:'other';}return r;};
+ const r=openPanel34b(html);if(!quiet){BRIDGE34B.panelSeq++;BRIDGE34B.shown=life?LIFE34.tab:'other';BRIDGE34B.catchShown=life&&String(html).includes('data-act="lifeCatch"');}return r;};
 // end this device's cast cleanly: float and line gone, the arm let go, no phase left to bite
 function endCast34b(){clearFishing34();LIFE34.fish=null;unposeFish34b();}
 
@@ -151,10 +151,18 @@ function frontSpot34b(it,gap,base){const [x,z]=footCentre34b(it),d=ITEMS[it.type
  const hit=cand.find(([a,b])=>freeSpot34b(a,b));if(hit)return hit;
  for(let rad=Math.min(depth,side);rad<=2.4;rad+=.15)for(let k=0;k<24;k++){const an=k/24*Math.PI*2,a=x+Math.sin(an)*rad,b=z+Math.cos(an)*rad;if(freeSpot34b(a,b))return [a,b];}
  return base||cand[0];}
+// The hotspot scan asks for these spots for both players every frame, and in a crowded flat the ring search costs milliseconds, so the spot is
+// kept per layout: the items (with their rotations) and everything blocked() tests in the flat (the furniture boxes, the crate, the loose sofa,
+// pushables). Players never block a spot (blocked() ignores them), so walking about does not recompute it.
+BRIDGE34B.reach={};
+function blockSig34b(){const n=v=>Math.round(v*1e3);let k=OBS.length+';'+(crate?n(crate.position.x)+','+n(crate.position.z):'-')+';'+(sofa&&sofa.g.visible&&!sofa.carrying?n(sofa.g.position.x)+','+n(sofa.g.position.z)+','+n(sofa.g.rotation.y):'-');
+ for(const pb of PUSH)if(!pb.lvl&&!pb.gone)k+=';'+n(pb.g.position.x)+','+n(pb.g.position.z);return k;}
+function reach34b(key,it,gap,base){const c=BRIDGE34B.reach[key],sig=JSON.stringify(S.home.items)+'|'+blockSig34b();
+ if(!c||c.sig!==sig||c.furn!==FURN_OBS){BRIDGE34B.reach[key]={sig,furn:FURN_OBS,at:frontSpot34b(it,gap,base).slice()};BRIDGE34B.reachRuns=(BRIDGE34B.reachRuns||0)+1;}return BRIDGE34B.reach[key].at.slice();}
 // wrap: a turned kitchen, bed or sofa is used from its turned front (the originals assume rotation 0)
-const flatKitchenPos34b=flatKitchenPos;flatKitchenPos=function(){const it=S.home.items.find(i=>i.type==='kitchen')||S.home.items.find(i=>i.type==='stove');return it&&(it.rot||0)%4?frontSpot34b(it,.35,flatKitchenPos34b()):flatKitchenPos34b();};
-const bedPos34b=bedPos;bedPos=function(){const it=S.home.items.find(i=>i.type==='bed'||i.type==='mattress');return it&&(it.rot||0)%4?frontSpot34b(it,.35,bedPos34b()):bedPos34b();};
-const sofaPos34b=sofaPos;sofaPos=function(){const it=S.home.items.find(i=>i.type==='sofa');return it&&(it.rot||0)%4?frontSpot34b(it,.3,sofaPos34b()):sofaPos34b();};
+const flatKitchenPos34b=flatKitchenPos;flatKitchenPos=function(){const it=S.home.items.find(i=>i.type==='kitchen')||S.home.items.find(i=>i.type==='stove');return it&&(it.rot||0)%4?reach34b('cook',it,.35,flatKitchenPos34b()):flatKitchenPos34b();};
+const bedPos34b=bedPos;bedPos=function(){const it=S.home.items.find(i=>i.type==='bed'||i.type==='mattress');return it&&(it.rot||0)%4?reach34b('bed',it,.35,bedPos34b()):bedPos34b();};
+const sofaPos34b=sofaPos;sofaPos=function(){const it=S.home.items.find(i=>i.type==='sofa');return it&&(it.rot||0)%4?reach34b('sofa',it,.3,sofaPos34b()):sofaPos34b();};
 // wrap: the plate sits on the middle of a turned table
 const refreshHomeExtras34b=refreshHomeExtras;refreshHomeExtras=function(){const r=refreshHomeExtras34b();const tbl=S.home.items.find(i=>i.type==='dining')||S.home.items.find(i=>i.type==='table');
  if(plateMesh&&tbl&&(tbl.rot||0)%4){const [x,z]=footCentre34b(tbl);plateMesh.position.x=x;plateMesh.position.z=z;}return r;};
@@ -177,10 +185,12 @@ const dispatch34b=dispatch;dispatch=function(name,d){if(EDIT34B.has(name)){valid
  if(name==='lifeReel'&&LIFE34.fish)d=Object.assign({},d,{i:LIFE34.fish.i});return dispatch34b(name,d);};
 // wrap: a remote replay uses the sender's editor context and keeps this device's selection and waypoint; a remote change to the flat ends local Undo.
 // A silent replay (no shared panel) also keeps this device's cast and tab. A shared-panel replay (sitwait, nextday, cook...) that opens or closes
-// the panel here ends this device's cast, so the bite cannot come back over it. A remote reel that settles the shared catch while this device is
-// at the bite ends the local bite and shows that catch in place of the dead Reel in button.
+// the panel here ends this device's cast, so the bite cannot come back over it. A remote reel that records the shared catch ends this device's
+// cast in every phase (ready, waiting, bite: lifeCast and lifeReel refuse while a catch is out) and an open fishing panel shows that catch instead.
+// A remote decision on the shared catch (Keep, Sell, Let it swim) ends any local cast too, and an open catch panel here closes with a toast
+// saying what the other player did, so its buttons are never left dead.
 const applyRemote34b=applyRemote;applyRemote=function(m){const a=(m&&m.data)||{},d=a.data||{};if(!m||m.sameTab||!ACTIONS[a.name]||LOCAL_ONLY.has(a.name)||!S||!S.p)return applyRemote34b(m);
- const shared=SHARED_PANEL.has(a.name),seq=BRIDGE34B.panelSeq,hadCatch=!!(life34()&&life34().catch);
+ const shared=SHARED_PANEL.has(a.name),seq=BRIDGE34B.panelSeq,hadCatch=!!(life34()&&life34().catch),catchId=hadCatch?life34().catch.id:null;
  const keep={fish:LIFE34.fish,world:LIFE34.fishingWorld,sel:LIFE34.selection,type:LIFE34.selType34b,item:LIFE34.selectedItem,rot:LIFE34.rotation,tab:LIFE34.tab,way:LIFE34.waypoint,undo:LIFE34.undo,usig:LIFE34.undoSig34b},sig=homeSig34b();
  if(!shared){LIFE34.fish=null;LIFE34.fishingWorld=null;}
  if(d._ed){const e=d._ed;let ix=null;if(e.type!=null){ix=S.home.storage[e.sel]===e.type?e.sel:S.home.storage.indexOf(e.type);if(ix<0)ix=null;}LIFE34.selection=ix;LIFE34.selType34b=e.type;LIFE34.selectedItem=e.item||null;LIFE34.rotation=e.rot||0;LIFE34.undo=e.undo||null;}
@@ -188,11 +198,15 @@ const applyRemote34b=applyRemote;applyRemote=function(m){const a=(m&&m.data)||{}
  try{return applyRemote34b(m);}finally{Object.assign(LIFE34,{selection:keep.sel,selType34b:keep.type,selectedItem:keep.item,rotation:keep.rot,undoSig34b:keep.usig});
   if(!shared)Object.assign(LIFE34,{fish:keep.fish,fishingWorld:keep.world,tab:keep.tab});
   if(shared&&LIFE34.fish&&BRIDGE34B.panelSeq!==seq&&BRIDGE34B.shown!=='fish')endCast34b();
-  if(!shared&&a.name==='lifeReel'&&!hadCatch&&life34().catch&&keep.fish&&keep.fish.phase==='bite'){endCast34b();if(BRIDGE34B.shown==='fish')openFishing34();}
+  if(!shared&&a.name==='lifeReel'&&!hadCatch&&life34().catch&&keep.fish){endCast34b();if(BRIDGE34B.shown==='fish')openFishing34();}
+  if(!shared&&a.name==='lifeCatch'&&hadCatch&&!life34().catch){if(LIFE34.fish)endCast34b();if(BRIDGE34B.catchShown)settledToast34b(a,catchId);}
   if(!LIFE34.fishingWorld)unposeFish34b();
   LIFE34.undo=homeSig34b()===sig?keep.undo:null;if(LIFE34.waypoint!==keep.way){LIFE34.waypoint=keep.way;refreshMarker34();}validSel34b();if(LIFE34.selectedItem&&!S.home.items.some(x=>x.id===LIFE34.selectedItem))LIFE34.selectedItem=null;}};
+// the other player settled the shared catch first: close this device's catch panel and say what they did
+function settledToast34b(a,id){const d=a.data||{},f=FISH34.find(x=>x.id===id)||{name:'fish',value:0},src=a.src!=null&&S.p[+a.src]?+a.src:(NET.myIndex?0:1),who=pname(src),n=f.name.toLowerCase();
+ closePanel();toast(d.v==='keep'?`${who} kept the ${n} for the kitchen.`:d.v==='sell'?`${who} sold the ${n} for ${naira(f.value)}.`:`${who} let the ${n} swim.`);}
 // wrap: closing a panel on a remote replay does not end this device's cast
-const close34b=closePanel;closePanel=function(){if(silentMode())return close34();BRIDGE34B.panelSeq++;BRIDGE34B.shown=null;return close34b();};
+const close34b=closePanel;closePanel=function(){if(silentMode())return close34();BRIDGE34B.panelSeq++;BRIDGE34B.shown=null;BRIDGE34B.catchShown=false;return close34b();};
 // wrap: a remote replay of a Menu action does not add the journal button to whatever panel is open here
 const menu34b=openMenu;openMenu=function(){if(silentMode())return menu34();return menu34b();};
 

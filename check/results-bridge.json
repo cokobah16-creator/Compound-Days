@@ -1,5 +1,5 @@
 {
-  "build": "v34b-9e5d2769",
+  "build": "v34b-69156ba3",
   "passed": true,
   "checks": [
     {
@@ -182,6 +182,33 @@
     {
       "name": "Journal toasts sit below the tab strip; the Already in your home pill sits on its own line under the price",
       "passed": true
+    },
+    {
+      "name": "Online: the shared catch ends this device’s cast when ready, waiting or at the bite and shows in its fishing panel; the other player’s decision closes it with a toast",
+      "passed": true,
+      "info": {
+        "toasts": [
+          "Ola kept the lagoon tilapia for the kitchen.",
+          "Ola sold the lagoon tilapia for ₦1,300.",
+          "Ola let the lagoon tilapia swim.",
+          "Ola kept the lagoon tilapia for the kitchen."
+        ]
+      }
+    },
+    {
+      "name": "Turned kitchen, bed and sofa spots are kept per layout: no search per frame while the flat stands; items, rotation and blockers recompute it",
+      "passed": true,
+      "info": {
+        "firstFrameCalls": 156,
+        "steadyCallsIn120Frames": 0,
+        "recomputed": {
+          "rotation": true,
+          "items": true,
+          "rotation before the boxes are rebuilt": true,
+          "furniture boxes": true,
+          "crate": true
+        }
+      }
     }
   ],
   "method": "Actual runtime state/actions in Node with shipped Three.js, the authored hero and the life modules; remote play through applyRemote. Visual results were checked separately in headless Chromium (SwiftShader)."

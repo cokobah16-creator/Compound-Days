@@ -64,8 +64,8 @@ const checks=[];let runFn=null;
  const LOC=['lifeTab','lifeGo','lifeClear','lifeSelect','lifeCancel','lifeFish','lifeCast','firstEvening34'];assert.deepEqual(J(`${JSON.stringify(LOC)}.filter(n=>!LOCAL_ONLY.has(n))`),[]);
  at(12.3,13.9);run("closePanel();S.life.catch=null;doFish(0);ACTIONS.lifeCast();");
  run("applyRemote({data:{name:'pickup',data:{i:1,id:'nope'},seed:3}});applyRemote({data:{name:'hs',data:{i:1,id:'fish'},seed:4}});");assert.equal(run("LIFE34.fish&&LIFE34.fish.phase"),'waiting','local cast survives remote replays');assert(run('!!LIFE34.fishingWorld'));
- run("globalThis.C0=S.life.metrics.caught;applyRemote({data:{name:'lifeReel',data:{i:1},seed:77}});");assert.equal(run('S.life.metrics.caught'),run('C0')+1,'remote catch recorded');assert(run('!!S.life.catch'));assert.equal(run("LIFE34.fish.phase"),'waiting');assert(run('!!LIFE34.fishingWorld'));
- run("applyRemote({data:{name:'lifeCatch',data:{v:'release'},seed:78}});");assert.equal(run('S.life.catch'),null);assert.equal(run("LIFE34.fish.phase"),'waiting');run('closePanel()');
+ run("globalThis.C0=S.life.metrics.caught;applyRemote({data:{name:'lifeReel',data:{i:1},seed:77}});");assert.equal(run('S.life.metrics.caught'),run('C0')+1,'remote catch recorded');assert(run('!!S.life.catch'));assert.equal(run("LIFE34.fish"),null,'the shared catch ends the local cast (check 24)');assert.equal(run('LIFE34.fishingWorld'),null);
+ run("applyRemote({data:{name:'lifeCatch',data:{v:'release'},seed:78}});");assert.equal(run('S.life.catch'),null);assert.equal(run("LIFE34.fish"),null);run('closePanel()');
  run("globalThis.INS=[];{const ia=panel.insertAdjacentHTML;panel.insertAdjacentHTML=function(p,h){INS.push(h);};_silent=true;openMenu();_silent=false;panel.insertAdjacentHTML=ia;}");assert.equal(run('INS.filter(h=>h.includes("Your day in Palm Court")).length'),0);
  run("globalThis.CLS=[];{const a=panel.classList.add;panel.classList.add=c=>CLS.push(c);_silent=true;openLifePanel34('<p>x</p>','today');openLife34('market');_silent=false;panel.classList.add=a;}");assert.equal(run('CLS.length'),0,'no restyle on a remote replay');
  at(...inFlatSpot);run("S.home.items=newState().home.items;rebuildFurniture();S.home.storage=['lamp','plant','rug'];LIFE34.selection=0;LIFE34.selType34b='lamp';LIFE34.rotation=0;LIFE34.undo=null;applyRemote({data:{name:'lifeCell',data:{x:3,y:1,_ed:{sel:2,type:'rug',rot:0,item:null,undo:null}},seed:5}});");
@@ -198,6 +198,52 @@ const checks=[];let runFn=null;
  assert.equal(run('TT1'),'134px','below the tab strip');assert.equal(run('TT2'),'68px','strip scrolled away: just inside the panel top');assert.equal(run('TT3'),'','no journal page: the base position');
  assert(run('BRIDGE34B.css').includes('#panel .life-card34 .life-pill34{display:table;margin-top:10px}'));
  pass('Journal toasts sit below the tab strip; the Already in your home pill sits on its own line under the price');
+
+ // 24. Online: the other player's reel records the shared catch, which ends this device's cast in every phase (ready, waiting, bite) and turns an
+ // open fishing panel into that catch; when the other player then decides (Keep, Sell, Let it swim) this device's catch panel closes with a toast.
+ run("globalThis.CLOSES=0;{const c=closePanel;closePanel=function(){if(!silentMode())CLOSES++;return c.apply(this,arguments);};}");
+ const fishName=()=>run("FISH34.find(x=>x.id===S.life.catch.id).name.toLowerCase()"),catchPanel=()=>run("PH.includes('data-act=\"lifeCatch\"')&&!PH.includes('data-act=\"lifeCast\"')&&!PH.includes('data-act=\"lifeReel\"')&&!PH.includes('Waiting for a bite')");
+ const settled=(v,seed,want)=>{const n=fishName(),val=run("FISH34.find(x=>x.id===S.life.catch.id).value");run(`TOASTS=[];CLOSES=0;applyRemote({data:{name:'lifeCatch',data:{v:'${v}'},seed:${seed},src:1}});`);
+  assert.equal(run('S.life.catch'),null);assert.deepEqual(fishState(),ended);assert.equal(run('CLOSES'),1,'the dead catch panel closes');assert.deepEqual(J('[BRIDGE34B.shown,BRIDGE34B.catchShown]'),[null,false]);
+  const t=want(n,val);assert.deepEqual(J('TOASTS'),[t]);return t;};
+ const said=[];
+ // waiting: the cast ends at once and does not come back as a bite behind the shared catch
+ castOut();run("applyRemote({data:{name:'lifeReel',data:{i:1},seed:81,src:1}});");assert.deepEqual(fishState(),ended,'a waiting cast ends when the shared catch is recorded');assert(run('!!S.life.catch'));assert(catchPanel(),'the waiting panel shows the shared catch');
+ tick6();assert.deepEqual(fishState(),ended,'no bite comes back');assert(catchPanel());
+ run("globalThis.PF=S.pantry.fish||0;");said.push(settled('keep',82,n=>`Ola kept the ${n} for the kitchen.`));assert.equal(run('S.pantry.fish'),run('PF')+1);
+ // ready: the Cast button would be refused while the catch is out, so the panel shows the catch instead
+ run("closePanel();S.life.catch=null;doFish(0);");assert.equal(run('LIFE34.fish.phase'),'ready');assert(run("PH.includes('data-act=\"lifeCast\"')"));
+ run("applyRemote({data:{name:'lifeReel',data:{i:1},seed:83,src:1}});");assert.deepEqual(fishState(),ended,'a ready cast ends');assert(catchPanel(),'the ready panel shows the shared catch, not a refused Cast');
+ run("globalThis.M0=S.money;");said.push(settled('sell',84,(n,val)=>`Ola sold the ${n} for ${run('naira('+val+')')}.`));assert(run('S.money>M0'));
+ // bite (check 19's case), then the other player lets it swim
+ castOut();for(let k=0;k<80&&run("LIFE34.fish.phase")==='waiting';k++)run('tickFishing34(.1)');assert.equal(run("LIFE34.fish.phase"),'bite');
+ run("applyRemote({data:{name:'lifeReel',data:{i:1},seed:85,src:1}});");assert.deepEqual(fishState(),ended);assert(catchPanel());said.push(settled('release',86,n=>`Ola let the ${n} swim.`));
+ // this device reeled in, the other player decided first: the local catch state ends too
+ castOut();for(let k=0;k<80&&run("LIFE34.fish.phase")==='waiting';k++)run('tickFishing34(.1)');run("ACTIONS.lifeReel()");assert.equal(run('LIFE34.fish.phase'),'caught');assert(catchPanel());
+ said.push(settled('keep',87,n=>`Ola kept the ${n} for the kitchen.`));
+ // a remote decision while this device shows something else leaves that panel alone and says nothing
+ run("closePanel();S.life.catch={id:'bonga',size:15};openMenu();globalThis.PHM=PH;TOASTS=[];CLOSES=0;applyRemote({data:{name:'lifeCatch',data:{v:'keep'},seed:88,src:1}});");
+ assert.equal(run('S.life.catch'),null);assert.equal(run('PH===PHM'),true);assert.equal(run('CLOSES'),0);assert.deepEqual(J('TOASTS'),[]);run('closePanel()');
+ pass('Online: the shared catch ends this device’s cast when ready, waiting or at the bite and shows in its fishing panel; the other player’s decision closes it with a toast',{toasts:said});
+
+ // 25. The turned kitchen, bed and sofa spots are kept per layout: the hotspot scan (both players, every frame) does not repeat the search while
+ // nothing in the flat changes, even with the players walking about; any change to the items, a rotation or a blocker recomputes it.
+ run("globalThis.FS=0;globalThis.FSO=freeSpot34b;globalThis.CR0=[crate.position.x,crate.position.z];freeSpot34b=function(a,b){FS++;return FSO(a,b);};");
+ const fresh=(sel,gap,base)=>J(`frontSpot34b(S.home.items.find(i=>${sel}),${gap},${base})`);
+ const frames=n=>run(`(()=>{const f0=FS;for(let k=0;k<${n};k++){players[0].g.position.set(-6+(k%9)*.2,0,3.4+(k%5)*.2);players[1].g.position.set(-4.6-(k%7)*.2,0,4-(k%3)*.3);nearest(0);nearest(1);}return FS-f0;})()`);
+ at(-6,4);at(-5,3,1);run("S.home.items=newState().home.items;S.home.items.push({id:'sf',type:'sofa',x:0,y:1,rot:1});rebuildFurniture();{const sf=S.home.items.find(i=>i.id==='sf'),[fw,fh]=footprint34('sofa',1);for(let y=0;y<=FLAT.rows;y++)for(let x=0;x<FLAT.cols;x++)if(x>=sf.x-1&&x<=sf.x+fw&&y>=sf.y-1&&y<=sf.y+fh&&fitsHome34('plant',x,y,0))S.home.items.push({id:'pp'+x+'_'+y,type:'plant',x,y});}rebuildFurniture();");
+ const first=frames(1);assert(first>0,'the first frame searches');const steady=frames(120);assert.equal(steady,0,'no search while the layout stands: '+steady);
+ assert.deepEqual(J('sofaPos()'),fresh("i.id==='sf'",.3,'sofaPos34b()'),'the kept spot is the searched spot');
+ const changes={};const recompute=(label,code)=>{run(code);const f0=run('FS');const got=J('sofaPos()');changes[label]=run('FS')>f0;assert(changes[label],label+' recomputes');assert.deepEqual(got,fresh("i.type==='sofa'",.3,'sofaPos34b()'),label);assert.equal(frames(30),0,label+' then steady');};
+ recompute('rotation',"S.home.items.find(i=>i.id==='sf').rot=3;rebuildFurniture();");
+ recompute('items',"S.home.items=S.home.items.filter(i=>!i.id.startsWith('pp'));rebuildFurniture();");
+ recompute('rotation before the boxes are rebuilt',"S.home.items.find(i=>i.id==='sf').rot=1;");run('rebuildFurniture()');{const f0=run('FS');J('sofaPos()');changes['furniture boxes']=run('FS')>f0;assert(changes['furniture boxes'],'a rebuild of the furniture boxes recomputes');}
+ recompute('crate',"{const p=sofaPos();crate.position.set(p[0],crate.position.y,p[1]);}");assert.equal(run("(()=>{const p=sofaPos();return !!blocked(p[0],p[1],PR*.8);})()"),false,'never a spot under the crate');
+ run("S.home.items=newState().home.items.filter(i=>!['stove','fridge'].includes(i.type));S.home.items.push({id:'k',type:'kitchen',x:5,y:1,rot:1});S.home.items.find(i=>i.type==='mattress').rot=1;rebuildFurniture();crate.position.set(CR0[0],crate.position.y,CR0[1]);");
+ frames(1);assert.equal(frames(60),0,'turned kitchen and bed: no search while the layout stands');
+ assert.deepEqual(J('flatKitchenPos()'),fresh("i.id==='k'",.35,'flatKitchenPos34b()'));assert.deepEqual(J('bedPos()'),fresh("i.type==='mattress'",.35,'bedPos34b()'));
+ run("S.home.items=newState().home.items;rebuildFurniture();freeSpot34b=FSO;");
+ pass('Turned kitchen, bed and sofa spots are kept per layout: no search per frame while the flat stands; items, rotation and blockers recompute it',{firstFrameCalls:first,steadyCallsIn120Frames:steady,recomputed:changes});
 
  const report={build:run('BUILD_ID'),passed:true,checks,method:'Actual runtime state/actions in Node with shipped Three.js, the authored hero and the life modules; remote play through applyRemote. Visual results were checked separately in headless Chromium (SwiftShader).'};fs.writeFileSync(path.join(__dirname,'results-bridge.json'),JSON.stringify(report,null,2)+'\n');
 })().catch(e=>{console.error(e);let build=null;try{build=runFn&&runFn('BUILD_ID');}catch(_){}
