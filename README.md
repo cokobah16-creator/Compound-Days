@@ -26,6 +26,19 @@ New households arrive at 3pm with six saved milestones: move the sofa, gather jo
 - The first guided housewarming avoids the rooftop rain detour and always offers a photo until one is taken. Later parties keep their existing weather behavior.
 - A plant, rug or wall art reward can be claimed once. A full flat sends it to Build storage. The following morning delivers the player’s chosen Yard invitation.
 
+## v34b — Your day in Palm Court
+
+The living-compound loop from build v34-a15c4aa3, ported unchanged onto the authored-character line with the v34a carry work. Its four modules (`life-v34.js`, `life-ui-v34.js`, `life-world-v34.js`, `life-v34.css`) are byte-identical to the shipped package; the package itself is kept verbatim on the branch `import/v34-a15c4aa3`. The only change needed to combine the two lines was renaming a private wrapper variable in `feel-v34.js` (`menu34` to `feel_menu34`), because both lines declared it at the top level.
+
+Open **Tasks** (or **Menu**) for the field journal: Today, Almanac, Garden, Finds, People and Home.
+
+- **Fishing.** At the waterfront, cast, watch for the bite, and reel in. Six species record their first day, count and best size. Keep a catch for cooking, sell it or release it; a pending catch survives a reload and pays out once.
+- **One crop.** Plant Tunde's pepper seedling on the veranda, water it on two different days with a night between, and harvest three peppers on day three. An unwatered plant waits.
+- **Palm Court Finds.** Fifteen furnishings rotate through five discounted offers per game day; browse in the journal, buy near Market Road. Fish and peppers from the pantry sell there too.
+- **Decorating.** At home, pick from storage and tap a valid cell; rotate, store, cancel, or undo the last edit. Rotated footprints and collision bounds agree, and solid furniture cannot be placed over a player.
+- **Three neighbours.** Tunde, Mama Nkechi and Ada each have three small requests, one per neighbour per day, delivered in person. They refer to what you did and reward home items, recipes or money; Ada's last request brings her to visit the veranda.
+- **Beach finds and directions.** Three shells a day on the shore, and a marked destination with distance to the pot, the waterfront, the market, home or a neighbour.
+
 ## v34a — Feel the actions
 
 Everything in this slice lives in `dist/src/feel-v34.js`, loaded last; the base page changed only for the script tag and the move-in hint.
@@ -52,9 +65,10 @@ Saves from v26–v33 keep working: `dist/src/authored-v34.js` maps the retired o
 node check/verify-authored.cjs
 node check/verify-v33.cjs
 node check/verify-feel.cjs
+node check/verify-v34.cjs
 ```
 
-The Node harness (`check/runtime-harness.cjs`) executes the shipped JavaScript with the bundled Three.js and glTF loader; nothing is rendered. `verify-feel.cjs` writes `check/results-feel.json` and covers the stairs rule (including a holder walking down off the lower ramp or from the upper grab window, and a sofa saved on the landing sliding back to a validated courtyard spot with the crate at the stair foot or players on the candidates, after which a grid search finds a path from the ramp into the courtyard that the player then walks), the companion carry (speed, steering, backing up, the full gate-to-flat route, release), the solo first evening with the companion driven by its own AI ticks (including the kitchen summon being skipped from the roof), the stage timing log, its seeding for older saves and its absence in online play, the performance step-down decisions including silent no-op notches, and the parallel prefetch bookkeeping. `verify-authored.cjs` writes `check/results-authored.json` and checks the hero (27 joints in hero order, 8 clips, five material-named body primitives, `hairMount`/`headCentre` extras), the sixteen wardrobe files (exactly those are referenced and parse, every skinned piece carries the hero's inverse bind matrices byte for byte), both players on the hero rig, every hair and outfit id equipping and hiding its slots with the painted outfits building cleanly, the save/network/default migration, the five neighbours plus walkers and sellers with their statures, the environment (surface registry, four-batch staircase, eight courtyard presets, material textures on disk, idempotent studio stage, 34-degree lens), seating in four sofa orientations (hips and feet at the retuned heights, sole meshes on the floor, trouser sink within the documented limit) with saves keeping standing positions, and the build id in the Menu. `verify-v33.cjs` writes `check/results-v33.json` and exercises the real cooking and party actions, reloads, clock behaviour, migration, reward deduplication and recovery paths.
+The Node harness (`check/runtime-harness.cjs`) executes the shipped JavaScript with the bundled Three.js and glTF loader; nothing is rendered. `verify-feel.cjs` writes `check/results-feel.json` and covers the stairs rule (including a holder walking down off the lower ramp or from the upper grab window, and a sofa saved on the landing sliding back to a validated courtyard spot with the crate at the stair foot or players on the candidates, after which a grid search finds a path from the ramp into the courtyard that the player then walks), the companion carry (speed, steering, backing up, the full gate-to-flat route, release), the solo first evening with the companion driven by its own AI ticks (including the kitchen summon being skipped from the roof), the stage timing log, its seeding for older saves and its absence in online play, the performance step-down decisions including silent no-op notches, and the parallel prefetch bookkeeping. `verify-authored.cjs` writes `check/results-authored.json` and checks the hero (27 joints in hero order, 8 clips, five material-named body primitives, `hairMount`/`headCentre` extras), the sixteen wardrobe files (exactly those are referenced and parse, every skinned piece carries the hero's inverse bind matrices byte for byte), both players on the hero rig, every hair and outfit id equipping and hiding its slots with the painted outfits building cleanly, the save/network/default migration, the five neighbours plus walkers and sellers with their statures, the environment (surface registry, four-batch staircase, eight courtyard presets, material textures on disk, idempotent studio stage, 34-degree lens), seating in four sofa orientations (hips and feet at the retuned heights, sole meshes on the floor, trouser sink within the documented limit) with saves keeping standing positions, and the build id in the Menu. `verify-v33.cjs` writes `check/results-v33.json` and exercises the real cooking and party actions, reloads, clock behaviour, migration, reward deduplication and recovery paths. `verify-v34.cjs` writes `check/results-v34.json` and covers the living-compound loop: additive save migration, the multi-day crop cycle, pending catches settling once across reloads, market offers and purchases that cannot double-charge, neighbour requests and rewards, shell gathering, placement with rotation, storage and undo, Ada's visit, the world additions and a full resume.
 
 Browser appearance, colour under the v28/v31 lighting, phone frame rate and audio are not covered by the harness and remain unverified in this build.
 
@@ -80,6 +94,7 @@ python tools/stamp-build.py           # always last after any change under dist/
 node check/verify-authored.cjs        # rewrites check/results-authored.json for that stamp
 node check/verify-v33.cjs             # rewrites check/results-v33.json
 node check/verify-feel.cjs            # rewrites check/results-feel.json
+node check/verify-v34.cjs             # rewrites check/results-v34.json
 python tools/package-manifest.py      # refresh PACKAGE_MANIFEST.json after the results files
 ```
 

@@ -21,7 +21,7 @@ A build archive is committed byte-for-byte, including `dist/index.html` and its 
 Before committing an import, two checks run here:
 
 - a browser smoke test under headless Chromium that boots the game, completes player creation, enters the world, moves both players and checks that every asset request succeeds;
-- the shipped Node harness, `node check/verify-authored.cjs`, `node check/verify-v33.cjs` and `node check/verify-feel.cjs`, which executes the real game logic with the vendored three.js and no browser.
+- the shipped Node harness, `node check/verify-authored.cjs`, `node check/verify-v33.cjs`, `node check/verify-feel.cjs` and `node check/verify-v34.cjs`, which executes the real game logic with the vendored three.js and no browser.
 
 ## Modules
 
@@ -42,4 +42,8 @@ After changing anything under `dist`, run `python3 tools/stamp-build.py` so the 
 ## Hosting on Vercel
 
 The Vercel project `compound_days` deploys the `master` branch. The game lives under `dist`, so `vercel.json` at the repository root rewrites `/`, `/assets/...` and `/src/...` to the files under `dist` and marks the assets immutable (every asset request already carries the build id as a query string). If the project's Root Directory is ever set to `dist` in the Vercel dashboard, Vercel ignores this file and serves `dist` directly, which is equivalent.
+
+## Builds from other collaborators
+
+A build delivered as an archive on a different line (for example v34-a15c4aa3, made on the shipped v33 with the generated character) is first committed verbatim on its own branch off the build it came from, named `import/<build id>`, so its exact change set stays reviewable. Its new modules are then ported onto the current line unchanged where possible; any name clash between classic-script modules is resolved by renaming the private name on our side, because two scripts declaring the same top-level `const` fail at load.
 

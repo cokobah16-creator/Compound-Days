@@ -1,0 +1,47 @@
+{
+  "build": "v34b-349b770a",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Additive migration preserves names, bases, belongings and recipes",
+      "passed": true
+    },
+    {
+      "name": "Two watered nights yield exactly three peppers; duplicate actions and dry days are safe",
+      "passed": true
+    },
+    {
+      "name": "Fishing waits for a bite, records catches and settles each pending catch only once across reload",
+      "passed": true
+    },
+    {
+      "name": "Rotating market offers persist; remote, duplicate and out-of-stock purchases cannot charge the purse",
+      "passed": true
+    },
+    {
+      "name": "Neighbour requests require proximity, consume once, reward once and advance on different days",
+      "passed": true
+    },
+    {
+      "name": "Beach shells can be gathered once per spot per in-game day",
+      "passed": true
+    },
+    {
+      "name": "Home placement, storage and undo conserve inventory; rotated footprints, upgrades and player clearance are checked",
+      "passed": true
+    },
+    {
+      "name": "Rotated models use matching collision bounds; a transaction invalidates decoration undo",
+      "passed": true
+    },
+    {
+      "name": "Ada notices decorating, accepts shells and visits after her third story, with reload-safe placement",
+      "passed": true
+    },
+    {
+      "name": "World additions remain finite and singular; all journal tabs and complete resume keep progress",
+      "passed": true
+    }
+  ],
+  "method": "Actual shipped runtime, Three.js and glTF in Node. Browser preview served, but its WebGL context was unavailable. No visual/GPU/phone claim."
+}
