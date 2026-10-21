@@ -21,7 +21,7 @@ A build archive is committed byte-for-byte, including `dist/index.html` and its 
 Before committing an import, two checks run here:
 
 - a browser smoke test under headless Chromium that boots the game, completes player creation, enters the world, moves both players and checks that every asset request succeeds;
-- the shipped Node harness, `node check/verify-authored.cjs`, `node check/verify-v33.cjs`, `node check/verify-feel.cjs` and `node check/verify-v34.cjs`, which executes the real game logic with the vendored three.js and no browser.
+- the shipped Node harness, `node check/verify-authored.cjs`, `node check/verify-v33.cjs`, `node check/verify-feel.cjs`, `node check/verify-v34.cjs` and `node check/verify-bridge.cjs`, which executes the real game logic with the vendored three.js and no browser.
 
 ## Modules
 

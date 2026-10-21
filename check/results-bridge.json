@@ -1,0 +1,188 @@
+{
+  "build": "v34b-9e5d2769",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Fishing: float in open water and in the camera fit, rod in the right hand facing it, a visible bite, arm released",
+      "passed": true,
+      "info": {
+        "float": [
+          12.3,
+          0.12,
+          17.25
+        ],
+        "handToRod": 0.07,
+        "tipY": 2.18,
+        "biteBelowRest": true
+      }
+    },
+    {
+      "name": "A cast waiting behind the Menu does not bite over it; closing ends the cast",
+      "passed": true
+    },
+    {
+      "name": "Talk-dialogue request card: title, body, label and reward reach 4.5:1 on the cream card and sit above Later",
+      "passed": true,
+      "info": {
+        "title": 8.3,
+        "reward": 5.52,
+        "label": 6.12,
+        "body": 8.65
+      }
+    },
+    {
+      "name": "During the guided first evening Tasks opens its journal; Today puts the evening card first",
+      "passed": true
+    },
+    {
+      "name": "Home editor Undo never restores over the placed sofa or any other outside change",
+      "passed": true
+    },
+    {
+      "name": "Online: life UI stays local; remote replays keep this device’s cast and selection, carry the sender’s context, record its catch and end stale Undo",
+      "passed": true
+    },
+    {
+      "name": "Pepper pot stands where the camera sees it over the veranda wall; its veranda cell stays free",
+      "passed": true,
+      "info": {
+        "lift": 0.61,
+        "standBottom": 0.02,
+        "top": 1.23
+      }
+    },
+    {
+      "name": "Home editor draws the mattress, table, fan, sofa, stove, fridge and photo with their own icons",
+      "passed": true
+    },
+    {
+      "name": "Journal pages: one way back, a title that follows the crop, the morning-after line, a harvest confirmation",
+      "passed": true
+    },
+    {
+      "name": "Finds lists today’s five first and will not sell an upgrade the home already has",
+      "passed": true
+    },
+    {
+      "name": "Editor selections follow their item; the sofa, mattress, table and fan cannot be stored; a carried piece is explained",
+      "passed": true
+    },
+    {
+      "name": "Turned kitchen, bed and sofa are used from a reachable side; the plate sits on a turned table",
+      "passed": true,
+      "info": {
+        "cook": [
+          -3.85,
+          3.8
+        ]
+      }
+    },
+    {
+      "name": "With the companion on, only the human opens home, waterside and market actions; local two-player is unchanged",
+      "passed": true
+    },
+    {
+      "name": "Ada waits on a free veranda cell clear of Tunde’s party spot and the pepper pot",
+      "passed": true,
+      "info": {
+        "ada": [
+          -6.65,
+          6.3
+        ]
+      }
+    },
+    {
+      "name": "Shells lie on the sand; the shells marker picks the nearest one left; the fishing marker is clear of the rocks",
+      "passed": true,
+      "info": {
+        "shells": [
+          [
+            -3,
+            14.9
+          ],
+          [
+            5.6,
+            15
+          ],
+          [
+            11.2,
+            15.1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Directions pill moves below the toast while it shows and returns after",
+      "passed": true
+    },
+    {
+      "name": "Same-page journal actions keep the scroll position; phone tabs wrap so Home is always on screen",
+      "passed": true
+    },
+    {
+      "name": "Online: a remote sitwait, nextday or cook ends this device’s cast cleanly; the shared panel stays and no bite replaces it",
+      "passed": true
+    },
+    {
+      "name": "Online: a remote reel at this device’s bite ends the local bite and shows the shared catch",
+      "passed": true
+    },
+    {
+      "name": "Online: a remote talk leaves this device’s open panel alone; a local talk still carries the request card",
+      "passed": true
+    },
+    {
+      "name": "A turned sofa in a crowded flat is used from the nearest free spot; with none free, from its unrotated reach point",
+      "passed": true,
+      "info": {
+        "clean": [
+          -6.8,
+          3.8
+        ],
+        "crowded": [
+          -5.96,
+          3.37
+        ]
+      }
+    },
+    {
+      "name": "Shoreline water stays above the sand and the seabed at the float and along the shore at every wave phase; the open sea keeps its waves",
+      "passed": true,
+      "info": {
+        "floatBefore": [
+          -0.081,
+          0.142
+        ],
+        "float": [
+          0.021,
+          0.091
+        ],
+        "shoreBefore": [
+          -0.089,
+          0.15
+        ],
+        "shore": [
+          0.019,
+          0.094
+        ],
+        "sea": [
+          -0.004,
+          0.235
+        ],
+        "openSea": [
+          -0.004,
+          0.235
+        ],
+        "openSeaBefore": [
+          -0.089,
+          0.15
+        ]
+      }
+    },
+    {
+      "name": "Journal toasts sit below the tab strip; the Already in your home pill sits on its own line under the price",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state/actions in Node with shipped Three.js, the authored hero and the life modules; remote play through applyRemote. Visual results were checked separately in headless Chromium (SwiftShader)."
+}
