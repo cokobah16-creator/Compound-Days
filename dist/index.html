@@ -4856,7 +4856,7 @@ function tasks(){ const t=[];
   if(S.party) t.push({txt:'Host the courtyard tonight',done:true}); else if(S.time>=16&&S.dishes.length) t.push({txt:'Host the courtyard tonight',done:false}); else t.push({txt:'Make the flat more ours',done:!!S.today.placed});
   return t.slice(0,4); }
 function tasksHTML(){ return `<ul class="list" style="list-style:none;padding:0">${tasks().map(t=>`<li>${t.done?'\u2611':'\u2610'} ${esc(t.txt)}</li>`).join('')}</ul>`; }
-document.getElementById('htasks').addEventListener('click',()=>{ if(!S||!S.p||overlayOpen()) return; if(typeof journal33==='function'){journal33();return;} openPanel(`<h2>Our tasks</h2><p class="muted small">Suggestions, not orders. The day is yours.</p>${tasksHTML()}<p class="small">Home vibe: <b>${vibe()}</b></p><div class="actions">${btn('Back','close',{},'primary')}</div>`); });
+document.getElementById('htasks').addEventListener('click',()=>{ if(!S||!S.p||overlayOpen()) return; if(typeof openLife34==='function'){openLife34('today');return;} if(typeof journal33==='function'){journal33();return;} openPanel(`<h2>Our tasks</h2><p class="muted small">Suggestions, not orders. The day is yours.</p>${tasksHTML()}<p class="small">Home vibe: <b>${vibe()}</b></p><div class="actions">${btn('Back','close',{},'primary')}</div>`); });
 
 /* ===================== HUD ===================== */
 const ROLES={foodie:'Chef of the house',moneywise:'Market runner',creative:'Eye of the house',connector:'The social one',handy:'Fixer of things',organizer:'Keeper of the list'};
@@ -5749,7 +5749,7 @@ const PERF={last:0,acc:0,n:0,avg:0,fps:0};
 if(typeof TICK_HOOKS!=='undefined') TICK_HOOKS.push(()=>{ const now=performance.now(); if(PERF.last){ PERF.acc+=now-PERF.last; PERF.n++; if(PERF.acc>=2000){ PERF.avg=PERF.acc/PERF.n; PERF.fps=1000/PERF.avg; PERF.acc=0; PERF.n=0; } } PERF.last=now; });
 function perfStatusText(){ if(!PERF.avg||typeof renderer==='undefined'||!renderer) return ''; const sz=renderer.getSize(new THREE.Vector2()); return ` Frame time ${PERF.avg.toFixed(1)} ms (~${Math.round(PERF.fps)} fps) at ${Math.round(sz.x*renderer.getPixelRatio())}×${Math.round(sz.y*renderer.getPixelRatio())}, ${renderer.info.render.calls} draw calls, ${Math.round(renderer.info.render.triangles/1000)}k triangles.`; }
 
-const BUILD_ID='v33-8df2a65a';
+const BUILD_ID='v34-a15c4aa3';
 /* ===================== BOOT ===================== */
 function initRenderer(){ renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,powerPreference:'high-performance'}); renderer.setPixelRatio(Math.min(devicePixelRatio||1,navigator.maxTouchPoints>0?1.6:2)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,160); window.addEventListener('resize',()=>{ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }); }
 window.addEventListener('pagehide',()=>save()); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });
@@ -5777,6 +5777,10 @@ function boot(){ try{ QUALITY.full=qualityOn(); initRenderer(); heroLoad(); buil
 <script src="src/polish-v32.js"></script>
 <script src="src/first-evening-v33.js"></script>
 <link rel="stylesheet" href="src/first-evening-v33.css">
+<script src="src/life-v34.js"></script>
+<script src="src/life-ui-v34.js"></script>
+<script src="src/life-world-v34.js"></script>
+<link rel="stylesheet" href="src/life-v34.css">
 <link rel="stylesheet" href="src/polish-v30.css">
 <link rel="stylesheet" href="src/art-v31.css">
 <script>

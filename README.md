@@ -1,6 +1,6 @@
 # Compound Days — Waterside
 
-Build **v33-8df2a65a**, continuing the published v32 visual foundation.
+Build **v34-a15c4aa3** — the first living-compound loop, continuing the published v33 guide and v32 visual foundation.
 
 A browser life game set in a Nigerian compound. Create two independent players, move the sofa into your flat, shop, cook, learn crafts, furnish your home and host neighbours.
 
@@ -11,9 +11,22 @@ Choose **Start with a companion** to play alone, or **Start a new household on t
 - Player 1: WASD to move, E to interact.
 - Player 2: arrow keys to move, Enter to interact.
 - Phones: use the on-screen sticks and action buttons. Landscape gives both players more room.
-- Saves stay in that browser on that device. Published v30–v33 share an origin and save schema.
+- Saves stay in that browser on that device. Published v30–v34 share an origin and additive save schema.
 
 Cross-device play requires the inherited host's room/database API, which is unavailable on this static hosted copy. Companion and same-screen play are supported.
+
+## v34 — Your day in Palm Court
+
+Open **Tasks** (or **Menu → Your day in Palm Court**) for the new illustrated field journal: Today, Almanac, Garden, Finds, People and Home. It links the existing first evening to a small repeatable daily loop. There is no real-world login deadline: days advance in the game, and plants do not wither while you are away.
+
+- **Six fish discoveries.** Walk to the waterfront, cast, watch for the bite, then reel in when ready. Each species records its first day, count and best size. Keep a catch for cooking, sell it or release it. A pending catch survives reloading; its decision can only pay out once.
+- **One forgiving crop.** Plant Tunde's welcome pepper seedling on the veranda. Water on two different days and sleep between them; the first harvest yields three peppers on day three. An unwatered plant waits. The pot gains leaves and red fruit in the world.
+- **Fifteen familiar furnishings.** Palm Court Finds has five discounted offers per game day; all fifteen rotate over three days. Browse remotely, buy near Market Road. Inventory and purchases persist, and pantry fish and peppers can be sold there.
+- **Touch-friendly decorating.** At home, choose from storage and tap a valid cell. Rotate, store, cancel a selection or undo the last edit. Footprints, collision bounds and upgrades agree; solid furniture cannot be placed over a player. Other transactions invalidate undo so it cannot duplicate rewards or purchases.
+- **Three continuing neighbours.** Tunde, Mama Nkechi and Ada each have three small requests, limited to one completion per neighbour per day. They refer to your previous actions and give home items, recipes or money. Ada's final request unlocks a veranda visit. Talk to them in person to deliver things.
+- **Beach finds and directions.** Three shells can be gathered each day. A marked destination and distance guide you to the pot, waterfront, market, home or a neighbour. The world includes the pepper pot, shore shells, fishing float and a striped furniture stall.
+
+Suggested first three days: water and make a first catch; help a neighbour and furnish a corner; harvest the peppers and use them in the kitchen or a neighbour request. The old cooking, housewarming, craft and free-play systems remain available. This is an original Nigerian-compound life-game slice, not a copy of another game's assets or its full feature scope.
 
 ## v33 — The first evening
 
@@ -44,11 +57,14 @@ New households arrive at 3pm with six saved milestones: move the sofa, gather jo
 ```sh
 node check/verify-v32.cjs
 node check/verify-v33.cjs
+node check/verify-v34.cjs
 ```
 
 The Node harness executes the shipped JavaScript, Three.js and glTF loader. It checks 35 wardrobe assets, 33 props, 18 body/build/face combinations, 810 clip samples, 24 seating cases, saves, colour conversion, eye openings, eyelids, garment topology, composed skin boundaries, contour geometry, contact-shadow height, cuff weights and eight courtyard presets. Results are stamped in `check/results-v32.json`; inherited checks retain `check/results-v30.json`.
 
 The ten additional state-flow groups in `check/results-v33.json` exercise the real cooking and party actions, reloads, clock behavior, migration, reward deduplication and recovery paths.
+
+The ten v34 groups in `check/results-v34.json` exercise migration, the actual multi-day crop cycle, pending catches, market purchases, neighbour deliveries, shell gathering, decoration/rotation/undo, visits, world geometry and full resume. These are runtime state and geometry checks, not a substitute for watching or playing the rendered game.
 
 `check/review32/` contains **offline software renders of runtime meshes and albedo maps**. They are not WebGL gameplay screenshots and omit PBR reflections, transparency and contact-shadow composition.
 
@@ -60,7 +76,7 @@ python check/render-geometry.py check/geometry32 check/review32
 python check/make-review-v32.py
 ```
 
-Browser QA was unavailable because the required browser-control capability was absent. Browser appearance, phone frame rate and audio output remain unverified. The art is procedural and has not reached the painted concept sheets. Older traditional outfits and saved hairstyles remain provisional. There is no new speech animation or finger rig.
+The v34 supervised browser preview served successfully, but the cloud browser reported **Error creating WebGL context** before the world could start. Browser appearance, phone frame rate and audio output remain unverified. The art is procedural and has not reached the painted concept sheets. Older traditional outfits and saved hairstyles remain provisional. There is no new speech animation or finger rig. The new fishing rod is a visual prop, not a new hand-rigged animation clip.
 
 ## Run a local copy
 
