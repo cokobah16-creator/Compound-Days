@@ -73,7 +73,7 @@ const AUDIO35={ctx:null,master:null,noise:null,played:[],recipes:{},
  const prevMenu=openMenu;openMenu=function(){const r=prevMenu.apply(this,arguments);if(typeof silentMode==='function'&&silentMode())return r;
   const actions=typeof document!=='undefined'&&document.querySelector?document.querySelector('#panel .actions'):null;
   if(!actions||!actions.insertAdjacentHTML)return r;
-  const html=btn(AUDIO35.on()?'Sound: on (tap for off)':'Sound: off (tap for on)','sound35',{},'quiet');
+  const html=btn(AUDIO35.on()?'Sound: on':'Sound: off','sound35',{},'quiet').replace('<button ','<button aria-pressed="'+AUDIO35.on()+'" ');   // as the Menu's 'Bigger text: on'
   // beside the other device settings (Shadows, Graphics), not next to 'Start a new household'
   const gfx=typeof actions.querySelector==='function'?actions.querySelector('[data-act="quality"]'):null;
   if(gfx&&gfx.insertAdjacentHTML)gfx.insertAdjacentHTML('afterend',html);else actions.insertAdjacentHTML('beforeend',html);return r;};

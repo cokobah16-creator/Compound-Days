@@ -82,6 +82,7 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   // place on the veranda and paint at home
   home();const ix=run("S.home.storage.indexOf('planter')");act('lifeSelect',{ix});act('lifeCell',{x:1,y:4});act('lifeCell',{x:1,y:4});assert.equal(count(2,'place'),1);assert(has(2,'place','planter:veranda'));
   act('paint35',{id:'ochre'});act('paint35',{id:'ochre'});act('paint35',{id:'nope'});assert.equal(count(2,'paint'),1);assert(has(2,'paint','wall:ochre'));
+  act('paintUndo35',J('TUNE35.paintUndo'));assert.equal(count(2,'paint'),2,'an undone paint is logged');assert(has(2,'paint','undo:wall:base'));act('paint35',{id:'ochre'});
   // a request and a shell
   approach('tunde');act('lifeRequest',{k:'tunde'});act('lifeRequest',{k:'tunde'});assert.equal(count(2,'request'),1);assert(has(2,'request','tunde:1'));
   run('players[0].y=0;players[0].g.position.set(SHELLS34[0][0],0,SHELLS34[0][1])');act('lifeShell',{k:0});act('lifeShell',{k:0});assert.equal(count(2,'shell'),1);assert(has(2,'shell','0'));
@@ -101,6 +102,9 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   run('DAYS35.activity();document.hidden=true');tick(10,100);let r5=J('LOG35.day(1)');assert.equal(r5.panelMs,r4.panelMs,'hidden tab counts nothing');run('document.hidden=false');
   run('DAYS35.activity()');tick(1,0);const i0=J('LOG35.day(1)').panelMs;tick(70,1000);const idle=J('LOG35.day(1)').panelMs-i0;assert(idle<=60000&&idle>=59000,'idle stops counting after 60 s: '+idle);
   run('DAYS35.activity()');tick(5,1000);const resumed=J('LOG35.day(1)').panelMs-i0-idle;assert.equal(resumed,5000,'activity resumes counting');
+  // a finger held on the touch stick sends only pointermove: that counts as activity (a hovering mouse does not)
+  tick(70,1000);const h0=J('LOG35.day(1)').panelMs;run("DAYS35.onMove({pointerType:'mouse',buttons:0})");tick(3,1000);assert.equal(J('LOG35.day(1)').panelMs,h0,'a hovering mouse is not activity');
+  run("DAYS35.onMove({pointerType:'touch',buttons:1})");tick(3,1000);assert.equal(J('LOG35.day(1)').panelMs-h0,3000,'a held touch drag is activity');
   run('overlayOpen=OO35;delete globalThis.OO35');
   run('T35+=1000');act('nextday');tick(10,100);const n=J('LOG35.day(2)');assert.equal(n.startedAt,null);assert.equal(n.playedMs+n.panelMs,0,'an unwoken day counts nothing');
   return {played:1000,panel:1000,idleCountedMs:idle,resumedMs:resumed};});
@@ -125,9 +129,10 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   const pick=(day,o)=>{const r=J(`pickMorning35(${day},${JSON.stringify(Object.assign({},base,o))})`);return r&&r.id;};
   const t={d1:pick(1,{}),d2seed:pick(2,{seedGrantedToday:true}),d2:pick(2,{}),d3c2:pick(3,{crop:2}),d3c1:pick(3,{crop:1}),d3c0:pick(3,{crop:0}),d3c3:pick(3,{crop:3}),d3eve:pick(3,{crop:2,eveningPending:true}),
    d4finds:pick(4,{returning:['lamp','rug']}),d4:pick(4,{returning:['lamp']}),d5invite:pick(5,{adaStage:2}),d5visit:pick(5,{visitsUnlocked:true}),d5visited:pick(5,{visitsUnlocked:true,visitToday:true}),d5:pick(5,{}),
-   d6:pick(6,{}),d6cat:pick(6,{caughtCatfish:true}),d7finds:pick(7,{returning:['lamp','rug']}),d7:pick(7,{}),d8invite:pick(8,{adaStage:2}),d9:pick(9,{}),d4eve:pick(4,{eveningPending:true,returning:['lamp','rug']}),d9eve:pick(9,{eveningPending:true})};
+   d6:pick(6,{}),d6cat:pick(6,{caughtCatfish:true}),d7finds:pick(7,{returning:['lamp','rug']}),d7:pick(7,{}),d8invite:pick(8,{adaStage:2}),d9:pick(9,{}),d4eve:pick(4,{eveningPending:true,returning:['lamp','rug']}),d9eve:pick(9,{eveningPending:true}),
+   d5eveAfter:pick(5,{eveningPending:true,prevRow:'evening-again'}),d6eveAgain:pick(6,{eveningPending:true,prevRow:'shells'})};
   assert.deepEqual(t,{d1:null,d2seed:'seedling',d2:'quiet',d3c2:'grew',d3c1:'waiting',d3c0:'unplanted',d3c3:'ripe',d3eve:'grew',d4finds:'finds-return',d4:'shells',d5invite:'ada-invite',d5visit:'ada-visit',d5visited:'shells',d5:'shells',
-   d6:'evening-fish',d6cat:'shells',d7finds:'finds-return',d7:'shells',d8invite:'ada-invite',d9:'evening-fish',d4eve:'evening-again',d9eve:'evening-again'});
+   d6:'evening-fish',d6cat:'shells',d7finds:'finds-return',d7:'shells',d8invite:'ada-invite',d9:'evening-fish',d4eve:'evening-again',d9eve:'evening-again',d5eveAfter:'shells',d6eveAgain:'evening-again'});
   assert.equal(J('pickMorning35(3,{crop:0,seedReady:false,returning:[]})').id,'quiet','an unready seedling falls through to quiet');
   fresh();run('S.day=4;');const evening=run("typeof EVENING35!=='undefined'");const c0=J('morningCtx35(4)');assert.equal(c0.eveningPending,evening,'eveningPending follows EVENING35.pending() for a day-4 household without evening35');
   assert.deepEqual([c0.adaStage,c0.visitsUnlocked,c0.visitToday,c0.caughtCatfish],[0,false,false,false]);
@@ -157,7 +162,7 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   assert(run(`PH.includes(${JSON.stringify(night)})`),'the re-render keeps the same night paragraph');assert(run(`PH.includes('rate35-face chosen" data-act="rate35" data-v="3"')`));
   for(const d of [{v:'4',day:'1'},{v:'0',day:'1'},{v:'x',day:'1'},{v:'2',day:'9'},{v:'2',day:'0'},{v:'2'}])act('rate35',d);assert.equal(run('LOG35.day(1).rating'),3,'invalid ratings are refused');
   assert.equal(run("LOCAL_ONLY.has('rate35')"),true);
-  wakeNext();wakeNext();assert.equal(run('S.day'),3);run("PH=''");act('sleep');assert(!run("PH.includes('prompts35')"),'no prompts before the rating');
+  wakeNext();wakeNext();assert.equal(run('S.day'),3);run("PH=''");act('sleep',{anyway:1});assert(run("PH.includes('How was today?')"),'the night panel (Sleep anyway: the neighbours were still due)');assert(!run("PH.includes('prompts35')"),'no prompts before the rating');
   act('rate35',{v:'2',day:'3'});assert(run("PH.includes('prompts35')&&PH.includes('data-bind=\"life.days.3.want\"')&&PH.includes('data-bind=\"life.days.3.neighbour\"')"));
   assert.equal(run("'want' in S.life.days['3']&&'neighbour' in S.life.days['3']"),true,'the bind paths exist');
   const stored=k=>run(`JSON.parse(localStorage.getItem(KEY)).life.days['3'].${k}`);
@@ -208,17 +213,21 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   run('S.firstEvening.enabled=false');assert.equal(run('guided33()'),false);run("openLife34('today')");assert.equal(run("(PH.match(/data-act=\"sleep\"/g)||[]).length"),1);assert(run("PH.includes('>Sleep until tomorrow</button>')"));
   const pages=[];const scan=label=>{const bad=run("PH.includes('undefined')||PH.includes('NaN')");assert(!bad,label);pages.push(label);};
   scan('today day 1');act('sleep');scan('night day 1');act('rate35',{v:'2',day:'1'});scan('night rated');run('T35+=1000');act('nextday');scan('today day 2');
-  run('DAYS35.activity()');wakeNext();scan('today day 3');act('sleep');act('rate35',{v:'3',day:'3'});scan('night day 3 with prompts');run('T35+=1000');act('nextday');scan('today day 4');
+  run('DAYS35.activity()');wakeNext();scan('today day 3');act('sleep',{anyway:1});act('rate35',{v:'3',day:'3'});assert(run("PH.includes('prompts35')"),'the day-3 night with its prompts');scan('night day 3 with prompts');run('T35+=1000');act('nextday');scan('today day 4');
   run("delete S.life.morning35;openLife34('today')");scan('today day 4 lazy morning');
   run('DAYS35.activity()');const n0=run('LOG35.today().events.length'),d0=run('LOG35.today().dropped');run(`for(let k=0;k<${300-n0+7};k++)LOG35.add('shell','x')`);
   assert.equal(run('LOG35.today().events.length'),300);assert.equal(run('LOG35.today().dropped')-d0,7);
+  // a new household's night: Ada's 'something smelled good' line only after cooking that day (the base reads 'ever cooked')
+  fresh();run("S.firstEvening.enabled=false;S.day=2;S.cooked.jollof=1;S.nb.ada.aff=3;S.flags={};S.today={};S.party=null;");act('sleep');const nightA=run('PH');assert(!nightA.includes('Something smelled good'),'not on a night nothing was cooked');
+  assert.equal(run('S.cooked.jollof'),1,'the cooked record is untouched');run("closePanel();S.today={cooked:true};");act('sleep');assert(run('PH').includes('Something smelled good'),'on a night something was cooked');
   return {pages,cap:300,dropped:7};});
 
  // 12. Continue logs the sitting's wall time; records older than seven days are compacted to counts, keeping the prompts.
- check('Resume and compaction: Continue pushes one resume with its wall time without waking; after nine nights days 1-3 keep counts and prompts, 4-10 keep events',()=>{isMod();
-  fresh();hooks(2);run('save();T35+=7200000;ACTIONS.continue();');const w=run('T35'),r=J('LOG35.day(1)');assert.equal(r.startedAt,null,'resume does not wake');
-  assert.deepEqual(r.events.map(e=>[e.k,e.w]),[['resume',w]]);
-  run('S.firstEvening.enabled=false;DAYS35.activity()');
+ check('Resume and compaction: Continue on an unwoken day adds nothing (the wake carries the time); on a woken day one resume with its wall time; after nine nights days 1-3 keep counts and prompts, 4-10 keep events',()=>{isMod();
+  fresh();hooks(2);run('save();T35+=7200000;ACTIONS.continue();');const r=J('LOG35.day(1)');assert.equal(r.startedAt,null,'resume does not wake');
+  assert.deepEqual(r.events,[],'no resume before the wake');
+  run('S.firstEvening.enabled=false;DAYS35.activity();save();T35+=3600000;ACTIONS.continue();');const w=run('T35'),r1=J('LOG35.day(1)');
+  assert.deepEqual(r1.events.map(e=>[e.k,e.w||null]),[['wake',null],['resume',w]],'the wake first, then one resume with its wall time');
   for(let k=0;k<9;k++){if(run('S.day')===3){run("S.life.days['3'].want='A reading lamp';S.life.days['3'].neighbour='Tunde hums to his plants';");}wakeNext();}
   assert.equal(run('S.day'),10);const d=J('S.life.days');
   for(const n of [1,2,3]){assert(d[n].counts&&!d[n].events,'day '+n+' compacted');}for(let n=4;n<=10;n++)assert(Array.isArray(d[n].events),'day '+n+' keeps events');

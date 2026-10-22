@@ -15,7 +15,7 @@ const ROWS=['evening-again','seedling','grew','waiting','unplanted','ripe','find
 const SPEAKERS=['seedling','grew','waiting','unplanted','ripe','ada-invite','ada-visit','shells'];
 const VERBATIM={'recap.seedling':'Tunde said he would leave something in your pot.','recap.grew':'The seedling will be taller by morning.',
  'recap.finds-return':'The {a} and the {b} are back at Finds tomorrow.','recap.clause.chair':'Ada wants to hear where the chair went.',
- 'recap.clause.pot-again':'Tunde says the pot will fruit again.','morning.grew.title':'It grew overnight.'};
+ 'recap.clause.pot-again':'Tunde says the pot will fruit again.','morning.grew.title':'It grew overnight'};
 const checks=[];let runFn=null;
 
 // a dist that loads only the v35 modules up to and including `last` (spec 11.2)
@@ -92,7 +92,8 @@ function subsetDir35(last){const base=process.env.COMPOUND_GAME_DIR||path.resolv
    const e=L.evening[w];assert(Array.isArray(e)&&e.length>=4,'evening '+w);ev[w]=e.length;
    for(const l of e){assert(typeof l.id==='string'&&!ids.has(l.id),'evening id '+l.id);ids.add(l.id);for(const k of l.when)assert(keys.has(k),'unknown when key '+k+' in '+l.id);}
    assert.deepEqual(e[e.length-1].when,['default'],'the last evening line of '+w+' is the default');}
-  const need=[...ROWS.map(r=>'recap.'+r),'recap.clause.chair','recap.clause.pot-again','recap.clause.evening-missed',
+  const need=[...ROWS.map(r=>'recap.'+r),'recap.clause.chair','recap.clause.chair-heard','recap.clause.pot-again','recap.clause.evening-missed',
+   'morning.done.planted.title','morning.done.watered.title','morning.done.grow.body','morning.done.harvested.title','morning.done.harvested.body',
    ...ROWS.flatMap(r=>['morning.'+r+'.title','morning.'+r+'.body']),...SPEAKERS.map(r=>'morning.'+r+'.say'),
    'party.tunde.seedling','party.ada.armchair','fallback.tunde','fallback.nkechi','fallback.ada'];
   for(const k of need)assert(typeof L.text[k]==='string'&&L.text[k].trim().length>0,'text key '+k);
@@ -175,6 +176,13 @@ function subsetDir35(last){const base=process.env.COMPOUND_GAME_DIR||path.resolv
   run("S.time=20;dispatch('nextday');S.time=8;S.nb.ada.aff=1;globalThis.SNAP=JSON.stringify(S);openTalk(0,'ada');globalThis.LA=JSON.stringify(S.life.lines35);");
   run("S=JSON.parse(SNAP);closePanel();applyRemote({data:{name:'hs',data:{i:1,id:'talk:ada'},seed:5,src:1}});globalThis.LB=JSON.stringify(S.life.lines35);");
   assert.equal(run('LA'),run('LB'),'the silent replay records the same line');
+  // a new household on day 2: the base gift narrative no longer promises the housewarming that already happened
+  run("AI.on=false;dispatch('aiStart');S.p[0].name='Efe';S.p[1].name='Ola';dispatch('setupnext',{i:0});dispatch('setupnext',{i:1});closePanel();dispatch('movein');closePanel();");at(...HOME);
+  run("S.day=2;S.time=8;S.nb.tunde.aff=3;delete S.flags.tundePlant;openTalk(0,'tunde');");const gift=html();
+  assert(gift.includes('A potted plant added')&&gift.includes('Next time you have people round, I do the sound.')&&!/housewarming/.test(gift),'Tunde after the housewarming');
+  run("S.nb.ada.aff=3;delete S.flags.adaPhotos;openTalk(0,'ada');");const stool=html();assert(!/housewarming/.test(stool)&&stool.includes('who sits where'),'Ada after the housewarming');
+  run("life34().requests.ada={stage:2,lastDay:S.day};S.life.lastDecor='armchair';");assert.equal(run("callback34('ada')"),'Two smooth shells. The frame remembers the water now.','the shell page thanks her for the shells');
+  run("life34().requests.ada.lastDay=S.day-1;");assert(run("callback34('ada')").includes('armchair'),'on a later day the base callback returns');
   return {line:id,replayed:J('S.life.lines35.used.ada')};});
 
  // 7. Context
@@ -187,7 +195,11 @@ function subsetDir35(last){const base=process.env.COMPOUND_GAME_DIR||path.resolv
   const a2=used('ada')[0];assert(J(`LINES35.ada.find(x=>x.id==='${a2}').when`).includes('chair-placed'),'Ada reads the armchair indoors: '+a2);
   run("S.day=3;S.nb.nkechi.aff=1;request34('nkechi').stage=1;request34('nkechi').lastDay=0;S.life.crop.stage=2;S.life.crop.wateredDay=2;delete S.pantry.pepper;openTalk(0,'nkechi');");
   const nk=used('nkechi')[0],nt=run(`LINES35.nkechi.find(x=>x.id==='${nk}').text`);assert(/pepper/i.test(nt),'Nkechi asks after peppers: '+nt);
-  const s=subOK('7');return {tunde:tu,adaVeranda:a1,adaIndoors:a2,nkechi:nk,subset:s};});
+  // 'watered' holds for yesterday's watering too, so no line keyed on it may promise growth by morning (on day 3 the plant has grown already)
+  const promise=J("LINES35.tunde.concat(LINES35.nkechi,LINES35.ada).filter(l=>l.when.includes('watered')&&/by morning|overnight/i.test(l.text)).map(l=>l.id)");assert.deepEqual(promise,[],'watered lines that promise growth');
+  run("S.day=3;S.life.crop.stage=2;S.life.crop.wateredDay=2;S.nb.tunde.aff=2;delete S.life.lines35;openTalk(0,'tunde');openTalk(0,'tunde');");
+  const d3=J("S.life.lines35.used.tunde.map(id=>LINES35.tunde.find(x=>x.id===id).text)");assert(d3.every(t=>!/by morning/i.test(t)),'day 3: '+d3.join(' | '));
+  const s=subOK('7');return {tunde:tu,adaVeranda:a1,adaIndoors:a2,nkechi:nk,day3Tunde:J("S.life.lines35.used.tunde"),subset:s};});
 
  // 8. Party
  check(8,'Party: a new household’s housewarming carries Tunde’s seedling promise and Ada’s armchair until they no longer apply; old households see nothing new',()=>{

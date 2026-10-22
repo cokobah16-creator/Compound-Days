@@ -117,10 +117,10 @@ if(process.argv[2]==='--without-audio'){
    run("globalThis.MENU35={ins:[]};globalThis.realQS35=document.querySelector;document.querySelector=sel=>sel==='#panel .actions'?{insertAdjacentHTML:(w,h)=>MENU35.ins.push([w,h]),querySelector:()=>null}:null;");
    const soundIns=()=>J("MENU35.ins.filter(x=>x[1].includes('sound35'))");
    try{
-    run('MENU35.ins=[];openMenu();');let ins=soundIns();assert.equal(ins.length,1);assert.equal(ins[0][0],'beforeend');assert(ins[0][1].includes('>Sound: off (tap for on)<'),ins[0][1]);
+    run('MENU35.ins=[];openMenu();');let ins=soundIns();assert.equal(ins.length,1);assert.equal(ins[0][0],'beforeend');assert(ins[0][1].includes('>Sound: off<'),ins[0][1]);
     assert(!/First evening|copyTimeline/.test(ins[0][1]),'the sound button is not a timeline insertion');
     run("PH='';dispatch('sound35')");assert.equal(run("localStorage.getItem('cd3-sound')"),'on');assert.equal(run('AUDIO35.on()'),true);
-    assert.equal(run('AUDIO35.ctx.state'),'running','on: resumed');ins=soundIns();assert.equal(ins.length,2);assert(ins[1][1].includes('>Sound: on (tap for off)<'));
+    assert.equal(run('AUDIO35.ctx.state'),'running','on: resumed');ins=soundIns();assert.equal(ins.length,2);assert(ins[1][1].includes('>Sound: on<'));
     run('AC35.log.length=0');assert.equal(run("AUDIO35.play('catch')"),true);run('AC35.log.length=0');
     // with the Graphics button present the setting goes right after it
     run("MENU35.gfx=[];document.querySelector=sel=>sel==='#panel .actions'?{insertAdjacentHTML:(w,h)=>MENU35.ins.push([w,h]),querySelector:q=>q==='[data-act=\"quality\"]'?{insertAdjacentHTML:(w,h)=>MENU35.gfx.push([w,h])}:null}:null;MENU35.ins=[];openMenu();");
@@ -134,7 +134,7 @@ if(process.argv[2]==='--without-audio'){
    try{assert.equal(run('AUDIO35.on()'),true);run("dispatch('sound35')");assert.equal(run('AUDIO35.on()'),false);run("dispatch('sound35')");assert.equal(run('AUDIO35.on()'),true);}
    finally{run('localStorage=realLS35;');}
    assert.equal(run("localStorage.getItem('cd3-sound')"),'on');run('closePanel()');
-   return {offLabel:'Sound: off (tap for on)',onLabel:'Sound: on (tap for off)',localOnly:true,afterGraphics:true};});
+   return {offLabel:'Sound: off',onLabel:'Sound: on',localOnly:true,afterGraphics:true};});
 
   // 4. Every cue has its visual twin at the moment it fires, on the real actions (TUNE's cue bus, life's fishing and pot).
   check('Twins: at each real cue the visual twin is present (float, nibble twitch, dipped float, catch card, watered pot)',()=>{

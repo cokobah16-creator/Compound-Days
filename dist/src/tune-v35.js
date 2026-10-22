@@ -12,9 +12,9 @@ function cue35(name,data){if(typeof silentMode==='function'&&silentMode())return
 
 /* Wall colours and floors, always on offer at Palm Court Finds (₦1,500–2,500). */
 const PAINTS35=[
- {id:'indigo',kind:'wall',name:'Indigo wash',hex:'#8C9BC0',price:2500},
+ {id:'indigo',kind:'wall',name:'Adire indigo',hex:'#8C9BC0',price:2500},
  {id:'palm',kind:'wall',name:'Palm green',hex:'#A9BF9C',price:2000},
- {id:'ochre',kind:'wall',name:'Ochre lime',hex:'#E6C98C',price:1500},
+ {id:'ochre',kind:'wall',name:'Ochre limewash',hex:'#E6C98C',price:1500},
  {id:'terrazzo',kind:'floor',name:'Cream terrazzo',hex:'#DCCFB8',price:2500},
  {id:'teak',kind:'floor',name:'Teak brown',hex:'#8E6243',price:2000}];
 
@@ -24,11 +24,14 @@ const TUNE35={version:1,purse:6000,paints:PAINTS35,
  // the six flat walls as buildWorld draws them: x1,x2,z1,z2,h (the colour argument is ignored)
  flatWalls:[[-8.25,-2.35,1.75,2.0,2.8],[-8.25,-8.0,1.75,5.85,2.8],[-2.6,-2.35,1.75,4.3,1.2],[-2.6,-2.35,5.5,5.85,1.2],[-8.0,-4.6,5.6,5.85,1.2],[-3.6,-2.35,5.6,5.85,1.2]],
  flatFloor:[5.4,3.6,-5.3,3.8],
- reserved:[[3,4,'the path to the pot'],[4,4,'the walkway']],
- panelAt:0,seq:0,paintUndo:null,applied:null,
+ // kept clear: the veranda cell beside the pot, the veranda cell outside the door and the room cell just inside it (the only way out to the veranda)
+ reserved:[[3,4,'the path to the pot'],[4,4,'the walkway'],[4,3,'the way to the veranda']],
+ panelAt:0,seq:0,paintUndo:null,applied:null,shown:null,frame:null,harvestCard:false,
  fishActs:new Set(['lifeCast','lifeReel','lifeCatch','lifeFish']),
- copy:{approve:['That will look lovely in the flat.','Good choice. I can already see it there.','We needed that, you know.'],
-  note:'A note from Tunde by the pot: plant it, water it, then we see.',refusePlant:'Tunde’s seedling arrives tomorrow morning.'},
+ copy:{approve:['That will look lovely in the flat.','Good choice. I can already see it there.','We needed that, you know.','Ehen! That is the one.','That one is correct. The flat will thank us.'],
+  note:'A note from Tunde by the pot: plant it, water it, then we see.',refusePlant:'Tunde’s seedling arrives tomorrow morning.',
+  harvestTitle:'Three red peppers',harvestBase:'Three peppers, into the pantry.',harvestNkechi:'Two are for Mama Nkechi’s pot.',harvestTunde:'Tunde will want to hear.',
+  learnBeansdodo:'Mama Nkechi showed you, for one fresh fish.',kept:'Dashed spaces stay clear: the doorway and the way to your pot.'},
  copyFix:[
   ['Water it on Sundays.','Water it when the soil looks dry. It forgives a lot.'],
   ['jollof on Fridays','jollof every evening'],
@@ -37,8 +40,11 @@ const TUNE35={version:1,purse:6000,paints:PAINTS35,
   ['Film night on Saturdays','Film night once a week'],
   ['Film night is Saturday.','Film night is coming.'],
   ['Film night next Saturday.','Film night soon.'],
-  ['Sunday Housewarming','Dressed-up Housewarming'],
-  ['Sunday, properly','Dressed up, properly']]};
+  ['Cream with a sheen. Sunday, properly.','Cream with a sheen. For church and owambe.'],
+  ['Sunday Housewarming','After-church Housewarming'],
+  ['Sunday, properly','After church, properly']]};
+// the base templates add a full stop after vibe(), which already ends with one (the night panel and the Menu)
+TUNE35.fixVibe=function(s){if(typeof s!=='string'||s.indexOf('Home vibe:')<0)return s;return s.replace(/(Home vibe: <b>[^<]*\.)<\/b>\./g,'$1</b>').replace(/(Home vibe: [^<]*\.)\.(?=<)/g,'$1');};
 TUNE35.fixCopy=function(s){if(typeof s!=='string'||s.indexOf('day')<0)return s;for(const [a,b] of TUNE35.copyFix)if(s.indexOf(a)>=0)s=s.split(a).join(b);return s;};
 // Tunde has promised the seedling and it has not arrived yet
 TUNE35.seedlingPending=function(){return !!(S&&S.born35&&!(S.life&&S.life.seed35)&&S.day<2);};
@@ -107,13 +113,22 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  const waterPrev=ACTIONS.lifeWater;
  // wrap: watering a stage-2 plant ripens it on the spot; only a successful watering emits the water cue
  ACTIONS.lifeWater=function(){const c=life34()&&life34().crop;const st=c?c.stage:0,wd=c?c.wateredDay:0;const r=waterPrev.apply(this,arguments);
-  if(c&&c.wateredDay===S.day&&wd!==S.day){if(st===2){c.stage=3;refreshGarden34();save();if(!silent())openLife34('garden');}cue35('water',{stage:c.stage});}return r;};
+  if(c&&c.wateredDay===S.day&&wd!==S.day){if(st===2){c.stage=3;refreshGarden34();save();if(!silent())openLife34('garden');}cue35('water',{stage:c.stage});
+   if(c.stage<3)clearMark35('garden');}return r;};      // watered and not ripe: nothing more to do at the pot today
+ const harvestPrev=ACTIONS.lifeHarvest;
+ // wrap: a harvest gets its own card on the Garden page (instead of the reset plant under a toast), and the pot marker has done its job
+ ACTIONS.lifeHarvest=function(){const c=life34()&&life34().crop,n=c?c.harvests:0;if(silent())return harvestPrev.apply(this,arguments);
+  const tp=toast;TUNE35.harvestCard=true;toast=function(m){if(m==='Three red peppers, into the pantry.')return;return tp.apply(this,arguments);};
+  let r;try{r=harvestPrev.apply(this,arguments);}finally{toast=tp;TUNE35.harvestCard=false;}if(c&&c.harvests>n)clearMark35('garden');return r;};
  const gardenMeshPrev=refreshGarden34;
  // wrap: once the seedling has arrived and is not yet planted, a nursery bag with two leaves and Tunde's folded note sit by the pot
  refreshGarden34=function(){const r=gardenMeshPrev.apply(this,arguments);const g=LIFE34.garden,l=S&&S.life;
   // (on the soil, not on the stand beside it: from the default camera the veranda wall hides everything below the pot's rim)
   if(g&&l&&l.seed35&&l.crop&&l.crop.stage===0){mesh34(g,new THREE.CylinderGeometry(.07,.06,.12,10),'#3B3A33',.05,.43,.05);
    leaf34(g,.02,.53,.05,.09,.5);leaf34(g,.09,.55,.04,.08,-.6);box34(g,.13,.012,.09,'#F6EEDA',-.11,.385,.09).rotation.y=.4;}
+  // stage 2 reads at phone size: fuller leaves and white pepper flowers at the top (stage 1 has neither)
+  if(g&&l&&l.crop&&l.crop.stage===2){for(const m of g.children)if(m.scale&&Math.abs(m.scale.y-.018)<1e-6){m.scale.x*=1.3;m.scale.z*=1.3;}
+   for(const [x,y,z] of [[-.07,.84,.04],[.06,.88,.02],[.0,.93,-.03],[.1,.79,.05]]){mesh34(g,new THREE.SphereGeometry(.034,8,6),'#F7F2E4',x,y,z);mesh34(g,new THREE.SphereGeometry(.013,6,4),'#E3B23C',x,y+.022,z);}}
   return r;};
 
  /* ---------- 4.3 Wall-clock bite, nibble and cues ---------- */
@@ -135,13 +150,31 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  // wrap: a reel that records a catch emits the catch cue once
  ACTIONS.lifeReel=function(){const had=!!(life34()&&life34().catch);const r=reelPrev.apply(this,arguments);const c=life34()&&life34().catch;if(!had&&c)cue35('catch',{id:c.id});return r;};
 
+ /* ---------- Directions marker: done jobs clear it; the distance is the human's ---------- */
+ // clear the marker when it points at the pot ('garden') or at a neighbour (their key) and that job is done
+ function clearMark35(what){const w=LIFE34.waypoint;if(!w||silent())return;
+  const hit=what==='garden'?(w.x===-5.6&&w.z===6.35):!!(CAST[what]&&w.name===CAST[what].name);if(!hit)return;LIFE34.waypoint=null;if(typeof refreshMarker34==='function')refreshMarker34();}
+ TUNE35.clearMark=clearMark35;
+ const requestPrev=ACTIONS.lifeRequest;
+ // wrap: a finished request clears that neighbour's marker
+ ACTIONS.lifeRequest=function(d){const k=d&&d.k,ok=!!(k&&REQUESTS34[k]),st=ok?request34(k).stage:0;const r=requestPrev.apply(this,arguments);if(ok&&request34(k).stage>st)clearMark35(k);return r;};
+ // the chip's distance counts human players only (life-world measures from the nearest player, the companion included)
+ let guideEl=null;
+ const guideTick=()=>{const w=LIFE34.waypoint;if(!w)return;if(!guideEl)guideEl=typeof document!=='undefined'&&document.getElementById?document.getElementById('life-guide34'):null;
+  if(!guideEl||!guideEl.style||guideEl.style.display==='none'||!guideEl.querySelector)return;const span=guideEl.querySelector('span');if(!span)return;
+  let d=1e9;for(const p of players){if(!p||(typeof AI!=='undefined'&&AI.on&&p.i===AI.i))continue;d=Math.min(d,Math.hypot(p.g.position.x-w.x,p.g.position.z-w.z));}if(d===1e9)return;
+  const want=d<2?'You’re here. Use Act.':Math.ceil(d)+' m away',h=span.innerHTML;if(h.indexOf(want)>=0)return;const n=h.replace(/You’re here\. Use Act\.|\d+ m away/,want);if(n!==h)span.innerHTML=n;};
+
  /* ---------- 4.4 Act: panel stamps, keyboard, touch, pad ---------- */
  const openPrev=openPanel;
  // wrap: stamp the panel change for Act's 300 ms guard (synchronously) and take weekday prose out of every panel
- openPanel=function(html){if(!silent()){TUNE35.panelAt=clock35();TUNE35.seq++;}return openPrev.call(this,TUNE35.fixCopy(html));};
+ openPanel=function(html){if(!silent()){TUNE35.panelAt=clock35();TUNE35.seq++;}return openPrev.call(this,TUNE35.fixCopy(TUNE35.fixVibe(html)));};
  const closePrev=closePanel;
  // wrap: closing a panel is a panel change too
- closePanel=function(){if(!silent()){TUNE35.panelAt=clock35();TUNE35.seq++;}return closePrev.apply(this,arguments);};
+ closePanel=function(){if(!silent()){TUNE35.panelAt=clock35();TUNE35.seq++;
+   // "See it in the room" (or any close) right after placing a piece: the camera fit includes it for 2.5 s
+   const sh=TUNE35.shown;if(sh&&LIFE34.tab==='home'&&clock35()-sh.at<120000&&S&&S.home.items.some(x=>x.id===sh.id))TUNE35.frame={id:sh.id,until:clock35()+2500};TUNE35.shown=null;}
+  return closePrev.apply(this,arguments);};
  if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener('keydown',e=>{
   if(!e||e.repeat||!(e.key==='e'||e.key==='E'||e.key==='Enter'))return;if(!overlayOpen())return;
   if(e.key==='Enter'){const ae=document.activeElement;if(ae&&(ae.tagName==='BUTTON'||ae.tagName==='A')&&panel.contains&&panel.contains(ae))return;}
@@ -151,6 +184,10 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  setupTouch=function(){const r=touchPrev.apply(this,arguments);
   for(const id of ['actl','actr']){const b=document.getElementById(id);if(b&&b.addEventListener)b.addEventListener('pointerdown',()=>{if(overlayOpen()&&actPrimary35()){act[0]=act[1]=false;}});}
   return r;};
+ const fishPrev=ACTIONS.lifeFish;
+ // wrap: "Cast again" on the page after a catch casts straight away (one press per cast, not two); from the world it opens the line as before
+ ACTIONS.lifeFish=function(){const again=!silent()&&!LIFE34.fish&&!(life34()&&life34().catch)&&TUNE35.isFishPanel();const r=fishPrev.apply(this,arguments);
+  if(again&&LIFE34.fish&&LIFE34.fish.phase==='ready')ACTIONS.lifeCast();return r;};
  let fishSeq=-1,fishTab=null,fishShown=false,bodyFish=false,padDown=false;
  const fishPanelNow=()=>{if(!overlayOpen()){fishShown=false;fishSeq=-1;return false;}if(TUNE35.seq!==fishSeq||LIFE34.tab!==fishTab){fishSeq=TUNE35.seq;fishTab=LIFE34.tab;fishShown=TUNE35.isFishPanel();}return fishShown;};
  // twitch the world float before the bite (after life-world's and the bridge's bob updates), lift touch Act over the fishing sheet, read the pad's A button
@@ -159,6 +196,7 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
   if(bob&&TUNE35.nibble()){const t=clock35()/1000;bob.position.y=.12-.035*Math.abs(Math.sin(t*26));const ring=g.userData.ring;if(ring)ring.scale.setScalar(1+.15*Math.sin(t*26));}
   const fishNow=fishPanelNow();
   if(fishNow!==bodyFish){bodyFish=fishNow;if(document.body&&document.body.classList)document.body.classList.toggle('fishact35',fishNow);}
+  guideTick();
   if(fishNow&&typeof navigator!=='undefined'&&navigator.getGamepads){let down=false;try{const pads=navigator.getGamepads()||[];for(let k=0;k<pads.length;k++){const p=pads[k];if(p&&p.buttons&&p.buttons[0]&&p.buttons[0].pressed){down=true;break;}}}catch(e){}
    if(down&&!padDown)actPrimary35();padDown=down;}else padDown=false;});
 
@@ -169,6 +207,18 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  fitsHome34=function(type,x,y,rot=0,ignore){const d=ITEMS[type];let ok;
   if(d&&d.outdoor&&!d.anywhere&&y===FLAT.rows){d.anywhere=true;try{ok=fitsPrev.call(this,type,x,y,rot,ignore);}finally{delete d.anywhere;}}else ok=fitsPrev.call(this,type,x,y,rot,ignore);
   if(!ok)return false;const fp=footprint34(type,rot),R=TUNE35.reserved;for(let k=0;k<R.length;k++){const rx=R[k][0],ry=R[k][1];if(rx>=x&&rx<x+fp[0]&&ry>=y&&ry<y+fp[1])return false;}return true;};
+
+ const cellPrev=ACTIONS.lifeCell;
+ // wrap: a piece newly placed from the Home page is remembered, so closing the page can frame it (closePanel above)
+ ACTIONS.lifeCell=function(){const ids=S&&S.home?new Set(S.home.items.map(x=>x.id)):null;const r=cellPrev.apply(this,arguments);
+  if(ids&&!silent())for(const it of S.home.items)if(!ids.has(it.id))TUNE35.shown={id:it.id,at:clock35()};return r;};
+ if(typeof v21InteractionPoints==='function'){const FB=[];for(let k=0;k<8;k++)FB.push(new THREE.Vector3());const ptsPrev=v21InteractionPoints;
+  // wrap: while a just-placed piece is being shown, the human view's camera fit includes its box
+  v21InteractionPoints=function(i){const pts=ptsPrev.apply(this,arguments);const f=TUNE35.frame;if(!f||!Array.isArray(pts))return pts;
+   if(clock35()>=f.until){TUNE35.frame=null;return pts;}if(typeof AI!=='undefined'&&AI.on&&i===AI.i)return pts;
+   const it=S&&S.home&&S.home.items.find(x=>x.id===f.id);if(!it){TUNE35.frame=null;return pts;}
+   const fp=footprint34(it.type,it.rot||0),a=cellToWorld(it.x,it.y),half=FLAT.cell/2,x0=a[0]-half,z0=a[1]-half,x1=x0+fp[0]*FLAT.cell,z1=z0+fp[1]*FLAT.cell;let k=0;
+   for(const x of [x0,x1])for(const y of [0,1.1])for(const z of [z0,z1])pts.push(FB[k++].set(x,y,z));return pts;};}
 
  /* ---------- 4.6 Paint: tag the flat's boxes as they are made ---------- */
  let building=false;
@@ -197,13 +247,13 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  // buy a paint at the stall (shared: money and home)
  ACTIONS.buyPaint35=function(d){const id=d&&d.id;if(!market34()){navigate34('market');return;}const p=TUNE35.paintOf(id);
   if(!p||ownsPaint(id)||S.money<p.price)return;spend(p.price);(S.home.paints||(S.home.paints=[])).push(id);LIFE34.undo=null;save();
-  if(!silent()){openLife34('market');toast(p.name+' is yours. Paint the flat from Home.'+approveLine(id));}};
+  if(!silent()){openLife34('market');toast(p.name+' is yours. Change the walls and floor from Home.'+approveLine(id));}};
  // paint the walls or the floor at home: an owned paint, or 'wall:base' / 'floor:base' for the original (shared)
  ACTIONS.paint35=function(d){const id=d&&d.id;if(!home34())return;let kind,val;
   if(id==='wall:base'||id==='floor:base'){kind=id.slice(0,id.indexOf(':'));val='';}
   else{const p=TUNE35.paintOf(id);if(!p||!ownsPaint(id))return;kind=p.kind;val=id;}
   const before={wall:S.home.wall||'',floor:S.home.floor||''};if(before[kind]===val){if(!silent())openLife34('home');return;}
-  if(!silent())TUNE35.paintUndo=before;if(val)S.home[kind]=val;else delete S.home[kind];applyPaint35();save();if(!silent())openLife34('home');};
+  TUNE35.paintUndo=silent()?null:before;if(val)S.home[kind]=val;else delete S.home[kind];applyPaint35();save();if(!silent())openLife34('home');};
  // undo the last paint with the values to restore, so both devices agree (shared)
  ACTIONS.paintUndo35=function(d){d=d||{};const okv=(v,kind)=>v===''||(ownsPaint(v)&&TUNE35.paintOf(v)&&TUNE35.paintOf(v).kind===kind);
   const w=d.wall==null?'':String(d.wall),f=d.floor==null?'':String(d.floor);if(!okv(w,'wall')||!okv(f,'floor'))return;
@@ -214,21 +264,33 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  dispatch=function(name){if(!KEEP_UNDO.has(name))TUNE35.paintUndo=null;return dispatchPrev.apply(this,arguments);};
 
  /* ---------- 4.8 Finds never asks for agreement; the companion approves ---------- */
- const approveLine=id=>{if(!(typeof AI!=='undefined'&&AI.on&&S.p[AI.i]))return '';const L=TUNE35.copy.approve;return ' '+(pname(AI.i)||'Your companion')+': “'+L[String(id).length%L.length]+'”';};
+ const approveLine=id=>{if(!(typeof AI!=='undefined'&&AI.on&&S.p[AI.i]))return '';const a=players[AI.i],h=players.find(p=>p&&p.i!==AI.i);
+  if(a&&h&&Math.hypot(a.g.position.x-h.g.position.x,a.g.position.z-h.g.position.z)>6)return '';     // across town, the companion says nothing
+  const L=TUNE35.copy.approve;let n=0;for(const ch of String(id))n=(n*31+ch.charCodeAt(0))>>>0;return ' '+(pname(AI.i)||'Your companion')+': “'+L[n%L.length]+'”';};
  const buyPrev=ACTIONS.lifeBuy;
  // wrap: after a Finds purchase in a companion household, the companion says one approving line in the toast
- ACTIONS.lifeBuy=function(d){const t=d&&d.t,key=S.day+':'+t,l=life34(),had=!!(l&&l.orders[key]);const r=buyPrev.apply(this,arguments);
-  if(!had&&l&&l.orders[key]&&!silent()){const line=approveLine(t);if(line)toast(ITEMS[t].name+' is in Build storage.'+line);}return r;};
+ ACTIONS.lifeBuy=function(d){const t=d&&d.t,key=S.day+':'+t,l=life34(),had=!!(l&&l.orders[key]);const line=silent()?'':approveLine(t);let r;
+  if(line&&ITEMS[t]){const tp=toast,base=ITEMS[t].name+' is in Build storage.';toast=function(m){if(m===base)return;return tp.apply(this,arguments);};   // said once, below, with the line
+   try{r=buyPrev.apply(this,arguments);}finally{toast=tp;}}else r=buyPrev.apply(this,arguments);
+  if(!had&&l&&l.orders[key]&&line)toast(ITEMS[t].name+' is in Build storage.'+line);return r;};
 
  /* ---------- 4.7 Copy that matches the new rules ---------- */
  if(typeof PLANS33!=='undefined'){
   PLANS33.recipe.detail='Tomorrow morning, find Mama Nkechi at her shop on Market Road. She has a use for a fresh fish, and a recipe to go with it.';
-  PLANS33.photo.detail='Tomorrow morning, Ada will want to hear what you make of the flat. Mr. Bassey says the light by the water is kindest in the afternoon.';
+  PLANS33.photo.detail='Tomorrow morning, Ada will want to hear what you make of the flat. Mr. Bassey’s advice: put your favourite piece where the afternoon light falls.';
   PLANS33.garden.detail='Tomorrow morning, look in the pot on your veranda. Tunde said he would leave something there.';}
+ if(RECIPES.beansdodo){const learn=RECIPES.beansdodo.learn;
+  // a new household learns beans and dodo from Mama Nkechi's fish request, not at the community kitchen
+  Object.defineProperty(RECIPES.beansdodo,'learn',{configurable:true,enumerable:true,get(){return S&&S.born35?TUNE35.copy.learnBeansdodo:learn;}});}
  Object.defineProperty(REQUESTS34.tunde[0],'text',{configurable:true,enumerable:true,get(){return TUNE35.seedlingPending()?'Your veranda pot is empty for now. Tomorrow morning I will leave you a seedling. Then we see.':'I left a seedling by your pot. Plant it, give it water. Tomorrow we see.';}});
  const gardenPagePrev=gardenHTML34;
  // wrap: the garden page follows the day-2 seedling and the ripen-on-water rule; it never says "two watered nights"
+ const harvestCard=()=>{const C=TUNE35.copy,nk=request34('nkechi'),tu=request34('tunde'),nkDue=nk.stage===1&&nk.lastDay!==S.day,tuDue=tu.stage===1&&tu.lastDay!==S.day;
+  const say=[C.harvestBase,nkDue?C.harvestNkechi:'',tuDue?C.harvestTunde:''].filter(Boolean).join(' ');
+  const b=(nkDue?btn('Find Mama Nkechi','lifeGo',{v:'nkechi'},'primary'):'')+(tuDue?btn('Find Tunde','lifeGo',{v:'tunde'},nkDue?'quiet':'primary'):'');
+  return `<div class="life-note34 harvest35"><p class="life-kicker">FROM YOUR VERANDA</p><h3>${esc(C.harvestTitle)}</h3><div class="harvest35-icons" aria-hidden="true">${pepperIcon34()}${pepperIcon34()}${pepperIcon34()}</div><p>${esc(say)}</p>${b}</div>`;};
  gardenHTML34=function(){let h=gardenPagePrev.apply(this,arguments);const c=life34().crop;
+  if(TUNE35.harvestCard)h=harvestCard()+h;
   if(c.stage===0&&TUNE35.seedlingPending()){h=h.replace('Tunde has left a seedling. The pot, soil and first plant are a welcome gift.','An empty pot, for now. Tunde said he would leave something in it tomorrow morning.')
     .replace(btn('Plant the seedling','lifePlant',{},'primary'),'<span class="life-pill34">Waiting for Tunde’s seedling</span>');}
   else if(c.stage===0&&S.life.seed35)h=h.replace('Tunde has left a seedling. The pot, soil and first plant are a welcome gift.','Tunde has left a seedling and a note by the pot. Plant it whenever you like.');
@@ -264,16 +326,19 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  /* ---------- Finds and Home pages: paints, the walkway and the path ---------- */
  const marketPagePrev=marketHTML34;
  // wrap: the paints follow the whole Finds page, always on offer
- marketHTML34=function(){const h=marketPagePrev.apply(this,arguments),at=market34();
-  const cards=PAINTS35.map(p=>`<article class="life-card34 paint35-card"><span class="paint35-swatch" style="background:${p.hex}"></span><span class="life-label34">${p.kind==='wall'?'FOR THE WALLS':'FOR THE FLOOR'}</span><h3>${esc(p.name)}</h3><b>${naira(p.price)}</b>${ownsPaint(p.id)?'<span class="life-pill34">Yours</span>':btn(at?'Buy the paint':'Visit to buy','buyPaint35',{id:p.id},'primary block').replace('<button ',S.money<p.price?'<button disabled ':'<button ')}</article>`).join('');
-  return h+`<section class="paint35"><h3>For the walls and floor</h3><p class="small">Always on offer. Paint the flat from Home once you have it.</p><div class="life-grid34">${cards}</div></section>`;};
- const PATH35='<path d="M30 75L42 8M70 75L58 8" stroke="#A89878" stroke-width="5"/><path d="M38 55H62M41 35H59" stroke="#A89878" stroke-width="4"/>';
+ marketHTML34=function(){let h=marketPagePrev.apply(this,arguments);const at=market34();
+  if(!owned34('armchair')&&ITEMS.armchair){const i=h.indexOf('<h3>'+ITEMS.armchair.name+'</h3>'),j=i>0?h.lastIndexOf('<span class="life-label34">',i):-1;
+   if(j>=0){const k=j+'<span class="life-label34">'.length;h=h.slice(0,k)+'FROM ADA’S WORKSHOP · '+h.slice(k);}}
+  const cards=PAINTS35.map(p=>`<article class="life-card34 paint35-card"><span class="paint35-swatch" style="background:${p.hex}"></span><span class="life-label34">${p.kind==='wall'?'FOR THE WALLS':'FOR THE FLOOR'}</span><h3>${esc(p.name)}</h3><b>${naira(p.price)}</b>${ownsPaint(p.id)?'<span class="life-pill34">Yours</span>':btn(at?'Buy for the flat':'Visit to buy','buyPaint35',{id:p.id},'primary block').replace('<button ',S.money<p.price?'<button disabled ':'<button ')}</article>`).join('');
+  return h+`<section class="paint35"><h3>For the walls and floor</h3><p class="small">Always on offer. Change the walls and floor from Home.</p><div class="life-grid34">${cards}</div></section>`;};
+ const PATH35='<path d="M50 80V18" stroke="#A89878" stroke-width="7" stroke-linecap="round" stroke-dasharray="1 13"/><path d="M38 30L50 18L62 30" fill="none" stroke="#A89878" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>';
  const homePagePrev=homeHTML34;
  // wrap: the walkway and the path to the pot show as kept cells; at home, a walls-and-floor strip and the paint undo
  homeHTML34=function(){let h=homePagePrev.apply(this,arguments);if(!home34())return h;
   for(const [x,y,label] of TUNE35.reserved){if(itemAt(x,y))continue;
-   h=h.replace(new RegExp(`<button class="cell34 veranda([^"]*)" data-act="lifeCell" data-x="${x}" data-y="${y}" aria-label="Veranda, column ${x+1}, empty"([^>]*)>[\\s\\S]*?</button>`),
-    (m,cls,b)=>`<button class="cell34 veranda walkway35${cls}" data-act="lifeCell" data-x="${x}" data-y="${y}" aria-label="Veranda, column ${x+1}, ${label}"${b.includes('disabled')?b:b+' disabled'}>${lifeSVG34(PATH35)}</button>`);}
+   h=h.replace(new RegExp(`<button class="cell34 ([^"]*)" data-act="lifeCell" data-x="${x}" data-y="${y}" aria-label="(Veranda|Row \\d+), column ${x+1}, empty"([^>]*)>[\\s\\S]*?</button>`),
+    (m,cls,where,b)=>`<button class="cell34 walkway35 ${cls}" data-act="lifeCell" data-x="${x}" data-y="${y}" aria-label="${where}, column ${x+1}, ${label}"${b.includes('disabled')?b:b+' disabled'}>${lifeSVG34(PATH35)}</button>`);}
+  h=h.replace('<p class="life-label34 room-caption34">VERANDA · THE OPEN AIR</p>',m=>m+`<p class="small muted walkway35-note">${esc(TUNE35.copy.kept)}</p>`);
   const owned=PAINTS35.filter(p=>ownsPaint(p.id));let strip;
   if(!owned.length)strip='<p class="small muted">Paints are always on offer at Palm Court Finds.</p>';
   else strip=[['wall','Walls','the walls'],['floor','Floor','the floor']].map(([kind,title,what])=>{const cur=S.home[kind]||'',mine=owned.filter(p=>p.kind===kind);
@@ -300,7 +365,11 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
 #panel .paint35-chip span{flex:0 0 26px;width:26px;height:26px;border-radius:50%;border:1px solid #0003}
 #panel .paint35-strip .paint35-chip.selected{border:2px solid #517a56;padding:5px 11px;font-weight:700}
 #panel .recipe35-state{white-space:nowrap}
-#panel .cell34.walkway35{background:#efe9d9;border-style:dashed}#panel .cell34.walkway35 svg{opacity:.9}`;
+#panel .cell34.walkway35{background:#efe9d9;border-style:dashed}#panel .cell34.walkway35 svg{opacity:.9}
+#panel .walkway35-note{margin:2px 0 8px}
+#panel .harvest35 .harvest35-icons{display:flex;gap:6px;margin:6px 0 4px}#panel .harvest35 .harvest35-icons svg{width:40px;height:40px}#panel .harvest35 .btn{margin:8px 8px 0 0}
+#life-guide34 button{width:44px;height:44px;min-width:44px;margin:-7px -8px -7px -6px;flex:0 0 44px}
+#panel .btn[data-act="aspeed"]{min-height:44px}`;
  if(typeof document!=='undefined'&&document.createElement){const st=document.createElement('style');st.id='tune-v35-css';st.textContent=TUNE35.css;
   const put=()=>document.body&&document.body.appendChild(st);if(document.readyState==='loading'&&document.addEventListener)document.addEventListener('DOMContentLoaded',put);else put();}
 }

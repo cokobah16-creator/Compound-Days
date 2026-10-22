@@ -105,12 +105,18 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   return s;});
 
  // 4. Crop rule
- check(4,'Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot',()=>{
-  oldHH();at(...HOME);run("CU.length=0;dispatch('lifePlant');dispatch('lifeWater');");assert.deepEqual(J('[S.life.crop.stage,S.life.crop.wateredDay===S.day]'),[1,true],'stage 1, watered');
-  run("dispatch('nextday');closePanel();");at(...HOME);assert.equal(run('S.life.crop.stage'),2);
+ check(4,'Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot; the pot marker clears when nothing more is due; stage 2 has flowers; the harvest has its own card',()=>{
+  oldHH();at(...HOME);run("navigate34('garden');");assert.deepEqual(J('[LIFE34.waypoint.x,LIFE34.waypoint.z]'),[-5.6,6.35]);run("closePanel();CU.length=0;dispatch('lifePlant');");assert(J('LIFE34.waypoint'),'planting alone leaves the marker');
+  run("dispatch('lifeWater');");assert.deepEqual(J('[S.life.crop.stage,S.life.crop.wateredDay===S.day]'),[1,true],'stage 1, watered');assert.equal(J('LIFE34.waypoint'),null,'watered and not ripe: the pot marker has done its job');
+  const kids1=run('LIFE34.garden.children.length');
+  run("dispatch('nextday');closePanel();");at(...HOME);assert.equal(run('S.life.crop.stage'),2);const kids2=run('LIFE34.garden.children.length');
+  assert(kids2>=kids1+1+8,'stage 2 adds a leaf and four flowers: '+kids1+' -> '+kids2);assert.equal(run("LIFE34.garden.children.filter(m=>m.scale&&Math.abs(m.scale.y-.018)<1e-6&&m.scale.x>.2).length")>0,true,'fuller leaves');
+  run("navigate34('garden');closePanel();");
   run("dispatch('lifeWater');");assert.deepEqual(J('[S.life.crop.stage,S.life.crop.wateredDay===S.day]'),[3,true],'ripe on the spot');
   const w=run('S.life.crop.waterings');run("dispatch('lifeWater');");assert.deepEqual(J('[S.life.crop.stage,S.life.crop.waterings]'),[3,w],'a second water does nothing');
-  const p=run('haveCount("pepper")');run("dispatch('lifeHarvest');");assert.equal(run('haveCount("pepper")'),p+3);assert.equal(run('S.life.crop.stage'),1);
+  const p=run('haveCount("pepper")');run("TOASTS=[];request34('nkechi').stage=1;request34('nkechi').lastDay=0;dispatch('lifeHarvest');");assert.equal(run('haveCount("pepper")'),p+3);assert.equal(run('S.life.crop.stage'),1);
+  const hv=run('PH');assert(hv.includes('class="life-note34 harvest35"')&&hv.includes('Three red peppers')&&hv.includes('Two are for Mama Nkechi’s pot.')&&hv.includes('data-act="lifeGo" data-v="nkechi"'),'the harvest card');
+  assert.deepEqual(J('TOASTS'),[],'no toast over the card');assert.equal(J('LIFE34.waypoint'),null,'the harvest clears the pot marker');run("openLife34('garden')");assert(!run('PH').includes('harvest35'),'the card is shown once');
   run("dispatch('nextday');closePanel();");assert.equal(run('S.life.crop.stage'),1,'no water, no growth');
   const cues=J('CU').filter(c=>c.startsWith('water'));assert.deepEqual(cues,['water:1','water:3'],'water cue only on a successful watering, after any ripening');
   return {waterCues:cues};});
@@ -156,35 +162,51 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   run('delete document.activeElement;LIFE34.tab="today";');assert.equal(run('actPrimary35()'),false,'not on another journal tab');assert.deepEqual(J('DSP'),[]);run("LIFE34.tab='fish';");assert.equal(run('actPrimary35()'),true,'the same panel on the fish tab');
   // the whole loop on one button: Cast, Reel in, Keep, Cast again
   run("closePanel();S.life.catch=null;doFish(0);DSP.length=0;");const loop=[];const press=()=>{run('T35+=300');const ok=run('actPrimary35()');loop.push(ok?J('DSP[DSP.length-1]'):'-');};
-  press();run("for(let k=0;k<60&&LIFE34.fish.phase==='waiting';k++){T35+=200;tickFishing34(.05);}");press();press();const kept=run("haveCount('fish')");press();press();
-  assert.deepEqual(loop,['lifeCast','lifeReel','lifeCatch','lifeFish','lifeCast'],'one button: '+loop.join(','));assert(kept>=1,'kept for the kitchen');assert.equal(run('LIFE34.fish.phase'),'waiting');
+  press();run("for(let k=0;k<60&&LIFE34.fish.phase==='waiting';k++){T35+=200;tickFishing34(.05);}");press();press();const kept=run("haveCount('fish')");press();
+  assert.deepEqual(loop,['lifeCast','lifeReel','lifeCatch','lifeFish'],'one button: '+loop.join(','));assert(kept>=1,'kept for the kitchen');assert.equal(run('LIFE34.fish.phase'),'waiting','Cast again casts at once (one press per cast)');
+  assert.equal(J('DSP.slice(-1)')[0],'lifeFish');press();assert.equal(loop[loop.length-1],'-','nothing to press while the line is out');
   // never anywhere else
   const others={newconfirm:"ACTIONS.newconfirm()",sleep:"openSleep()",night:"endDay()",midnight:"openPanel(`<h2>Past midnight</h2><p>x</p><div class=\"actions\">${btn('Start day 2','nextday',{},'primary block')}</div>`)",
    today:"openLife34('today')",menu:"openMenu()",talk:"openTalk(0,'bassey')"};const refused={};
   run("closePanel();globalThis.S0=S;");for(const [k,code] of Object.entries(others)){run('T35+=1000;closePanel();T35+=1000;DSP.length=0;'+code+';T35+=1000;');refused[k]=run('actPrimary35()')===false&&J('DSP').length===0;assert(refused[k],'Act must not press on '+k);}
   assert.equal(run('S===S0&&S.phase==="play"'),true,'Start over? was not confirmed');run('dispatch=DSP0;closePanel();');
   assert.equal(run("typeof setupTouch"),'function');assert(run("setupTouch.toString().includes('actPrimary35')"),'touch Act is wired after the base listeners');
+  // from the world (no catch page open) the fishing button still opens the line first
+  run("closePanel();LIFE34.fish=null;dispatch('lifeFish');");assert.equal(run('LIFE34.fish.phase'),'ready','from the world: the line opens, ready to cast');run('closePanel()');
   return {fishing:{ready:st.ready.act,waiting:null,bite:st.bite.act,catch:st.catch.act+':'+st.catch.data.v},oneButtonLoop:loop,refused:Object.keys(refused)};});
 
  // 7. Outdoor seats, the walkway and the path to the pot
- check(7,'Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway and the path to the pot stay clear and the pot stays reachable',()=>{
+ check(7,'Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway, the room cell inside the door and the path to the pot stay clear; the veranda and the pot are reached on foot from inside the flat',()=>{
   oldHH();at(...HOME);const row=t=>J(`[0,1,2,3,4,5].map(x=>fitsHome34('${t}',x,4,0))`);
   assert.deepEqual(row('armchair'),[true,true,false,false,false,true]);assert.deepEqual(row('chairs'),[true,true,false,false,false,true]);assert.deepEqual(row('lamp'),[false,false,false,false,false,false]);
   for(const t of ['plant','planter'])assert.deepEqual(J(`[fitsHome34('${t}',3,4,0),fitsHome34('${t}',4,4,0),fitsHome34('${t}',1,4,0)]`),[false,false,true],t);
   assert.equal(run("fitsHome34('planter',1,4,0)||fitsHome34('planter',3,4,0)"),true);
-  assert.deepEqual(J('TUNE35.reserved'),[[3,4,'the path to the pot'],[4,4,'the walkway']]);
+  assert.deepEqual(J('TUNE35.reserved'),[[3,4,'the path to the pot'],[4,4,'the walkway'],[4,3,'the way to the veranda']]);
+  // nothing may stand on the room cell just inside the only opening in the south wall
+  assert.deepEqual(J(`['shelf','kitchen','coffee','armchair','plant','speaker'].map(t=>[0,1].some(r=>fitsHome34(t,4,3,r)))`),[false,false,false,false,false,false],'the room cell inside the door stays clear');
+  // a breadth-first walk from inside the flat (not from the veranda): the nearest it gets to the pot, and the veranda cells it reaches
+  const walkFromInside=()=>J(`(()=>{const st=0.1,key=(x,z)=>x.toFixed(1)+','+z.toFixed(2),q=[[-5.2,3.4]],seen=new Set([key(-5.2,3.4)]);let best=99;const cells=[0,0,0,0,0,0];
+   while(q.length){const [x,z]=q.shift();if(z>5.9){best=Math.min(best,Math.hypot(x+5.6,z-6.35));const cx=Math.floor((x-FLAT.x0)/FLAT.cell);if(cx>=0&&cx<6&&Math.abs(x-cellToWorld(cx,4)[0])<0.25)cells[cx]=1;}
+    for(const [dx,dz] of [[st,0],[-st,0],[0,st],[0,-st]]){const nx=+(x+dx).toFixed(2),nz=+(z+dz).toFixed(2);
+    if(nx<-8.2||nx>-2.3||nz<1.8||nz>6.98)continue;const k=key(nx,nz);if(seen.has(k))continue;seen.add(k);if(blocked(nx,nz,PR))continue;q.push([nx,nz]);}}return {pot:+best.toFixed(2),cells:cells.join('')};})()`);
   run("S.home.items.push({id:'ra',type:'armchair',x:1,y:4,rot:0},{id:'rc',type:'chairs',x:5,y:4,rot:0});rebuildFurniture();");
-  const reach=J(`(()=>{const st=0.1,key=(x,z)=>x.toFixed(1)+','+z.toFixed(2),q=[[-4.1,6.4]],seen=new Set([key(-4.1,6.4)]);let best=99;
-   while(q.length){const [x,z]=q.shift();best=Math.min(best,Math.hypot(x+5.6,z-6.35));for(const [dx,dz] of [[st,0],[-st,0],[0,st],[0,-st]]){const nx=+(x+dx).toFixed(2),nz=+(z+dz).toFixed(2);
-    if(nx<-8.2||nx>-2.3||nz<5.75||nz>6.98)continue;const k=key(nx,nz);if(seen.has(k))continue;seen.add(k);if(blocked(nx,nz,PR))continue;q.push([nx,nz]);}}return +best.toFixed(2);})()`);
-  assert(reach<1.45,'the pot is reached on foot with seats at columns 2 and 6: '+reach);
+  const walk=walkFromInside(),reach=walk.pot;
+  assert(reach<1.45,'the pot is reached on foot from inside the flat with seats at columns 2 and 6: '+reach);assert.equal(walk.cells[4],'1','the walkway is reached from inside');
+  // the Home page refuses a piece on the room cell inside the door (a real select and tap)
+  run("S.home.items=S.home.items.filter(i=>i.id!=='ra'&&i.id!=='rc');S.home.storage=['shelf'];LIFE34.undo=null;rebuildFurniture();dispatch('lifeSelect',{ix:0});dispatch('lifeCell',{x:4,y:3});dispatch('lifeCancel');LIFE34.selType34b=null;");
+  assert.equal(run("S.home.items.some(i=>i.type==='shelf')"),false,'no shelf on the room cell inside the door');
+  const inner=run('homeHTML34()');assert(/walkway35[^>]*data-x="4" data-y="3"[^>]*aria-label="Row 4, column 5, the way to the veranda"[^>]*disabled/.test(inner),'the room cell inside the door is shown kept');
+  assert(inner.includes('walkway35-note'),'a legend says why the dashed cells stay clear');
   run("S.home.items=S.home.items.filter(i=>i.id!=='ra'&&i.id!=='rc');rebuildFurniture();S.home.storage=['armchair','armchair'];LIFE34.undo=null;");
   run("dispatch('lifeSelect',{ix:0});dispatch('lifeCell',{x:1,y:4});");const placedAt=J("(S.home.items.find(i=>i.type==='armchair')||{}).y");assert.equal(placedAt,4,'placed on the veranda row');
+  // "See it in the room" right after placing: the camera fit includes the new piece for 2.5 s
+  const n0=J('v21InteractionPoints(0,false).length');run("closePanel();");const n1=J('v21InteractionPoints(0,false).length');run('T35+=2600');const n2=J('v21InteractionPoints(0,false).length');
+  assert.deepEqual([n1-n0,n2-n0],[8,0],'the placed piece is framed for 2.5 s: '+[n0,n1,n2]);run("openLife34('home')");
   run("dispatch('lifeCell',{x:1,y:4});dispatch('lifeRotate');");assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'turned');
   run("dispatch('lifeUndo');");assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot||0"),0,'undo restores');
   run("dispatch('lifeSelect',{ix:S.home.storage.indexOf('armchair')});dispatch('lifeCell',{x:3,y:4});");assert.equal(run("S.home.items.filter(i=>i.type==='armchair').length"),1,'nothing placed on the path to the pot');
   run("dispatch('lifeCancel');");const h=run('homeHTML34()');assert(h.includes('the walkway')&&h.includes('the path to the pot'));assert(/walkway35[^>]*data-x="4" data-y="4"[^>]*disabled/.test(h),'the walkway cell is disabled');
-  return {potReach:reach,decoratableVerandaColumns:[1,2,6]};});
+  return {potReach:reach,verandaCellsReachedFromInside:walk.cells,decoratableVerandaColumns:[1,2,6]};});
 
  // 8. Paint
  check(8,'Paint: the six flat walls and the floor are tagged; buy at Finds, paint at home, undo, reload and a courtyard style keep it; env keeps its own materials',()=>{
@@ -201,9 +223,13 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   assert.deepEqual(J('TUNE35.flat.walls.map(m=>m.material.color.getHex())'),Array(6).fill(want),'all six walls painted');
   assert.equal(run('TUNE35.flat.walls.every((m,k)=>m.material!==ORIG[k]&&ORIG[k].color.getHex()===ORIGHEX[k])'),true,'the shared materials keep their colour');
   assert.equal(run('TUNE35.flat.floor.material===FORIG'),true,'the floor is untouched');
-  run("openLife34('home')");const hp=run('panel.innerHTML');assert(hp.includes('Walls and floor')&&hp.includes('data-act="paintUndo35"')&&hp.includes('aria-label="Paint the walls Indigo wash"'),'home strip with the undo');
+  run("openLife34('home')");const hp=run('panel.innerHTML');assert(hp.includes('Walls and floor')&&hp.includes('data-act="paintUndo35"')&&hp.includes('aria-label="Paint the walls Adire indigo"'),'home strip with the undo');
   run("dispatch('paintUndo35',TUNE35.paintUndo);");assert.equal(run('S.home.wall'),undefined);assert.equal(run('TUNE35.flat.walls.every((m,k)=>m.material===ORIG[k])'),true,'undo restores the original material objects');
-  run("dispatch('paint35',{id:'indigo'});dispatch('lifeTab',{v:'home'});");assert.equal(run('!!TUNE35.paintUndo'),true,'a tab change keeps the paint undo');run("dispatch('lifeGo',{v:'garden'});");assert.equal(run('TUNE35.paintUndo'),null,'another action ends it');
+  // a paint replayed from the other device ends this device's paint undo (its undo would revert the other device's change)
+  run("S.home.paints.push('teak');dispatch('paint35',{id:'indigo'});");assert.equal(run('!!TUNE35.paintUndo'),true);
+  run("_silent=true;ACTIONS.paint35({id:'teak'});_silent=false;");assert.equal(run('TUNE35.paintUndo'),null,'a remote paint ends the local paint undo');
+  run("delete S.home.floor;S.home.paints=S.home.paints.filter(p=>p!=='teak');applyPaint35();");
+  run("dispatch('paint35',{id:'wall:base'});dispatch('paint35',{id:'indigo'});dispatch('lifeTab',{v:'home'});");assert.equal(run('!!TUNE35.paintUndo'),true,'a tab change keeps the paint undo');run("dispatch('lifeGo',{v:'garden'});");assert.equal(run('TUNE35.paintUndo'),null,'another action ends it');
   run("save();S=load();enterWorld();closePanel();");assert.equal(run('S.home.wall'),'indigo');assert.deepEqual(J('TUNE35.flat.walls.map(m=>m.material.color.getHex())'),Array(6).fill(want),'kept over reload');
   // a courtyard style: env takes its material back, then paint goes over the new one; on a FADEABLE wall env disposes only its own clone
   run("envApplyMaterials(ENV_PRESETS[1]);");assert.deepEqual(J('TUNE35.flat.walls.map(m=>m.material.color.getHex())'),Array(6).fill(want),'kept over a courtyard style');
@@ -234,10 +260,12 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
 
  // 10. Companion line
  check(10,'Finds never asks for agreement; in a companion household the companion approves in the toast',()=>{
-  newHH();run('S.money=50000;');at(...STALL);const offers=J('offers34()');const t=offers.find(x=>!run(`!!ITEMS['${x}'].replaces`))||offers[0];
-  const m0=run('S.money');run(`TOASTS=[];dispatch('lifeBuy',{t:'${t}'});`);assert.equal(run('S.money'),m0-run(`paid34('${t}')`),'bought at once');const last=J('TOASTS').pop();
+  newHH();run('S.money=50000;');at(...STALL);at(21.6,7.6,1);const offers=J('offers34()');const t=offers.find(x=>!run(`!!ITEMS['${x}'].replaces`))||offers[0];
+  const m0=run('S.money');run(`TOASTS=[];dispatch('lifeBuy',{t:'${t}'});`);assert.equal(run('S.money'),m0-run(`paid34('${t}')`),'bought at once');assert.equal(J('TOASTS').length,1,'one toast: '+J('TOASTS').join(' | '));const last=J('TOASTS').pop();
   assert(new RegExp('^'+run(`ITEMS['${t}'].name`).replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+' is in Build storage\\. Ola: “[^”]+”$').test(last),last);
-  run("TOASTS=[];dispatch('buyPaint35',{id:'ochre'});");const pl=J('TOASTS').pop();assert(/^Ochre lime is yours\. Paint the flat from Home\. Ola: “[^”]+”$/.test(pl),pl);
+  run("TOASTS=[];dispatch('buyPaint35',{id:'ochre'});");const pl=J('TOASTS').pop();assert(/^Ochre limewash is yours\. Change the walls and floor from Home\. Ola: “[^”]+”$/.test(pl),pl);
+  // the companion across town says nothing
+  at(...AWAY,1);run("TOASTS=[];dispatch('buyPaint35',{id:'teak'});");assert.deepEqual(J('TOASTS'),['Teak brown is yours. Change the walls and floor from Home.'],'no line from a companion out of earshot');at(21.6,7.6,1);
   const t2=offers.find(x=>x!==t&&!run(`!!ITEMS['${x}'].replaces`));run(`AI.on=false;TOASTS=[];dispatch('lifeBuy',{t:'${t2}'});`);const two=J('TOASTS');assert(two.length>=1&&two.every(s=>!s.includes(':')),'no companion line for two humans: '+two.join(' | '));run('AI.on=true;');
   return {toast:last,paint:pl};});
 

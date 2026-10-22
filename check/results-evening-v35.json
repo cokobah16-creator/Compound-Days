@@ -1,21 +1,21 @@
 {
-  "build": "v35-f981f083",
+  "build": "v35-553793ab",
   "passed": true,
   "checks": [
     {
-      "name": "1. No start on day 2, before 18:00, from 22:00, with nobody home, during the guided evening, during a party or online; nobody home in the window gets one nudge, a marker and a Today card, never a panel",
+      "name": "1. No start on day 2, before 18:00, from 22:00, with nobody home, during a party or online, and an unfinished guided first evening does not hold it back on day 3; nobody home in the window gets one nudge, a marker and a Today card, never a panel; before six at home Today offers to wait until six, and Sleep asks once",
       "passed": true,
       "info": {
         "idle": {
           "day 2": "idle",
           "17:30": "idle",
           "22:00": "idle",
-          "guided evening": "idle",
           "party": "idle",
           "online": "idle",
           "nobody home": "idle"
         },
-        "nudge": "The neighbours are coming by your veranda this evening. Head home."
+        "nudge": "The neighbours are coming by your veranda this evening. Head home.",
+        "guidedDay3": "arriving"
       }
     },
     {
@@ -25,15 +25,15 @@
         "retryAttemptsIn30Ticks": 1,
         "spots": {
           "tunde": [
-            -5.3,
+            -5,
             7.8
           ],
           "nkechi": [
-            -4.1,
+            -5.9,
             7.8
           ],
           "ada": [
-            -2.9,
+            -6.8,
             7.8
           ]
         },
@@ -43,41 +43,77 @@
             7.8
           ],
           "nkechi": [
-            -5.3,
+            -8.3,
             7.8
           ],
           "ada": [
-            -4.1,
+            -9.2,
             7.8
           ]
         }
       }
     },
     {
-      "name": "3. The guests reach their spots facing the veranda well inside 20 s of stubbed time",
+      "name": "3. The guests reach their spots well inside 20 s of stubbed time, each turned between the player and the camera (a three-quarter face, not a back)",
       "passed": true,
       "info": {
-        "arrivedAfterSeconds": 5.81
+        "arrivedAfterSeconds": 7.13,
+        "faces": [
+          {
+            "toPlayer": 0.48,
+            "toCamera": 0.48,
+            "yaw": true
+          },
+          {
+            "toPlayer": 0.63,
+            "toCamera": 0.63,
+            "yaw": true
+          },
+          {
+            "toPlayer": 0.69,
+            "toCamera": 0.69,
+            "yaw": true
+          }
+        ]
       }
     },
     {
-      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera ease and the companion beside the player",
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera itself a quarter nearer, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
       "passed": true,
       "info": {
         "camFactorFirstLine": 0.75,
+        "cameraDistanceRatio": 0.75,
         "autoAdvanceSeconds": 8.02,
         "adaLine": "ae01",
         "adaWhen": [
           "chair-veranda"
         ],
-        "companionAfterDrive": 0.75
+        "companionAfterDrive": 0.68,
+        "companionCases": {
+          "-6.5/-5.6,3.6": {
+            "d": 1.1,
+            "veranda": true
+          },
+          "-3/-7.5,2.5": {
+            "d": 1.03,
+            "veranda": true
+          },
+          "-4.1/-1.2,3.8": {
+            "d": 0.73,
+            "veranda": true
+          },
+          "-6.5/-1.2,3.8": {
+            "d": 1.12,
+            "veranda": true
+          }
+        }
       }
     },
     {
       "name": "5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule",
       "passed": true,
       "info": {
-        "handedOffAfterSeconds": 5.97
+        "handedOffAfterSeconds": 6.83
       }
     },
     {

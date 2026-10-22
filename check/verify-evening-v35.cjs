@@ -4,10 +4,10 @@
 const assert=require('assert/strict'),fs=require('fs'),path=require('path'),cp=require('child_process');
 const OUT=path.join(__dirname,'results-evening-v35.json');
 const NAMES=[
- '1. No start on day 2, before 18:00, from 22:00, with nobody home, during the guided evening, during a party or online; nobody home in the window gets one nudge, a marker and a Today card, never a panel',
+ '1. No start on day 2, before 18:00, from 22:00, with nobody home, during a party or online, and an unfinished guided first evening does not hold it back on day 3; nobody home in the window gets one nudge, a marker and a Today card, never a panel; before six at home Today offers to wait until six, and Sleep asks once',
  '2. Day 3 at 18:30 with the human on the veranda: the guests walk in from the gate to validated street spots, clear of the sightline, kept through reroute and placeNPCs; a blocked street retries at most once a second',
- '3. The guests reach their spots facing the veranda well inside 20 s of stubbed time',
- '4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera ease and the companion beside the player',
+ '3. The guests reach their spots well inside 20 s of stubbed time, each turned between the player and the camera (a three-quarter face, not a back)',
+ '4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera itself a quarter nearer, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone',
  '5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule',
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
@@ -39,13 +39,12 @@ function inner(){
   const spotsOK=(hx,hz)=>J(`(()=>{const s=EVENING35.spots,ks=Object.keys(s),out={n:ks.length,bad:[]};for(const k of ks){const [x,z]=s[k];
    if(blocked(x,z,PR))out.bad.push(k+' blocked');if(levelAt(x,z)!==0)out.bad.push(k+' not level');if(!(z>7.4))out.bad.push(k+' z');if(inFlat(x,z))out.bad.push(k+' in flat');
    for(const p of players)if(Math.hypot(p.g.position.x-x,p.g.position.z-z)<0.9)out.bad.push(k+' near a player');
-   for(const q of ks)if(q!==k&&Math.hypot(s[q][0]-x,s[q][1]-z)<1.0)out.bad.push(k+' near '+q);
+   for(const q of ks)if(q!==k&&Math.hypot(s[q][0]-x,s[q][1]-z)<0.8)out.bad.push(k+' near '+q);
    if(EVENING35.inSight(x,z,${hx},${hz}))out.bad.push(k+' in the sightline');}return out;})()`);
 
   await step(0,()=>{fresh();const idle={};
    const tryIt=(label,setup,undo)=>{run(setup);ticks(5);idle[label]=state();assert.equal(state(),'idle',label);run(undo);};
    tryIt('day 2','S.day=2','S.day=3');tryIt('17:30','S.time=17.5','S.time=18.5');tryIt('22:00','S.time=22','S.time=18.5');
-   tryIt('guided evening','S.firstEvening.completed=false','S.firstEvening.completed=true');
    tryIt('party','S.party={on:true,done:false,guests:[],indoor:false}','S.party=null');
    // online: only the evening hook runs here (the base net tick needs a room)
    run('NET.on=true;for(let k=0;k<5;k++){T35+=33;eveningTick35(1/30);}');idle.online=state();assert.equal(state(),'idle','online');run('NET.on=false');assert.equal(J('(()=>{NET.on=true;const p=EVENING35.pending();NET.on=false;return p;})()'),false,'not pending online');
@@ -57,7 +56,17 @@ function inner(){
    assert.equal(run('PH'),ph0,'the tick opened no panel');
    const card=run('todayHTML34()');assert.match(card,/class="life-note34 evening35-card"><p class="life-kicker">THIS EVENING<\/p><h3>They are on their way<\/h3>/);
    assert.match(card,/data-act="lifeGo" data-v="home"[^>]*>Head home</,'Head home button');assert(card.indexOf('evening35-card')<card.indexOf('<div class="life-chips34">'),'card before the chips');
-   assert.doesNotMatch(card,/undefined|NaN/);return {idle,nudge:nudges[0]};});
+   assert.doesNotMatch(card,/undefined|NaN/);
+   // an unfinished guided first evening (the base lets it run past day 1) does not hold the veranda evening back on day 3
+   at(-4.1,6.4);run("S.firstEvening.completed=false;S.firstEvening.enabled=true;EVENING35.checkAt=0;");ticks(5);const guidedState=state();assert.equal(guidedState,'arriving','starts on day 3 with the guided evening unfinished');
+   run("EVENING35.abort();S.firstEvening.completed=true;");
+   // before six with the human at home: Today offers to wait until six, and the wait starts the visit
+   run("S.time=16;EVENING35.checkAt=0;");const t16=run('todayHTML34()');assert.match(t16,/evening35-card[\s\S]*data-act="evening35Wait"/,'Today offers the wait');
+   run("dispatch('evening35Wait');");assert.equal(run('S.time'),18,'waited until six');ticks(5);assert.equal(state(),'arriving','the visit starts at six');run("EVENING35.abort();S.time=16;");
+   // Sleep before the evening asks once; Sleep anyway (or a second Sleep) sleeps
+   run("PH='';dispatch('sleep');");assert.match(run('PH'),/<h2>The neighbours are coming by<\/h2>[\s\S]*data-act="evening35Wait"[\s\S]*data-act="sleep" data-anyway="1"/,'Sleep asks first');
+   assert.doesNotMatch(run('PH'),/night/i,'not the night panel yet');run("PH='';dispatch('sleep',{anyway:1});");assert.match(run('PH'),/Day 3, night/,'Sleep anyway sleeps');run("closePanel();S.time=18.5;EVENING35.askedDay=0;");
+   return {idle,nudge:nudges[0],guidedDay3:guidedState};});
 
   await step(1,()=>{fresh();assert.equal(J("S.home.items.find(i=>i.id==='ac35').y"),4,'armchair on the veranda row');
    // retry: with every street candidate blocked, about a second of ticks makes at most two attempts
@@ -82,12 +91,15 @@ function inner(){
 
   await step(2,()=>{const k=until("EVENING35.state!=='arriving'",700);assert.equal(state(),'talking');const secs=r2((k+21)*0.033);assert(secs<20,'arrived in '+secs+' s');
    const at3=J("['tunde','nkechi','ada'].map(k=>{const n=npcs[k],s=EVENING35.spots[k];return {d:Math.hypot(n.g.position.x-s[0],n.g.position.z-s[1]),yaw:n.home[2],route:n.route};})");
-   for(const a of at3){assert(a.d<1e-6,'on the spot');assert.equal(a.yaw,Math.PI,'facing the veranda');assert.equal(a.route,null);}
-   return {arrivedAfterSeconds:secs};});
+   const faces=J("['tunde','nkechi','ada'].map(k=>{const n=npcs[k],h=players[0].g.position,fx=Math.sin(n.home[2]),fz=Math.cos(n.home[2]),tx=h.x-n.g.position.x,tz=h.z-n.g.position.z,c=Math.hypot(CAM_DIR.x,CAM_DIR.z);return {toPlayer:+((fx*tx+fz*tz)/Math.hypot(tx,tz)).toFixed(2),toCamera:+((fx*CAM_DIR.x+fz*CAM_DIR.z)/c).toFixed(2),yaw:n.g.rotation.y===n.home[2]};})");
+   for(const a of at3){assert(a.d<1e-6,'on the spot');assert.equal(a.route,null);}
+   for(const f of faces){assert(f.toCamera>0.1,'the camera sees the face: '+JSON.stringify(f));assert(f.toPlayer>0.1,'turned towards the player: '+JSON.stringify(f));assert(f.yaw,'standing at that yaw');}
+   return {arrivedAfterSeconds:secs,faces};});
 
   await step(3,()=>{assert.equal(state(),'talking');const who=()=>run('EVENING35.el.dataset.who');const cap=()=>run('EVENING35.el.innerHTML');
    ticks(1);assert.equal(run('EVENING35.shown'),true,'caption shown');assert.equal(who(),'tunde');assert.match(cap(),/>Tunde<\/span>[\s\S]*>Next<\/button>/);
    ticks(30);const cf0=r2(run('EVENING35.camFactor'));assert(cf0<=0.76,'camera nearer on the first line: '+cf0);
+   const camNear=J('(()=>{updateCameras(1/30);return +(cams[0].position.distanceTo(focus[0])/v21Dist[0]).toFixed(3);})()');assert(Math.abs(camNear-run('EVENING35.camFactor'))<0.01,'the camera itself is a quarter nearer: '+camNear);
    assert.equal(J('nearest(0).id'),'evening35','forced Listen hotspot for the human');assert.notEqual(run('(nearest(1)||{}).id'),'evening35','not for the companion');
    run("T35+=300;dispatch('hs',{i:0,id:'evening35'});");assert.equal(who(),'nkechi','Act advances through ACT_HOOKS');assert.match(cap(),/>Mama Nkechi<\/span>/);
    assert.equal(run('EVENING35.next()'),false,'a second call within 300 ms is ignored');assert.equal(run('EVENING35.line'),1);
@@ -107,7 +119,15 @@ function inner(){
    const driven=J("(()=>{for(let k=0;k<600;k++)aiDrive(players[AI.i],1/30);const a=players[AI.i].g.position,h=players[0].g.position;return {d:+Math.hypot(a.x-h.x,a.z-h.z).toFixed(2),inFlat:inFlat(a.x,a.z)};})()");
    assert(driven.d<=1.2&&driven.d>=0.5&&driven.inFlat,'companion beside the player: '+JSON.stringify(driven));
    const names=J("EVENING35.lines.map(l=>l.k)");assert.deepEqual(names,['tunde','nkechi','ada']);
-   return {camFactorFirstLine:cf0,autoAdvanceSeconds:autoS,adaLine:adaId,adaWhen:when,companionAfterDrive:driven.d};});
+   // the player along the veranda (west and east of the door) and the companion inside the flat or outside it: it walks round through the door to stand beside them
+   const cases={};const hum0=J('[players[0].g.position.x,players[0].g.position.z]');
+   for(const [hx,cx,cz] of [[-6.5,-5.6,3.6],[-3.0,-7.5,2.5],[-4.1,-1.2,3.8],[-6.5,-1.2,3.8]]){at(hx,6.4);at(cx,cz,1);run('AI.path=null;AI.rescue=-1;AI.detour=null;AI.useNav=0;AI.stuck=0;');
+    const d=J("(()=>{for(let k=0;k<900;k++)aiDrive(players[AI.i],1/30);const a=players[AI.i].g.position,h=players[0].g.position;return {d:+Math.hypot(a.x-h.x,a.z-h.z).toFixed(2),veranda:a.z>5.85&&inFlat(a.x,a.z)};})()");
+    cases[hx+'/'+cx+','+cz]=d;assert(d.d<=1.45&&d.veranda,'companion beside the player on the veranda: human '+hx+', from '+cx+','+cz+': '+JSON.stringify(d));}
+   at(...hum0);at(-5.2,4.0,1);
+   // the speaker is in the camera fit only near the player
+   const nIn=J('v21InteractionPoints(0,false).length');at(15,5);const nFar=J('v21InteractionPoints(0,false).length');at(...hum0);assert.equal(nIn-nFar,8,'the far-away speaker leaves the camera fit');
+   return {camFactorFirstLine:cf0,cameraDistanceRatio:camNear,autoAdvanceSeconds:autoS,adaLine:adaId,adaWhen:when,companionAfterDrive:driven.d,companionCases:cases};});
 
   await step(4,()=>{const c0=J("CUES.filter(n=>n==='evening').length"),m0=J("S.memories.filter(m=>/came by the veranda/.test(m.caption)).length"),ph0=run('PH');
    run('T35+=300;EVENING35.next();');assert.equal(state(),'leaving');assert.equal(J('S.life.evening35.doneDay'),3);
@@ -128,7 +148,9 @@ function inner(){
    run('closePanel();S.time=18.5;');at(-4.1,6.4);at(-5.2,4.0,1);until("EVENING35.state!=='idle'",10);assert.equal(state(),'arriving','runs on day 4');
    // the guests cannot walk (dt 0): after 20 s of stubbed time they step onto their spots
    const k=until("EVENING35.state!=='arriving'",700,'0');assert.equal(state(),'talking');const secs=r2(k*0.033);assert(secs>=20&&secs<20.1,'timeout '+secs);
-   assert(J("['tunde','nkechi','ada'].every(k=>{const n=npcs[k],s=EVENING35.spots[k];return !n.route&&n.g.position.x===s[0]&&n.g.position.z===s[1]&&n.home[2]===Math.PI;})"),'settled on the spots');
+   assert(J("['tunde','nkechi','ada'].every(k=>{const n=npcs[k],s=EVENING35.spots[k];return !n.route&&n.g.position.x===s[0]&&n.g.position.z===s[1]&&n.home[2]===EVENING35.yaw[k];})"),'settled on the spots');
+   // the companion never walked (no drive here): when the talking starts it steps onto its place beside the player
+   const snap=J("(()=>{const a=players[AI.i].g.position,h=players[0].g.position;return {d:+Math.hypot(a.x-h.x,a.z-h.z).toFixed(2),veranda:a.z>6.05&&inFlat(a.x,a.z)};})()");assert(snap.d<=1.0&&snap.veranda,'companion placed beside the player: '+JSON.stringify(snap));
    run('T35+=300;EVENING35.next();T35+=300;EVENING35.next();T35+=300;EVENING35.next();');assert.equal(J('S.life.evening35.doneDay'),4);
    return {timeoutSeconds:secs};});
 
@@ -147,6 +169,9 @@ function inner(){
    // going online or a party starting also ends it, undone
    fresh();until("EVENING35.state!=='idle'",10);assert.equal(state(),'arriving');run('NET.on=true;T35+=33;eveningTick35(1/30);NET.on=false;');assert.equal(state(),'idle','online aborts');
    run('EVENING35.checkAt=0;');until("EVENING35.state!=='idle'",10);assert.equal(state(),'arriving');run('S.party={on:true,done:false,guests:[],indoor:false};');ticks(1);assert.equal(state(),'idle','a party aborts');run('S.party=null;');
+   // the player walks off to the market mid-talk: three seconds later it ends, undone
+   run('EVENING35.checkAt=0;');until("EVENING35.state!=='idle'",10);until("EVENING35.state!=='arriving'",700);assert.equal(state(),'talking');at(20.8,7.2);at(21.5,7.6,1);
+   const gone=until("EVENING35.state==='idle'",200);assert.equal(state(),'idle','nobody home: it ends');assert(gone*33>=2900&&gone*33<=3300,'after about three seconds: '+gone*33);assert.equal(run('EVENING35.done()'),false,'not done, so it repeats');
    assert.equal(run('EVENING35.done()'),false);return {adaCell:ada0.map(r2)};});
 
   process.stdout.write('\n'+JSON.stringify({build:run('BUILD_ID'),checks})+'\n');

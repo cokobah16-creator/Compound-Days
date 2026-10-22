@@ -1,5 +1,5 @@
 {
-  "build": "v35-f981f083",
+  "build": "v35-553793ab",
   "passed": true,
   "checks": [
     {
@@ -39,8 +39,8 @@
       "name": "Sound toggle: per device, LOCAL_ONLY, in the Menu (also online), off schedules nothing, silent Menu inserts nothing",
       "passed": true,
       "info": {
-        "offLabel": "Sound: off (tap for on)",
-        "onLabel": "Sound: on (tap for off)",
+        "offLabel": "Sound: off",
+        "onLabel": "Sound: on",
         "localOnly": true,
         "afterGraphics": true
       }

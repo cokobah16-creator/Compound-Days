@@ -90,7 +90,9 @@ const checks=[];let runFn=null;
  run("S.day=S.life.startDay+4;S.life.crop.stage=0;openLife34('today')");assert(run("PH.includes('<h2>Your pace. Your place.</h2>')"));run("S.life.crop.stage=3;openLife34('today')");assert(run("PH.includes('<h2>Look what you grew.</h2>')"));
  run("S.day=S.life.startDay;S.firstEvening={version:1,enabled:true,done:{move:1,shop:1,cook:1,host:1,gift:1,tomorrow:1},reward:'rug',plan:'photo',stage:'complete',completed:true,finishedDay:S.day};PH='';ACTIONS.nextday({});");
  assert(run("PH.includes('life34')&&PH.includes('Find the light with Mr. Bassey')&&PH.includes('Your gift is in the flat or Build storage.')"),'morning line kept');
- at(...inFlatSpot);run("TOASTS=[];S.life.crop.stage=3;ACTIONS.lifeHarvest();ACTIONS.lifeHarvest();");assert.deepEqual(J('TOASTS'),['Three red peppers, into the pantry.']);
+ at(...inFlatSpot);run("TOASTS=[];S.life.crop.stage=3;ACTIONS.lifeHarvest();ACTIONS.lifeHarvest();");
+ // the harvest confirms once: this toast, or (with tune-v35 loaded) the harvest card at the top of the Garden page, which replaces it so nothing covers the card
+ if(run("typeof TUNE35==='object'"))assert(J('TOASTS').length===0&&run("(PH.match(/class=\"life-note34 harvest35\"/g)||[]).length")===1,'the v35 harvest card');else assert.deepEqual(J('TOASTS'),['Three red peppers, into the pantry.']);
  pass('Journal pages: one way back, a title that follows the crop, the morning-after line, a harvest confirmation');
 
  // 10. Finds: today's five first; an upgrade already in the home is not sold again.

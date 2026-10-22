@@ -1,5 +1,5 @@
 {
-  "build": "v35-f981f083",
+  "build": "v35-553793ab",
   "passed": true,
   "checks": [
     {
@@ -24,7 +24,7 @@
       }
     },
     {
-      "name": "4. Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot",
+      "name": "4. Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot; the pot marker clears when nothing more is due; stage 2 has flowers; the harvest has its own card",
       "passed": true,
       "info": {
         "waterCues": [
@@ -37,9 +37,9 @@
       "name": "5. Wall-clock bite: 2.2–4.4 s of real time at 5 fps; nibble before bite; dt-only loops still bite; none behind the Menu; one catch cue",
       "passed": true,
       "info": {
-        "biteSeconds": 3.8,
-        "callsAt5fps": 19,
-        "dtOnlyCalls": 39
+        "biteSeconds": 3.4,
+        "callsAt5fps": 17,
+        "dtOnlyCalls": 41
       }
     },
     {
@@ -57,7 +57,7 @@
           "lifeReel",
           "lifeCatch",
           "lifeFish",
-          "lifeCast"
+          "-"
         ],
         "refused": [
           "newconfirm",
@@ -71,10 +71,11 @@
       }
     },
     {
-      "name": "7. Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway and the path to the pot stay clear and the pot stays reachable",
+      "name": "7. Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway, the room cell inside the door and the path to the pot stay clear; the veranda and the pot are reached on foot from inside the flat",
       "passed": true,
       "info": {
         "potReach": 0.05,
+        "verandaCellsReachedFromInside": "001110",
         "decoratableVerandaColumns": [
           1,
           2,
@@ -110,8 +111,8 @@
       "name": "10. Finds never asks for agreement; in a companion household the companion approves in the toast",
       "passed": true,
       "info": {
-        "toast": "Potted plant is in Build storage. Ola: “We needed that, you know.”",
-        "paint": "Ochre lime is yours. Paint the flat from Home. Ola: “We needed that, you know.”"
+        "toast": "Potted plant is in Build storage. Ola: “Ehen! That is the one.”",
+        "paint": "Ochre limewash is yours. Change the walls and floor from Home. Ola: “That one is correct. The flat will thank us.”"
       }
     },
     {
@@ -119,7 +120,7 @@
       "passed": true,
       "info": {
         "item": "tomato",
-        "price": 1550
+        "price": 1450
       }
     },
     {

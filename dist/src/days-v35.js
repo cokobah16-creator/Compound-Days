@@ -13,7 +13,8 @@ const LOG35={cap:300,
 const DAYS35={planLead:{recipe:'nkechi',photo:'ada',garden:'tunde'},nightHTML:null,lastInput:0,savedAt:0,dirty:false,todayRated:0,
  // The morning table: the first row whose day and test match wins. day: exactly that day; slot: the cycle slot (days 7+ repeat 4-6); min: that day or later.
  rows:[
-  {id:'evening-again',min:4,test:c=>!!c.eveningPending},
+  // the evening leads the morning on alternate days while it is pending, so the day 4-6 rows still get their mornings (Today's evening card says it on the others)
+  {id:'evening-again',min:4,test:c=>!!c.eveningPending&&c.prevRow!=='evening-again'},
   {id:'seedling',day:2,test:c=>!!c.seedGrantedToday,marker:'garden',lead:'plan',who:'tunde'},
   {id:'grew',day:3,test:c=>c.crop===2,marker:'garden',lead:'nkechi',who:'nkechi'},
   {id:'waiting',day:3,test:c=>c.crop===1,marker:'garden',lead:'tunde',who:'tunde'},
@@ -31,6 +32,8 @@ const DAYS35={planLead:{recipe:'nkechi',photo:'ada',garden:'tunde'},nightHTML:nu
  onInput(e){if(!(e&&e.target&&e.target.dataset&&String(e.target.dataset.bind||'').startsWith('life.days.')))return;DAYS35.dirty=true;
   if(clock35()-DAYS35.savedAt>=1000){save();DAYS35.savedAt=clock35();DAYS35.dirty=false;}},
  // the directions marker without the "is marked" toast, so nothing covers the morning card
+ // a finger held on the touch stick sends pointermove only, so a held drag counts as activity (once a second); a hovering mouse does not
+ onMove(e){if(!e||!(e.pointerType==='touch'||e.buttons))return;if(clock35()-DAYS35.lastInput<1000)return;DAYS35.activity();},
  mark(place){const t=toast;toast=function(){};try{navigate34(place);}finally{toast=t;}}};
 
 /* ---------- The record ---------- */
@@ -53,7 +56,8 @@ function morningCtx35(day,projected){const l=life34(),c=l.crop,dk=((day-l.startD
  const order=['lamp','rug','chairs','art','plant','planter','shelf','coffee','armchair','speaker','bed','dining','wardrobe','kitchen','tvconsole'];
  let crop=c.stage,seedGrantedToday=!!(l.seed35&&l.seed35.day===day);
  if(projected){crop=Math.min(3,c.stage+(c.wateredDay===S.day&&c.stage>=1&&c.stage<=2?1:0));seedGrantedToday=typeof TUNE35!=='undefined'&&TUNE35.seedlingPending()&&day>=2;}
- return {day,crop,seedReady:typeof TUNE35==='undefined'||TUNE35.seedlingReady(),seedGrantedToday,
+ const m=l.morning35,prevRow=m&&m.day===day-1?m.id:null;      // yesterday's row (today's, when projecting tomorrow)
+ return {day,crop,seedReady:typeof TUNE35==='undefined'||TUNE35.seedlingReady(),seedGrantedToday,prevRow,
   eveningPending:typeof EVENING35!=='undefined'&&!!EVENING35.pending(),
   returning:order.filter(t=>offer.includes(t)&&!owned34(t)),adaStage:(l.requests&&l.requests.ada||{stage:0}).stage,visitsUnlocked:!!l.visitsUnlocked,
   visitToday:!!(l.visit&&l.visit.day===day),caughtCatfish:!!l.collection.catfish};}
@@ -69,10 +73,17 @@ function days_todayRow35(){if(!S||!(S.day>=2))return {row:null,ctx:null};const c
 /* ---------- Recap, rating and the day-3 prompts ---------- */
 function recap35(){const ctx=morningCtx35(S.day+1,true),row=pickMorning35(S.day+1,ctx),d=day34();let clause=null;
  if(d.harvested)clause='pot-again';
- else if(placed('armchair')&&(online34()?(S.life.lastDecor==='armchair'&&d.decorated>0):LOG35.has(S.day,'place','armchair')))clause='chair';
+ else if(placed('armchair')&&(online34()?(S.life.lastDecor==='armchair'&&d.decorated>0):LOG35.has(S.day,'place','armchair')))clause=days_adaChairHeard35()?'chair-heard':'chair';
  else if(S.day>=3&&typeof EVENING35!=='undefined'&&EVENING35.pending()&&(!row||row.id!=='evening-again'))clause='evening-missed';
  const text=[row?days_text35('recap.'+row.id,days_vars35(ctx)):'',clause?days_text35('recap.clause.'+clause):''].filter(Boolean).join(' ');
  return {rowId:row?row.id:null,clauseId:clause,text};}
+// Ada has already said her armchair line today (the talk table's used list is shared online, so both peers agree)
+function days_adaChairHeard35(){const L=S.life&&S.life.lines35,u=L&&L.day===S.day&&L.used&&L.used.ada;return !!(u&&u.some(id=>id==='ad03'||id==='ad04'));}
+// the morning row's job is done today: the card says so instead of pointing at the pot again
+function days_doneMorning35(id){const l=life34(),c=l.crop,watered=c.wateredDay===S.day&&c.stage>=1,picked=!!(l.daily&&l.daily[String(S.day)]&&l.daily[String(S.day)].harvested);
+ if((id==='seedling'||id==='unplanted')&&watered)return {title:'morning.done.planted.title',body:'morning.done.grow.body'};
+ if(id==='waiting'&&watered)return {title:'morning.done.watered.title',body:'morning.done.grow.body'};
+ if((id==='grew'||id==='ripe')&&picked)return {title:'morning.done.harvested.title',body:'morning.done.harvested.body'};return null;}
 function days_face35(v){const mouth=['M13 27H27','M13 25Q20 30 27 25','M11 23Q20 34 29 23'][v-1];
  return `<svg viewBox="0 0 40 40" width="40" height="40" aria-hidden="true" focusable="false"><circle cx="20" cy="20" r="18" fill="#F1E4CC" stroke="#2A1F17" stroke-opacity=".35"/><circle cx="14" cy="16" r="2.4" fill="#2A1F17"/><circle cx="26" cy="16" r="2.4" fill="#2A1F17"/><path d="${mouth}" fill="none" stroke="#2A1F17" stroke-width="2.6" stroke-linecap="round"/></svg>`;}
 function days_rateHTML35(n,heading){const r=LOG35.day(n);if(!r)return '';const names=['Not much','It was nice','Lovely'];
@@ -130,6 +141,8 @@ TICK_HOOKS.push(days_tick35);
  wrap('lifeCell',placeWrap);wrap('placeItem',placeWrap);
  wrap('paint35',function(prev,d,a){const w=S.home.wall,f=S.home.floor,r=prev.apply(this,a);
   if(S.home.wall!==w)LOG35.add('paint','wall:'+(S.home.wall||'base'));if(S.home.floor!==f)LOG35.add('paint','floor:'+(S.home.floor||'base'));return r;});
+ wrap('paintUndo35',function(prev,d,a){const w=S.home.wall,f=S.home.floor,r=prev.apply(this,a);
+  if(S.home.wall!==w)LOG35.add('paint','undo:wall:'+(S.home.wall||'base'));if(S.home.floor!==f)LOG35.add('paint','undo:floor:'+(S.home.floor||'base'));return r;});
  wrap('lifeRequest',function(prev,d,a){const k=d.k,ok=!!REQUESTS34[k],s=ok?request34(k).stage:0,r=prev.apply(this,a);if(ok&&request34(k).stage>s)LOG35.add('request',k+':'+request34(k).stage);return r;});
  wrap('lifeShell',function(prev,d,a){const n=life34().shells,r=prev.apply(this,a);if(life34().shells>n)LOG35.add('shell',String(d.k));return r;});
  // the bite and the veranda evening reach the log through the cue bus
@@ -137,7 +150,7 @@ TICK_HOOKS.push(days_tick35);
 
  // wrap: Continue notes the wall time of the sitting (without waking the day)
  const prevContinue=ACTIONS.continue;ACTIONS.continue=function(){const r=prevContinue.apply(this,arguments);
-  if(S&&S.phase==='play'&&S.life&&!online34()){const rec=days_ensure35();if(rec)days_push35(rec,{t:Math.round((rec.playedMs+rec.panelMs)/1000),k:'resume',w:clock35()});}return r;};
+  if(S&&S.phase==='play'&&S.life&&!online34()){const rec=days_ensure35();if(rec&&rec.startedAt!==null)days_push35(rec,{t:Math.round((rec.playedMs+rec.panelMs)/1000),k:'resume',w:clock35()});}return r;};   // an unwoken day's wake carries the wall time
 
  // wrap: Sleep logs and stamps the day; the new day gets its record (not yet woken), its morning row, the marker and the Today page
  const prevNext=ACTIONS.nextday;ACTIONS.nextday=function(){
@@ -151,7 +164,13 @@ TICK_HOOKS.push(days_tick35);
 
  // wrap: the night panel gains the recap, the faces and (day 3, once rated) the two prompts; the base html is kept for re-renders
  const prevEnd=endDay;endDay=function(){if(silentMode())return prevEnd.apply(this,arguments);let html=null,r;const keep=openPanel;openPanel=h=>{html=h;};
-  try{r=prevEnd.apply(this,arguments);}finally{openPanel=keep;}if(html===null)return r;DAYS35.nightHTML=html;openPanel(days_night35());return r;};
+  try{r=prevEnd.apply(this,arguments);}finally{openPanel=keep;}if(html===null)return r;
+  // a new household's night: Ada says something smelled good only if something was cooked today and she did not just come by (the base reads
+  // 'ever cooked'); her card gives way to the quiet-compound paragraph after the base has drawn it, so the shared rng is used exactly as before
+  html=String(html);const smelt=html.indexOf('Something smelled good at yours this evening.');
+  if(smelt>=0&&S.born35&&!(S.today&&S.today.cooked&&!(typeof EVENING35!=='undefined'&&EVENING35.doneToday()))){const a=html.lastIndexOf('<div class="card say"',smelt),b=html.indexOf('</div>',smelt);
+   if(a>=0&&b>a)html=html.slice(0,a)+'<p class="small muted">The compound was quiet. Mrs. Oyelaran’s radio played highlife until nine, then the generator next door took over the melody.</p>'+html.slice(b+6);}
+  DAYS35.nightHTML=html.replace(/(data-act="nextday"[^>]*>)Sleep, and start day \d+(<)/,'$1Sleep until tomorrow$2');openPanel(days_night35());return r;};
  ACTIONS.rate35=d=>{if(online34()||!S||!S.life)return;const v=Number(d&&d.v),n=Number(d&&d.day),rec=LOG35.day(n);
   if(![1,2,3].includes(v)||!Number.isInteger(n)||n>S.day||!rec)return;rec.rating=v;save();if(silentMode())return;
   if(n===S.day&&DAYS35.nightHTML)openPanel(days_night35());else if(n<S.day){DAYS35.todayRated=n;openLife34('today');}};
@@ -163,8 +182,8 @@ TICK_HOOKS.push(days_tick35);
   const {row,ctx}=days_todayRow35();let yest='';
   if(!online34()&&S.day>=2){const y=LOG35.day(S.day-1);if(y&&(y.rating===null||DAYS35.todayRated===S.day-1)){yest=days_rateHTML35(S.day-1,'How was yesterday?');if(S.day-1===3&&DAYS35.todayRated===3)yest+=days_promptsHTML35();}}
   let card='';
-  if(row){const vars=days_vars35(ctx),title=days_text35('morning.'+row.id+'.title',vars);
-   if(title){const body=days_text35('morning.'+row.id+'.body',vars),said=row.who?days_text35('morning.'+row.id+'.say',vars):'',m=row.marker;
+  if(row){const vars=days_vars35(ctx),done=days_doneMorning35(row.id),title=done?days_text35(done.title):days_text35('morning.'+row.id+'.title',vars);
+   if(title){const body=done?days_text35(done.body):days_text35('morning.'+row.id+'.body',vars),said=row.who&&!done?days_text35('morning.'+row.id+'.say',vars):'',m=done?null:row.marker;
     const b=m==='garden'?(home34()?btn('Open the garden','lifeTab',{v:'garden'},'primary'):btn('Walk to your pot','lifeGo',{v:'garden'},'primary')):m==='market'?btn('See today’s finds','lifeTab',{v:'market'},'primary'):m?btn('Show me the way','lifeGo',{v:m},'primary'):'';
     card=`<div class="life-note34 morning35" data-morning="${esc(row.id)}"><p class="life-kicker">THIS MORNING</p><h3>${esc(title)}</h3>${body?`<p>${esc(body)}</p>`:''}${said?say(row.who,esc(said)):''}${b}${yest}</div>`;yest='';}
    const lead=days_lead35(row,S.day);if(lead&&REQUESTS34[lead])card+=`<div class="morning35-lead">${requestCard34(lead)}</div>`;}
@@ -183,6 +202,7 @@ TICK_HOOKS.push(days_tick35);
  const prevStrip=stripState;stripState=function(){const o=prevStrip.apply(this,arguments);if(o&&o.life)delete o.life.days;return o;};
 
  // listeners: input from any device wakes the day; the prompts save as typed
- if(typeof window!=='undefined'&&window.addEventListener){window.addEventListener('keydown',()=>DAYS35.activity(),true);window.addEventListener('pointerdown',()=>DAYS35.activity(),true);}
+ if(typeof window!=='undefined'&&window.addEventListener){window.addEventListener('keydown',()=>DAYS35.activity(),true);window.addEventListener('pointerdown',()=>DAYS35.activity(),true);
+  window.addEventListener('pointermove',e=>DAYS35.onMove(e),true);}
  if(typeof panel!=='undefined'&&panel&&panel.addEventListener){panel.addEventListener('input',e=>DAYS35.onInput(e));panel.addEventListener('change',e=>DAYS35.onInput(e));}
 }

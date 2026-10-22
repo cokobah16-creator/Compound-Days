@@ -1,6 +1,6 @@
 # Art brief: v35, three days in Palm Court
 
-Status: draft for week one, written alongside the v35 code. The build ships stand-ins for everything here, so art never blocks code. Each item below replaces a stand-in without code changes beyond the binding named in its row.
+Status: week-one brief, written alongside the v35 code and filled in from build v35. The build ships stand-ins for everything here, so art never blocks code. Each item below replaces a stand-in without code changes beyond the binding named in its row.
 
 **Direction.** A soft, rounded, miniature Nigerian neighbourhood. Stylised characters with recognisable Black features, expressive faces and well-shaped textured hair. Warm plaster, colourful gates, zinc roofs, patterned fabrics and lush plants, all at one level of detail. Soft shadows and clear silhouettes. Everything is judged on the test phones at the default camera, never in a desktop browser alone.
 
@@ -41,19 +41,39 @@ The woven armchair (`armchair_woven.gltf.json`) and the chairs are the only furn
 
 ## 4. Wall colours and floors
 
-The build ships three wall colours and two floors as flat colours on the existing room boxes, on offer at Palm Court Finds. Art supplies final swatches: a tileable 512 px texture per finish with gentle variation, readable as plaster or floor at phone size, and one flat linear colour per finish for the far level of detail. The finishes and their stand-in colours are listed below once the build fixes them.
+The build ships three wall colours and two floors as flat colours on the existing room boxes, on offer at Palm Court Finds and defined in `PAINTS35` in `dist/src/tune-v35.js`. Art supplies final swatches: a tileable 512 px texture per finish with gentle variation, readable as plaster or floor at phone size, and one flat linear colour per finish for the far level of detail.
 
-| Finish | Stand-in in the build | Final swatch |
-|---|---|---|
-| (filled in from `tune-v35.js` after integration) | | |
+| Finish | Kind | Stand-in colour | Final swatch should read as |
+|---|---|---|---|
+| Adire indigo | wall | `#8C9BC0` | Indigo limewash with the soft unevenness of adire dye, not a flat blue |
+| Palm green | wall | `#A9BF9C` | Matt green plaster, slightly chalky |
+| Ochre limewash | wall | `#E6C98C` | Warm yellow-ochre limewash with brush variation |
+| Cream terrazzo | floor | `#DCCFB8` | Poured terrazzo with small grey, black and brown chips |
+| Teak brown | floor | `#8E6243` | Teak boards or parquet, warm and worn |
 
 ## 5. The fifteen furnishings
 
 Every Finds furnishing needs either a visible use or a neighbour line that reads it. Items with neither are art work: a small animation, a light or a state change that makes them worth owning.
 
-| Item | Visible use or line in v35 | Art needed |
+Every furnishing can be named by a neighbour: Tunde, Mama Nkechi and Ada each have a line that reads the last piece you placed, and Ada has several about her armchair. The table covers visible uses.
+
+| Item | Visible use in v35 | Art needed |
 |---|---|---|
-| (filled in after integration) | | |
+| Floor lamp | Lights at 18:00 | None |
+| Rug | Party seating | None |
+| Chairs | Party seating; allowed on the veranda | Check they read outdoors (section 3) |
+| Dining table | Party seating; the plate sits on it | None |
+| Speaker | Party music | None |
+| Bed | More energy overnight | None |
+| Kitchen upgrade | Better cooking | None |
+| Planter | A pepper a day | None |
+| Plant | Tunde's third request | None |
+| Shelf | Shows the lantern | None |
+| Woven armchair | Ada's chair; allowed on the veranda | Check it reads outdoors (section 3) |
+| Wall art | None beyond home-vibe tags | A small change by time of day, or a print that catches the evening light |
+| Coffee table | None beyond home-vibe tags | Something on it that changes: a tray of drinks when guests come, a newspaper in the morning |
+| Wardrobe | None beyond home-vibe tags | Doors that open when the player changes outfit |
+| TV console | None beyond home-vibe tags | A screen glow in the evening, or the radio playing |
 
 ## 6. Delivery checklist
 

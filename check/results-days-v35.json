@@ -1,5 +1,5 @@
 {
-  "build": "v35-f981f083",
+  "build": "v35-553793ab",
   "passed": true,
   "checks": [
     {
@@ -46,10 +46,11 @@
       }
     },
     {
-      "name": "A6. Path A day 2: plant the seedling and water it at home",
+      "name": "A6. Path A day 2: plant the seedling and water it at home; Today’s morning card then says it is done, with no button back to the pot, and the pot marker is cleared",
       "passed": true,
       "info": {
-        "stage": 1
+        "stage": 1,
+        "card": "Planted and watered"
       }
     },
     {
@@ -87,7 +88,7 @@
       "name": "A10. Path A day 2: Ada’s armchair at Finds costs ₦9,000, with no agreement step and one approving line from the companion",
       "passed": true,
       "info": {
-        "toast": "Woven armchair is in Build storage. Ola: “We needed that, you know.”",
+        "toast": "Woven armchair is in Build storage. Ola: “That one is correct. The flat will thank us.”",
         "purse": 600
       }
     },
@@ -109,14 +110,14 @@
       }
     },
     {
-      "name": "A13. Path A night 2: the recap “The seedling will be taller by morning. Ada wants to hear where the chair went.”",
+      "name": "A13. Path A night 2: the recap “The seedling will be taller by morning.” and, since Ada has already talked about the chair today, “Ada approves of where the armchair went.”; Ada’s smelled-good line only on a night something was cooked",
       "passed": true,
       "info": {
-        "recap": "The seedling will be taller by morning. Ada wants to hear where the chair went."
+        "recap": "The seedling will be taller by morning. Ada approves of where the armchair went."
       }
     },
     {
-      "name": "A14. Path A day 3 morning: “It grew overnight.”, Mama Nkechi’s card leads, the plant is at stage 2",
+      "name": "A14. Path A day 3 morning: “It grew overnight”, Mama Nkechi’s card leads, the plant is at stage 2",
       "passed": true,
       "info": {
         "row": "grew",
@@ -156,15 +157,15 @@
       "info": {
         "spots": {
           "tunde": [
-            -5.3,
+            -5,
             7.8
           ],
           "nkechi": [
-            -4.1,
+            -5.9,
             7.8
           ],
           "ada": [
-            -2.9,
+            -6.8,
             7.8
           ]
         },
@@ -174,7 +175,7 @@
           "ada:ae01"
         ],
         "camFactorFirstLine": 0.75,
-        "companionDistance": 0.75
+        "companionDistance": 0.9
       }
     },
     {
@@ -237,6 +238,7 @@
             "request ada:2",
             "buy paint:palm",
             "paint wall:palm",
+            "paint undo:wall:base",
             "paint wall:palm",
             "resume",
             "evening done",
@@ -250,20 +252,23 @@
       "passed": true,
       "info": {
         "day4": "evening-again",
-        "doneDay": 4
+        "doneDay": 4,
+        "day5": "ada-invite",
+        "recap4": "Ada wants to see the flat for herself. The neighbours still want to come by your veranda tomorrow evening."
       }
     },
     {
-      "name": "B1. Path B day 1: a new household buys what jollof needs at the market while it can, takes the basket for the rest, and starts day 2 at or below ₦2,000",
+      "name": "B1. Path B day 1: a new household buys what jollof needs at the market while it can, takes the basket for the rest, invites Ada without having met her (her armchair line plays) and starts day 2 at or below ₦2,000",
       "passed": true,
       "info": {
         "bought": [
           "pepper:1300",
-          "spices:1450",
-          "tomato:1450"
+          "tomato:1450",
+          "spices:1550"
         ],
-        "day2Purse": 1800,
+        "day2Purse": 1700,
         "guests": [
+          "ada",
           "tunde"
         ]
       }
@@ -272,15 +277,15 @@
       "name": "B2. Path B day 2: plant and water, keep one fish for Mama Nkechi, purse below ₦9,000 after her errand, sell catches until the armchair is affordable and place it on the veranda by the end of day 2",
       "passed": true,
       "info": {
-        "purseAfterErrand": 2800,
+        "purseAfterErrand": 2700,
         "sold": 5,
         "bites": [
-          2.8,
-          3,
-          3.6,
+          4,
           3.8,
-          4.4,
-          2.8
+          3.4,
+          3.6,
+          3.2,
+          4
         ],
         "cell": [
           5,
@@ -299,7 +304,7 @@
       "name": "Copy: no rendered page or toast in the script names a weekday, and no page shows undefined or NaN",
       "passed": true,
       "info": {
-        "toasts": 2
+        "toasts": 1
       }
     }
   ],

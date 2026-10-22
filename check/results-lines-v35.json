@@ -1,5 +1,5 @@
 {
-  "build": "v35-f981f083",
+  "build": "v35-553793ab",
   "passed": true,
   "checks": [
     {
@@ -14,7 +14,7 @@
           "itemShort35",
           "partyLines35"
         ],
-        "when": 30
+        "when": 31
       }
     },
     {
@@ -31,7 +31,7 @@
           "nkechi": 4,
           "ada": 4
         },
-        "textKeys": 52,
+        "textKeys": 58,
         "daysRowsCovered": 12
       }
     },
@@ -39,7 +39,7 @@
       "name": "3. Copy rules: no weekday, no ₦ or digits in spoken lines, British spelling, no HTML or undefined, at most 160 characters, {item} only with decorated",
       "passed": true,
       "info": {
-        "strings": 203,
+        "strings": 209,
         "itemFills": 60
       }
     },
@@ -119,6 +119,10 @@
         "adaVeranda": "ad03",
         "adaIndoors": "ad04",
         "nkechi": "nk06",
+        "day3Tunde": [
+          "tu05",
+          "tu06"
+        ],
         "subset": {
           "said": {
             "tunde": "tu08",

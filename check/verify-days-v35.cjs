@@ -40,7 +40,7 @@ const checks=[];let runFn=null,failed=false;
 
  // One cast at the rocks with the clock stubbed at 5 fps (T35 +200 ms per tickFishing34(.05)).
  // With press=true, Act (actPrimary35, 300 ms after each panel change) presses Cast, Reel in and Keep.
- const fish=(press,how)=>{rocks();const c0=run('CUES.length');act('lifeFish');assert(run("LIFE34.fish&&LIFE34.fish.phase==='ready'"),'the fishing panel is open');
+ const fish=(press,how)=>{rocks();run('closePanel()');const c0=run('CUES.length');act('lifeFish');assert(run("LIFE34.fish&&LIFE34.fish.phase==='ready'"),'the fishing panel is open');
   if(press){run('T35+=300');assert.equal(run('actPrimary35()'),true,'Act presses Cast');}else act('lifeCast');
   assert.equal(run('LIFE34.fish.phase'),'waiting','cast');const t0=run('T35');
   const n=run("(()=>{let k=0;for(;k<60&&LIFE34.fish.phase==='waiting';k++){T35+=200;tickFishing34(.05);}return k;})()");
@@ -105,8 +105,11 @@ const checks=[];let runFn=null,failed=false;
   assert.equal(leadOrder(),run("esc(CAST.tunde.name)"),'Tunde’s card leads');
   assert.deepEqual(J('[LIFE34.waypoint.x,LIFE34.waypoint.z]'),[-5.6,6.35],'marker at the pot');return {row:'seedling',lead:leadOrder()};});
 
- check('A6. Path A day 2: plant the seedling and water it at home',()=>{run('closePanel()');veranda();walk(10);act('lifePlant');assert.equal(stage(),1);act('lifeWater');assert.equal(run('S.life.crop.wateredDay'),2);
-  assert.equal(CUESlast(),'water');return {stage:1};});
+ check('A6. Path A day 2: plant the seedling and water it at home; Today’s morning card then says it is done, with no button back to the pot, and the pot marker is cleared',()=>{run('closePanel()');veranda();walk(10);act('lifePlant');assert.equal(stage(),1);act('lifeWater');assert.equal(run('S.life.crop.wateredDay'),2);
+  assert.equal(CUESlast(),'water');assert.equal(J('LIFE34.waypoint'),null,'the pot marker has done its job');
+  const t=run('todayHTML34()'),card=(t.match(/<div class="life-note34 morning35" data-morning="seedling">[\s\S]*?<\/div>/)||[''])[0];
+  assert(card.includes('<h3>Planted and watered</h3>')&&card.includes('It will be taller by morning.'),'done card: '+card.slice(0,200));assert(!/lifeGo|lifeTab/.test(card),'no button back to the pot');
+  return {stage:1,card:'Planted and watered'};});
  function CUESlast(){return run('CUES[CUES.length-1]');}
 
  check('A7. Path A day 2: at the rocks the bite follows the stubbed wall clock (2.2-4.4 s at 5 fps), the nibble comes first, and Act alone casts, reels in and keeps the first fish',()=>{
@@ -121,8 +124,8 @@ const checks=[];let runFn=null,failed=false;
   return {sold,purse:money(),bites:A.fish.map(f=>f.bite)};});
 
  check('A10. Path A day 2: Ada’s armchair at Finds costs ₦9,000, with no agreement step and one approving line from the companion',()=>{
-  run('closePanel()');market();walk(15);const m0=money(),t0=run('TOASTS.length');act('lifeBuy',{t:'armchair'});assert.equal(m0-money(),9000);assert(run("S.home.storage.includes('armchair')"));
-  const all=J(`TOASTS.slice(${t0})`),t=all.slice(-1);const nm=run('ITEMS.armchair.name');assert.deepEqual(all.slice(0,-1),[nm+' is in Build storage.'],'only the base line before it');assert(t[0].startsWith(nm+' is in Build storage. Ola: “')&&t[0].endsWith('”'),t[0]);assert(run("PH.startsWith('<section class=\"life34\">')"),'back on Finds, nothing to confirm');
+  run('closePanel()');market();at(21.5,7.6,1);walk(15);const m0=money(),t0=run('TOASTS.length');act('lifeBuy',{t:'armchair'});assert.equal(m0-money(),9000);assert(run("S.home.storage.includes('armchair')"));
+  const all=J(`TOASTS.slice(${t0})`),t=all.slice(-1);const nm=run('ITEMS.armchair.name');assert.equal(all.length,1,'one toast: '+all.join(' | '));assert(t[0].startsWith(nm+' is in Build storage. Ola: “')&&t[0].endsWith('”'),t[0]);assert(run("PH.startsWith('<section class=\"life34\">')"),'back on Finds, nothing to confirm');
   return {toast:t[0],purse:money()};});
 
  check('A11. Path A day 2: the armchair placed on the veranda, undone, turned and placed again (y=4)',()=>{veranda();
@@ -137,11 +140,13 @@ const checks=[];let runFn=null,failed=false;
   toNPC('tunde');act('lifeRequest',{k:'tunde'});toNPC('ada');act('lifeRequest',{k:'ada'});assert.deepEqual(J("[request34('tunde').stage,request34('ada').stage,request34('nkechi').stage]"),[1,1,1]);
   return {tunde:tl.id,ada:al.id};});
 
- check('A13. Path A night 2: the recap “The seedling will be taller by morning. Ada wants to hear where the chair went.”',()=>{
-  const n=night(2,3);assert.equal(n.recap,'The seedling will be taller by morning. Ada wants to hear where the chair went.');A.recap2=n.recap;return {recap:n.recap};});
+ check('A13. Path A night 2: the recap “The seedling will be taller by morning.” and, since Ada has already talked about the chair today, “Ada approves of where the armchair went.”; Ada’s smelled-good line only on a night something was cooked',()=>{
+  assert(J('S.life.lines35.used.ada').some(id=>id==='ad03'||id==='ad04'),'Ada said her armchair line today');
+  const n=night(2,3);assert.equal(n.recap,'The seedling will be taller by morning. Ada approves of where the armchair went.');A.recap2=n.recap;
+  assert(!n.html.includes('Something smelled good'),'nothing was cooked on day 2');assert(n.html.includes('>Sleep until tomorrow<'),'the night button says Sleep until tomorrow');return {recap:n.recap};});
 
- check('A14. Path A day 3 morning: “It grew overnight.”, Mama Nkechi’s card leads, the plant is at stage 2',()=>{
-  const m=morning();assert.equal(run('S.day'),3);assert.equal(stage(),2);assert.equal(J('S.life.morning35').id,'grew');assert(m.today.includes('data-morning="grew"')&&m.today.includes('<h3>It grew overnight.</h3>'));
+ check('A14. Path A day 3 morning: “It grew overnight”, Mama Nkechi’s card leads, the plant is at stage 2',()=>{
+  const m=morning();assert.equal(run('S.day'),3);assert.equal(stage(),2);assert.equal(J('S.life.morning35').id,'grew');assert(m.today.includes('data-morning="grew"')&&m.today.includes('<h3>It grew overnight</h3>'));
   assert.equal(leadOrder(),run("esc(CAST.nkechi.name)"),'Mama Nkechi’s card leads');return {row:'grew',lead:leadOrder()};});
 
  check('A15. Path A day 3: watering ripens it at once; the harvest gives three peppers and resets the pot to stage 1',()=>{run('closePanel()');veranda();walk(10);act('lifeWater');assert.equal(stage(),3);
@@ -204,12 +209,22 @@ const checks=[];let runFn=null,failed=false;
   assert.deepEqual([...states],['idle']);assert.equal(run('EVENING35.done()'),false);run('S.time=22.5');home();
   const m=morning();assert.equal(run('S.day'),4);assert.equal(J('S.life.morning35').id,'evening-again');assert(m.today.includes('data-morning="evening-again"'));
   run("closePanel();S.time=18.3;");veranda();at(-5.2,4.0,1);run("(()=>{for(let k=0;k<800&&EVENING35.state!=='talking';k++){T35+=33;for(const h of TICK_HOOKS)h(1/30,!overlayOpen());}})()");assert.equal(run('EVENING35.state'),'talking');
-  for(let i=0;i<3;i++)run("T35+=300;dispatch('hs',{i:0,id:'evening35'});");assert.equal(run('S.life.evening35.doneDay'),4);return {day4:'evening-again',doneDay:4};});
+  for(let i=0;i<3;i++)run("T35+=300;dispatch('hs',{i:0,id:'evening35'});");assert.equal(run('S.life.evening35.doneDay'),4);
+  // missed twice: day 4 leads with the evening, day 5 has its own row with the evening card under it, and night 4 names the evening
+  run(`localStorage.setItem(KEY,${JSON.stringify(snapDay3)});ACTIONS.continue();closePanel();S.time=22.5;`);home();morning();assert.equal(J('S.life.morning35').id,'evening-again');
+  run("closePanel();S.time=22.5;");market();at(21.5,7.6,1);const r4=J('recap35()');assert.notEqual(r4.rowId,'evening-again','tomorrow has its own row');assert.equal(r4.clauseId,'evening-missed','night 4 names the evening');
+  assert(r4.text.endsWith(run("text35('recap.clause.evening-missed')")),r4.text);home();const m5=morning();assert.equal(run('S.day'),5);assert.equal(J('S.life.morning35').id,r4.rowId);
+  assert(m5.today.includes('evening35-card')&&m5.today.includes('The neighbours are coming by'),'Today on day 5 carries the evening card');
+  const m6=(run("closePanel();S.time=22.5;"),morning());assert.equal(J('S.life.morning35').id,'evening-again','day 6 leads with the evening again');
+  return {day4:'evening-again',doneDay:4,day5:r4.rowId,recap4:r4.text};});
 
  // ---------------- Path B: shopping ----------------
  const B={};
- check('B1. Path B day 1: a new household buys what jollof needs at the market while it can, takes the basket for the rest, and starts day 2 at or below ₦2,000',()=>{
+ check('B1. Path B day 1: a new household buys what jollof needs at the market while it can, takes the basket for the rest, invites Ada without having met her (her armchair line plays) and starts day 2 at or below ₦2,000',()=>{
+  // path B starts from its own random state, so its market and catches do not depend on how path A went (the companion's walk there draws Math.random)
+  run("Math.random=(()=>{let s=7;return ()=>{s=(s*16807)%2147483647;return s/2147483647;};})();srand(1790000000);");
   fresh();assert.equal(money(),6000);B.d1=day1(true);assert(B.d1.bought.length>=1,'bought at the market');assert.equal(run('S.firstEvening.completed'),true);
+  assert(B.d1.guests.includes('ada'),'Ada can be invited on day 1 without a talk first: '+B.d1.guests);assert(B.d1.partyPanel.includes(run("esc(text35('party.ada.armchair'))")),'so the housewarming carries her armchair story');
   night(1,2);morning();assert.equal(run('S.day'),2);B.start=money();assert(B.start<=2000,'day 2 starts at '+B.start);return {bought:B.d1.bought,day2Purse:B.start,guests:B.d1.guests};});
 
  check('B2. Path B day 2: plant and water, keep one fish for Mama Nkechi, purse below ₦9,000 after her errand, sell catches until the armchair is affordable and place it on the veranda by the end of day 2',()=>{

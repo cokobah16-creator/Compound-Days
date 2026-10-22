@@ -7,7 +7,7 @@
    eveningTick35 (spec section 7); everything else lives in the block below. Wall-clock time goes through clock35() (tune-v35.js). */
 
 const EVENING35={state:'idle',guests:['tunde','nkechi','ada'],spots:{},line:0,camFactor:1,nudgedDay:0,t:0,lineT:0,retryAt:0,lastNext:-1e9,
- lines:[],walkers:[],shown:false,el:null,checkAt:0,
+ lines:[],walkers:[],shown:false,el:null,checkAt:0,awayT:0,yaw:{},
  // a one-time event: pending from day 3 until seen; a missed evening repeats the next day
  pending(){return !!(S&&S.p&&!(typeof online34==='function'&&online34())&&S.day>=3&&!(S.life&&S.life.evening35&&S.life.evening35.doneDay));},
  done(){return !!(S&&S.life&&S.life.evening35&&S.life.evening35.doneDay);},
@@ -24,7 +24,7 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
  const silent=()=>typeof silentMode==='function'&&silentMode();
  const isAI=i=>typeof AI!=='undefined'&&AI.on&&i===AI.i;
  const partyOn=()=>!!(S.party&&S.party.on&&!S.party.done);
- const guided=()=>typeof guided33==='function'&&guided33();
+ // (an unfinished guided first evening does not hold this back: the base lets that evening run past day 1, and this one starts on day 3)
  const carrying=()=>typeof sofa!=='undefined'&&!!(sofa&&sofa.carrying);
  const adaVisiting=()=>!!(S.life&&S.life.visit&&S.life.visit.day===S.day&&S.life.visit.k==='ada');
  // the human player to stage the evening around: one in the flat first, else the first human
@@ -32,27 +32,33 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
  const COPY={
   gate:'Tunde, Mama Nkechi and Ada are at the gate.',gate2:'Tunde and Mama Nkechi are at the gate.',
   nudge:'The neighbours are coming by your veranda this evening. Head home.',
-  memory:'Tunde, Mama Nkechi and Ada came by the veranda this evening.',
+  memory:'The evening Tunde, Mama Nkechi and Ada came by the veranda.',
+  sleepTitle:'The neighbours are coming by',sleepText:'Tunde, Mama Nkechi and Ada want to come by your veranda this evening, between six and ten. Sleep anyway?',
   // used only if the LINES table is missing or has nothing for this neighbour
-  fallback:{tunde:'We were passing, so we came to see how you are settling in.',nkechi:'Good evening, my dear. The compound feels warmer with you in it.',ada:'Your veranda looks lived in already. Sit well.'}};
+  fallback:{tunde:'We were passing, so we came to see how you are settling in.',nkechi:'Good evening, my dear. The compound feels warmer with you in it.',ada:'Your veranda looks lived in already.'}};
  E.copy=COPY;
 
  /* ---------- 7.2 Spots ---------- */
  // candidates built once: three rows in the street south of the veranda rail, nearest row first
  const ROWS=[7.8,8.5,9.2],CANDS=[];
- for(let r=0;r<ROWS.length;r++)for(let k=0;k<16;k++)CANDS.push({x:Math.round((-7.4+0.3*k)*100)/100,z:ROWS[r],row:r,ok:false,sight:false,used:false});
+ for(let r=0;r<ROWS.length;r++)for(let k=0;k<29;k++)CANDS.push({x:Math.round((-9.8+0.3*k)*100)/100,z:ROWS[r],row:r,ok:false,sight:false,used:false});
  E.candidates=CANDS;
  // the camera looks from CAM_DIR (south-south-east); a guest near the camera-to-player line would hide the player's legs
  const HX=CAM_DIR.x/Math.hypot(CAM_DIR.x,CAM_DIR.z),HZ=CAM_DIR.z/Math.hypot(CAM_DIR.x,CAM_DIR.z);
- E.inSight=(cx,cz,px,pz)=>{const dx=cx-px,dz=cz-pz;return dx*HX+dz*HZ>0&&Math.abs(dx*HZ-dz*HX)<0.45;};
+ E.inSight=(cx,cz,px,pz)=>{const dx=cx-px,dz=cz-pz;return dx*HX+dz*HZ>0&&Math.abs(dx*HZ-dz*HX)<0.7;};
+ // each guest turns between the player and the camera, so the camera sees a three-quarter face rather than a back
+ E.faceYaw=(x,z,px,pz)=>{let ax=px-x,az=pz-z;const d=Math.hypot(ax,az)||1;ax=ax/d+HX;az=az/d+HZ;return Math.atan2(ax,az);};
  const valid=c=>{if(c.z<=7.4||inFlat(c.x,c.z)||levelAt(c.x,c.z)!==0||blocked(c.x,c.z,PR))return false;
   for(const p of players)if(Math.hypot(p.g.position.x-c.x,p.g.position.z-c.z)<0.9)return false;return true;};
  // pick a validated standing spot per walking guest; null when fewer than needed are free
  E.pickSpots=function(){const h=human();if(!h)return null;
   for(const c of CANDS){c.used=false;c.ok=valid(c);c.sight=false;if(c.ok)for(const p of players)if(!isAI(p.i)&&E.inSight(c.x,c.z,p.g.position.x,p.g.position.z)){c.sight=true;break;}}
   const px=Math.min(-3.2,Math.max(-7.0,h.g.position.x)),res={},placed=[],skipAda=adaVisiting();
-  for(let gi=0;gi<E.guests.length;gi++){const k=E.guests[gi];if(k==='ada'&&skipAda)continue;const tx=px+(gi-1)*1.1;let best=null,bs=1e9,alt=null,as=1e9;
-   for(const c of CANDS){if(!c.ok||c.used)continue;let far=true;for(const q of placed)if(Math.hypot(q.x-c.x,q.z-c.z)<1.0){far=false;break;}if(!far)continue;
+  // all three to the player's west, in a row: the camera sits south-south-east, so a guest to the west who turns between the player and
+  // the camera shows a three-quarter face, while one to the east would show the camera a back (and the line to the player leans east)
+  const TX=[-0.85,-1.65,-2.45];      // standing together, 0.8 m apart: from the camera's angle they still do not cover each other
+  for(let gi=0;gi<E.guests.length;gi++){const k=E.guests[gi];if(k==='ada'&&skipAda)continue;const tx=px+TX[gi];let best=null,bs=1e9,alt=null,as=1e9;
+   for(const c of CANDS){if(!c.ok||c.used)continue;let far=true;for(const q of placed)if(Math.hypot(q.x-c.x,q.z-c.z)<0.8){far=false;break;}if(!far)continue;
     const s=c.row*100+Math.abs(c.x-tx);if(!c.sight){if(s<bs){bs=s;best=c;}}else if(s<as){as=s;alt=c;}}
    const pick=best||alt;if(!pick)return null;pick.used=true;placed.push(pick);res[k]=[pick.x,pick.z];}
   return res;};
@@ -78,6 +84,7 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
 #evening35 .evening35-line{margin:4px 0 8px;font-size:16px;line-height:1.45}
 #evening35 .evening35-next{min-height:44px;min-width:96px;border-radius:12px;border:0;background:#3f6853;color:#fffae9;font:inherit;font-weight:700;cursor:pointer}
 #evening35 .evening35-next:focus-visible{outline:3px solid #E3A72F;outline-offset:2px}
+body.evening35-active #life-guide34{display:none!important}
 @media (hover:none) and (pointer:coarse){#evening35{bottom:calc(108px + env(safe-area-inset-bottom,0px))}
  body.evening35-on #inv0,body.evening35-on #inv1,body.evening35-on #pr0,body.evening35-on #pr1{visibility:hidden}}`;
  E.css=css;
@@ -93,14 +100,17 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
   for(let gi=0;gi<E.guests.length;gi++){const k=E.guests[gi],n=npcs[k];if(!n)continue;
    if(!(k in cool))cool[k]=Math.min(n.cool||0,25);n.cool=1e9;               // no NPC_CALLS bubbles while they visit
    if(k==='ada'&&visiting){E.spots.ada=[n.g.position.x,n.g.position.z];continue;}   // already on the veranda: she speaks from there
-   const [x,z]=sp[k],gx=3.6+0.4*gi;n.g.visible=true;n.g.position.set(gx,0,9.6);n.g.rotation.y=Math.atan2(x-gx,9.0-9.6);
-   n.route=[[gx,9.6],[x,9.0],[x,z]];n.ri=0;n.dest=[x,z,Math.PI];n.hideAtEnd=false;E.walkers.push(k);}
-  E.state='arriving';E.t=0;E.line=0;E.lines=[];
+   const [x,z]=sp[k],gx=3.6+0.4*gi,h=human(),yaw=h?E.faceYaw(x,z,h.g.position.x,h.g.position.z):Math.PI;E.yaw[k]=yaw;n.g.visible=true;n.g.position.set(gx,0,9.6);n.g.rotation.y=Math.atan2(x-gx,9.0-9.6);
+   n.route=[[gx,9.6],[x,9.0],[x,z]];n.ri=0;n.dest=[x,z,yaw];n.hideAtEnd=false;E.walkers.push(k);}
+  E.state='arriving';E.t=0;E.line=0;E.lines=[];E.awayT=0;
   const w=LIFE34.waypoint;if(w&&w.name==='Flat 3'&&w.x===-4.1&&w.z===6.3){LIFE34.waypoint=null;if(typeof refreshMarker34==='function')refreshMarker34();}   // home now: the nudge marker has done its job
   if(!silent())toast(visiting?COPY.gate2:COPY.gate);return true;};
  // arrival done (or the 20 s timeout): stragglers step onto their spots, and the lines begin
- const settle=k=>{const n=npcs[k],s=E.spots[k];if(!n||!s)return;n.route=null;n.g.visible=true;n.g.position.set(s[0],0,s[1]);n.g.rotation.y=Math.PI;n.dest=[s[0],s[1],Math.PI];n.home=n.dest;};
- const beginTalk=()=>{for(const k of E.walkers)if(npcs[k]&&npcs[k].route)settle(k);
+ const settle=k=>{const n=npcs[k],s=E.spots[k];if(!n||!s)return;const yaw=k in E.yaw?E.yaw[k]:Math.PI;n.route=null;n.g.visible=true;n.g.position.set(s[0],0,s[1]);n.g.rotation.y=yaw;n.dest=[s[0],s[1],yaw];n.home=n.dest;};
+ // the companion that could not walk round in time steps onto its place beside the player (only the human's view is drawn)
+ const placeCompanion=()=>{if(!(typeof AI!=='undefined'&&AI.on))return;const p=players[AI.i],s=E.companionSpot();if(!p||!s||s.stop>1)return;
+  if(Math.hypot(p.g.position.x-s.x,p.g.position.z-s.z)>1.6){p.y=0;p.lvl=0;p.g.position.set(s.x,0,s.z);p.prev=[s.x,s.z];AI.path=null;AI.rescue=-1;}};
+ const beginTalk=()=>{for(const k of E.walkers)if(npcs[k]&&npcs[k].route)settle(k);placeCompanion();
   E.lines=E.guests.filter(k=>npcs[k]).map(lineFor);E.line=0;E.lineT=0;E.state='talking';render();};
  E.beginTalk=beginTalk;
 
@@ -108,7 +118,7 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
  // advance one line (the Next button, Act through the forced hotspot, or the 8 s timer); calls within 300 ms of the last advance are ignored
  E.next=function(){if(E.state!=='talking')return false;const now=clock35();if(now-E.lastNext<300)return false;E.lastNext=now;
   if(E.line>=E.lines.length-1){finish();return true;}E.line++;E.lineT=0;render();return true;};
- const finish=()=>{life34().evening35={doneDay:S.day};E.state='leaving';E.line=0;E.lineT=0;show(false);
+ const finish=()=>{life34().evening35={doneDay:S.day};E.state='leaving';E.line=0;E.lineT=0;show(false);if(typeof AI!=='undefined')AI.rescue=-1;
   if(typeof cue35==='function')cue35('evening',{day:S.day});remember(COPY.memory,'moment');
   for(const k of E.walkers){const n=npcs[k],s=E.spots[k];if(!n||!s)continue;n.route=[[s[0],9.0],[4.0,9.6]];n.ri=0;n.dest=[4.0,9.6,0];n.hideAtEnd=false;}
   if(E.guests.includes('ada')&&adaVisiting()&&npcs.ada){npcs.ada.cool=cool.ada||0;delete cool.ada;}
@@ -116,13 +126,13 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
  // at the gate a guest goes back to the usual schedule
  const handOff=k=>{const n=npcs[k];n.cool=cool[k]||0;delete cool[k];const spot=NPC_SPOTS[k]&&NPC_SPOTS[k][slot()];if(spot)walkNPC(n,spot,false);else walkNPC(n,null,true);};
  // stop without marking the evening done, so it repeats; everyone goes back to the schedule
- E.abort=function(place){if(E.state==='idle')return false;E.state='idle';
+ E.abort=function(place){if(E.state==='idle')return false;E.state='idle';E.awayT=0;if(typeof AI!=='undefined')AI.rescue=-1;
   for(const k of E.walkers){const n=npcs[k];if(n){n.route=null;n.dest=null;n.hideAtEnd=false;}}E.walkers.length=0;E.lines=[];E.line=0;E.lineT=0;E.t=0;E.camFactor=1;E.spots={};show(false);
   for(const k in cool){if(npcs[k])npcs[k].cool=cool[k];delete cool[k];}
   if(place!==false&&typeof placeNPCs==='function'&&Object.keys(npcs).length){try{placeNPCs();}catch(e){if(typeof console!=='undefined')console.warn('evening35 abort',e);}}
   return true;};
 
- let last=null;
+ let last=null,bodyActive=false;
  E.tick=function(dt){if(!S||!S.p||S.phase!=='play'||!players.length){last=null;return;}
   const now=clock35(),wd=last===null?0:Math.min(Math.max(0,now-last),1000);last=now;const open=overlayOpen();
   // the camera eases a quarter nearer for the first line, then back (0.8 s each way)
@@ -132,16 +142,19 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
   if(E.state==='idle'){
    if(!E.pending()||!E.window()||now<E.checkAt)return;E.checkAt=now+250;     // the start and nudge checks run four times a second
    if(!home34()){
-    if(E.nudgedDay!==S.day&&!open&&!guided()&&!partyOn()){E.nudgedDay=S.day;LIFE34.waypoint={x:-4.1,z:6.3,name:'Flat 3'};if(typeof refreshMarker34==='function')refreshMarker34();if(!silent())toast(COPY.nudge);}
+    if(E.nudgedDay!==S.day&&!open&&!partyOn()){E.nudgedDay=S.day;LIFE34.waypoint={x:-4.1,z:6.3,name:'Flat 3'};if(typeof refreshMarker34==='function')refreshMarker34();if(!silent())toast(COPY.nudge);}
     return;}
-   if(open||guided()||partyOn()||(S.roof&&S.roof.on)||carrying()||now<E.retryAt)return;
+   if(open||partyOn()||(S.roof&&S.roof.on)||carrying()||now<E.retryAt)return;
    E.start();return;}
+  // nobody home for three seconds while they arrive or talk: they leave without it counting, so it repeats
+  if(E.state==='arriving'||E.state==='talking'){if(home34())E.awayT=0;else if((E.awayT+=wd)>=3000){E.abort();return;}}
   if(E.state==='arriving'){if(!open)E.t+=wd;let all=true;for(const k of E.walkers)if(npcs[k]&&npcs[k].route){all=false;break;}
    if(all||E.t>=20000)beginTalk();}
   else if(E.state==='talking'){if(!open){E.lineT+=wd;if(E.lineT>=8000)E.next();}}
   else if(E.state==='leaving'){for(let j=E.walkers.length-1;j>=0;j--){const k=E.walkers[j],n=npcs[k];if(!n){E.walkers.splice(j,1);continue;}if(!n.route){handOff(k);E.walkers.splice(j,1);}}
    if(!E.walkers.length){E.state='idle';E.spots={};for(const k in cool){if(npcs[k])npcs[k].cool=cool[k];delete cool[k];}}}
-  show(E.state==='talking'&&!open);};
+  show(E.state==='talking'&&!open);
+  const act=E.state!=='idle';if(act!==bodyActive){bodyActive=act;if(document.body&&document.body.classList)document.body.classList.toggle('evening35-active',act);}};
  TICK_HOOKS.push((dt)=>{try{eveningTick35(dt);}catch(e){if(typeof console!=='undefined')console.warn('evening35',e);}});
 
  // Act while the neighbours talk: a forced hotspot for human players; pressing it (the shared base 'hs' action) advances the line
@@ -173,18 +186,42 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
   return r;};
  // wrap: while a neighbour speaks, the human views' camera fit includes them (eight reused corner points)
  const BOX=[];for(let k=0;k<8;k++)BOX.push(new THREE.Vector3());
+ const BOX2=[];for(let k=0;k<16;k++)BOX2.push(new THREE.Vector3());
+ const near=(i,n,r)=>{const p=players[i];return !!(p&&Math.hypot(p.g.position.x-n.g.position.x,p.g.position.z-n.g.position.z)<=r);};
  const ptsPrev=v21InteractionPoints;v21InteractionPoints=function(i,joint){const pts=ptsPrev.apply(this,arguments);
-  if(E.state!=='talking'||isAI(i))return pts;const L=E.lines[E.line],n=L&&npcs[L.k];if(!n||!n.g.visible)return pts;const x=n.g.position.x,z=n.g.position.z;let k=0;
-  for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));return pts;};
+  if(isAI(i)||!Array.isArray(pts))return pts;
+  if(E.state==='talking'){const L=E.lines[E.line],n=L&&npcs[L.k];if(!n||!n.g.visible||!near(i,n,6))return pts;const x=n.g.position.x,z=n.g.position.z;let k=0;
+   for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));return pts;}
+  if(E.state==='arriving'){let k=0;for(const g of E.walkers){const n=npcs[g];if(!n||!n.g.visible||!near(i,n,4.5)||k>=16)continue;   // the last steps in are on screen
+   const x=n.g.position.x,z=n.g.position.z;for(const dx of [-.4,.4])for(const dz of [-.3,.3]){if(k<16)pts.push(BOX2[k++].set(x+dx,k%2?0:1.9,z+dz));}}}
+  return pts;};
  // wrap: during the evening the companion stands beside the player (east, west or north of them, inside the flat) instead of following behind
+ // the only way between the room and the veranda is the door in the south wall (x -4.25 to -3.95): its inner and outer steps
+ const DOOR_X=-4.1,DOOR_IN=5.05,DOOR_OUT=6.35,onV=z=>z>6.05;     // on the veranda row, clear of the doorway (the wall runs to 5.85)
+ E.door={x:DOOR_X,inZ:DOOR_IN,outZ:DOOR_OUT};
  const goalPrev=aiGoal;aiGoal=function(p,dt){if(E.state==='idle'||!(typeof AI!=='undefined'&&AI.on&&p&&p.i===AI.i))return goalPrev.apply(this,arguments);
   const s=E.companionSpot();if(!s)return goalPrev.apply(this,arguments);if(s.stop>1)return s;
-  const px=p.g.position.x,pz=p.g.position.z;
-  return Math.hypot(s.x-px,s.z-pz)<1.5||lineClear(px,pz,s.x,s.z,p.lvl||0)?s:aiNavTo(p,s.x,s.z,s.stop);};   // straight there when the way is clear, else round by the NAV graph
- // the companion's evening place: east, west or north of the human, free and inside the flat; else close to the human
+  const px=p.g.position.x,pz=p.g.position.z,inDoor=Math.abs(px-DOOR_X)<0.22;
+  if(onV(s.z)!==onV(pz)){                                                       // the other side of the south wall: by the door
+   if(inDoor&&pz>DOOR_IN-0.3&&pz<DOOR_OUT+0.3)return {x:DOOR_X,z:onV(s.z)?DOOR_OUT:DOOR_IN,stop:.15};
+   const dz=onV(pz)?DOOR_OUT:DOOR_IN;return aiNavTo(p,DOOR_X,dz,.15);}                    // straight when clear, else by the NAV graph (and its rescue when stuck)
+  return Math.hypot(s.x-px,s.z-pz)<0.6?s:aiNavTo(p,s.x,s.z,s.stop);};
+ // the companion's evening place: beside the human on the veranda row when they are out there, else east, west or north of them inside; else close to the human
  E.companionSpot=function(){const h=human();if(!h)return null;const hx=h.g.position.x,hz=h.g.position.z;
-  for(const [ox,oz] of [[.9,0],[-.9,0],[0,-.9]]){const x=hx+ox,z=hz+oz;if(!blocked(x,z,PR)&&inFlat(x,z))return {x,z,stop:.25};}
+  const opts=onV(hz)?[[.9,0],[-.9,0],[1.35,0],[-1.35,0]]:[[.9,0],[-.9,0],[0,-.9]];
+  for(const [ox,oz] of opts){const x=hx+ox,z=hz+oz;if(!blocked(x,z,PR)&&inFlat(x,z)&&onV(z)===onV(hz))return {x,z,stop:.25};}
   return {x:hx,z:hz,stop:1.2};};
+
+ /* ---------- Waiting for six, and Sleep before the evening ---------- */
+ const canWait=()=>E.pending()&&E.state==='idle'&&S.time<18&&home34();
+ // wait on the veranda until six (as the sofa's sit-and-wait does): the visit then starts on the next check
+ ACTIONS.evening35Wait=function(){if(!canWait())return;ACTIONS.sitwait({t:18});E.checkAt=0;E.retryAt=0;};
+ const sleepPrev=ACTIONS.sleep;
+ // wrap: Sleep on a day the neighbours are still coming asks once (Wait until six / Sleep anyway); a second Sleep, or Sleep anyway, sleeps
+ ACTIONS.sleep=function(d){if(silent()||(d&&d.anyway)||!E.pending()||S.time>=22||E.state!=='idle'||E.askedDay===S.day)return sleepPrev.apply(this,arguments);
+  E.askedDay=S.day;const wait=canWait()?btn('Wait on the veranda until six','evening35Wait',{},'primary block'):S.time>=18?btn('Stay up for them','close',{},'primary block'):btn('Head home','lifeGo',{v:'home'},'primary block');
+  openPanel(`<h2>${esc(COPY.sleepTitle)}</h2><p>${esc(COPY.sleepText)}</p><div class="actions">${wait}${btn('Sleep anyway','sleep',{anyway:1},'quiet')}</div>`);};
+ E.askedDay=0;
 
  /* ---------- 7.6 Today card ---------- */
  // wrap: Today says when the neighbours are coming, sends you home in the window, and remembers the evening once it happened
@@ -193,8 +230,10 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
   let head,text,b='';
   if(E.state!=='idle'&&!E.doneToday()){head='At your veranda';text='The neighbours are outside the flat now.';}
   else if(E.doneToday()){head='A good evening';text='The neighbours came by the veranda this evening.';}
-  else if(S.time<18){if(h.includes('data-morning="evening-again"'))return h; // the morning card above already says it (integration: no twin card)
-   head='The neighbours are coming by';text='Tunde, Mama Nkechi and Ada will stop at your veranda between six and ten this evening. Be at home to see them.';}
+  else if(S.time<18){const w=canWait()?btn('Wait on the veranda until six','evening35Wait',{},'quiet'):'';
+   if(h.includes('data-morning="evening-again"')){                    // the morning card above already says it (no twin card): it gets the wait button
+    if(!w)return h;const m=h.indexOf('data-morning="evening-again"'),e=h.indexOf('</div>',m);return e<0?h:h.slice(0,e)+w+h.slice(e);}
+   head='The neighbours are coming by';text='Tunde, Mama Nkechi and Ada will stop at your veranda between six and ten this evening. Be at home to see them.';b=w;}
   else if(S.time<22&&!home34()){head='They are on their way';text='Head home to the veranda before ten.';b=btn('Head home','lifeGo',{v:'home'},'primary');}
   else if(S.time<22){head='They are on their way';text='Stay by the veranda. They will be at the gate soon.';}
   else{head='Another evening, then';text='The neighbours will try again tomorrow, between six and ten in the evening.';}
