@@ -166,14 +166,23 @@ const checks=[];let runFn=null,failed=false;
 
  // the day-3 household is kept for the missed-evening run
  let snapDay3=null;
- check('A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair, each turned within 70 degrees of the camera through the real base frame (the speaker in three-quarter); the companion stands beside the player and the camera eases in',()=>{
+ check('A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair, each turned within 70 degrees of the camera through the real base frame (the speaker in three-quarter); the companion stands beside the player; on every frame of the three lines the real camera cuts nobody, eases in only as far as everyone still fits, and changes under 1% a frame after its first eased frame',()=>{
   snapDay3=run('JSON.stringify(S)');run("closePanel();S.time=18.3;");veranda();at(-5.2,4.0,1);
   const k0=run("(()=>{let k=0;for(;k<60&&EVENING35.state==='idle';k++){T35+=33;for(const h of TICK_HOOKS)h(1/30,!overlayOpen());}return k;})()");assert.equal(run('EVENING35.state'),'arriving','started');
   const spots=J('EVENING35.spots');
-  run("(()=>{for(let k=0;k<700&&EVENING35.state==='arriving';k++){T35+=33;for(const h of TICK_HOOKS)h(1/30,!overlayOpen());}})()");assert.equal(run('EVENING35.state'),'talking');
-  let minCam=1;const seen=[],facing=[];
+  // the real base frame (index.html tick: the companion's drive, TICK_HOOKS, the NPC loop, updateCameras); nothing is drawn, so renderFrame
+  // only sets the view's aspect, as the real one does. Each frame records the real camera: its distance to the focus, its share of the fitted
+  // distance, whether the player or a guest is cut by the screen edge (0.6 x 1.9 m bodies projected with the game's camera), and whether it
+  // could have come 1% nearer with everyone still fitting
+  run(`var frame35=()=>{const rf=renderFrame;renderFrame=function(){const si=singleIdx(),c=cams[si>=0?si:0];c.aspect=innerWidth/innerHeight;c.updateProjectionMatrix();};try{T35+=33;last=0;tick(33);}finally{renderFrame=rf;}
+   const si=singleIdx(),i=si>=0?si:0,c=cams[i];c.updateMatrixWorld();const d=c.position.distanceTo(focus[i]),r=d/v21Dist[i],v=new THREE.Vector3();let cut=null;
+   for(const [k,o] of [['player',players[0].g],['tunde',npcs.tunde.g],['nkechi',npcs.nkechi.g],['ada',npcs.ada.g]]){if(!o.visible)continue;for(const dx of [-.3,.3])for(const y of [0,1.9])for(const dz of [-.3,.3]){v.set(o.position.x+dx,y,o.position.z+dz).project(c);if(Math.abs(v.x)>1||Math.abs(v.y)>1)cut=k;}}
+   return {line:EVENING35.line,state:EVENING35.state,d,r,cut,nearer:r<0.9999?EVENING35.fits(i,r-0.01):null};};`);
+  run("(()=>{for(let k=0;k<700&&EVENING35.state==='arriving';k++)frame35();})()");assert.equal(run('EVENING35.state'),'talking');
+  let minCam=1;const seen=[],facing=[],cam=[];
   for(let line=0;line<3;line++){seen.push(run('EVENING35.el.dataset.who'));
-   for(let k=0;k<45;k++){run("T35+=33;for(const h of TICK_HOOKS)h(1/30,!overlayOpen());aiDrive(players[AI.i],1/30);");if(line===0)minCam=Math.min(minCam,run('EVENING35.camFactor'));}
+   for(let k=0;k<45;k++){const s=J('frame35()');cam.push(s);assert.equal(s.cut,null,'line '+(line+1)+', frame '+k+': nobody cut by the camera: '+JSON.stringify(s));if(line===0)minCam=Math.min(minCam,s.r);}
+   if(line===0){const e=cam[cam.length-1];assert(e.r<=0.76||e.nearer===false||(e.r>=0.9999&&!run('EVENING35.fits(0,0.99)')),'the camera eased in as far as everyone still fits: '+JSON.stringify(e));}
    // two real base frames (index.html tick, whose NPC loop turns every idle NPC within 4 m to the nearest player): the guests keep the evening's facing
    const f=J(`(()=>{const rf=renderFrame;renderFrame=()=>{};try{for(let k=0;k<2;k++){T35+=33;last=0;tick(33);}}finally{renderFrame=rf;}const cp=cams[0].position,L=EVENING35.lines[EVENING35.line];
     return ['tunde','nkechi','ada'].map(k=>{const o=npcs[k].g,fx=Math.sin(o.rotation.y),fz=Math.cos(o.rotation.y),cx=cp.x-o.position.x,cz=cp.z-o.position.z;
@@ -183,10 +192,13 @@ const checks=[];let runFn=null,failed=false;
    run("T35+=300;dispatch('hs',{i:0,id:'evening35'});");}
   const lines=J('EVENING35.lines.map(l=>({k:l.k,id:l.id,text:l.text}))');assert.deepEqual(lines.map(l=>l.k),['tunde','nkechi','ada']);assert.deepEqual(seen,['tunde','nkechi','ada']);
   const adaWhen=J(`LINES35.evening.ada.find(e=>e.id===${JSON.stringify(lines[2].id)}).when`);assert(adaWhen.includes('chair-veranda')||adaWhen.includes('chair-placed'),'Ada’s line reads the chair: '+adaWhen);
-  assert(/chair/i.test(lines[2].text),'Ada names the chair');assert.equal(run('S.life.evening35.doneDay'),3);assert(minCam<=0.76,'camera nearer on the first line: '+minCam);
+  assert(/chair/i.test(lines[2].text),'Ada names the chair');assert.equal(run('S.life.evening35.doneDay'),3);
+  // no twitch: from the first eased frame on, the camera distance changes under 1% a frame
+  let first=-1,maxStep=0;for(let k=0;k<cam.length;k++){if(first<0&&cam[k].r<0.9999)first=k;if(first>=0&&k>first){const st=Math.abs(cam[k].d-cam[k-1].d)/cam[k-1].d;maxStep=Math.max(maxStep,st);
+   assert(st<0.01,'the camera moved '+(st*100).toFixed(2)+'% on frame '+k+' of the lines ('+cam[k-1].d.toFixed(3)+' to '+cam[k].d.toFixed(3)+')');}}
   const comp=run("+Math.hypot(players[AI.i].g.position.x-players[0].g.position.x,players[AI.i].g.position.z-players[0].g.position.z).toFixed(2)");assert(comp<=1.2,'companion beside the player: '+comp);
   run("(()=>{for(let k=0;k<900&&EVENING35.state!=='idle';k++){T35+=33;for(const h of TICK_HOOKS)h(1/30,!overlayOpen());}})()");
-  return {spots,lines:lines.map(l=>l.k+':'+l.id),camFactorFirstLine:Math.round(minCam*100)/100,companionDistance:comp,degreesToCameraPerLine:facing};});
+  return {spots,lines:lines.map(l=>l.k+':'+l.id),cameraRatioFirstLine:Math.round(minCam*1000)/1000,cameraMaxStepPercent:Math.round(maxStep*10000)/100,companionDistance:comp,degreesToCameraPerLine:facing};});
 
  check('A19. Path A night 3: the recap “The lamp and the rug are back at Finds tomorrow. Tunde says the pot will fruit again.”, the rating, then both day-3 prompts saved through their bind paths',()=>{
   const n=night(3,3);assert(n.recap.startsWith('The ')&&n.recap.endsWith(' are back at Finds tomorrow. Tunde says the pot will fruit again.'),n.recap);

@@ -1,13 +1,14 @@
 /* v35 veranda evening (plan 4.4, spec section 7). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or
    on the veranda row, Tunde, Mama Nkechi and Ada walk in from the gate to three standing spots in the open street just south of the
    veranda rail, face the veranda and say one line each (read from the LINES table, Ada's about the armchair when it is placed). The
-   companion stands beside the player and the camera eases a quarter nearer for the first line. Nobody sits and there are no props.
+   companion stands beside the player. For the first line the camera eases nearer, up to a quarter, but only as far as the player and
+   all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. Nobody sits and there are no props.
    A missed evening repeats every day until it is seen; it is saved once seen (S.life.evening35={doneDay}). Off in online play.
    Loaded after days-v35.js. Every behaviour change wraps an earlier global and calls it. Top-level names are only EVENING35 and
    eveningTick35 (spec section 7); everything else lives in the block below. Wall-clock time goes through clock35() (tune-v35.js). */
 
 const EVENING35={state:'idle',guests:['tunde','nkechi','ada'],spots:{},line:0,camFactor:1,nudgedDay:0,t:0,lineT:0,retryAt:0,lastNext:-1e9,
- lines:[],walkers:[],shown:false,el:null,checkAt:0,awayT:0,yaw:{},
+ lines:[],walkers:[],shown:false,el:null,checkAt:0,awayT:0,hold:0,yaw:{},
  // a one-time event: pending from day 3 until seen; a missed evening repeats the next day
  pending(){return !!(S&&S.p&&!(typeof online34==='function'&&online34())&&S.day>=3&&!(S.life&&S.life.evening35&&S.life.evening35.doneDay));},
  done(){return !!(S&&S.life&&S.life.evening35&&S.life.evening35.doneDay);},
@@ -110,11 +111,11 @@ body.evening35-active #life-guide34{display:none!important}
    if(k==='ada'&&visiting){E.spots.ada=[n.g.position.x,n.g.position.z];continue;}   // already on the veranda: she speaks from there
    const [x,z]=sp[k],gx=3.6+0.4*gi,h=human(),yaw=h?E.faceYaw(x,z,h.g.position.x,h.g.position.z):Math.PI;E.yaw[k]=yaw;n.g.visible=true;n.g.position.set(gx,0,9.6);n.g.rotation.y=Math.atan2(x-gx,9.0-9.6);
    n.route=[[gx,9.6],[x,9.0],[x,z]];n.ri=0;n.dest=[x,z,yaw];n.hideAtEnd=false;E.walkers.push(k);}
-  E.state='arriving';E.t=0;E.line=0;E.lines=[];E.awayT=0;
+  E.state='arriving';E.t=0;E.hold=0;E.line=0;E.lines=[];E.awayT=0;
   const w=LIFE34.waypoint;if(w&&w.name==='Flat 3'&&w.x===-4.1&&w.z===6.3){LIFE34.waypoint=null;if(typeof refreshMarker34==='function')refreshMarker34();}   // home now: the nudge marker has done its job
   if(!silent())toast(visiting?COPY.gate2:COPY.gate);return true;};
- // arrival done (or the 20 s timeout): stragglers step onto their spots, and the lines begin
- const settle=k=>{const n=npcs[k],s=E.spots[k];if(!n||!s)return;const yaw=k in E.yaw?E.yaw[k]:Math.PI;n.route=null;n.g.visible=true;n.g.position.set(s[0],0,s[1]);n.g.rotation.y=yaw;n.dest=[s[0],s[1],yaw];n.home=n.dest;};
+ // arrival done (or the 20 s timeout): stragglers step onto their spots (and face at once, without a turn), and the lines begin
+ const settle=k=>{const n=npcs[k],s=E.spots[k];if(!n||!s)return;const yaw=k in E.yaw?E.yaw[k]:Math.PI;delete turns[k];n.route=null;n.g.visible=true;n.g.position.set(s[0],0,s[1]);n.g.rotation.y=yaw;n.dest=[s[0],s[1],yaw];n.home=n.dest;};
  // the companion that could not walk round in time steps onto its place beside the player (only the human's view is drawn)
  const placeCompanion=()=>{if(!(typeof AI!=='undefined'&&AI.on))return;const p=players[AI.i],s=E.companionSpot();if(!p||!s||s.stop>1)return;
   if(Math.hypot(p.g.position.x-s.x,p.g.position.z-s.z)>1.6){p.y=0;p.lvl=0;p.g.position.set(s.x,0,s.z);p.prev=[s.x,s.z];AI.path=null;AI.rescue=-1;}};
@@ -156,8 +157,9 @@ body.evening35-active #life-guide34{display:none!important}
    E.start();return;}
   // nobody home for three seconds while they arrive or talk: they leave without it counting, so it repeats
   if(E.state==='arriving'||E.state==='talking'){if(home34())E.awayT=0;else if((E.awayT+=wd)>=3000){E.abort();return;}}
+  // once everyone is on a spot they have half a second to finish turning to the veranda (the turns settle in about 0.3 s) before the first line
   if(E.state==='arriving'){if(!open)E.t+=wd;let all=true;for(const k of E.walkers)if(npcs[k]&&npcs[k].route){all=false;break;}
-   if(all||E.t>=20000)beginTalk();}
+   E.hold=all?E.hold+(open?0:wd):0;if(E.hold>=500||E.t>=20000)beginTalk();}
   else if(E.state==='talking'){if(!open){E.lineT+=wd;if(E.lineT>=8000)E.next();}}
   else if(E.state==='leaving'){for(let j=E.walkers.length-1;j>=0;j--){const k=E.walkers[j],n=npcs[k];if(!n){E.walkers.splice(j,1);continue;}if(!n.route){handOff(k);E.walkers.splice(j,1);}}
    if(!E.walkers.length){E.state='idle';E.spots={};for(const k in cool){if(npcs[k])npcs[k].cool=cool[k];delete cool[k];}}}
@@ -185,7 +187,7 @@ body.evening35-active #life-guide34{display:none!important}
  // wrap: a new day ends an unfinished evening first (it is not marked done, so it repeats)
  const nextPrev=ACTIONS.nextday;ACTIONS.nextday=function(){E.abort();return nextPrev.apply(this,arguments);};
  // wrap: entering the world (continue, move-in) starts with no evening in progress; enterWorld then places everyone afresh
- const enterPrev=enterWorld;enterWorld=function(){E.abort(false);last=null;return enterPrev.apply(this,arguments);};
+ const enterPrev=enterWorld;enterWorld=function(){E.abort(false);last=null;E.camUsed[0]=E.camUsed[1]=1;return enterPrev.apply(this,arguments);};
 
  const near=(i,n,r)=>{const p=players[i];return !!(p&&Math.hypot(p.g.position.x-n.g.position.x,p.g.position.z-n.g.position.z)<=r);};
  // do the guests within 6 m and the player of view i all stand inside the camera fit's usable area (v21Viewport's margins) with the
@@ -199,22 +201,42 @@ body.evening35-active #life-guide34{display:none!important}
   for(const k of E.guests){const n=npcs[k];if(n&&n.g.visible&&near(i,n,6)&&!box(n.g.position.x,0,n.g.position.z))return false;}return true;};
  // each frame while the guests arrive, talk or leave: the base loop turns every idle NPC within 4 m to face the nearest player (index.html,
  // the npcs loop in tick, which runs just before updateCameras); turn the guests back. Walking guests face their way; standing guests
- // face as E.faceYaw says, the speaker in three-quarter, using the human view's camera when there is a single view.
- const faceGuests=()=>{if(E.state==='idle')return;const h=human();if(!h)return;const si=singleIdx(),cam=si>=0&&cams[si]?cams[si].position:null;
-  const L=E.state==='talking'?E.lines[E.line]:null;
+ // face as E.faceYaw says, the speaker in three-quarter, using the human view's camera when there is a single view. The guest who speaks
+ // next already turns in to the speaker's 50 degrees as a listener, so the change of speaker never has to snap to meet that limit.
+ // Turns are eased (a critically damped follow that settles in about 0.3 s, so a change of speaker or setting off is never a snap),
+ // and while they talk every frame keeps a guest inside its limit around the camera: 50 degrees for the speaker, 65 for a listener
+ // (the turn from the walk in is eased too, and finishes in the half second before the first line).
+ const TURN_W=16,turns={};E.turns=turns;
+ const turnTo=(k,target,dt)=>{let w=turns[k];if(!w)return (turns[k]={cur:target,v:0}).cur;
+  const e=wrapA(w.cur-target),x=Math.exp(-TURN_W*dt),a=w.v+TURN_W*e;w.v=(w.v-TURN_W*a*dt)*x;w.cur=wrapA(target+(e+a*dt)*x);return w.cur;};
+ const faceGuests=dt=>{if(E.state==='idle'){for(const k in turns)delete turns[k];return;}const h=human();if(!h)return;dt=Math.max(0,Math.min(+dt||0,0.1));
+  const si=singleIdx(),cam=si>=0&&cams[si]?cams[si].position:null;
+  const L=E.state==='talking'?E.lines[E.line]:null,nx=E.state==='talking'?E.lines[E.line+1]:{k:E.guests.find(g=>npcs[g])};
   for(const k of E.guests){const n=npcs[k];if(!n||!n.g.visible||!E.spots[k])continue;
-   if(n.route){if(E.walkers.includes(k)){const t=n.route[n.ri];if(t)n.g.rotation.y=Math.atan2(t[0]-n.g.position.x,t[1]-n.g.position.z);}continue;}
-   if(E.state==='leaving')continue;const x=n.g.position.x,z=n.g.position.z;
-   n.g.rotation.y=E.faceYaw(x,z,h.g.position.x,h.g.position.z,cam?cam.x:undefined,cam?cam.z:undefined,!!(L&&L.k===k));}};
+   if(n.route){if(E.walkers.includes(k)){const t=n.route[n.ri];if(t)n.g.rotation.y=turnTo(k,Math.atan2(t[0]-n.g.position.x,t[1]-n.g.position.z),dt);}continue;}
+   if(E.state==='leaving')continue;const x=n.g.position.x,z=n.g.position.z,spk=!!(L&&L.k===k),cx=cam?cam.x:x+HX,cz=cam?cam.z:z+HZ;
+   let y=E.faceYaw(x,z,h.g.position.x,h.g.position.z,cx,cz,spk);
+   if(!spk&&nx&&nx.k===k){const ac=Math.atan2(cx-x,cz-z),c=wrapA(y-ac);if(Math.abs(c)>SPK)y=wrapA(ac+Math.sign(c)*SPK);}
+   y=turnTo(k,y,dt);const ac=Math.atan2(cx-x,cz-z),c=wrapA(y-ac),lim=spk?SPK:LIS;
+   if(E.state==='talking'&&Math.abs(c)>lim){y=turns[k].cur=wrapA(ac+Math.sign(c)*lim);turns[k].v=0;}
+   n.g.rotation.y=y;}};
  E.faceGuests=faceGuests;
  // wrap: the camera eases nearer (camFactor) along its own direction, after every other camera wrapper, but only as far as the guests and
- // the player still fit (in a narrow portrait view the fit is already tight, so it mostly stays out); then the guests' facing
+ // the player still fit (in a narrow portrait view the fit is already tight, so it mostly stays out). The factor aimed for is the larger of
+ // camFactor and the smallest factor that fits (found by halving over a fixed range, so a still scene gives the same answer every frame)
+ // plus a 0.002 margin, so it never flickers; the factor used (camUsed)
+ // moves towards it by at most 0.8% of the distance per 30 fps frame, and widens at once only if someone would otherwise be cut.
+ // Then the guests' facing.
  E.camUsed=[1,1];
- const camPrev=updateCameras;updateCameras=function(dt){const r=camPrev.apply(this,arguments);E.camUsed[0]=E.camUsed[1]=1;
-  if(E.camFactor<1&&players.length&&typeof v21Dist!=='undefined'){const si=singleIdx();for(let i=0;i<2;i++){if(si>=0&&i!==si)continue;if(!cams[i]||!focus[i])continue;
-   let f=E.camFactor;while(f<1&&!E.fits(i,f))f=Math.min(1,f+0.05);E.camUsed[i]=f;if(f>=1)continue;
-   cams[i].position.copy(focus[i]).addScaledVector(CAM_DIR,v21Dist[i]*f);cams[i].lookAt(focus[i]);}}
-  faceGuests();return r;};
+ const CAM_STEP=0.008;
+ const fitFrom=(i,lo)=>{if(E.fits(i,Math.max(0,lo-0.002)))return lo;if(!E.fits(i,1))return 1;let a=0.5,b=1;
+  for(let n=0;n<16;n++){const m=(a+b)/2;if(E.fits(i,m))b=m;else a=m;}return Math.max(lo,Math.min(1,b+0.002));};
+ const camPrev=updateCameras;updateCameras=function(dt){const r=camPrev.apply(this,arguments);
+  if(players.length&&typeof v21Dist!=='undefined'){const si=singleIdx(),k=Math.pow(1+CAM_STEP,Math.max(0,Math.min(+dt||0,0.1))*30);
+   for(let i=0;i<2;i++){let u=E.camUsed[i];if((si>=0&&i!==si)||!cams[i]||!focus[i]){E.camUsed[i]=1;continue;}if(E.camFactor>=1&&u>=1)continue;
+    const want=E.camFactor<1?fitFrom(i,E.camFactor):1;u=want<u?Math.max(want,u/k):Math.min(want,u*k);if(u<1&&!E.fits(i,u))u=fitFrom(i,u);
+    E.camUsed[i]=u;if(u>=1)continue;cams[i].position.copy(focus[i]).addScaledVector(CAM_DIR,v21Dist[i]*u);cams[i].lookAt(focus[i]);}}
+  faceGuests(dt);return r;};
  // wrap: while the neighbours talk, the human views' camera fit includes every guest within 6 m, not only the speaker (24 reused points)
  const BOX=[];for(let k=0;k<24;k++)BOX.push(new THREE.Vector3());
  const BOX2=[];for(let k=0;k<16;k++)BOX2.push(new THREE.Vector3());

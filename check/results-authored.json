@@ -1,5 +1,5 @@
 {
-  "build": "v35-e54c5c30",
+  "build": "v35-816e6133",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v35-e54c5c30"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v35-816e6133"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v35-e54c5c30"
+        "build": "v35-816e6133"
       }
     }
   ],

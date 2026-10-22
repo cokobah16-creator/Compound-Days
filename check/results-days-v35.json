@@ -1,5 +1,5 @@
 {
-  "build": "v35-e54c5c30",
+  "build": "v35-816e6133",
   "passed": true,
   "checks": [
     {
@@ -152,7 +152,7 @@
       }
     },
     {
-      "name": "A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair, each turned within 70 degrees of the camera through the real base frame (the speaker in three-quarter); the companion stands beside the player and the camera eases in",
+      "name": "A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair, each turned within 70 degrees of the camera through the real base frame (the speaker in three-quarter); the companion stands beside the player; on every frame of the three lines the real camera cuts nobody, eases in only as far as everyone still fits, and changes under 1% a frame after its first eased frame",
       "passed": true,
       "info": {
         "spots": {
@@ -174,23 +174,24 @@
           "nkechi:ne02",
           "ada:ae01"
         ],
-        "camFactorFirstLine": 0.75,
-        "companionDistance": 0.9,
+        "cameraRatioFirstLine": 1,
+        "cameraMaxStepPercent": 0,
+        "companionDistance": 0.76,
         "degreesToCameraPerLine": [
           [
             50,
-            65,
+            50,
             65
           ],
           [
             65,
-            47,
-            65
+            50,
+            50
           ],
           [
             65,
             65,
-            40
+            46
           ]
         ]
       }

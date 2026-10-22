@@ -1,5 +1,5 @@
 {
-  "build": "v35-e54c5c30",
+  "build": "v35-816e6133",
   "passed": true,
   "checks": [
     {
@@ -57,7 +57,7 @@
       "name": "3. The guests reach their spots well inside 20 s of stubbed time; through the real base frame (whose NPC loop turns idle NPCs to the nearest player) each stays turned from the camera towards the player, within 70 degrees of the camera, the speaker a three-quarter face",
       "passed": true,
       "info": {
-        "arrivedAfterSeconds": 6.6,
+        "arrivedAfterSeconds": 7.16,
         "faces": {
           "tunde": {
             "toCamera": 50,
@@ -65,26 +65,26 @@
             "cameraToPlayer": 145,
             "speaker": true,
             "x": [
-              604,
-              767
+              607,
+              770
             ],
             "y": [
-              312,
-              682
+              313,
+              684
             ]
           },
           "nkechi": {
-            "toCamera": 65,
-            "toPlayer": 48,
+            "toCamera": 50,
+            "toPlayer": 63,
             "cameraToPlayer": 113,
             "speaker": false,
             "x": [
-              469,
-              632
+              472,
+              634
             ],
             "y": [
-              279,
-              639
+              280,
+              640
             ]
           },
           "ada": {
@@ -93,23 +93,28 @@
             "cameraToPlayer": 92,
             "speaker": false,
             "x": [
-              344,
-              523
+              347,
+              525
             ],
             "y": [
-              248,
-              598
+              249,
+              599
             ]
           }
         }
       }
     },
     {
-      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera a quarter nearer only while the player and all three guests still fit, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the real camera (measured every frame of the first two lines) eased nearer, up to a quarter, only as far as the player and all three guests still fit, never cutting anyone, never moving back out while it eases in, and changing under 1% a frame after its first eased frame, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
       "passed": true,
       "info": {
         "camFactorFirstLine": 0.75,
         "cameraDistanceRatio": 1,
+        "camera": {
+          "firstEasedFrame": -1,
+          "maxStepPercent": 0,
+          "minRatio": 1
+        },
         "autoAdvanceSeconds": 8.02,
         "adaLine": "ae01",
         "adaWhen": [
@@ -161,7 +166,7 @@
       }
     },
     {
-      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face",
+      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame",
       "passed": true,
       "info": {
         "veranda column 0": {
@@ -189,17 +194,17 @@
                 ]
               },
               "nkechi": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
-                  118,
+                  117,
                   198
                 ]
               },
               "ada": {
                 "toCamera": 65,
                 "x": [
-                  52,
-                  137
+                  51,
+                  136
                 ]
               }
             },
@@ -219,7 +224,7 @@
                 ]
               },
               "ada": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   52,
                   137
@@ -249,7 +254,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "camera": {
+            "firstEasedFrame": 5,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.995
+          },
+          "maxTurnPerFrame": 2.8
         },
         "veranda column 2": {
           "spots": {
@@ -272,11 +283,11 @@
                 "toCamera": 50,
                 "x": [
                   180,
-                  257
+                  258
                 ]
               },
               "nkechi": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   114,
                   192
@@ -285,7 +296,7 @@
               "ada": {
                 "toCamera": 65,
                 "x": [
-                  51,
+                  50,
                   133
                 ]
               }
@@ -306,7 +317,7 @@
                 ]
               },
               "ada": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   51,
                   133
@@ -336,7 +347,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "camera": {
+            "firstEasedFrame": 5,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.996
+          },
+          "maxTurnPerFrame": 2.8
         },
         "veranda column 5": {
           "spots": {
@@ -358,14 +375,14 @@
               "tunde": {
                 "toCamera": 50,
                 "x": [
-                  155,
-                  219
+                  154,
+                  220
                 ]
               },
               "nkechi": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
-                  101,
+                  100,
                   167
                 ]
               },
@@ -393,7 +410,7 @@
                 ]
               },
               "ada": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   48,
                   118
@@ -423,7 +440,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "camera": {
+            "firstEasedFrame": 5,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "maxTurnPerFrame": 2.8
         },
         "room by the door": {
           "spots": {
@@ -450,7 +473,7 @@
                 ]
               },
               "nkechi": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   99,
                   164
@@ -480,7 +503,7 @@
                 ]
               },
               "ada": {
-                "toCamera": 65,
+                "toCamera": 50,
                 "x": [
                   48,
                   116
@@ -510,7 +533,13 @@
                 ]
               }
             }
-          ]
+          ],
+          "camera": {
+            "firstEasedFrame": 6,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "maxTurnPerFrame": 2.8
         }
       }
     },
