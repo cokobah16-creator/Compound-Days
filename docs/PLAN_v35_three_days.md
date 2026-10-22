@@ -1,6 +1,13 @@
 # Compound Days — build plan v35: Three days in Palm Court
 
-Status: revised after the living-compound loop arrived and was verified in the browser. Base: branch `claude/authored-character`, build v34b-3a5b01c3, with the bridge module, its harness and this plan committed. This revision replaces the earlier draft, which was written against v34a before the loop existed.
+Status: built as v35-e54c5c30 on branch `claude/authored-character`. The plan was written against v34b-3a5b01c3; changes made during the build are noted where they apply and summarised below.
+
+**Build status.** Steps 0 and 2 to 7 of section 10 are built, with eleven harnesses passing and reproducing byte for byte, a runtime review, a phone-viewport playthrough of all three days in headless Chromium, and a copy and culture read. Still to do: step 1 (a real-phone run) and step 8's phone pass and five testers. Changes from the plan during the build:
+- Day 2 opens with ₦1,700 to ₦1,800 on the shopping path (4.1).
+- Three veranda cells are decorable, not four (4.2).
+- Day 3 has "Wait on the veranda until six" on Today, and Sleep asks once while the evening is still to come (4.4).
+- A new household can invite Ada to the day-1 housewarming, and Finds labels the armchair as from her workshop, so her chair story is set up before day 2.
+- The veranda evening is off in online play, which this build does not support.
 
 ## 1. What this build is for
 
@@ -69,7 +76,7 @@ The clock is not changed up front. If gate 5 shows a median day under 20 minutes
 
 ### 4.2 Home ownership
 
-**Decorating: verify, plus one rule.** The armchair and chairs get an `outdoor` flag for the veranda row. The cell in front of the only opening in the south wall stays a walkway, marked as reserved like the pot's cell, which leaves four veranda cells to decorate.
+**Decorating: verify, plus one rule.** The armchair and chairs get an `outdoor` flag for the veranda row. The cell in front of the only opening in the south wall stays a walkway, marked as reserved like the pot's cell. *As built:* the room cell just inside that opening and one veranda cell on the way to the pot are also kept clear, because a piece on either sealed the veranda or the pot off on foot. That leaves three veranda cells to decorate, and the Home grid explains the kept cells in one line.
 
 **Fifteen furnishings: tune.** The fifteen are the v34 Finds list. Each gets a visible use or a neighbour line that reads it (the lamp lights at 18:00; Ada comments on the armchair). Items with neither go into the art brief.
 
@@ -84,7 +91,7 @@ The request chains are the memory and the "give" mechanic; there is no gift butt
 
 **Morning event: build.** A table keyed by day and yesterday's log. On day 2 it is the seedling, whatever plan was chosen; the plan only decides which neighbour card leads on Today. On day 3: "It grew overnight", and Nkechi asks after peppers. Days 4 to 6: returning finds, Ada's invitation, fresh shells, an evening-fish hint. It replaces the one-off v33 morning panel but keeps its gift and album line.
 
-**Veranda evening: build** (not the housewarming flow). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or on the veranda, Tunde, Nkechi and Ada walk from the gate to three standing spots in the open ground just outside the flat, facing the veranda. No veranda cell is reserved for them: the row is one cell deep and six wide, the pot holds one cell and the doorway needs another, so guest cells would leave almost nothing to decorate. The spots are chosen when the evening starts and validated against walls, placed items and the players. Each stands facing the player and gives one line; Ada's reads `lastDecor`, or the armchair if it is placed. Nobody sits: there is no sit clip, and NPC seating is deferred. The companion stands beside the player so the camera stays close, and the camera eases 25% nearer for the first line. If nobody is home, Today and the marker point there, and a missed evening repeats the next day. Guests bring no props: there is no stool model, and the cooler is not an item. Ada's chain visit stays as a later reward.
+**Veranda evening: build** (not the housewarming flow). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or on the veranda, Tunde, Nkechi and Ada walk from the gate to three standing spots in the open ground just outside the flat, facing the veranda. No veranda cell is reserved for them: the row is one cell deep and six wide, the pot holds one cell and the doorway needs another, so guest cells would leave almost nothing to decorate. The spots are chosen when the evening starts and validated against walls, placed items and the players. Each stands facing the player and gives one line; Ada's reads `lastDecor`, or the armchair if it is placed. Nobody sits: there is no sit clip, and NPC seating is deferred. The companion stands beside the player so the camera stays close, and the camera eases 25% nearer for the first line. If nobody is home, Today and the marker point there, and a missed evening repeats the next day. *As built:* from the morning of the evening's day, Today offers "Wait on the veranda until six", and Sleep asks once, offering to wait until six, so an early night cannot skip the evening by accident; the evening ends without counting if nobody stays home. Guests bring no props: there is no stool model, and the cooler is not an item. Ada's chain visit stays as a later reward.
 
 **Recap and rating: build.** After sleep comes a recap naming tomorrow's event, then "How was today?" with three faces. After day 3's rating come two optional prompts: "One thing you want for your flat" and "One thing you know about a neighbour".
 

@@ -1,5 +1,5 @@
 {
-  "build": "v35-553793ab",
+  "build": "v35-e54c5c30",
   "passed": true,
   "checks": [
     {
@@ -25,64 +25,91 @@
         "retryAttemptsIn30Ticks": 1,
         "spots": {
           "tunde": [
-            -5,
+            -4.4,
             7.8
           ],
           "nkechi": [
-            -5.9,
+            -5.15,
             7.8
           ],
           "ada": [
-            -6.8,
+            -5.9,
             7.8
           ]
         },
         "westSpots": {
           "tunde": [
-            -7.4,
+            -6.8,
             7.8
           ],
           "nkechi": [
-            -8.3,
+            -7.55,
             7.8
           ],
           "ada": [
-            -9.2,
+            -8.3,
             7.8
           ]
         }
       }
     },
     {
-      "name": "3. The guests reach their spots well inside 20 s of stubbed time, each turned between the player and the camera (a three-quarter face, not a back)",
+      "name": "3. The guests reach their spots well inside 20 s of stubbed time; through the real base frame (whose NPC loop turns idle NPCs to the nearest player) each stays turned from the camera towards the player, within 70 degrees of the camera, the speaker a three-quarter face",
       "passed": true,
       "info": {
-        "arrivedAfterSeconds": 7.13,
-        "faces": [
-          {
-            "toPlayer": 0.48,
-            "toCamera": 0.48,
-            "yaw": true
+        "arrivedAfterSeconds": 6.6,
+        "faces": {
+          "tunde": {
+            "toCamera": 50,
+            "toPlayer": 95,
+            "cameraToPlayer": 145,
+            "speaker": true,
+            "x": [
+              604,
+              767
+            ],
+            "y": [
+              312,
+              682
+            ]
           },
-          {
-            "toPlayer": 0.63,
-            "toCamera": 0.63,
-            "yaw": true
+          "nkechi": {
+            "toCamera": 65,
+            "toPlayer": 48,
+            "cameraToPlayer": 113,
+            "speaker": false,
+            "x": [
+              469,
+              632
+            ],
+            "y": [
+              279,
+              639
+            ]
           },
-          {
-            "toPlayer": 0.69,
-            "toCamera": 0.69,
-            "yaw": true
+          "ada": {
+            "toCamera": 65,
+            "toPlayer": 27,
+            "cameraToPlayer": 92,
+            "speaker": false,
+            "x": [
+              344,
+              523
+            ],
+            "y": [
+              248,
+              598
+            ]
           }
-        ]
+        }
       }
     },
     {
-      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera itself a quarter nearer, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera a quarter nearer only while the player and all three guests still fit, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
       "passed": true,
       "info": {
         "camFactorFirstLine": 0.75,
-        "cameraDistanceRatio": 0.75,
+        "cameraDistanceRatio": 1,
         "autoAdvanceSeconds": 8.02,
         "adaLine": "ae01",
         "adaWhen": [
@@ -113,7 +140,7 @@
       "name": "5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule",
       "passed": true,
       "info": {
-        "handedOffAfterSeconds": 6.83
+        "handedOffAfterSeconds": 6.3
       }
     },
     {
@@ -134,7 +161,361 @@
       }
     },
     {
-      "name": "8. Determinism: two runs give identical reports",
+      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "spots": {
+            "tunde": [
+              -7.7,
+              7.8
+            ],
+            "nkechi": [
+              -8.45,
+              7.8
+            ],
+            "ada": [
+              -9.2,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  186,
+                  267
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  118,
+                  198
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  52,
+                  137
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  186,
+                  267
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  118,
+                  198
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  52,
+                  137
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  186,
+                  267
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  118,
+                  198
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  52,
+                  137
+                ]
+              }
+            }
+          ]
+        },
+        "veranda column 2": {
+          "spots": {
+            "tunde": [
+              -6.05,
+              7.8
+            ],
+            "nkechi": [
+              -6.8,
+              7.8
+            ],
+            "ada": [
+              -7.55,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  180,
+                  257
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  114,
+                  192
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  51,
+                  133
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  180,
+                  257
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  114,
+                  192
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  51,
+                  133
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  180,
+                  257
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  114,
+                  192
+                ]
+              },
+              "ada": {
+                "toCamera": 49,
+                "x": [
+                  51,
+                  133
+                ]
+              }
+            }
+          ]
+        },
+        "veranda column 5": {
+          "spots": {
+            "tunde": [
+              -4.1,
+              7.8
+            ],
+            "nkechi": [
+              -4.85,
+              7.8
+            ],
+            "ada": [
+              -5.6,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  155,
+                  219
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  101,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  155,
+                  219
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  101,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  155,
+                  219
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  101,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 44,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            }
+          ]
+        },
+        "room by the door": {
+          "spots": {
+            "tunde": [
+              -4.4,
+              7.8
+            ],
+            "nkechi": [
+              -5.15,
+              7.8
+            ],
+            "ada": [
+              -5.9,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  152,
+                  215
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  152,
+                  215
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  152,
+                  215
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "name": "9. Determinism: two runs give identical reports",
       "passed": true
     }
   ],

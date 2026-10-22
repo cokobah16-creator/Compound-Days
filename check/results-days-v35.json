@@ -1,5 +1,5 @@
 {
-  "build": "v35-553793ab",
+  "build": "v35-e54c5c30",
   "passed": true,
   "checks": [
     {
@@ -152,20 +152,20 @@
       }
     },
     {
-      "name": "A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair; the companion stands beside the player and the camera eases in",
+      "name": "A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair, each turned within 70 degrees of the camera through the real base frame (the speaker in three-quarter); the companion stands beside the player and the camera eases in",
       "passed": true,
       "info": {
         "spots": {
           "tunde": [
-            -5,
+            -4.4,
             7.8
           ],
           "nkechi": [
-            -5.9,
+            -5.15,
             7.8
           ],
           "ada": [
-            -6.8,
+            -5.9,
             7.8
           ]
         },
@@ -175,7 +175,24 @@
           "ada:ae01"
         ],
         "camFactorFirstLine": 0.75,
-        "companionDistance": 0.9
+        "companionDistance": 0.9,
+        "degreesToCameraPerLine": [
+          [
+            50,
+            65,
+            65
+          ],
+          [
+            65,
+            47,
+            65
+          ],
+          [
+            65,
+            65,
+            40
+          ]
+        ]
       }
     },
     {

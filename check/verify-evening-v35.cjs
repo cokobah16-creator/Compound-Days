@@ -6,12 +6,13 @@ const OUT=path.join(__dirname,'results-evening-v35.json');
 const NAMES=[
  '1. No start on day 2, before 18:00, from 22:00, with nobody home, during a party or online, and an unfinished guided first evening does not hold it back on day 3; nobody home in the window gets one nudge, a marker and a Today card, never a panel; before six at home Today offers to wait until six, and Sleep asks once',
  '2. Day 3 at 18:30 with the human on the veranda: the guests walk in from the gate to validated street spots, clear of the sightline, kept through reroute and placeNPCs; a blocked street retries at most once a second',
- '3. The guests reach their spots well inside 20 s of stubbed time, each turned between the player and the camera (a three-quarter face, not a back)',
- '4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera itself a quarter nearer, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone',
+ '3. The guests reach their spots well inside 20 s of stubbed time; through the real base frame (whose NPC loop turns idle NPCs to the nearest player) each stays turned from the camera towards the player, within 70 degrees of the camera, the speaker a three-quarter face',
+ '4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera a quarter nearer only while the player and all three guests still fit, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone',
  '5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule',
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
- '8. Determinism: two runs give identical reports'];
+ '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face',
+ '9. Determinism: two runs give identical reports'];
 
 function inner(){
  const {load}=require('./runtime-harness.cjs');const checks=[];let run=null;
@@ -36,10 +37,26 @@ function inner(){
    S.home.items.push({id:'ac35',type:'armchair',x:1,y:FLAT.rows,rot:0});S.life.lastDecor='armchair';S.life.metrics.decorated=1;enterWorld();closePanel();NET.on=false;PH='';EVENING35.checkAt=0;`);
    at(-4.1,6.4);at(-5.2,4.0,1);};
   const state=()=>run('EVENING35.state');
+  // the real base frame (index.html tick: input, the companion's drive, TICK_HOOKS, the per-frame NPC loop that turns every idle NPC within
+  // 4 m to the nearest player, then updateCameras). Nothing is drawn here, so renderFrame only sets the single view's aspect, as the real one does.
+  run("var FT35=0;var frames35=n=>{const rf=renderFrame;renderFrame=function(){const si=singleIdx(),c=cams[si>=0?si:0];c.aspect=innerWidth/innerHeight;c.updateProjectionMatrix();};try{for(let k=0;k<n;k++){T35+=33;last=FT35;FT35+=33;tick(FT35);}}finally{renderFrame=rf;}};");
+  const frames=n=>run(`frames35(${n})`);
+  // each guest as the human's camera sees it: angles (degrees) from its facing to the camera and to the player, the camera-to-player angle,
+  // and its screen box (a body of 0.6 x 1.9 m projected with the game's camera)
+  const view=()=>J(`(()=>{const c=cams[0];c.updateMatrixWorld();const cp=c.position,h=players[0].g.position,L=EVENING35.lines[EVENING35.line],out={},v=new THREE.Vector3();
+   const deg=(ax,az,bx,bz)=>Math.round(Math.acos(Math.max(-1,Math.min(1,(ax*bx+az*bz)/Math.hypot(ax,az)/Math.hypot(bx,bz))))*180/Math.PI);
+   for(const k of ['tunde','nkechi','ada']){const o=npcs[k].g,fx=Math.sin(o.rotation.y),fz=Math.cos(o.rotation.y),cx=cp.x-o.position.x,cz=cp.z-o.position.z,px=h.x-o.position.x,pz=h.z-o.position.z;
+    let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const dx of [-.3,.3])for(const y of [0,1.9])for(const dz of [-.3,.3]){v.set(o.position.x+dx,y,o.position.z+dz).project(c);const sx=(v.x+1)/2*innerWidth,sy=(1-v.y)/2*innerHeight;
+     x0=Math.min(x0,sx);x1=Math.max(x1,sx);y0=Math.min(y0,sy);y1=Math.max(y1,sy);}
+    out[k]={toCamera:deg(fx,fz,cx,cz),toPlayer:deg(fx,fz,px,pz),cameraToPlayer:deg(cx,cz,px,pz),speaker:!!(L&&L.k===k),x:[Math.round(x0),Math.round(x1)],y:[Math.round(y0),Math.round(y1)]};}
+   return out;})()`);
+  const facingOK=(v,label)=>{for(const k in v){const g=v[k];assert(g.toCamera<=70,label+': '+k+' within 70 degrees of the camera: '+JSON.stringify(g));
+    assert(g.toPlayer<g.cameraToPlayer,label+': '+k+' turned from the camera towards the player: '+JSON.stringify(g));
+    if(g.speaker)assert(g.toCamera>=30&&g.toCamera<=55,label+': '+k+' speaks in three-quarter: '+JSON.stringify(g));}};
   const spotsOK=(hx,hz)=>J(`(()=>{const s=EVENING35.spots,ks=Object.keys(s),out={n:ks.length,bad:[]};for(const k of ks){const [x,z]=s[k];
    if(blocked(x,z,PR))out.bad.push(k+' blocked');if(levelAt(x,z)!==0)out.bad.push(k+' not level');if(!(z>7.4))out.bad.push(k+' z');if(inFlat(x,z))out.bad.push(k+' in flat');
    for(const p of players)if(Math.hypot(p.g.position.x-x,p.g.position.z-z)<0.9)out.bad.push(k+' near a player');
-   for(const q of ks)if(q!==k&&Math.hypot(s[q][0]-x,s[q][1]-z)<0.8)out.bad.push(k+' near '+q);
+   for(const q of ks)if(q!==k&&Math.hypot(s[q][0]-x,s[q][1]-z)<0.74)out.bad.push(k+' near '+q);
    if(EVENING35.inSight(x,z,${hx},${hz}))out.bad.push(k+' in the sightline');}return out;})()`);
 
   await step(0,()=>{fresh();const idle={};
@@ -91,15 +108,19 @@ function inner(){
 
   await step(2,()=>{const k=until("EVENING35.state!=='arriving'",700);assert.equal(state(),'talking');const secs=r2((k+21)*0.033);assert(secs<20,'arrived in '+secs+' s');
    const at3=J("['tunde','nkechi','ada'].map(k=>{const n=npcs[k],s=EVENING35.spots[k];return {d:Math.hypot(n.g.position.x-s[0],n.g.position.z-s[1]),yaw:n.home[2],route:n.route};})");
-   const faces=J("['tunde','nkechi','ada'].map(k=>{const n=npcs[k],h=players[0].g.position,fx=Math.sin(n.home[2]),fz=Math.cos(n.home[2]),tx=h.x-n.g.position.x,tz=h.z-n.g.position.z,c=Math.hypot(CAM_DIR.x,CAM_DIR.z);return {toPlayer:+((fx*tx+fz*tz)/Math.hypot(tx,tz)).toFixed(2),toCamera:+((fx*CAM_DIR.x+fz*CAM_DIR.z)/c).toFixed(2),yaw:n.g.rotation.y===n.home[2]};})");
    for(const a of at3){assert(a.d<1e-6,'on the spot');assert.equal(a.route,null);}
-   for(const f of faces){assert(f.toCamera>0.1,'the camera sees the face: '+JSON.stringify(f));assert(f.toPlayer>0.1,'turned towards the player: '+JSON.stringify(f));assert(f.yaw,'standing at that yaw');}
+   // the guests stand within 4 m of the player, so the base NPC loop would turn them to face the player (their backs to the camera)
+   assert(J("['tunde','nkechi','ada'].every(k=>Math.hypot(npcs[k].g.position.x-players[0].g.position.x,npcs[k].g.position.z-players[0].g.position.z)<4)"),'within the base loop\u2019s 4 m');
+   frames(30);const faces=view();facingOK(faces,'line 1');
    return {arrivedAfterSeconds:secs,faces};});
 
   await step(3,()=>{assert.equal(state(),'talking');const who=()=>run('EVENING35.el.dataset.who');const cap=()=>run('EVENING35.el.innerHTML');
    ticks(1);assert.equal(run('EVENING35.shown'),true,'caption shown');assert.equal(who(),'tunde');assert.match(cap(),/>Tunde<\/span>[\s\S]*>Next<\/button>/);
    ticks(30);const cf0=r2(run('EVENING35.camFactor'));assert(cf0<=0.76,'camera nearer on the first line: '+cf0);
-   const camNear=J('(()=>{updateCameras(1/30);return +(cams[0].position.distanceTo(focus[0])/v21Dist[0]).toFixed(3);})()');assert(Math.abs(camNear-run('EVENING35.camFactor'))<0.01,'the camera itself is a quarter nearer: '+camNear);
+   // the camera comes nearer only as far as the player and all three guests still fit (spec 7.4, kept only while they fit)
+   const cam=J('(()=>{updateCameras(1/30);return {ratio:+(cams[0].position.distanceTo(focus[0])/v21Dist[0]).toFixed(3),used:EVENING35.camUsed[0],fits:EVENING35.fits(0,EVENING35.camUsed[0])};})()');
+   assert(Math.abs(cam.ratio-cam.used)<0.01&&cam.used>=run('EVENING35.camFactor')&&cam.used<=1,'the camera at the eased factor that still fits: '+JSON.stringify(cam));assert(cam.used===1||cam.fits,'eased only while everyone fits: '+JSON.stringify(cam));
+   const camNear=cam.ratio;
    assert.equal(J('nearest(0).id'),'evening35','forced Listen hotspot for the human');assert.notEqual(run('(nearest(1)||{}).id'),'evening35','not for the companion');
    run("T35+=300;dispatch('hs',{i:0,id:'evening35'});");assert.equal(who(),'nkechi','Act advances through ACT_HOOKS');assert.match(cap(),/>Mama Nkechi<\/span>/);
    assert.equal(run('EVENING35.next()'),false,'a second call within 300 ms is ignored');assert.equal(run('EVENING35.line'),1);
@@ -125,8 +146,8 @@ function inner(){
     const d=J("(()=>{for(let k=0;k<900;k++)aiDrive(players[AI.i],1/30);const a=players[AI.i].g.position,h=players[0].g.position;return {d:+Math.hypot(a.x-h.x,a.z-h.z).toFixed(2),veranda:a.z>5.85&&inFlat(a.x,a.z)};})()");
     cases[hx+'/'+cx+','+cz]=d;assert(d.d<=1.45&&d.veranda,'companion beside the player on the veranda: human '+hx+', from '+cx+','+cz+': '+JSON.stringify(d));}
    at(...hum0);at(-5.2,4.0,1);
-   // the speaker is in the camera fit only near the player
-   const nIn=J('v21InteractionPoints(0,false).length');at(15,5);const nFar=J('v21InteractionPoints(0,false).length');at(...hum0);assert.equal(nIn-nFar,8,'the far-away speaker leaves the camera fit');
+   // all three guests are in the camera fit, only near the player
+   const nIn=J('v21InteractionPoints(0,false).length');at(15,5);const nFar=J('v21InteractionPoints(0,false).length');at(...hum0);assert.equal(nIn-nFar,24,'the three guests in the fit near the player, out of it far away');
    return {camFactorFirstLine:cf0,cameraDistanceRatio:camNear,autoAdvanceSeconds:autoS,adaLine:adaId,adaWhen:when,companionAfterDrive:driven.d,companionCases:cases};});
 
   await step(4,()=>{const c0=J("CUES.filter(n=>n==='evening').length"),m0=J("S.memories.filter(m=>/came by the veranda/.test(m.caption)).length"),ph0=run('PH');
@@ -174,6 +195,20 @@ function inner(){
    const gone=until("EVENING35.state==='idle'",200);assert.equal(state(),'idle','nobody home: it ends');assert(gone*33>=2900&&gone*33<=3300,'after about three seconds: '+gone*33);assert.equal(run('EVENING35.done()'),false,'not done, so it repeats');
    assert.equal(run('EVENING35.done()'),false);return {adaCell:ada0.map(r2)};});
 
+  await step(7,()=>{const out={};
+   run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');      // a phone in portrait (v21Viewport keeps the touch margins)
+   try{for(const [label,hx,hz,cx,cz] of [['veranda column 0',-7.55,6.4,-7.4,3.6],['veranda column 2',-5.75,6.4,-5.6,3.6],['veranda column 5',-3.05,6.4,-3.3,3.6],['room by the door',-4.1,4.6,-6.0,3.5]]){
+    fresh();at(hx,hz);at(cx,cz,1);run('EVENING35.checkAt=0;');
+    run("(()=>{for(let k=0;k<900&&EVENING35.state!=='talking';k++)frames35(1);})()");assert.equal(state(),'talking',label+': talking');
+    const s=spotsOK(hx,hz);assert.equal(s.n,3,label);assert.deepEqual(s.bad,[],label+': spots valid and clear of the sightline');
+    const spots=J('EVENING35.spots'),lines=[];
+    for(let line=0;line<3;line++){frames(30);const v=view();facingOK(v,label+', line '+(line+1));
+     for(const k in v){const g=v[k];assert(g.x[0]>=0&&g.x[1]<=390&&g.y[0]>=0&&g.y[1]<=844,label+', line '+(line+1)+': '+k+' on screen: '+JSON.stringify(g));}
+     lines.push(Object.fromEntries(Object.entries(v).map(([k,g])=>[k,{toCamera:g.toCamera,x:g.x}])));run('T35+=300;EVENING35.next();');}
+    out[label]={spots,lines};}}
+   finally{run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
+   return out;});
+
   process.stdout.write('\n'+JSON.stringify({build:run('BUILD_ID'),checks})+'\n');
  })().catch(e=>{process.stdout.write('\n'+JSON.stringify({build:null,checks,crash:String(e&&e.message||e).split('\n')[0]})+'\n');});
 }
@@ -182,9 +217,9 @@ function outer(){
  const runs=[];
  for(let k=0;k<2;k++){let out='';try{out=cp.execFileSync(process.execPath,[__filename,'--run'],{env:process.env,encoding:'utf8',maxBuffer:64<<20,stdio:['ignore','pipe','ignore']});}catch(e){out=String(e.stdout||'');}
   let r=null;try{r=JSON.parse(out.trim().split('\n').pop());}catch(e){r={build:null,checks:[],crash:'no report'};}runs.push(r);}
- const a=runs[0],checks=NAMES.slice(0,7).map(n=>a.checks.find(c=>c.name===n)||{name:n,passed:false,failure:a.crash||'did not run'});
+ const a=runs[0],checks=NAMES.slice(0,8).map(n=>a.checks.find(c=>c.name===n)||{name:n,passed:false,failure:a.crash||'did not run'});
  const allOk=checks.every(c=>c.passed),same=JSON.stringify(runs[0])===JSON.stringify(runs[1]);
- checks.push(allOk&&same?{name:NAMES[7],passed:true}:{name:NAMES[7],passed:false,failure:!allOk?'checks 1-7 must pass in both runs':'the two runs differ'});
+ checks.push(allOk&&same?{name:NAMES[8],passed:true}:{name:NAMES[8],passed:false,failure:!allOk?'checks 1-8 must pass in both runs':'the two runs differ'});
  for(const c of checks)console.log(c.passed?'PASS':'FAIL',c.name,c.passed?(c.info?JSON.stringify(c.info):''):'— '+c.failure);
  const passed=checks.every(c=>c.passed);
  const report={build:a.build,passed,checks,method:'Actual runtime state, ticks and actions in Node with the shipped Three.js, the authored hero, the life modules and the v35 modules; clock35, Math.random and Date.now stubbed; run twice in child processes and compared.'};

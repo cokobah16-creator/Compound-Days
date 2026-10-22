@@ -39,26 +39,34 @@ function eveningTick35(dt){return EVENING35.tick(dt);}
  E.copy=COPY;
 
  /* ---------- 7.2 Spots ---------- */
- // candidates built once: three rows in the street south of the veranda rail, nearest row first
+ // candidates built once: three rows in the street south of the veranda rail, nearest row first, every 0.15 m
  const ROWS=[7.8,8.5,9.2],CANDS=[];
- for(let r=0;r<ROWS.length;r++)for(let k=0;k<29;k++)CANDS.push({x:Math.round((-9.8+0.3*k)*100)/100,z:ROWS[r],row:r,ok:false,sight:false,used:false});
+ for(let r=0;r<ROWS.length;r++)for(let k=0;k<57;k++)CANDS.push({x:Math.round((-9.8+0.15*k)*100)/100,z:ROWS[r],row:r,ok:false,sight:false,used:false});
  E.candidates=CANDS;
  // the camera looks from CAM_DIR (south-south-east); a guest near the camera-to-player line would hide the player's legs
  const HX=CAM_DIR.x/Math.hypot(CAM_DIR.x,CAM_DIR.z),HZ=CAM_DIR.z/Math.hypot(CAM_DIR.x,CAM_DIR.z);
  E.inSight=(cx,cz,px,pz)=>{const dx=cx-px,dz=cz-pz;return dx*HX+dz*HZ>0&&Math.abs(dx*HZ-dz*HX)<0.7;};
- // each guest turns between the player and the camera, so the camera sees a three-quarter face rather than a back
- E.faceYaw=(x,z,px,pz)=>{let ax=px-x,az=pz-z;const d=Math.hypot(ax,az)||1;ax=ax/d+HX;az=az/d+HZ;return Math.atan2(ax,az);};
+ // facing: a listener turns towards the player but never more than 65 degrees from the camera (no backs to the camera); the speaker
+ // faces the bisector between the player and the camera, at most 50 degrees from it (a three-quarter face). (cx,cz) is the camera,
+ // or a point along CAM_DIR when there is none.
+ const wrapA=a=>a>Math.PI?a-2*Math.PI:a<-Math.PI?a+2*Math.PI:a,LIS=Math.PI*13/36,SPK=Math.PI*5/18;
+ E.faceYaw=(x,z,px,pz,cx,cz,speaker)=>{if(cx===undefined){cx=x+HX;cz=z+HZ;}const ac=Math.atan2(cx-x,cz-z),d=wrapA(Math.atan2(px-x,pz-z)-ac);
+  return wrapA(ac+(speaker?Math.max(-SPK,Math.min(SPK,d/2)):Math.max(-LIS,Math.min(LIS,d))));};
  const valid=c=>{if(c.z<=7.4||inFlat(c.x,c.z)||levelAt(c.x,c.z)!==0||blocked(c.x,c.z,PR))return false;
   for(const p of players)if(Math.hypot(p.g.position.x-c.x,p.g.position.z-c.z)<0.9)return false;return true;};
  // pick a validated standing spot per walking guest; null when fewer than needed are free
  E.pickSpots=function(){const h=human();if(!h)return null;
-  for(const c of CANDS){c.used=false;c.ok=valid(c);c.sight=false;if(c.ok)for(const p of players)if(!isAI(p.i)&&E.inSight(c.x,c.z,p.g.position.x,p.g.position.z)){c.sight=true;break;}}
-  const px=Math.min(-3.2,Math.max(-7.0,h.g.position.x)),res={},placed=[],skipAda=adaVisiting();
-  // all three to the player's west, in a row: the camera sits south-south-east, so a guest to the west who turns between the player and
-  // the camera shows a three-quarter face, while one to the east would show the camera a back (and the line to the player leans east)
-  const TX=[-0.85,-1.65,-2.45];      // standing together, 0.8 m apart: from the camera's angle they still do not cover each other
+  // the companion's evening place beside the player counts too: a guest in front of it would hide it (used only when nothing else is free)
+  const cs=typeof AI!=='undefined'&&AI.on?E.companionSpot():null,csOK=!!(cs&&cs.stop<=1);
+  for(const c of CANDS){c.used=false;c.ok=valid(c);c.sight=false;if(c.ok)for(const p of players)if(!isAI(p.i)&&E.inSight(c.x,c.z,p.g.position.x,p.g.position.z)){c.sight=true;break;}
+   if(c.ok&&csOK&&!c.sight&&E.inSight(c.x,c.z,cs.x,cs.z))c.sight=true;}
+  const px=Math.min(-3.0,Math.max(-7.4,h.g.position.x)),res={},placed=[],skipAda=adaVisiting();
+  // a row along the rail from just west of the player to 1.8 m west: a narrow portrait view holds them all with the player, and the
+  // camera (south-south-east) sees each one turned towards the player in three-quarter. East of the player the line to the camera leans
+  // across them, so a guest there would stand in the sightline or have to turn away from the player to keep the camera off its back.
+  const TX=[-0.3,-1.05,-1.8];      // 0.75 m apart: from the camera's angle they still do not cover each other
   for(let gi=0;gi<E.guests.length;gi++){const k=E.guests[gi];if(k==='ada'&&skipAda)continue;const tx=px+TX[gi];let best=null,bs=1e9,alt=null,as=1e9;
-   for(const c of CANDS){if(!c.ok||c.used)continue;let far=true;for(const q of placed)if(Math.hypot(q.x-c.x,q.z-c.z)<0.8){far=false;break;}if(!far)continue;
+   for(const c of CANDS){if(!c.ok||c.used)continue;let far=true;for(const q of placed)if(Math.hypot(q.x-c.x,q.z-c.z)<0.74){far=false;break;}if(!far)continue;
     const s=c.row*100+Math.abs(c.x-tx);if(!c.sight){if(s<bs){bs=s;best=c;}}else if(s<as){as=s;alt=c;}}
    const pick=best||alt;if(!pick)return null;pick.used=true;placed.push(pick);res[k]=[pick.x,pick.z];}
   return res;};
@@ -179,19 +187,41 @@ body.evening35-active #life-guide34{display:none!important}
  // wrap: entering the world (continue, move-in) starts with no evening in progress; enterWorld then places everyone afresh
  const enterPrev=enterWorld;enterWorld=function(){E.abort(false);last=null;return enterPrev.apply(this,arguments);};
 
- // wrap: the camera eases nearer (camFactor) along its own direction, after every other camera wrapper
- const camPrev=updateCameras;updateCameras=function(dt){const r=camPrev.apply(this,arguments);
-  if(E.camFactor<1&&players.length&&typeof v21Dist!=='undefined'){const si=singleIdx();for(let i=0;i<2;i++){if(si>=0&&i!==si)continue;if(!cams[i]||!focus[i])continue;
-   cams[i].position.copy(focus[i]).addScaledVector(CAM_DIR,v21Dist[i]*E.camFactor);cams[i].lookAt(focus[i]);}}
-  return r;};
- // wrap: while a neighbour speaks, the human views' camera fit includes them (eight reused corner points)
- const BOX=[];for(let k=0;k<8;k++)BOX.push(new THREE.Vector3());
- const BOX2=[];for(let k=0;k<16;k++)BOX2.push(new THREE.Vector3());
  const near=(i,n,r)=>{const p=players[i];return !!(p&&Math.hypot(p.g.position.x-n.g.position.x,p.g.position.z-n.g.position.z)<=r);};
+ // do the guests within 6 m and the player of view i all stand inside the camera fit's usable area (v21Viewport's margins) with the
+ // camera at factor f of the fitted distance? (the camera looks along -CAM_DIR, so its axes are v21Right and v21Up)
+ E.fits=function(i,f){const p=players[i];if(!p||!focus[i])return true;const vp=v21Viewport(i),tanV=Math.tan(THREE.MathUtils.degToRad(cams[i].fov/2)),tanH=tanV*vp.w/vp.h;
+  const d=v21Dist[i]*f,cx=focus[i].x+CAM_DIR.x*d,cy=focus[i].y+CAM_DIR.y*d,cz=focus[i].z+CAM_DIR.z*d,yLo=-1+2*vp.bottom/vp.h,yHi=1-2*vp.top/vp.h;
+  const inside=(x,y,z)=>{const qx=x-cx,qy=y-cy,qz=z-cz,dep=-(qx*CAM_DIR.x+qy*CAM_DIR.y+qz*CAM_DIR.z);if(dep<=0.5)return false;
+   const sx=(qx*v21Right.x+qz*v21Right.z)/(dep*tanH),sy=(qx*v21Up.x+qy*v21Up.y+qz*v21Up.z)/(dep*tanV);return Math.abs(sx)<=0.82&&sy>=yLo&&sy<=yHi;};
+  const box=(x,y,z)=>{for(const dx of [-.44,.44])for(const h of [-.06,1.98])for(const dz of [-.36,.36])if(!inside(x+dx,y+h,z+dz))return false;return true;};
+  if(!box(p.g.position.x,p.y||0,p.g.position.z))return false;
+  for(const k of E.guests){const n=npcs[k];if(n&&n.g.visible&&near(i,n,6)&&!box(n.g.position.x,0,n.g.position.z))return false;}return true;};
+ // each frame while the guests arrive, talk or leave: the base loop turns every idle NPC within 4 m to face the nearest player (index.html,
+ // the npcs loop in tick, which runs just before updateCameras); turn the guests back. Walking guests face their way; standing guests
+ // face as E.faceYaw says, the speaker in three-quarter, using the human view's camera when there is a single view.
+ const faceGuests=()=>{if(E.state==='idle')return;const h=human();if(!h)return;const si=singleIdx(),cam=si>=0&&cams[si]?cams[si].position:null;
+  const L=E.state==='talking'?E.lines[E.line]:null;
+  for(const k of E.guests){const n=npcs[k];if(!n||!n.g.visible||!E.spots[k])continue;
+   if(n.route){if(E.walkers.includes(k)){const t=n.route[n.ri];if(t)n.g.rotation.y=Math.atan2(t[0]-n.g.position.x,t[1]-n.g.position.z);}continue;}
+   if(E.state==='leaving')continue;const x=n.g.position.x,z=n.g.position.z;
+   n.g.rotation.y=E.faceYaw(x,z,h.g.position.x,h.g.position.z,cam?cam.x:undefined,cam?cam.z:undefined,!!(L&&L.k===k));}};
+ E.faceGuests=faceGuests;
+ // wrap: the camera eases nearer (camFactor) along its own direction, after every other camera wrapper, but only as far as the guests and
+ // the player still fit (in a narrow portrait view the fit is already tight, so it mostly stays out); then the guests' facing
+ E.camUsed=[1,1];
+ const camPrev=updateCameras;updateCameras=function(dt){const r=camPrev.apply(this,arguments);E.camUsed[0]=E.camUsed[1]=1;
+  if(E.camFactor<1&&players.length&&typeof v21Dist!=='undefined'){const si=singleIdx();for(let i=0;i<2;i++){if(si>=0&&i!==si)continue;if(!cams[i]||!focus[i])continue;
+   let f=E.camFactor;while(f<1&&!E.fits(i,f))f=Math.min(1,f+0.05);E.camUsed[i]=f;if(f>=1)continue;
+   cams[i].position.copy(focus[i]).addScaledVector(CAM_DIR,v21Dist[i]*f);cams[i].lookAt(focus[i]);}}
+  faceGuests();return r;};
+ // wrap: while the neighbours talk, the human views' camera fit includes every guest within 6 m, not only the speaker (24 reused points)
+ const BOX=[];for(let k=0;k<24;k++)BOX.push(new THREE.Vector3());
+ const BOX2=[];for(let k=0;k<16;k++)BOX2.push(new THREE.Vector3());
  const ptsPrev=v21InteractionPoints;v21InteractionPoints=function(i,joint){const pts=ptsPrev.apply(this,arguments);
   if(isAI(i)||!Array.isArray(pts))return pts;
-  if(E.state==='talking'){const L=E.lines[E.line],n=L&&npcs[L.k];if(!n||!n.g.visible||!near(i,n,6))return pts;const x=n.g.position.x,z=n.g.position.z;let k=0;
-   for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));return pts;}
+  if(E.state==='talking'){let k=0;for(const g of E.guests){const n=npcs[g];if(!n||!n.g.visible||!near(i,n,6))continue;const x=n.g.position.x,z=n.g.position.z;
+   for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));}return pts;}
   if(E.state==='arriving'){let k=0;for(const g of E.walkers){const n=npcs[g];if(!n||!n.g.visible||!near(i,n,4.5)||k>=16)continue;   // the last steps in are on screen
    const x=n.g.position.x,z=n.g.position.z;for(const dx of [-.4,.4])for(const dz of [-.3,.3]){if(k<16)pts.push(BOX2[k++].set(x+dx,k%2?0:1.9,z+dz));}}}
   return pts;};
