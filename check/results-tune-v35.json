@@ -1,0 +1,135 @@
+{
+  "build": "v35-f981f083",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. Core: clock35 follows CLOCK35.fn, cue35 reaches its hooks and is silent on replays",
+      "passed": true
+    },
+    {
+      "name": "2. Purse: new households start with ₦6,000 (companion, two players), old saves keep their money",
+      "passed": true,
+      "info": {
+        "purse": 6000
+      }
+    },
+    {
+      "name": "3. Seedling: none on day 1 for a new household; it arrives on day 2 (without the later modules), lazily on plant or load; old households plant on day 1",
+      "passed": true,
+      "info": {
+        "gardenChildren": [
+          11,
+          15
+        ]
+      }
+    },
+    {
+      "name": "4. Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot",
+      "passed": true,
+      "info": {
+        "waterCues": [
+          "water:1",
+          "water:3"
+        ]
+      }
+    },
+    {
+      "name": "5. Wall-clock bite: 2.2–4.4 s of real time at 5 fps; nibble before bite; dt-only loops still bite; none behind the Menu; one catch cue",
+      "passed": true,
+      "info": {
+        "biteSeconds": 3.8,
+        "callsAt5fps": 19,
+        "dtOnlyCalls": 39
+      }
+    },
+    {
+      "name": "6. Act: presses Cast, Reel in, Keep or Cast again on the fishing panels only, 300 ms after a panel change, never in a text field or on any other panel",
+      "passed": true,
+      "info": {
+        "fishing": {
+          "ready": "lifeCast",
+          "waiting": null,
+          "bite": "lifeReel",
+          "catch": "lifeCatch:keep"
+        },
+        "oneButtonLoop": [
+          "lifeCast",
+          "lifeReel",
+          "lifeCatch",
+          "lifeFish",
+          "lifeCast"
+        ],
+        "refused": [
+          "newconfirm",
+          "sleep",
+          "night",
+          "midnight",
+          "today",
+          "menu",
+          "talk"
+        ]
+      }
+    },
+    {
+      "name": "7. Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway and the path to the pot stay clear and the pot stays reachable",
+      "passed": true,
+      "info": {
+        "potReach": 0.05,
+        "decoratableVerandaColumns": [
+          1,
+          2,
+          6
+        ]
+      }
+    },
+    {
+      "name": "8. Paint: the six flat walls and the floor are tagged; buy at Finds, paint at home, undo, reload and a courtyard style keep it; env keeps its own materials",
+      "passed": true,
+      "info": {
+        "wallHex": "#8C9BC0",
+        "prices": [
+          2500,
+          2000,
+          1500,
+          2500,
+          2000
+        ]
+      }
+    },
+    {
+      "name": "9. Copy: no “two watered nights”; plan details start “Tomorrow morning,” without a lesson price; Tunde’s card, the note and the almanac follow the rules",
+      "passed": true,
+      "info": {
+        "tunde": [
+          "Your veranda pot is empty for now. Tomorrow morning I will leave you a seedling. Then we see.",
+          "I left a seedling by your pot. Plant it, give it water. Tomorrow we see."
+        ]
+      }
+    },
+    {
+      "name": "10. Finds never asks for agreement; in a companion household the companion approves in the toast",
+      "passed": true,
+      "info": {
+        "toast": "Potted plant is in Build storage. Ola: “We needed that, you know.”",
+        "paint": "Ochre lime is yours. Paint the flat from Home. Ola: “We needed that, you know.”"
+      }
+    },
+    {
+      "name": "11. Companion shop floor: during the guided shop stage a new household’s companion buys any jollof item it can afford",
+      "passed": true,
+      "info": {
+        "item": "tomato",
+        "price": 1550
+      }
+    },
+    {
+      "name": "12. Weekdays: none in item blurbs, the square, occasions, courtyard styles, the copy table, the journal, the noticeboard, Nkechi’s café line or the film-night toast",
+      "passed": true,
+      "info": {
+        "scanned": "blurbs, square, occasions, presets, copy table, five journal tabs, noticeboard, toast, memory, talk",
+        "cafe": "jollof every evening"
+      }
+    }
+  ],
+  "method": "Actual runtime state and actions in Node with the shipped Three.js and the authored hero; companion households made through dispatch(aiStart); the wall clock stubbed through CLOCK35; checks 3 and 12 include a subset pass that loads the v35 modules only up to tune-v35.js. Nothing rendered here; layout was looked at separately in headless Chromium."
+}

@@ -11,7 +11,7 @@ const checks=[];let runFn=null;
  assert.equal(run('typeof BRIDGE34B'),'object');
  // The life modules are untouched: the bridge is the last script and no life file mentions it.
  const html=fs.readFileSync(path.join(__dirname,'..','dist','index.html'),'utf8');const order=[...html.matchAll(/<script src="src\/([^"]+)"/g)].map(m=>m[1]);
- assert.equal(order[order.length-1],'bridge-v34b.js');assert(order.indexOf('life-world-v34.js')===order.length-2);
+ {const b=order.indexOf('bridge-v34b.js');assert(b>=0&&order.slice(b+1).every(f=>/-v35\.js$/.test(f)),'only v35 modules load after the bridge');assert.equal(order.indexOf('life-world-v34.js'),b-1);}
  for(const f of ['life-v34.js','life-ui-v34.js','life-world-v34.js','life-v34.css'])assert(!fs.readFileSync(path.join(__dirname,'..','dist','src',f),'utf8').includes('v34b'),f+' carries no bridge edit');
  // A companion household with the real world, the authored hero and the life world.
  run("buildTextures();buildTextures2();S=newState();S.phase='play';S.ai=true;AI.on=true;S.p[0].name='Efe';S.p[1].name='Ola';players=S.p.map((p,i)=>({i,g:makeHeroAvatar(lookFor(i)),y:0,t:0,prev:[0,0],face:[0,-1],moving:false}));players.forEach((p,i)=>{scene.add(p.g);p.g.position.set(S.p[i].pos[0],0,S.p[i].pos[1]);});buildWorld();buildProps();rebuildFurniture();spawnNPCs();ensureMarket();courtLight=new THREE.PointLight();sofa.L=1.657;sofa.W=.837;enterWorld();closePanel();");

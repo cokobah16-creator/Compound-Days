@@ -1,0 +1,106 @@
+{
+  "build": "v35-f981f083",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. No start on day 2, before 18:00, from 22:00, with nobody home, during the guided evening, during a party or online; nobody home in the window gets one nudge, a marker and a Today card, never a panel",
+      "passed": true,
+      "info": {
+        "idle": {
+          "day 2": "idle",
+          "17:30": "idle",
+          "22:00": "idle",
+          "guided evening": "idle",
+          "party": "idle",
+          "online": "idle",
+          "nobody home": "idle"
+        },
+        "nudge": "The neighbours are coming by your veranda this evening. Head home."
+      }
+    },
+    {
+      "name": "2. Day 3 at 18:30 with the human on the veranda: the guests walk in from the gate to validated street spots, clear of the sightline, kept through reroute and placeNPCs; a blocked street retries at most once a second",
+      "passed": true,
+      "info": {
+        "retryAttemptsIn30Ticks": 1,
+        "spots": {
+          "tunde": [
+            -5.3,
+            7.8
+          ],
+          "nkechi": [
+            -4.1,
+            7.8
+          ],
+          "ada": [
+            -2.9,
+            7.8
+          ]
+        },
+        "westSpots": {
+          "tunde": [
+            -7.4,
+            7.8
+          ],
+          "nkechi": [
+            -5.3,
+            7.8
+          ],
+          "ada": [
+            -4.1,
+            7.8
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. The guests reach their spots facing the veranda well inside 20 s of stubbed time",
+      "passed": true,
+      "info": {
+        "arrivedAfterSeconds": 5.81
+      }
+    },
+    {
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the camera ease and the companion beside the player",
+      "passed": true,
+      "info": {
+        "camFactorFirstLine": 0.75,
+        "autoAdvanceSeconds": 8.02,
+        "adaLine": "ae01",
+        "adaWhen": [
+          "chair-veranda"
+        ],
+        "companionAfterDrive": 0.75
+      }
+    },
+    {
+      "name": "5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule",
+      "passed": true,
+      "info": {
+        "handedOffAfterSeconds": 5.97
+      }
+    },
+    {
+      "name": "6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk",
+      "passed": true,
+      "info": {
+        "timeoutSeconds": 20.03
+      }
+    },
+    {
+      "name": "7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third",
+      "passed": true,
+      "info": {
+        "adaCell": [
+          -7.55,
+          6.3
+        ]
+      }
+    },
+    {
+      "name": "8. Determinism: two runs give identical reports",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state, ticks and actions in Node with the shipped Three.js, the authored hero, the life modules and the v35 modules; clock35, Math.random and Date.now stubbed; run twice in child processes and compared."
+}

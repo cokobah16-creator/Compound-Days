@@ -4,7 +4,8 @@
     { "source": "/", "destination": "/dist/index.html" },
     { "source": "/index.html", "destination": "/dist/index.html" },
     { "source": "/assets/:path*", "destination": "/dist/assets/:path*" },
-    { "source": "/src/:path*", "destination": "/dist/src/:path*" }
+    { "source": "/src/:path*", "destination": "/dist/src/:path*" },
+    { "source": "/data/:path*", "destination": "/dist/data/:path*" }
   ],
   "headers": [
     { "source": "/dist/assets/:path*", "headers": [ { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" } ] },

@@ -1,0 +1,307 @@
+{
+  "build": "v35-f981f083",
+  "passed": true,
+  "checks": [
+    {
+      "name": "A1. Path A: a new companion household (aiStart, setupnext x2, movein) starts with ₦6,000 and born35",
+      "passed": true,
+      "info": {
+        "money": 6000
+      }
+    },
+    {
+      "name": "A2. Path A day 1: sofa in, welcome basket first, jollof at both stations, housewarming, gift and plan; the pot stays empty and planting is refused",
+      "passed": true,
+      "info": {
+        "guests": [
+          "ada",
+          "tunde"
+        ],
+        "adaFirstLine": "ad01",
+        "money": 6000
+      }
+    },
+    {
+      "name": "A3. Path A day 1: the party panel carries Tunde’s seedling promise and, with Ada there, the armchair she sold to Finds",
+      "passed": true,
+      "info": {
+        "tunde": true,
+        "ada": true
+      }
+    },
+    {
+      "name": "A4. Path A night 1: sleep gives the recap “Tunde said he would leave something in your pot.” and the day-1 rating is stored",
+      "passed": true,
+      "info": {
+        "recap": "Tunde said he would leave something in your pot.",
+        "rating": 2
+      }
+    },
+    {
+      "name": "A5. Path A day 2 morning: the seedling row, the seed granted, Today’s morning card with Tunde’s card first, the marker at the pot and no toast",
+      "passed": true,
+      "info": {
+        "row": "seedling",
+        "lead": "Tunde"
+      }
+    },
+    {
+      "name": "A6. Path A day 2: plant the seedling and water it at home",
+      "passed": true,
+      "info": {
+        "stage": 1
+      }
+    },
+    {
+      "name": "A7. Path A day 2: at the rocks the bite follows the stubbed wall clock (2.2-4.4 s at 5 fps), the nibble comes first, and Act alone casts, reels in and keeps the first fish",
+      "passed": true,
+      "info": {
+        "first": {
+          "bite": 4,
+          "steps": 20,
+          "fish": "croaker",
+          "how": "keep"
+        }
+      }
+    },
+    {
+      "name": "A8. Path A day 2: the fish goes to Mama Nkechi (+₦1,000, the recipe); the purse is below ₦9,000 straight after the errand",
+      "passed": true,
+      "info": {
+        "purseAfterErrand": 7000
+      }
+    },
+    {
+      "name": "A9. Path A day 2: catches sold from the catch card until the purse reaches ₦9,000 (one or two)",
+      "passed": true,
+      "info": {
+        "sold": 1,
+        "purse": 9600,
+        "bites": [
+          4,
+          3.2
+        ]
+      }
+    },
+    {
+      "name": "A10. Path A day 2: Ada’s armchair at Finds costs ₦9,000, with no agreement step and one approving line from the companion",
+      "passed": true,
+      "info": {
+        "toast": "Woven armchair is in Build storage. Ola: “We needed that, you know.”",
+        "purse": 600
+      }
+    },
+    {
+      "name": "A11. Path A day 2: the armchair placed on the veranda, undone, turned and placed again (y=4)",
+      "passed": true,
+      "info": {
+        "x": 1,
+        "y": 4,
+        "rot": 1
+      }
+    },
+    {
+      "name": "A12. Path A day 2: Tunde credits the watering, Ada the chair; their requests are done (plant, wall art)",
+      "passed": true,
+      "info": {
+        "tunde": "tu06",
+        "ada": "ad03"
+      }
+    },
+    {
+      "name": "A13. Path A night 2: the recap “The seedling will be taller by morning. Ada wants to hear where the chair went.”",
+      "passed": true,
+      "info": {
+        "recap": "The seedling will be taller by morning. Ada wants to hear where the chair went."
+      }
+    },
+    {
+      "name": "A14. Path A day 3 morning: “It grew overnight.”, Mama Nkechi’s card leads, the plant is at stage 2",
+      "passed": true,
+      "info": {
+        "row": "grew",
+        "lead": "Mama Nkechi"
+      }
+    },
+    {
+      "name": "A15. Path A day 3: watering ripens it at once; the harvest gives three peppers and resets the pot to stage 1",
+      "passed": true,
+      "info": {
+        "peppers": 3
+      }
+    },
+    {
+      "name": "A16. Path A day 3: Tunde +₦1,500, two peppers to Mama Nkechi (+₦2,000 and spices), two shells to Ada (+₦1,500)",
+      "passed": true,
+      "info": {
+        "cash": [
+          1500,
+          2000,
+          1500
+        ],
+        "purse": 5600
+      }
+    },
+    {
+      "name": "A17. Path A day 3: a paint bought at Finds, painted, undone, painted again, and still on the walls after save and Continue",
+      "passed": true,
+      "info": {
+        "paint": "palm",
+        "walls": 6
+      }
+    },
+    {
+      "name": "A18. Path A day 3 veranda evening: from 18:00 with the human on the veranda the three neighbours each say a line, Ada’s about the armchair; the companion stands beside the player and the camera eases in",
+      "passed": true,
+      "info": {
+        "spots": {
+          "tunde": [
+            -5.3,
+            7.8
+          ],
+          "nkechi": [
+            -4.1,
+            7.8
+          ],
+          "ada": [
+            -2.9,
+            7.8
+          ]
+        },
+        "lines": [
+          "tunde:te01",
+          "nkechi:ne02",
+          "ada:ae01"
+        ],
+        "camFactorFirstLine": 0.75,
+        "companionDistance": 0.75
+      }
+    },
+    {
+      "name": "A19. Path A night 3: the recap “The lamp and the rug are back at Finds tomorrow. Tunde says the pot will fruit again.”, the rating, then both day-3 prompts saved through their bind paths",
+      "passed": true,
+      "info": {
+        "recap": "The lamp and the rug are back at Finds tomorrow. Tunde says the pot will fruit again.",
+        "prompts": [
+          "A reading lamp by the window",
+          "Tunde talks to his peppers"
+        ]
+      }
+    },
+    {
+      "name": "A20. Path A day log: days 1-3 complete with times, ratings, prompts and the script’s events; the Menu copy carries the evening timeline and the days",
+      "passed": true,
+      "info": {
+        "day1": {
+          "rating": 2,
+          "events": [
+            "wake",
+            "sleep"
+          ]
+        },
+        "day2": {
+          "rating": 3,
+          "events": [
+            "wake",
+            "morning seedling",
+            "plant",
+            "water 1",
+            "at-rocks",
+            "cast",
+            "bite",
+            "catch croaker",
+            "request nkechi:1",
+            "cast",
+            "bite",
+            "catch snapper",
+            "sell catch:snapper",
+            "buy armchair",
+            "place armchair:veranda",
+            "place armchair:veranda",
+            "request tunde:1",
+            "request ada:1",
+            "sleep"
+          ]
+        },
+        "day3": {
+          "rating": 3,
+          "events": [
+            "wake",
+            "morning grew",
+            "water 3",
+            "harvest",
+            "request tunde:2",
+            "request nkechi:2",
+            "shell 0",
+            "shell 1",
+            "request ada:2",
+            "buy paint:palm",
+            "paint wall:palm",
+            "paint wall:palm",
+            "resume",
+            "evening done",
+            "sleep"
+          ]
+        }
+      }
+    },
+    {
+      "name": "M1. Missed evening: the day-3 household away from home from 18:00 to 22:00 is not visited; day 4 opens with evening-again and the evening runs on day 4",
+      "passed": true,
+      "info": {
+        "day4": "evening-again",
+        "doneDay": 4
+      }
+    },
+    {
+      "name": "B1. Path B day 1: a new household buys what jollof needs at the market while it can, takes the basket for the rest, and starts day 2 at or below ₦2,000",
+      "passed": true,
+      "info": {
+        "bought": [
+          "pepper:1300",
+          "spices:1450",
+          "tomato:1450"
+        ],
+        "day2Purse": 1800,
+        "guests": [
+          "tunde"
+        ]
+      }
+    },
+    {
+      "name": "B2. Path B day 2: plant and water, keep one fish for Mama Nkechi, purse below ₦9,000 after her errand, sell catches until the armchair is affordable and place it on the veranda by the end of day 2",
+      "passed": true,
+      "info": {
+        "purseAfterErrand": 2800,
+        "sold": 5,
+        "bites": [
+          2.8,
+          3,
+          3.6,
+          3.8,
+          4.4,
+          2.8
+        ],
+        "cell": [
+          5,
+          4
+        ]
+      }
+    },
+    {
+      "name": "O1. An old save (no born35, ₦55,000) loads with its money, may plant on day 1 and gets no seedling gate",
+      "passed": true,
+      "info": {
+        "money": 55000
+      }
+    },
+    {
+      "name": "Copy: no rendered page or toast in the script names a weekday, and no page shows undefined or NaN",
+      "passed": true,
+      "info": {
+        "toasts": 2
+      }
+    }
+  ],
+  "method": "Actual shipped runtime with every v35 module in Node, Three.js and glTF; companion households driven by dispatch of real actions and the real tick functions, the wall clock stubbed through CLOCK35. No browser, phone or audio claim."
+}

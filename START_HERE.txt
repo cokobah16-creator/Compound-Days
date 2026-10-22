@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v34b-3a5b01c3 (authored character, feel the actions, your day in Palm Court)
+Build: v35-f981f083 (authored character, your day in Palm Court, three days)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
