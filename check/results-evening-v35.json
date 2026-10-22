@@ -1,5 +1,5 @@
 {
-  "build": "v35-816e6133",
+  "build": "v35-fe8c282b",
   "passed": true,
   "checks": [
     {
@@ -105,7 +105,7 @@
       }
     },
     {
-      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the real camera (measured every frame of the first two lines) eased nearer, up to a quarter, only as far as the player and all three guests still fit, never cutting anyone, never moving back out while it eases in, and changing under 1% a frame after its first eased frame, and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the real camera (measured every frame of the first two lines) eased nearer, up to a quarter, only as far as the player and all three guests still fit, never cutting anyone, never moving back out while it eases in, and changing under 1% a frame after its first eased frame; a whole evening at 1280x800 recorded on every frame from the trigger to the hand-back to the normal camera (no change over 2.5% a frame anywhere, none over 1% from the first frame of line 1 to the end of line 3, nobody cut while they talk, no jump at the hand-back); and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
       "passed": true,
       "info": {
         "camFactorFirstLine": 0.75,
@@ -114,6 +114,22 @@
           "firstEasedFrame": -1,
           "maxStepPercent": 0,
           "minRatio": 1
+        },
+        "wholeEvening1280x800": {
+          "maxStepPercent": {
+            "walk-in": 0.89,
+            "hold": 0,
+            "lines": 0,
+            "departure": 0.89,
+            "hand-back": 0
+          },
+          "frames": {
+            "walk-in": 201,
+            "hold": 15,
+            "lines": 181,
+            "departure": 191,
+            "hand-back": 151
+          }
         },
         "autoAdvanceSeconds": 8.02,
         "adaLine": "ae01",
@@ -166,7 +182,7 @@
       }
     },
     {
-      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame",
+      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump",
       "passed": true,
       "info": {
         "veranda column 0": {
@@ -256,9 +272,25 @@
             }
           ],
           "camera": {
-            "firstEasedFrame": 5,
+            "firstEasedFrame": 1,
             "maxStepPercent": 0.25,
             "minRatio": 0.995
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.47,
+              "departure": 2.32,
+              "hand-back": 0
+            },
+            "frames": {
+              "walk-in": 260,
+              "hold": 15,
+              "lines": 91,
+              "departure": 250,
+              "hand-back": 151
+            }
           },
           "maxTurnPerFrame": 2.8
         },
@@ -349,9 +381,25 @@
             }
           ],
           "camera": {
-            "firstEasedFrame": 5,
+            "firstEasedFrame": 1,
             "maxStepPercent": 0.25,
             "minRatio": 0.996
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.45,
+              "departure": 2.32,
+              "hand-back": 0
+            },
+            "frames": {
+              "walk-in": 230,
+              "hold": 15,
+              "lines": 91,
+              "departure": 220,
+              "hand-back": 151
+            }
           },
           "maxTurnPerFrame": 2.8
         },
@@ -442,9 +490,25 @@
             }
           ],
           "camera": {
-            "firstEasedFrame": 5,
+            "firstEasedFrame": 1,
             "maxStepPercent": 0.25,
             "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.35,
+              "departure": 2.32,
+              "hand-back": 0
+            },
+            "frames": {
+              "walk-in": 196,
+              "hold": 15,
+              "lines": 91,
+              "departure": 186,
+              "hand-back": 151
+            }
           },
           "maxTurnPerFrame": 2.8
         },
@@ -535,9 +599,25 @@
             }
           ],
           "camera": {
-            "firstEasedFrame": 6,
+            "firstEasedFrame": 1,
             "maxStepPercent": 0.25,
             "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.32,
+              "departure": 2.32,
+              "hand-back": 0
+            },
+            "frames": {
+              "walk-in": 201,
+              "hold": 15,
+              "lines": 91,
+              "departure": 191,
+              "hand-back": 151
+            }
           },
           "maxTurnPerFrame": 2.8
         }

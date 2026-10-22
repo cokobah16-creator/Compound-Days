@@ -2,7 +2,10 @@
    on the veranda row, Tunde, Mama Nkechi and Ada walk in from the gate to three standing spots in the open street just south of the
    veranda rail, face the veranda and say one line each (read from the LINES table, Ada's about the armchair when it is placed). The
    companion stands beside the player. For the first line the camera eases nearer, up to a quarter, but only as far as the player and
-   all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. Nobody sits and there are no props.
+   all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. One smoothed camera runs from the
+   trigger to the hand-back: the guests' standing spots come into the framing over the first 1.5 s of the walk-in (while the guests are still
+   off-screen) and leave it over 1.5 s from Goodnight, and the camera distance moves towards the fitted one by at most 2.4% a frame (0.95%
+   while they talk), so the evening has no camera jumps. Nobody sits and there are no props.
    A missed evening repeats every day until it is seen; it is saved once seen (S.life.evening35={doneDay}). Off in online play.
    Loaded after days-v35.js. Every behaviour change wraps an earlier global and calls it. Top-level names are only EVENING35 and
    eveningTick35 (spec section 7); everything else lives in the block below. Wall-clock time goes through clock35() (tune-v35.js). */
@@ -111,7 +114,7 @@ body.evening35-active #life-guide34{display:none!important}
    if(k==='ada'&&visiting){E.spots.ada=[n.g.position.x,n.g.position.z];continue;}   // already on the veranda: she speaks from there
    const [x,z]=sp[k],gx=3.6+0.4*gi,h=human(),yaw=h?E.faceYaw(x,z,h.g.position.x,h.g.position.z):Math.PI;E.yaw[k]=yaw;n.g.visible=true;n.g.position.set(gx,0,9.6);n.g.rotation.y=Math.atan2(x-gx,9.0-9.6);
    n.route=[[gx,9.6],[x,9.0],[x,z]];n.ri=0;n.dest=[x,z,yaw];n.hideAtEnd=false;E.walkers.push(k);}
-  E.state='arriving';E.t=0;E.hold=0;E.line=0;E.lines=[];E.awayT=0;
+  E.state='arriving';E.t=0;E.hold=0;E.line=0;E.lines=[];E.awayT=0;E.camWait=false;
   const w=LIFE34.waypoint;if(w&&w.name==='Flat 3'&&w.x===-4.1&&w.z===6.3){LIFE34.waypoint=null;if(typeof refreshMarker34==='function')refreshMarker34();}   // home now: the nudge marker has done its job
   if(!silent())toast(visiting?COPY.gate2:COPY.gate);return true;};
  // arrival done (or the 20 s timeout): stragglers step onto their spots (and face at once, without a turn), and the lines begin
@@ -157,9 +160,10 @@ body.evening35-active #life-guide34{display:none!important}
    E.start();return;}
   // nobody home for three seconds while they arrive or talk: they leave without it counting, so it repeats
   if(E.state==='arriving'||E.state==='talking'){if(home34())E.awayT=0;else if((E.awayT+=wd)>=3000){E.abort();return;}}
-  // once everyone is on a spot they have half a second to finish turning to the veranda (the turns settle in about 0.3 s) before the first line
+  // once everyone is on a spot they have half a second to finish turning to the veranda (the turns settle in about 0.3 s) before the first line,
+  // longer (up to 1.5 s) while the camera is still arriving at the talking framing (E.camWait, set by the camera wrapper below)
   if(E.state==='arriving'){if(!open)E.t+=wd;let all=true;for(const k of E.walkers)if(npcs[k]&&npcs[k].route){all=false;break;}
-   E.hold=all?E.hold+(open?0:wd):0;if(E.hold>=500||E.t>=20000)beginTalk();}
+   E.hold=all?E.hold+(open?0:wd):0;if((E.hold>=500&&!E.camWait)||E.hold>=1500||E.t>=20000)beginTalk();}
   else if(E.state==='talking'){if(!open){E.lineT+=wd;if(E.lineT>=8000)E.next();}}
   else if(E.state==='leaving'){for(let j=E.walkers.length-1;j>=0;j--){const k=E.walkers[j],n=npcs[k];if(!n){E.walkers.splice(j,1);continue;}if(!n.route){handOff(k);E.walkers.splice(j,1);}}
    if(!E.walkers.length){E.state='idle';E.spots={};for(const k in cool){if(npcs[k])npcs[k].cool=cool[k];delete cool[k];}}}
@@ -187,7 +191,7 @@ body.evening35-active #life-guide34{display:none!important}
  // wrap: a new day ends an unfinished evening first (it is not marked done, so it repeats)
  const nextPrev=ACTIONS.nextday;ACTIONS.nextday=function(){E.abort();return nextPrev.apply(this,arguments);};
  // wrap: entering the world (continue, move-in) starts with no evening in progress; enterWorld then places everyone afresh
- const enterPrev=enterWorld;enterWorld=function(){E.abort(false);last=null;E.camUsed[0]=E.camUsed[1]=1;return enterPrev.apply(this,arguments);};
+ const enterPrev=enterWorld;enterWorld=function(){E.abort(false);last=null;E.camUsed[0]=E.camUsed[1]=1;E.camHeld[0]=E.camHeld[1]=false;E.camW=0;return enterPrev.apply(this,arguments);};
 
  const near=(i,n,r)=>{const p=players[i];return !!(p&&Math.hypot(p.g.position.x-n.g.position.x,p.g.position.z-n.g.position.z)<=r);};
  // do the guests within 6 m and the player of view i all stand inside the camera fit's usable area (v21Viewport's margins) with the
@@ -221,31 +225,42 @@ body.evening35-active #life-guide34{display:none!important}
    if(E.state==='talking'&&Math.abs(c)>lim){y=turns[k].cur=wrapA(ac+Math.sign(c)*lim);turns[k].v=0;}
    n.g.rotation.y=y;}};
  E.faceGuests=faceGuests;
- // wrap: the camera eases nearer (camFactor) along its own direction, after every other camera wrapper, but only as far as the guests and
- // the player still fit (in a narrow portrait view the fit is already tight, so it mostly stays out). The factor aimed for is the larger of
- // camFactor and the smallest factor that fits (found by halving over a fixed range, so a still scene gives the same answer every frame)
- // plus a 0.002 margin, so it never flickers; the factor used (camUsed)
- // moves towards it by at most 0.8% of the distance per 30 fps frame, and widens at once only if someone would otherwise be cut.
- // Then the guests' facing.
- E.camUsed=[1,1];
- const CAM_STEP=0.008;
+ // wrap: one smoothed camera from the trigger to the hand-back, after every other camera wrapper. The base fit (visual-v21) widens at once and
+ // eases in by about a fifth of the gap a frame; here the fitted distance it reached is recovered and the distance used (E.camD, written back
+ // to v21Dist so the base starts from it next frame) moves towards it by at most 2.4% a 30 fps frame, 0.95% while they talk; the base's
+ // focus is corrected to that distance. On top of it the camera eases nearer for the first line (camFactor): the factor aimed for is the
+ // larger of camFactor and the smallest factor that fits (found by halving over a fixed range, so a still scene gives the same answer every
+ // frame) plus a 0.002 margin, so it never flickers; the factor used (camUsed) moves towards it by at most 0.8% a frame, and the distance
+ // itself (fitted distance times factor) never changes by more than the same 2.4% / 0.95% in a frame. After the evening the camera stays
+ // steered until it has reached the normal fit (E.camHeld), so the hand-back has no jump. The guests' share of the framing (E.camW) ramps in
+ // over 1.5 s from the trigger and out over 1.5 s from Goodnight. While they arrive, E.camWait says the camera has not yet arrived at the
+ // talking framing (the hold before the first line waits for it). Then the guests' facing.
+ E.camUsed=[1,1];E.camHeld=[false,false];E.camW=0;E.camWait=false;
+ const CAM_STEP=0.008,CAM_MAX=0.024,CAM_TALK=0.0095,RAMP=1.5;
  const fitFrom=(i,lo)=>{if(E.fits(i,Math.max(0,lo-0.002)))return lo;if(!E.fits(i,1))return 1;let a=0.5,b=1;
   for(let n=0;n<16;n++){const m=(a+b)/2;if(E.fits(i,m))b=m;else a=m;}return Math.max(lo,Math.min(1,b+0.002));};
- const camPrev=updateCameras;updateCameras=function(dt){const r=camPrev.apply(this,arguments);
-  if(players.length&&typeof v21Dist!=='undefined'){const si=singleIdx(),k=Math.pow(1+CAM_STEP,Math.max(0,Math.min(+dt||0,0.1))*30);
-   for(let i=0;i<2;i++){let u=E.camUsed[i];if((si>=0&&i!==si)||!cams[i]||!focus[i]){E.camUsed[i]=1;continue;}if(E.camFactor>=1&&u>=1)continue;
-    const want=E.camFactor<1?fitFrom(i,E.camFactor):1;u=want<u?Math.max(want,u/k):Math.min(want,u*k);if(u<1&&!E.fits(i,u))u=fitFrom(i,u);
-    E.camUsed[i]=u;if(u>=1)continue;cams[i].position.copy(focus[i]).addScaledVector(CAM_DIR,v21Dist[i]*u);cams[i].lookAt(focus[i]);}}
+ const camPrev=updateCameras;updateCameras=function(dt){const t=Math.max(0,Math.min(+dt||0,0.1)),v21=typeof v21Dist!=='undefined';
+  E.camW=E.state==='arriving'||E.state==='talking'?Math.min(1,E.camW+t/RAMP):E.state==='leaving'?Math.max(0,E.camW-t/RAMP):0;
+  const pre=v21?[v21Dist[0],v21Dist[1]]:null,r=camPrev.apply(this,arguments);
+  if(players.length&&v21){const si=singleIdx(),f30=t*30,lim=Math.pow(1+(E.state==='talking'?CAM_TALK:CAM_MAX),f30),kU=Math.pow(1+CAM_STEP,f30),alpha=1-Math.pow(.002,t);let wait=false;
+   for(let i=0;i<2;i++){if((si>=0&&i!==si)||!cams[i]||!focus[i]||isAI(i)){E.camUsed[i]=1;E.camHeld[i]=false;continue;}if(E.state==='idle'&&!E.camHeld[i])continue;
+    const p=pre[i],b=v21Dist[i],fit=b>p?b:alpha>1e-9?p+(b-p)/alpha:p,D=Math.min(p*lim,Math.max(p/lim,fit));   // the base widened to fit, or eased a share of the way
+    const vp=v21Viewport(i),tanV=Math.tan(THREE.MathUtils.degToRad(cams[i].fov/2)),a=sofa&&sofa.carrying?Math.max(alpha,.35):alpha;
+    v21Dist[i]=D;focus[i].addScaledVector(v21Up,a*(vp.bottom-vp.top)/vp.h*tanV*(b-D));                   // the base aimed its focus for distance b
+    const u0=E.camUsed[i];let u=u0;
+    if(E.camFactor<1||u<1){const want=E.camFactor<1?fitFrom(i,E.camFactor):1;u=want<u?Math.max(want,u/kU):Math.min(want,u*kU);if(u<1&&!E.fits(i,u))u=Math.min(fitFrom(i,u),u0*kU);}
+    const d0=p*u0,d=Math.min(d0*lim,Math.max(d0/lim,D*u));u=d/D;E.camUsed[i]=u;
+    E.camHeld[i]=E.state!=='idle'||D!==fit||u<1;if(E.state==='arriving'&&(E.camW<1||Math.abs(fit-D)>0.002*D))wait=true;
+    camPosS[i].copy(focus[i]).addScaledVector(CAM_DIR,d);cams[i].position.copy(camPosS[i]);cams[i].lookAt(focus[i]);}
+   E.camWait=wait;}
   faceGuests(dt);return r;};
- // wrap: while the neighbours talk, the human views' camera fit includes every guest within 6 m, not only the speaker (24 reused points)
+ // wrap: from the trigger until the guests have gone, the human views' camera fit includes each guest's standing spot within 6 m of the
+ // player, as the box a guest stands in (0.88 x 2 x 0.72 m), drawn from the player towards the spot by the share E.camW (24 reused points)
  const BOX=[];for(let k=0;k<24;k++)BOX.push(new THREE.Vector3());
- const BOX2=[];for(let k=0;k<16;k++)BOX2.push(new THREE.Vector3());
  const ptsPrev=v21InteractionPoints;v21InteractionPoints=function(i,joint){const pts=ptsPrev.apply(this,arguments);
-  if(isAI(i)||!Array.isArray(pts))return pts;
-  if(E.state==='talking'){let k=0;for(const g of E.guests){const n=npcs[g];if(!n||!n.g.visible||!near(i,n,6))continue;const x=n.g.position.x,z=n.g.position.z;
-   for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));}return pts;}
-  if(E.state==='arriving'){let k=0;for(const g of E.walkers){const n=npcs[g];if(!n||!n.g.visible||!near(i,n,4.5)||k>=16)continue;   // the last steps in are on screen
-   const x=n.g.position.x,z=n.g.position.z;for(const dx of [-.4,.4])for(const dz of [-.3,.3]){if(k<16)pts.push(BOX2[k++].set(x+dx,k%2?0:1.9,z+dz));}}}
+  if(E.state==='idle'||isAI(i)||!Array.isArray(pts)||!players[i])return pts;const h=players[i].g.position,w=E.camW;let k=0;
+  for(const g of E.guests){const n=npcs[g],s=E.spots[g];if(!n||!n.g.visible||!s||Math.hypot(s[0]-h.x,s[1]-h.z)>6)continue;const x=h.x+(s[0]-h.x)*w,z=h.z+(s[1]-h.z)*w;
+   for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));}
   return pts;};
  // wrap: during the evening the companion stands beside the player (east, west or north of them, inside the flat) instead of following behind
  // the only way between the room and the veranda is the door in the south wall (x -4.25 to -3.95): its inner and outer steps
