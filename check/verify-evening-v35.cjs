@@ -11,7 +11,7 @@ const NAMES=[
  '5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule',
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
- '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
+ '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
  '9. Determinism: two runs give identical reports'];
 
 function inner(){
@@ -252,7 +252,15 @@ function inner(){
     let turn=0;for(let k=0;k<rec.length;k++)for(const g in rec[k].g){const q=rec[k].g[g];
      assert(q.toCamera<=(q.speaker?50.5:65.5),label+', frame '+k+': '+g+(q.speaker?' speaks':' listens')+' at '+q.toCamera.toFixed(1)+' degrees from the camera');
      if(k>0){const t=wrapD(q.yaw-rec[k-1].g[g].yaw);turn=Math.max(turn,t);assert(t<=8,label+', frame '+k+': '+g+' turned '+t.toFixed(1)+' degrees in one frame');}}
-    out[label]={spots,lines,camera:cam,wholeEvening:whole.summary,maxTurnPerFrame:Math.round(turn*10)/10};}}
+    out[label]={spots,lines,camera:cam,wholeEvening:whole.summary,maxTurnPerFrame:Math.round(turn*10)/10};}
+    // the player walks 4.5 m along the veranda at walking speed (3.4 m/s) during line 2: the camera widens in time, so nobody is cut
+    fresh();at(-7.55,6.4);at(-7.4,3.6,1);run('EVENING35.checkAt=1e18;');frames(90);run('CAMREC35=[camSample35()];EVENING35.checkAt=0;');
+    run("(()=>{for(let k=0;k<900&&EVENING35.state!=='talking';k++)frames35(1);})()");assert.equal(state(),'talking','walking: talking');
+    frames(30);run('T35+=300;EVENING35.next();');for(let k=1;k<=40;k++){at(-7.55+k*3.4/30,6.4);frames(1);}frames(20);
+    const wrec=J("CAMREC35.filter(s=>s.state==='talking')");run('CAMREC35=null;');let wmax=0;
+    for(let k=0;k<wrec.length;k++){assert.equal(wrec[k].cut,null,'walking along the veranda in line 2: nobody cut on frame '+k+': '+JSON.stringify(wrec[k]));if(k>0)wmax=Math.max(wmax,Math.abs(wrec[k].d-wrec[k-1].d)/wrec[k-1].d);}
+    assert(wmax<=0.025,'walking along the veranda in line 2: the camera moves at most 2.5% a frame: '+wmax);
+    out['walking along the veranda in line 2']={talkingFrames:wrec.length,maxStepPercent:Math.round(wmax*10000)/100};}
    finally{run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
    return out;});
 

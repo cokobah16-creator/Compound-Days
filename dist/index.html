@@ -5749,7 +5749,7 @@ const PERF={last:0,acc:0,n:0,avg:0,fps:0};
 if(typeof TICK_HOOKS!=='undefined') TICK_HOOKS.push(()=>{ const now=performance.now(); if(PERF.last){ PERF.acc+=now-PERF.last; PERF.n++; if(PERF.acc>=2000){ PERF.avg=PERF.acc/PERF.n; PERF.fps=1000/PERF.avg; PERF.acc=0; PERF.n=0; } } PERF.last=now; });
 function perfStatusText(){ if(!PERF.avg||typeof renderer==='undefined'||!renderer) return ''; const sz=renderer.getSize(new THREE.Vector2()); return ` Frame time ${PERF.avg.toFixed(1)} ms (~${Math.round(PERF.fps)} fps) at ${Math.round(sz.x*renderer.getPixelRatio())}×${Math.round(sz.y*renderer.getPixelRatio())}, ${renderer.info.render.calls} draw calls, ${Math.round(renderer.info.render.triangles/1000)}k triangles.`; }
 
-const BUILD_ID='v35-fe8c282b';
+const BUILD_ID='v35-01eaa7a2';
 /* ===================== BOOT ===================== */
 function initRenderer(){ renderer=new THREE.WebGLRenderer({canvas:document.getElementById('c'),antialias:true,powerPreference:'high-performance'}); renderer.setPixelRatio(Math.min(devicePixelRatio||1,navigator.maxTouchPoints>0?1.6:2)); renderer.setSize(innerWidth,innerHeight); renderer.shadowMap.enabled=true; renderer.shadowMap.type=THREE.PCFSoftShadowMap; renderer.toneMapping=THREE.ACESFilmicToneMapping; renderer.toneMappingExposure=1.15; camera=new THREE.PerspectiveCamera(42,innerWidth/innerHeight,0.5,160); window.addEventListener('resize',()=>{ renderer.setSize(innerWidth,innerHeight); camera.aspect=innerWidth/innerHeight; camera.updateProjectionMatrix(); }); }
 window.addEventListener('pagehide',()=>save()); document.addEventListener('visibilitychange',()=>{ if(document.hidden) save(); });

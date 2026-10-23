@@ -1,5 +1,5 @@
 {
-  "build": "v35-fe8c282b",
+  "build": "v35-01eaa7a2",
   "passed": true,
   "checks": [
     {
@@ -182,7 +182,7 @@
       }
     },
     {
-      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump",
+      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump",
       "passed": true,
       "info": {
         "veranda column 0": {
@@ -620,6 +620,10 @@
             }
           },
           "maxTurnPerFrame": 2.8
+        },
+        "walking along the veranda in line 2": {
+          "talkingFrames": 91,
+          "maxStepPercent": 2.38
         }
       }
     },

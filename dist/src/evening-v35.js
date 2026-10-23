@@ -4,8 +4,8 @@
    companion stands beside the player. For the first line the camera eases nearer, up to a quarter, but only as far as the player and
    all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. One smoothed camera runs from the
    trigger to the hand-back: the guests' standing spots come into the framing over the first 1.5 s of the walk-in (while the guests are still
-   off-screen) and leave it over 1.5 s from Goodnight, and the camera distance moves towards the fitted one by at most 2.4% a frame (0.95%
-   while they talk), so the evening has no camera jumps. Nobody sits and there are no props.
+   off-screen) and leave it over 1.5 s from Goodnight, and the camera distance moves towards the fitted one by at most 2.4% a frame (inwards
+   only 0.95% while they talk), so the evening has no camera jumps. Nobody sits and there are no props.
    A missed evening repeats every day until it is seen; it is saved once seen (S.life.evening35={doneDay}). Off in online play.
    Loaded after days-v35.js. Every behaviour change wraps an earlier global and calls it. Top-level names are only EVENING35 and
    eveningTick35 (spec section 7); everything else lives in the block below. Wall-clock time goes through clock35() (tune-v35.js). */
@@ -227,11 +227,12 @@ body.evening35-active #life-guide34{display:none!important}
  E.faceGuests=faceGuests;
  // wrap: one smoothed camera from the trigger to the hand-back, after every other camera wrapper. The base fit (visual-v21) widens at once and
  // eases in by about a fifth of the gap a frame; here the fitted distance it reached is recovered and the distance used (E.camD, written back
- // to v21Dist so the base starts from it next frame) moves towards it by at most 2.4% a 30 fps frame, 0.95% while they talk; the base's
+ // to v21Dist so the base starts from it next frame) moves towards it by at most 2.4% a 30 fps frame, and inwards only 0.95% while they talk (outwards it may still use 2.4%, so a
+ // player walking along the veranda mid-line is not cut: a still scene never needs it); the base's
  // focus is corrected to that distance. On top of it the camera eases nearer for the first line (camFactor): the factor aimed for is the
  // larger of camFactor and the smallest factor that fits (found by halving over a fixed range, so a still scene gives the same answer every
  // frame) plus a 0.002 margin, so it never flickers; the factor used (camUsed) moves towards it by at most 0.8% a frame, and the distance
- // itself (fitted distance times factor) never changes by more than the same 2.4% / 0.95% in a frame. After the evening the camera stays
+ // itself (fitted distance times factor) never changes by more than the same limits in a frame. After the evening the camera stays
  // steered until it has reached the normal fit (E.camHeld), so the hand-back has no jump. The guests' share of the framing (E.camW) ramps in
  // over 1.5 s from the trigger and out over 1.5 s from Goodnight. While they arrive, E.camWait says the camera has not yet arrived at the
  // talking framing (the hold before the first line waits for it). Then the guests' facing.
@@ -242,14 +243,14 @@ body.evening35-active #life-guide34{display:none!important}
  const camPrev=updateCameras;updateCameras=function(dt){const t=Math.max(0,Math.min(+dt||0,0.1)),v21=typeof v21Dist!=='undefined';
   E.camW=E.state==='arriving'||E.state==='talking'?Math.min(1,E.camW+t/RAMP):E.state==='leaving'?Math.max(0,E.camW-t/RAMP):0;
   const pre=v21?[v21Dist[0],v21Dist[1]]:null,r=camPrev.apply(this,arguments);
-  if(players.length&&v21){const si=singleIdx(),f30=t*30,lim=Math.pow(1+(E.state==='talking'?CAM_TALK:CAM_MAX),f30),kU=Math.pow(1+CAM_STEP,f30),alpha=1-Math.pow(.002,t);let wait=false;
+  if(players.length&&v21){const si=singleIdx(),f30=t*30,limIn=Math.pow(1+(E.state==='talking'?CAM_TALK:CAM_MAX),f30),limOut=Math.pow(1+CAM_MAX,f30),kU=Math.pow(1+CAM_STEP,f30),alpha=1-Math.pow(.002,t);let wait=false;
    for(let i=0;i<2;i++){if((si>=0&&i!==si)||!cams[i]||!focus[i]||isAI(i)){E.camUsed[i]=1;E.camHeld[i]=false;continue;}if(E.state==='idle'&&!E.camHeld[i])continue;
-    const p=pre[i],b=v21Dist[i],fit=b>p?b:alpha>1e-9?p+(b-p)/alpha:p,D=Math.min(p*lim,Math.max(p/lim,fit));   // the base widened to fit, or eased a share of the way
+    const p=pre[i],b=v21Dist[i],fit=b>p?b:alpha>1e-9?p+(b-p)/alpha:p,D=Math.min(p*limOut,Math.max(p/limIn,fit));   // the base widened to fit, or eased a share of the way
     const vp=v21Viewport(i),tanV=Math.tan(THREE.MathUtils.degToRad(cams[i].fov/2)),a=sofa&&sofa.carrying?Math.max(alpha,.35):alpha;
     v21Dist[i]=D;focus[i].addScaledVector(v21Up,a*(vp.bottom-vp.top)/vp.h*tanV*(b-D));                   // the base aimed its focus for distance b
     const u0=E.camUsed[i];let u=u0;
     if(E.camFactor<1||u<1){const want=E.camFactor<1?fitFrom(i,E.camFactor):1;u=want<u?Math.max(want,u/kU):Math.min(want,u*kU);if(u<1&&!E.fits(i,u))u=Math.min(fitFrom(i,u),u0*kU);}
-    const d0=p*u0,d=Math.min(d0*lim,Math.max(d0/lim,D*u));u=d/D;E.camUsed[i]=u;
+    const d0=p*u0,d=Math.min(d0*limOut,Math.max(d0/limIn,D*u));u=d/D;E.camUsed[i]=u;
     E.camHeld[i]=E.state!=='idle'||D!==fit||u<1;if(E.state==='arriving'&&(E.camW<1||Math.abs(fit-D)>0.002*D))wait=true;
     camPosS[i].copy(focus[i]).addScaledVector(CAM_DIR,d);cams[i].position.copy(camPosS[i]);cams[i].lookAt(focus[i]);}
    E.camWait=wait;}
