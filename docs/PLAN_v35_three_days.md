@@ -128,7 +128,7 @@ Commit to a soft, rounded, miniature Nigerian neighbourhood: stylised characters
 
 Gates before expanding the town, with five new testers:
 1. Four of five finish day 2 without coaching: a day-2 `sleptAt` plus the reviewer's note.
-2. Day-3 `startedAt` is within 48 hours of day-2 `sleptAt`.
+2. Day-3 `startedAt` is within 48 hours of day-2 `sleptAt`. *As built:* a tap on the day-3 morning page (closing it, or copying the log) wakes the day at once, so the game also logs each return after ten minutes away, and `tools/gates-v35.cjs` measures day 3 from the first return after day 2's Sleep.
 3. Day 3's mean rating is at least day 1's, and three of five give day 3 the top face.
 4. Each tester answers both day-3 prompts specifically.
 5. The median real day (`playedMs` + `panelMs`) is 20 to 35 minutes.

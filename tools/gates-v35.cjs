@@ -107,16 +107,19 @@ function collect(inputs){const map=new Map(),order=[];
   for(const p of seg.pastes)t.pastes.push(readPaste(p));}}
  return order.map(k=>mergeTester(map.get(k)));}
 
-function mergeTester(t){const days={},warnings=[],builds=new Set();let copiedAt=null,anyDays=false,approx=false;
+const UNPLAYED=new Set(['wake','morning','resume']);
+function mergeTester(t){const days={},warnings=[],builds=new Set(),morningCopies={};let copiedAt=null,anyDays=false,approx=false;
  t.pastes.forEach((p,i)=>{for(const w of p.warnings)warnings.push(`sitting ${i+1}: ${w}`);if(p.build)builds.add(p.build);if(p.copiedAt!=null)copiedAt=Math.max(copiedAt||0,p.copiedAt);
   if(!p.days)return;anyDays=true;if(p.source==='text')approx=true;
+  // a copy made while a day was woken but not yet played (on its morning page): the tester's return for that day comes after it
+  if(p.copiedAt!=null)for(const [k,r] of Object.entries(p.days)){const n=Number(k);if(Number.isInteger(n)&&r&&r.startedAt!=null&&Array.isArray(r.events)&&r.events.every(e=>UNPLAYED.has(e[1])))(morningCopies[n]=morningCopies[n]||[]).push(p.copiedAt);}
   for(const [k,r] of Object.entries(p.days)){const n=Number(k);if(!Number.isInteger(n)||n<1)continue;const prev=days[n];
    if(prev&&prev.startedAt!=null&&r.startedAt!=null&&prev.startedAt!==r.startedAt)warnings.push(`sittings disagree on when day ${n} started: two households or devices?`);
    if(!prev||better(r,prev)||(!better(prev,r)))days[n]=Object.assign({},r,{want:r.want||(prev&&prev.want)||null,neighbour:r.neighbour||(prev&&prev.neighbour)||null});}});
  if(!t.pastes.length)warnings.push('no paste found for this tester');
  else if(!anyDays)warnings.push('no day log: play the test in a single-player or companion household (online play keeps no log)');
  if(builds.size>1)warnings.push('sittings come from different builds: '+[...builds].sort().join(', '));
- return {name:t.name,sources:t.sources,coached:t.coached,done:t.done,notes:t.notes,days,copiedAt,builds:[...builds].sort(),approx,warnings,sittings:t.pastes.length};}
+ return {name:t.name,sources:t.sources,coached:t.coached,done:t.done,notes:t.notes,days,copiedAt,morningCopies,builds:[...builds].sort(),approx,warnings,sittings:t.pastes.length};}
 
 /* ---------- Per-tester measures ---------- */
 const realMs=r=>r?(r.playedMs||0)+(r.panelMs||0):null;
@@ -128,8 +131,12 @@ function specific(s){if(s==null)return false;const v=String(s).trim().toLowerCas
 // morning page (closing it, or Menu > Copy) wakes the day at once, so the start may be that tap; the game logs a 'resume' with the wall time
 // on Continue and on the first input after 10 minutes away (or the page shown after 10 minutes hidden). The return is the first resume after
 // the previous day's Sleep (`after`) logged before two minutes of that day's play (a later one is a pause in a day already being played);
-// without one it is the day's start, once the day shows play beyond its wake and morning.
-function returnAt(r,after){if(!r||r.startedAt==null)return null;if(!r.events)return {at:r.startedAt,how:'start'};
+// without one it is the day's start, once the day shows play beyond its wake and morning. When a sitting was copied on that day's morning
+// page after the Sleep (`copy`), the return is the first resume logged after that copy, however long the morning pages took; with none, a
+// day played on straight after the copy returned at the copy, and a day not yet played has no return.
+function returnAt(r,after,copy){if(!r||r.startedAt==null)return null;if(!r.events)return {at:r.startedAt,how:'start'};
+ if(copy!=null){for(const e of r.events)if(e[1]==='resume'&&typeof e[2]==='number'&&e[2]>copy)return {at:e[2],how:'resume'};
+  return r.events.some(e=>!UNPLAYED.has(e[1]))?{at:copy,how:'start'}:null;}
  for(const e of r.events)if(e[1]==='resume'&&typeof e[2]==='number'&&e[0]<BACK_S&&(after==null||e[2]>after))return {at:e[2],how:'resume'};
  if(r.events.some(e=>e[1]!=='wake'&&e[1]!=='morning'&&e[1]!=='resume'))return {at:r.startedAt,how:'start'};
  return realMs(r)>=BACK_S*1000?{at:r.startedAt,how:'start'}:null;}
@@ -177,7 +184,7 @@ function gates(testers,opt){const N=opt.testers,K4=Math.ceil(N*4/5),K3=Math.ceil
  // start for this gate is the first return logged after day 2's Sleep (Continue, or the first input after 10 minutes away), when there is one.
  {const rows=[],yes=[],no=[],pend=[];testers.forEach((t,i)=>{const m=ms[i],d2=t.days[2],d3=t.days[3];
    if(!(d2&&d2.sleptAt!=null)){if(!m.fin&&m.reached<3)pend.push(t.name);return;}
-   const back=returnAt(d3,d2.sleptAt);
+   const mc=((t.morningCopies||{})[3]||[]).filter(c=>c>d2.sleptAt).sort((a,b)=>a-b)[0];const back=returnAt(d3,d2.sleptAt,mc==null?null:mc);
    if(back){const g=back.at-d2.sleptAt;rows.push(`${t.name} ${hours(g)}${back.how==='resume'?' (by its return)':''}`);(g<=H48?yes:no).push(t.name);return;}
    const asOf=Math.max(t.copiedAt||0,opt.now||0);if(asOf&&asOf-d2.sleptAt>H48){no.push(t.name);rows.push(`${t.name} not back after ${hours(asOf-d2.sleptAt)}`);}
    else if(m.fin){no.push(t.name);rows.push(`${t.name} did not come back for day 3`);}else{pend.push(t.name);rows.push(`${t.name} not back yet`);}});

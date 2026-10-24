@@ -54,7 +54,7 @@ Note first: phone model, browser, and whether the phone is in low-power mode.
 - [ ] Nobody turns their back to the camera. The camera moves smoothly, with no jumps, from the gate to Goodnight.
 - [ ] Nobody else walks through the group or in front of it while they talk.
 - [ ] From the moment they arrive until they have gone, no street sign (such as Suya) sits over them, you or your companion. A sign that would fades out, and fades back in once they have gone. Nothing blinks off or on.
-- [ ] After Goodnight they walk off to the left along the street, away from you, and nobody walks between the camera and you. Once they are off the screen they go back to their usual places.
+- [ ] After Goodnight they walk off along the street away from you (usually to the left), and nobody walks between the camera and you. Once they are off the screen they go back to their usual places.
 - [ ] Each says one line. Ada’s mentions the armchair if it is placed.
 - [ ] Screenshots: the harvest (d3-harvest) and the evening (d3-evening).
 
@@ -178,7 +178,7 @@ The table has one row per tester:
 
 Each gate then shows **PASS**, **FAIL** or **NOT YET**, with its numbers:
 1. **Four of five finish day 2 without coaching.** The log shows who slept on day 2. Coaching is your call, so a tester only counts once their file says `Coached: no`. Until then the gate says NOT YET and names who is missing a note.
-2. **Day 3 within 48 hours of day 2’s Sleep.** Day 3 starts at the first return logged after day 2’s Sleep: a Continue, or the first tap after ten minutes or more away (or the page shown again after ten minutes hidden). The report marks it “(by its return)”. Without one, it is day 3’s first tap.
+2. **Day 3 within 48 hours of day 2’s Sleep.** Day 3 starts at the first return logged after day 2’s Sleep: a Continue, or the first tap after ten minutes or more away (or the page shown again after ten minutes hidden). The report marks it “(by its return)”. If a tester copied on the day-3 morning page, the return is the first one after that copy, however long they spent on the morning pages. Without a return, it is day 3’s first tap.
 3. **Day 3’s mean rating is at least day 1’s, and three of five give day 3 the top face.**
 4. **Both day-3 prompts answered specifically.** The tool counts an answer with two words, or one word of four letters or more, unless it is a non-answer such as “nothing” or “idk”. The report quotes every answer. Read them yourself.
 5. **The median real day is 20 to 35 minutes.** It uses days 1 to 3 that were slept. If it stays under 20, the plan slows the clock outside the guided evening.

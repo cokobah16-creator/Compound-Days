@@ -183,7 +183,7 @@
       }
     },
     {
-      "name": "Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET",
+      "name": "Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return, but a return after a morning-page copy counts however long the morning pages took; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET",
       "passed": true,
       "info": {
         "ok": {

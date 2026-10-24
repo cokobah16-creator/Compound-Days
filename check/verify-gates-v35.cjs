@@ -185,7 +185,7 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
   const early=set(mix({3:{stop:2,unslept:2},4:{stop:2,unslept:2}}),{a:{final:false}});assert.equal(gate(early,1).status,'NOT YET','two still playing day 2');
   return {four:gate(four,1).numbers,three:gate(three,1).numbers};});
 
- check('Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET',()=>{
+ check('Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return, but a return after a morning-page copy counts however long the morning pages took; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET',()=>{
   const ok=set(mix({2:{gap:[20*HR,48*HR]}}));only(ok,2,'PASS','48 h');
   const over=set(mix({2:{gap:[20*HR,48*HR+1000]}}));only(over,2,'FAIL','48 h + 1 s');
   // the copy woke day 3 a minute after Sleep; the Continue came 47 h (or 49 h) after Sleep, within two minutes of that day's play
@@ -197,6 +197,14 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
    const inputs=[];NAMES.forEach((nm,i)=>{const d=i===2?days:rec(Object.assign({offset:i*HR},o[i]));inputs.push({name:nm+'.txt',text:'Coached: no\n'+pasteOf(d,T0+30*24*HR)});});return A(inputs,{testers:5,final:true});};
   const w49=mkW(49*HR,8);only(w49,2,'FAIL','a logged tap, then the return 49 h after Sleep');assert(gate(w49,2).lines[0].includes('chidi 49.0 h (by its return)'),gate(w49,2).lines[0]);
   const w47=mkW(47*HR,8);only(w47,2,'PASS','a logged tap, then the return 47 h after Sleep');
+  // a tester who lingers more than two minutes on the day-3 morning pages, copies there (sitting 1), then comes back 49 h (or 47 h) after
+  // Sleep: the return logged after that copy counts, though it falls after two minutes of day-3 time (the earlier tool read the morning tap)
+  const mkL=h=>{const o=mix({});o[2]=Object.assign({},o[2],{gap:[20*HR,MIN]});const days=rec(Object.assign({offset:2*HR},o[2]));const copyAt=days[2].sleptAt+4*MIN;
+   const first=JSON.parse(JSON.stringify(days));first[3].events=first[3].events.filter(e=>e.k==='wake'||e.k==='morning');days[3].events.splice(2,0,{t:150,k:'resume',w:days[2].sleptAt+h});
+   const inputs=[];NAMES.forEach((nm,i)=>{if(i===2){inputs.push({name:nm+'-1.txt',text:'Coached: no\n'+pasteOf(first,copyAt)});inputs.push({name:nm+'-2.txt',text:'Coached: no\n'+pasteOf(days,T0+30*24*HR)});return;}
+    const d=rec(Object.assign({offset:i*HR},o[i]));inputs.push({name:nm+'.txt',text:'Coached: no\n'+pasteOf(d,T0+30*24*HR)});});return A(inputs,{testers:5,final:true});};
+  const m49=mkL(49*HR),m47=mkL(47*HR);only(m49,2,'FAIL','lingered on the morning pages, copied, back 49 h after Sleep');only(m47,2,'PASS','lingered on the morning pages, copied, back 47 h after Sleep');
+  assert(gate(m49,2).lines[0].includes('chidi 49.0 h (by its return)'),gate(m49,2).lines[0]);
   // a pause after more than two minutes of day-3 play is not the return: the day was already being played (from its start, a minute after Sleep)
   const late=mkW(60*HR,200);only(late,2,'PASS','a pause after 3:20 of play');assert(gate(late,2).lines[0].includes('chidi 0.0 h'),gate(late,2).lines[0]);
   // the shipped runtime: a household sleeps on day 2, the tester copies on the day-3 morning page (which wakes day 3) and leaves the tab open;
