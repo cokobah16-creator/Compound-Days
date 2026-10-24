@@ -1,0 +1,355 @@
+{
+  "build": "v35-f6dcede2",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Real 1. A companion household plays days 1 to 3 by real actions: basket and jollof, housewarming, seedling, a fish for Mama Nkechi, catches sold, the armchair on the veranda, the harvest, deliveries, paint, the veranda evening, three ratings and both day-3 answers",
+      "passed": true,
+      "info": {
+        "sold": 1,
+        "ratings": [
+          2,
+          3,
+          3
+        ],
+        "day3Events": [
+          "wake",
+          "morning",
+          "resume",
+          "water",
+          "harvest",
+          "request",
+          "shell",
+          "buy",
+          "paint",
+          "evening",
+          "sleep"
+        ]
+      }
+    },
+    {
+      "name": "Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly",
+      "passed": true,
+      "info": {
+        "blockLines": 24,
+        "blockChars": 1428,
+        "days": 4
+      }
+    },
+    {
+      "name": "Real 3. Privacy: the days part and its block hold only the log (times, minutes, ratings, events) and the two typed answers; no player name, household name or save field beyond the day records",
+      "passed": true,
+      "info": {
+        "fields": 9
+      }
+    },
+    {
+      "name": "Real 4. The gates tool reads both sittings of one tester (merged by day) and its values equal the log: times to the millisecond, minutes, ratings, answers, the first catch after the first at-rocks, the day-3 evening, and the day-3 return taken from the Continue because the copy on the morning page woke day 3",
+      "passed": true,
+      "info": {
+        "firstCatchSeconds": 20,
+        "gapHours": 20,
+        "minutes": [
+          22.49,
+          22.59,
+          22.56
+        ],
+        "statuses": [
+          "NOT YET",
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS",
+          "PASS"
+        ]
+      }
+    },
+    {
+      "name": "Real 5. Without the block (an older build’s paste) the readable lines give the same times, ratings, answers and events, with minutes to 0.1 and a note saying so",
+      "passed": true,
+      "info": {
+        "events": 16
+      }
+    },
+    {
+      "name": "Real 6. The command line: two files of one tester, the plain report and --json agree with the module; exit code 0; an unreadable file gives a message and exit code 2",
+      "passed": true,
+      "info": {
+        "row": "amaka 4 22.5 / 22.6 / 22.6 2 3 3 2/2 0:20 day 3"
+      }
+    },
+    {
+      "name": "Synthetic 1. Five testers who meet every gate (texts written by the real daysText35) give PASS on all seven, and the table carries each tester",
+      "passed": true,
+      "info": {
+        "gates": [
+          {
+            "gate": 1,
+            "status": "PASS",
+            "numbers": {
+              "sleptDay2": 5,
+              "confirmedNotCoached": 5,
+              "awaitingNote": 0,
+              "coached": 0,
+              "notYet": 0,
+              "missing": 0
+            }
+          },
+          {
+            "gate": 2,
+            "status": "PASS",
+            "numbers": {
+              "within": 5,
+              "over": 0,
+              "notYet": 0
+            }
+          },
+          {
+            "gate": 3,
+            "status": "PASS",
+            "numbers": {
+              "day1Mean": 2,
+              "day3Mean": 2.6,
+              "day1Rated": 5,
+              "day3Rated": 5,
+              "day3Top": 3,
+              "notYet": 0
+            }
+          },
+          {
+            "gate": 4,
+            "status": "PASS",
+            "numbers": {
+              "specific": 5,
+              "notSpecific": 0,
+              "notYet": 0
+            }
+          },
+          {
+            "gate": 5,
+            "status": "PASS",
+            "numbers": {
+              "days": 15,
+              "medianMs": 1620000,
+              "day1MedianMs": 1500000,
+              "day2MedianMs": 1620000,
+              "day3MedianMs": 1800000,
+              "testersStillPlaying": 0
+            }
+          },
+          {
+            "gate": 6,
+            "status": "PASS",
+            "numbers": {
+              "sawDay3": 5,
+              "missed": 0,
+              "notYet": 0
+            }
+          },
+          {
+            "gate": 7,
+            "status": "PASS",
+            "numbers": {
+              "within": 5,
+              "over": 0,
+              "notYet": 0
+            }
+          }
+        ]
+      }
+    },
+    {
+      "name": "Synthetic gate 1. Four of five slept on day 2 with “Coached: no” passes; three fails; a coached finisher fails; finishers without the reviewer’s note stay NOT YET, with the log’s count said",
+      "passed": true,
+      "info": {
+        "four": {
+          "sleptDay2": 4,
+          "confirmedNotCoached": 4,
+          "awaitingNote": 0,
+          "coached": 0,
+          "notYet": 0,
+          "missing": 0
+        },
+        "three": {
+          "sleptDay2": 3,
+          "confirmedNotCoached": 3,
+          "awaitingNote": 0,
+          "coached": 0,
+          "notYet": 0,
+          "missing": 0
+        }
+      }
+    },
+    {
+      "name": "Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails); not back after 49 h by the copy time fails; not back yet is NOT YET",
+      "passed": true,
+      "info": {
+        "ok": {
+          "within": 5,
+          "over": 0,
+          "notYet": 0
+        },
+        "over": {
+          "within": 4,
+          "over": 1,
+          "notYet": 0
+        },
+        "resume47": "PASS",
+        "resume49": "FAIL"
+      }
+    },
+    {
+      "name": "Synthetic gate 3. Day-3 mean equal to day 1’s with exactly three top faces passes; two top faces fails; a day-3 mean one step below day 1’s fails",
+      "passed": true,
+      "info": {
+        "equal": {
+          "day1Mean": 2.6,
+          "day3Mean": 2.6,
+          "day1Rated": 5,
+          "day3Rated": 5,
+          "day3Top": 3,
+          "notYet": 0
+        },
+        "twoTop": {
+          "day1Mean": 2,
+          "day3Mean": 2.4,
+          "day1Rated": 5,
+          "day3Rated": 5,
+          "day3Top": 2,
+          "notYet": 0
+        },
+        "lower": {
+          "day1Mean": 2.8,
+          "day3Mean": 2.6,
+          "day1Rated": 5,
+          "day3Rated": 5,
+          "day3Top": 3,
+          "notYet": 0
+        }
+      }
+    },
+    {
+      "name": "Synthetic gate 4. Both answers from every tester pass (a four-letter word counts); “nothing”, a blank answer or a three-letter word fails, and the report quotes the answers",
+      "passed": true,
+      "info": {
+        "specific": {
+          "specific": 5,
+          "notSpecific": 0,
+          "notYet": 0
+        }
+      }
+    },
+    {
+      "name": "Synthetic gate 5. A median real day of exactly 20:00 or exactly 35:00 passes; 19:59 and 35:01 fail; the median, not the mean, is used",
+      "passed": true,
+      "info": {
+        "medians": [
+          1200000,
+          2100000,
+          1199000,
+          2101000
+        ]
+      }
+    },
+    {
+      "name": "Synthetic gate 6. Four of five seeing the veranda evening on day 3 passes; three fails, and an evening first seen on day 4 does not count",
+      "passed": true,
+      "info": {
+        "four": {
+          "sawDay3": 4,
+          "missed": 1,
+          "notYet": 0
+        },
+        "three": {
+          "sawDay3": 3,
+          "missed": 2,
+          "notYet": 0
+        }
+      }
+    },
+    {
+      "name": "Synthetic gate 7. A first catch 2:00 of play after first reaching the rocks passes and 2:01 fails, also across a night (rocks near the end of day 1, the catch on day 2); a catch logged before any at-rocks is set aside with a note",
+      "passed": true,
+      "info": {
+        "ok": {
+          "within": 5,
+          "over": 0,
+          "notYet": 0
+        },
+        "over": {
+          "within": 4,
+          "over": 1,
+          "notYet": 0
+        },
+        "acrossNight": {
+          "seconds": 120,
+          "rocksDay": 1,
+          "catchDay": 2
+        }
+      }
+    },
+    {
+      "name": "Synthetic 9. In progress (no --final): three testers part-way through day 2 and two not pasted yet give NOT YET on every gate, with the missing testers named in the notes",
+      "passed": true,
+      "info": {
+        "statuses": [
+          "NOT YET",
+          "NOT YET",
+          "NOT YET",
+          "NOT YET",
+          "NOT YET",
+          "NOT YET",
+          "NOT YET"
+        ]
+      }
+    },
+    {
+      "name": "Paste 1. An online household: the copy button gives only “No first-evening timeline yet.” (no day log online); the tool says so and still reports",
+      "passed": true,
+      "info": {
+        "warnings": [
+          "sitting 1: only the first-evening timeline, no days: an online household, or a copy from before v35",
+          "no day log: play the test in a single-player or companion household (online play keeps no log)"
+        ]
+      }
+    },
+    {
+      "name": "Paste 2. Only the first-evening timeline (no days part): reported as a timeline without days, nothing invented",
+      "passed": true,
+      "info": {
+        "warnings": 2
+      }
+    },
+    {
+      "name": "Paste 3. Cut short inside the data block: the block is reported cut (characters held of the total) and the readable lines are used; cut inside the days: the days read so far are kept, the broken line is named",
+      "passed": true,
+      "info": {
+        "cutInBlock": 1,
+        "cutInDay3": 2
+      }
+    },
+    {
+      "name": "Paste 4. An altered block (one character changed) fails its check value and falls back to the readable lines; an e-mail-quoted, CRLF paste reads the same as the original; empty or unrelated text says it is not a Compound Days copy",
+      "passed": true,
+      "info": {
+        "altered": "sitting 1: the data block does not match its check value; read from the readable lines instead (minutes to 0.1)"
+      }
+    },
+    {
+      "name": "Paste 5. Two sittings that disagree on a day’s start (two households or devices) are flagged; several testers in one file split at their Tester lines; a sitting number in the file name merges sittings",
+      "passed": true,
+      "info": {
+        "testers": 2
+      }
+    },
+    {
+      "name": "Report hygiene: no report names a weekday or shows undefined or NaN, and the same pastes give the same report twice (no wall clock)",
+      "passed": true,
+      "info": {
+        "reportLines": 41
+      }
+    }
+  ],
+  "method": "Actual shipped runtime with every v35 module in Node; a companion household driven by dispatch of real actions and the real tick functions, the copy taken from the real Menu copy button, then read by tools/gates-v35.cjs (as a module and on the command line). Synthetic testers are written by the real daysText35 from built records. The wall clock is stubbed through CLOCK35."
+}

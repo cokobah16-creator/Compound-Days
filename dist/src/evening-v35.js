@@ -5,7 +5,10 @@
    all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. One smoothed camera runs from the
    trigger to the hand-back: the guests' standing spots come into the framing over the first 1.5 s of the walk-in (while the guests are still
    off-screen) and leave it over 1.5 s from Goodnight, and the camera distance moves towards the fitted one by at most 2.4% a frame (inwards
-   only 0.95% while they talk), so the evening has no camera jumps. Nobody sits and there are no props.
+   only 0.95% while they talk), so the evening has no camera jumps. Nobody sits and there are no props. While they arrive and talk, other
+   people keep out of the visit's patch and the camera's foreground (walkers turn back, the keke and residents on their schedules wait at its
+   edge), and world labels over the group are hidden for the talk; they leave along the rail, clear of the camera's line to the player. The nudge toast gives way to
+   an open journal page (Today's evening card says the same).
    A missed evening repeats every day until it is seen; it is saved once seen (S.life.evening35={doneDay}). Off in online play.
    Loaded after days-v35.js. Every behaviour change wraps an earlier global and calls it. Top-level names are only EVENING35 and
    eveningTick35 (spec section 7); everything else lives in the block below. Wall-clock time goes through clock35() (tune-v35.js). */
@@ -132,13 +135,16 @@ body.evening35-active #life-guide34{display:none!important}
   if(E.line>=E.lines.length-1){finish();return true;}E.line++;E.lineT=0;render();return true;};
  const finish=()=>{life34().evening35={doneDay:S.day};E.state='leaving';E.line=0;E.lineT=0;show(false);if(typeof AI!=='undefined')AI.rescue=-1;
   if(typeof cue35==='function')cue35('evening',{day:S.day});remember(COPY.memory,'moment');
-  for(const k of E.walkers){const n=npcs[k],s=E.spots[k];if(!n||!s)continue;n.route=[[s[0],9.0],[4.0,9.6]];n.ri=0;n.dest=[4.0,9.6,0];n.hideAtEnd=false;}
+  // they leave along the street side of the rail, crossing the camera's line to the player only beside the rail, and turn for the gate
+  // once 1 m clear of that line, so nobody walks between the camera and the player
+  const h=human(),hx=h?h.g.position.x:DOOR_X,hz=h?h.g.position.z:DOOR_OUT,rz=ROWS[0],ex=hx+(rz-hz)*HX/HZ+1.0;
+  for(const k of E.walkers){const n=npcs[k],s=E.spots[k];if(!n||!s)continue;n.route=[[s[0],rz],[Math.max(ex,s[0]),rz],[4.0,9.6]];n.ri=0;n.dest=[4.0,9.6,0];n.hideAtEnd=false;}
   if(E.guests.includes('ada')&&adaVisiting()&&npcs.ada){npcs.ada.cool=cool.ada||0;delete cool.ada;}
   save();};
  // at the gate a guest goes back to the usual schedule
  const handOff=k=>{const n=npcs[k];n.cool=cool[k]||0;delete cool[k];const spot=NPC_SPOTS[k]&&NPC_SPOTS[k][slot()];if(spot)walkNPC(n,spot,false);else walkNPC(n,null,true);};
  // stop without marking the evening done, so it repeats; everyone goes back to the schedule
- E.abort=function(place){if(E.state==='idle')return false;E.state='idle';E.awayT=0;if(typeof AI!=='undefined')AI.rescue=-1;
+ E.abort=function(place){if(E.state==='idle')return false;E.state='idle';E.awayT=0;if(typeof AI!=='undefined')AI.rescue=-1;E.showLabels();
   for(const k of E.walkers){const n=npcs[k];if(n){n.route=null;n.dest=null;n.hideAtEnd=false;}}E.walkers.length=0;E.lines=[];E.line=0;E.lineT=0;E.t=0;E.camFactor=1;E.spots={};show(false);
   for(const k in cool){if(npcs[k])npcs[k].cool=cool[k];delete cool[k];}
   if(place!==false&&typeof placeNPCs==='function'&&Object.keys(npcs).length){try{placeNPCs();}catch(e){if(typeof console!=='undefined')console.warn('evening35 abort',e);}}
@@ -254,7 +260,7 @@ body.evening35-active #life-guide34{display:none!important}
     E.camHeld[i]=E.state!=='idle'||D!==fit||u<1;if(E.state==='arriving'&&(E.camW<1||Math.abs(fit-D)>0.002*D))wait=true;
     camPosS[i].copy(focus[i]).addScaledVector(CAM_DIR,d);cams[i].position.copy(camPosS[i]);cams[i].lookAt(focus[i]);}
    E.camWait=wait;}
-  faceGuests(dt);return r;};
+  faceGuests(dt);labels();return r;};
  // wrap: from the trigger until the guests have gone, the human views' camera fit includes each guest's standing spot within 6 m of the
  // player, as the box a guest stands in (0.88 x 2 x 0.72 m), drawn from the player towards the spot by the share E.camW (24 reused points)
  const BOX=[];for(let k=0;k<24;k++)BOX.push(new THREE.Vector3());
@@ -279,6 +285,68 @@ body.evening35-active #life-guide34{display:none!important}
   const opts=onV(hz)?[[.9,0],[-.9,0],[1.35,0],[-1.35,0]]:[[.9,0],[-.9,0],[0,-.9]];
   for(const [ox,oz] of opts){const x=hx+ox,z=hz+oz;if(!blocked(x,z,PR)&&inFlat(x,z)&&onV(z)===onV(hz))return {x,z,stop:.25};}
   return {x:hx,z:hz,stop:1.2};};
+
+ /* ---------- Everyone else keeps clear while they arrive and talk ---------- */
+ // the visit's patch: the player, the companion and the guests' standing spots, 1.1 m wider all round, and from there the strip along the
+ // camera's direction for 16 m (the foreground, past where any phone or desktop camera sits). An ambient walker who would step into it turns
+ // back the way it came (so nobody waits by the guests' way out to the gate); the keke and residents walking their schedules wait at its
+ // edge, standing, until the talk is over; anyone already inside walks on out. Nothing is held while the guests leave.
+ const KEEP=1.1,KEEP_A=16;
+ E.keepOut=function(){if(E.state!=='arriving'&&E.state!=='talking')return null;const h=human();if(!h)return null;const px=h.g.position.x,pz=h.g.position.z;
+  let a0=0,a1=0,l0=0,l1=0;const add=(x,z)=>{const dx=x-px,dz=z-pz,a=dx*HX+dz*HZ,l=dx*HZ-dz*HX;a0=Math.min(a0,a);a1=Math.max(a1,a);l0=Math.min(l0,l);l1=Math.max(l1,l);};
+  for(const k in E.spots){const s=E.spots[k];if(s)add(s[0],s[1]);}
+  if(typeof AI!=='undefined'&&AI.on&&players[AI.i])add(players[AI.i].g.position.x,players[AI.i].g.position.z);
+  return {px,pz,a0:a0-KEEP,a1:Math.max(a1+KEEP,KEEP_A),l0:l0-KEEP,l1:l1+KEEP};};
+ E.inKeep=(Z,x,z,pad)=>{if(!Z)return false;pad=pad||0;const dx=x-Z.px,dz=z-Z.pz,a=dx*HX+dz*HZ,l=dx*HZ-dz*HX;return a>=Z.a0-pad&&a<=Z.a1+pad&&l>=Z.l0-pad&&l<=Z.l1+pad;};
+ // would this frame's step from (x,z) towards (tx,tz), s metres long, take someone from outside into it? (pad: half their size)
+ const enters=(Z,x,z,tx,tz,s,pad)=>{if(E.inKeep(Z,x,z,pad))return false;const dx=tx-x,dz=tz-z,d=Math.hypot(dx,dz);if(d<1e-6)return false;const f=Math.min(1,s/d);return E.inKeep(Z,x+dx*f,z+dz*f,pad);};
+ // wrap: the ambient walkers and the keke (index.html updateAmbient). A walker heads back to the route point it came from before the
+ // original's step; the keke keeps its place.
+ if(typeof updateAmbient==='function'){const ambPrev=updateAmbient;updateAmbient=function(dt){const Z=E.keepOut();if(!Z)return ambPrev.apply(this,arguments);
+  const t=Math.max(0,+dt||0);
+  for(const w of (typeof walkers!=='undefined'?walkers:[])){const g=w.g,q=w.r&&w.r[w.i];if(!g||!q||!g.visible)continue;
+   if(enters(Z,g.position.x,g.position.z,q[0],q[1],w.sp*t+0.05,0.3))w.i=(w.i+w.r.length-1)%w.r.length;}
+  const kk=typeof keke!=='undefined'&&keke?keke:null,kx=kk&&enters(Z,kk.position.x,kk.position.z,kk.position.x+kk.dir,kk.position.z,4.2*t+0.05,0.9)?kk.position.x:null;
+  const r=ambPrev.apply(this,arguments);
+  if(kx!==null)kk.position.x=kx;return r;};}
+ // wrap: residents walking their schedules (index.html updateNPCWalk); the guests walk their own routes
+ const walkPrev=updateNPCWalk;updateNPCWalk=function(dt){const Z=E.keepOut();if(!Z)return walkPrev.apply(this,arguments);const t=Math.max(0,+dt||0),held=[];
+  for(const k in npcs){if(E.guests.includes(k))continue;const n=npcs[k],q=n.route&&n.route[n.ri];if(!q||!n.g.visible)continue;
+   if(enters(Z,n.g.position.x,n.g.position.z,q[0],q[1],1.7*t+0.05,0.3)){held.push([n,n.route]);n.route=null;}}
+  const r=walkPrev.apply(this,arguments);
+  for(const [n,rt] of held){n.route=rt;n.t=(n.t||0)+t;animAvatar(n.g,n.t,false,false,0,t);}return r;};
+
+ /* ---------- World labels clear of the group while they talk ---------- */
+ // a floating world label (the base's sign sprites, such as Suya over the grill) that a human view shows over any guest or the player is
+ // hidden for the rest of the talk and shown again when it ends (or the evening stops)
+ const hidLabels=[],_lv=new THREE.Vector3(),_lr=new THREE.Vector3(),_lu=new THREE.Vector3();
+ E.hidLabels=hidLabels;
+ E.showLabels=()=>{for(const m of hidLabels)m.visible=true;hidLabels.length=0;};
+ // a screen box (normalised device coordinates) round the points given; null when any is behind the camera
+ const ndcBox=(c,pts)=>{let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9;for(const p of pts){_lv.copy(p).project(c);if(_lv.z>1||_lv.z<-1)return null;x0=Math.min(x0,_lv.x);x1=Math.max(x1,_lv.x);y0=Math.min(y0,_lv.y);y1=Math.max(y1,_lv.y);}return [x0,x1,y0,y1];};
+ const bodyPts=[];for(let k=0;k<8;k++)bodyPts.push(new THREE.Vector3());const lblPts=[];for(let k=0;k<4;k++)lblPts.push(new THREE.Vector3());
+ const body=(c,x,y,z)=>{let k=0;for(const dx of [-.3,.3])for(const h of [0,1.9])for(const dz of [-.3,.3])bodyPts[k++].set(x+dx,y+h,z+dz);return ndcBox(c,bodyPts);};
+ const labels=()=>{if(E.state!=='talking'){if(hidLabels.length)E.showLabels();return;}if(typeof FADEABLE==='undefined')return;
+  const si=singleIdx();
+  for(let i=0;i<2;i++){if((si>=0&&i!==si)||isAI(i)||!cams[i]||!players[i])continue;const c=cams[i];c.updateMatrixWorld();
+   const boxes=[],pp=players[i].g.position,b0=body(c,pp.x,players[i].y||0,pp.z);if(b0)boxes.push(b0);
+   for(const k of E.guests){const n=npcs[k];if(n&&n.g.visible){const b=body(c,n.g.position.x,0,n.g.position.z);if(b)boxes.push(b);}}
+   _lr.setFromMatrixColumn(c.matrixWorld,0);_lu.setFromMatrixColumn(c.matrixWorld,1);
+   for(const m of FADEABLE){if(!m.isSprite||!m.visible)continue;let k=0;
+    for(const a of [-.5,.5])for(const b of [-.5,.5])lblPts[k++].copy(m.position).addScaledVector(_lr,a*m.scale.x).addScaledVector(_lu,b*m.scale.y);
+    const r=ndcBox(c,lblPts);if(!r)continue;
+    for(const q of boxes)if(r[0]<q[1]+0.02&&r[1]>q[0]-0.02&&r[2]<q[3]+0.02&&r[3]>q[2]-0.02){m.visible=false;hidLabels.push(m);break;}}}};
+
+ /* ---------- The nudge toast and the journal ---------- */
+ // wrap: while a journal page is open the bridge puts the toast just below the tab strip, over Today's first card. The nudge says what
+ // Today's evening card says, so with a journal page open it goes at once (without its fade over the card); other toasts are untouched.
+ if(typeof toastSpot34b==='function'){const spotPrev=toastSpot34b;toastSpot34b=function(){const r=spotPrev.apply(this,arguments);
+  const t=document.getElementById('toast');
+  if(t&&t.classList&&t.classList.contains('on')&&t.textContent===COPY.nudge&&overlayOpen()&&panel.classList.contains('life-panel34')){
+   t.style.transition='none';t.classList.remove('on');void t.offsetWidth;t.style.transition='';clearTimeout(t._t);}
+  return r;};
+  // wrap: and as the journal opens, not a frame later
+  const lifePrev=openLife34;openLife34=function(){const r=lifePrev.apply(this,arguments);toastSpot34b();return r;};}
 
  /* ---------- Waiting for six, and Sleep before the evening ---------- */
  const canWait=()=>E.pending()&&E.state==='idle'&&S.time<18&&home34();

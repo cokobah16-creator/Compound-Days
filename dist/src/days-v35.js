@@ -104,7 +104,19 @@ function daysText35(){if(online34()||!S||!S.life||!S.life.days)return '';const k
   const said=[r.want?`want: "${r.want}"`:'',r.neighbour?`neighbour: "${r.neighbour}"`:''].filter(Boolean);if(said.length)out.push('  '+said.join(' · '));
   if(r.events){const ev=r.events.map(e=>`${mmss(e.t||0)} ${e.k}${e.k==='resume'?' '+iso(e.w):e.a!==undefined?' '+e.a:''}`);for(let i=0;i<ev.length;i+=8)out.push('  '+ev.slice(i,i+8).join(' · '));}
   else if(r.counts)out.push('  counts: '+LOG35.kinds.filter(k=>r.counts[k]).map(k=>k+' '+r.counts[k]).join(' · '));}
- return out.join('\n');}
+ out.push('',days_block35(keys));return out.join('\n');}
+// The same days for the reviewer's gates tool (tools/gates-v35.cjs): the records as JSON (exact ms, the two answers escaped), ASCII only and with
+// no spaces (\u escapes), cut into 64-character lines that each start "CD35/1 ", so a quoted or re-wrapped paste still reads. The last line gives
+// the length and an FNV-1a hash, so a cut or edited paste is noticed. Nothing beyond the log itself: no names, only the two typed answers.
+function days_block35(keys){const days={};
+ for(const n of keys){const r=S.life.days[n],o={startedAt:r.startedAt,sleptAt:r.sleptAt,playedMs:Math.round(r.playedMs||0),panelMs:Math.round(r.panelMs||0),
+   rating:r.rating==null?null:r.rating,want:r.want||null,neighbour:r.neighbour||null,dropped:r.dropped||0};
+  if(r.events)o.events=r.events.map(e=>{const a=[e.t||0,e.k];if(e.k==='resume')a.push(typeof e.w==='number'?e.w:null);else if(e.a!==undefined)a.push(String(e.a));return a;});
+  else if(r.counts)o.counts=Object.assign({},r.counts);days[n]=o;}
+ const json=JSON.stringify({v:1,build:BUILD_ID,copiedAt:clock35(),day:S.day,days}).replace(/[\u0000-\u0020\u007f-\uffff]/g,c=>'\\u'+c.charCodeAt(0).toString(16).padStart(4,'0'));
+ let h=0x811c9dc5;for(let i=0;i<json.length;i++){h^=json.charCodeAt(i);h=Math.imul(h,0x01000193)>>>0;}
+ const lines=['Data for the reviewer’s gates tool (the same days as above):'];for(let i=0;i<json.length;i+=64)lines.push('CD35/1 '+json.slice(i,i+64));
+ lines.push('CD35/1 end '+json.length+' '+h.toString(16).padStart(8,'0'));return lines.join('\n');}
 
 /* ---------- Time, idle, at-rocks, the gamepad and the prompt flush (one tick hook, no allocation per frame) ---------- */
 const days_tickState35={last:null,pad:0,rocks:[null,null]};
@@ -197,7 +209,9 @@ TICK_HOOKS.push(days_tick35);
   const n=Object.keys(S.life.days).length;if(!n)return r;const t=LOG35.today(),mins=t?((t.playedMs+t.panelMs)/60000).toFixed(1):'0.0';
   const actions=typeof document!=='undefined'&&document.querySelector?document.querySelector('#panel .actions'):null;
   if(actions){actions.insertAdjacentHTML('beforebegin',`<p class="small days35-menu">Days in Palm Court: ${n} · today ${mins} min</p>`);
-   if(!(typeof eveningStatusText34==='function'&&eveningStatusText34()))actions.insertAdjacentHTML('beforeend',btn('Copy timeline and days','copyTimeline',{},'quiet'));}return r;};
+   if(!(typeof eveningStatusText34==='function'&&eveningStatusText34()))actions.insertAdjacentHTML('beforeend',btn('Copy timeline and days','copyTimeline',{},'quiet'));
+   // feel's button copies the same text; it says so, so testers look for one name (docs/TESTING_v35.md)
+   else{const b=actions.querySelector&&actions.querySelector('[data-act="copyTimeline"]');if(b)b.textContent='Copy timeline and days';}}return r;};
  // wrap: the day log stays on this device; the morning row and the line bookkeeping stay in the shared document
  const prevStrip=stripState;stripState=function(){const o=prevStrip.apply(this,arguments);if(o&&o.life)delete o.life.days;return o;};
 

@@ -12,7 +12,11 @@ const NAMES=[
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
  '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
- '9. Determinism: two runs give identical reports'];
+ '9. Everyone else keeps clear at 390x844 through the real base frame: with walkers on the base street routes heading into the group and the foreground, the keke and a resident walking the street, from the trigger to the end of the talk nobody else comes within 1 m of a guest\u2019s spot or the player, or covers the player or a guest within 2 m of its spot on screen from nearer the camera; once the guests have gone they all move on',
+ '10. The evening nudge toast never covers the Today page: it goes as the journal opens (and stays gone), while other toasts over the journal and the nudge with no journal open are untouched',
+ '11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): leaving, no guest comes within 0.8 m of the line from the camera to the player anywhere south of the rail row (they cross it only beside the rail), and each still walks out to the gate',
+ '12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame of the talk no floating label shows over a guest or the player, and any label hidden for the talk is shown again after it',
+ '13. Determinism: two runs give identical reports'];
 
 function inner(){
  const {load}=require('./runtime-harness.cjs');const checks=[];let run=null;
@@ -264,6 +268,88 @@ function inner(){
    finally{run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
    return out;});
 
+  // a screen box (normalised device coordinates, and the nearest distance to the camera) of a w x h x d box standing at (x, y, z)
+  run(`var box35=(c,x,y,z,w,h,d)=>{const v=new THREE.Vector3();let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,dep=1e9;for(const dx of [-w/2,w/2])for(const yy of [0,h])for(const dz of [-d/2,d/2]){
+    v.set(x+dx,y+yy,z+dz);dep=Math.min(dep,v.distanceTo(c.position));v.project(c);x0=Math.min(x0,v.x);x1=Math.max(x1,v.x);y0=Math.min(y0,v.y);y1=Math.max(y1,v.y);}return {x0,x1,y0,y1,dep};};
+   var over35=(a,b)=>a.x0<b.x1&&a.x1>b.x0&&a.y0<b.y1&&a.y1>b.y0;`);
+  const PHONE_CASES=[['veranda column 0',-7.55,6.4,-7.4,3.6],['veranda column 2',-5.75,6.4,-5.6,3.6],['veranda column 5',-3.05,6.4,-3.3,3.6],['room by the door',-4.1,4.6,-6.0,3.5]];
+  const toTalk=label=>{run("(()=>{for(let k=0;k<900&&EVENING35.state!=='talking';k++)frames35(1);})()");assert.equal(state(),'talking',label+': talking');};
+
+  await step(8,()=>{run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');
+   try{fresh();at(-5.75,6.4);at(-5.6,3.6,1);run('EVENING35.checkAt=1e18;');frames(2);
+    // walkers on the base street routes (index.html buildAmbient), each heading into the group or its foreground at its own pace, the keke
+    // heading along the street, and Mr. Bassey walking the street on a schedule route; then the evening may start
+    run(`walkers.length=0;{const mk=(r,i,x,z,sp)=>{const g=makeAvatar(CAST.oyelaran.look,true);g.position.set(x,0,z);scene.add(g);walkers.push({g,r,i,t:0,sp});};
+      mk([[-28,9.6],[28,9.6]],1,-14,9.6,1.5);mk([[26,8.0],[-26,8.0]],1,1.0,8.0,1.2);mk([[-14,13.2],[14,13.2]],1,-12,13.2,1.6);mk([[26,8.0],[-26,8.0]],1,9.0,8.0,1.4);}
+     keke=new THREE.Group();keke.position.set(-24,0,10.6);keke.dir=1;scene.add(keke);
+     {const n=npcs.bassey;n.g.visible=true;n.g.position.set(2,0,10.2);n.route=[[2,10.2],[-12.75,10.2]];n.ri=0;n.dest=null;n.hideAtEnd=true;}
+     EVENING35.checkAt=0;`);
+    const sample=`(()=>{const c=cams[0];c.updateMatrixWorld();const p0=players[0].g.position,grp=[['the player',p0.x,p0.z]];
+      for(const k of EVENING35.guests){const n=npcs[k],s=EVENING35.spots[k];if(n&&n.g.visible&&s&&Math.hypot(n.g.position.x-s[0],n.g.position.z-s[1])<2)grp.push([k,n.g.position.x,n.g.position.z]);}
+      const gb=grp.map(([k,x,z])=>[k,box35(c,x,0,z,.6,1.9,.6)]),pts=[['the player',p0.x,p0.z],...Object.entries(EVENING35.spots).map(([k,s])=>[k+'\\u2019s spot',s[0],s[1]])];
+      const others=[...walkers.map((w,i)=>['walker '+(i+1),w.g,.6,1.9,.6,1.0]),['the keke',keke,1.6,1.4,1.1,1.6],...Object.keys(npcs).filter(k=>!EVENING35.guests.includes(k)).map(k=>[k,npcs[k].g,.6,1.9,.6,1.0])];
+      const bad=[];let near=1e9;
+      for(const [k,o,w,h,d,r] of others){if(!o||!o.visible)continue;const x=o.position.x,z=o.position.z;
+       for(const [g,sx,sz] of pts){const dd=Math.hypot(x-sx,z-sz);near=Math.min(near,dd-r);if(dd<r)bad.push(k+' within '+dd.toFixed(2)+' m of '+g+' at ('+x.toFixed(2)+', '+z.toFixed(2)+')');}
+       const b=box35(c,x,0,z,w,h,d);for(const [g,q] of gb)if(over35(b,q)&&b.dep<q.dep)bad.push(k+' covers '+g+' on screen from ('+x.toFixed(2)+', '+z.toFixed(2)+')');}
+      return {st:EVENING35.state,bad,near};})()`;
+    let n=0,near=1e9;const frame=()=>{frames(1);n++;const s=J(sample);if(s.st==='arriving'||s.st==='talking'){near=Math.min(near,s.near);assert.deepEqual(s.bad,[],s.st+', frame '+n+': '+s.bad[0]);}return s;};
+    for(let k=0;k<900&&(k<2||state()==='arriving');k++)frame();assert.equal(state(),'talking','talking');const walkIn=n;
+    for(let l=0;l<3;l++){for(let k=0;k<90;k++)frame();if(l<2)run('T35+=300;EVENING35.next();');}
+    const pos="[...walkers.map(w=>[w.g.position.x,w.g.position.z]),[keke.position.x,keke.position.z],[npcs.bassey.g.position.x,npcs.bassey.g.position.z,npcs.bassey.g.visible]]";
+    const atEnd=J(pos);run('T35+=300;EVENING35.next();');assert.equal(state(),'leaving');
+    for(let k=0;k<900&&state()!=='idle';k++)frame();assert.equal(state(),'idle','the guests have gone');frames(150);const later=J(pos);
+    const moved=later.map((q,k)=>Math.round(Math.hypot(q[0]-atEnd[k][0],q[1]-atEnd[k][1])*100)/100);
+    moved.forEach((m,k)=>assert(m>=3||(k===moved.length-1&&later[k][2]===false),'everyone moves on afterwards: '+JSON.stringify({moved,atEnd,later})));
+    return {walkInFrames:walkIn,closestMarginBeyondOneMetre:Math.round(near*100)/100,movedAfterwards:moved};}
+   finally{run('for(const w of walkers)scene.remove(w.g);walkers.length=0;if(keke)scene.remove(keke);keke=null;npcs.bassey.route=null;placeNPCs();innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}});
+
+  await step(9,()=>{fresh();
+   // working class lists on the overlay, the panel and the toast (the harness elements have none), put back afterwards
+   run(`var CL35=[ov,panel,document.getElementById('toast')].map(e=>[e,e.classList]);for(const [e] of CL35){const s=new Set();
+     e.classList={add:(...a)=>a.forEach(c=>s.add(c)),remove:(...a)=>a.forEach(c=>s.delete(c)),toggle:(c,on)=>{const v=on===undefined?!s.has(c):!!on;if(v)s.add(c);else s.delete(c);return v;},contains:c=>s.has(c)};}`);
+   try{const T="document.getElementById('toast')",on=()=>run(T+".classList.contains('on')");
+    run("EVENING35.nudgedDay=0;LIFE34.waypoint=null;");at(10,10);ticks(5);const nudge=run('EVENING35.copy.nudge');
+    assert.equal(run(T+'.textContent'),nudge,'the nudge toast');assert.equal(on(),true,'shown with no journal open');ticks(10);assert.equal(on(),true,'it stays while no journal is open');
+    run("openLife34('today');");assert.equal(run("LIFE34.tab+','+panel.classList.contains('life-panel34')+','+overlayOpen()"),'today,true,true','the Today page is open');
+    assert.equal(on(),false,'the nudge toast goes as Today opens (the bridge would put it just below the tabs, over the first card)');
+    ticks(10);assert.equal(on(),false,'and it stays gone');assert.equal(run(T+'.style.transition'),'','its fade is back for the next toast');
+    run("toast('A different note.');");ticks(3);assert.equal(on(),true,'another toast over the journal is untouched');run('closePanel();');
+    return {nudge};}
+   finally{run('for(const [e,c] of CL35)e.classList=c;');}});
+
+  await step(10,()=>{run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');const out={};
+   try{for(const [label,hx,hz,cx,cz] of PHONE_CASES){fresh();at(hx,hz);at(cx,cz,1);toTalk(label);
+     for(let l=0;l<3;l++){frames(10);run('T35+=300;EVENING35.next();');}assert.equal(state(),'leaving',label+': leaving');
+     const routes=J("EVENING35.walkers.map(k=>npcs[k].route.map(q=>q.map(v=>Math.round(v*100)/100)))");
+     for(const r of routes)assert.deepEqual(r[r.length-1],[4,9.6],label+': out to the gate');
+     let worst=null,n=0;
+     for(let k=0;k<900&&state()==='leaving';k++){frames(1);n++;
+      const s=J(`(()=>{const c=cams[0].position,p=players[0].g.position,ux=c.x-p.x,uz=c.z-p.z,L=Math.hypot(ux,uz),o=[];
+       for(const k of EVENING35.walkers){const g=npcs[k].g;if(!g.visible)continue;const qx=g.position.x-p.x,qz=g.position.z-p.z;o.push({k,x:g.position.x,z:g.position.z,t:(qx*ux+qz*uz)/L,lat:Math.abs(qx*uz-qz*ux)/L,L});}return o;})()`);
+      for(const q of s)if(q.t>0&&q.t<q.L&&q.z>8.2){if(!worst||q.lat<worst.lat)worst=q;
+       assert(q.lat>=0.8,label+': '+q.k+' walks between the camera and the player, '+q.lat.toFixed(2)+' m from the line at ('+q.x.toFixed(2)+', '+q.z.toFixed(2)+'), '+q.t.toFixed(2)+' m out from the player, on departure frame '+n);}}
+     assert.equal(state(),'idle',label+': the guests reach the gate');
+     out[label]={routes,nearestToTheLineSouthOfTheRail:worst&&Math.round(worst.lat*100)/100,departureFrames:n};}}
+   finally{run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
+   return out;});
+
+  await step(11,()=>{run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');const out={};
+   // the base builds its sign sprites once the fonts are ready (boot); here they are built for this check and taken away after it
+   const before=run('FADEABLE.filter(m=>m.isSprite).length');if(!before)run('buildSigns();');const signs=run('FADEABLE.filter(m=>m.isSprite).length');assert(signs>0,'the signs are built');
+   const sample=`(()=>{const c=cams[0];c.updateMatrixWorld();const r=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,0),u=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,1),v=new THREE.Vector3();
+     const grp=[['the player',players[0].g.position]];for(const k of EVENING35.guests)if(npcs[k].g.visible)grp.push([k,npcs[k].g.position]);const gb=grp.map(([k,p])=>[k,box35(c,p.x,0,p.z,.6,1.9,.6)]);
+     const bad=[];let hidden=0;for(const m of FADEABLE){if(!m.isSprite)continue;if(!m.visible){hidden++;continue;}let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,ok=true;
+      for(const a of [-.5,.5])for(const b of [-.5,.5]){v.copy(m.position).addScaledVector(r,a*m.scale.x).addScaledVector(u,b*m.scale.y).project(c);if(Math.abs(v.z)>1)ok=false;x0=Math.min(x0,v.x);x1=Math.max(x1,v.x);y0=Math.min(y0,v.y);y1=Math.max(y1,v.y);}
+      if(!ok)continue;const L={x0,x1,y0,y1};for(const [k,q] of gb)if(over35(L,q))bad.push('the label at ('+m.position.x+', '+m.position.z+') over '+k);}
+     return {st:EVENING35.state,line:EVENING35.line,bad,hidden};})()`;
+   try{for(const [label,hx,hz,cx,cz] of PHONE_CASES){fresh();at(hx,hz);at(cx,cz,1);toTalk(label);let hid=0,n=0;
+     for(let l=0;l<3;l++){for(let k=0;k<45;k++){frames(1);n++;const s=J(sample);hid=Math.max(hid,s.hidden);assert.deepEqual(s.bad,[],label+', line '+(l+1)+', frame '+n+': '+s.bad[0]);}run('T35+=300;EVENING35.next();');}
+     assert.equal(state(),'leaving');frames(2);const after=J(sample);assert.equal(after.hidden,0,label+': every label is shown again after the talk');
+     out[label]={labelsHiddenForTheTalk:hid};}}
+   finally{if(!before)run('for(let k=FADEABLE.length-1;k>=0;k--)if(FADEABLE[k].isSprite){scene.remove(FADEABLE[k]);FADEABLE.splice(k,1);}');run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
+   return out;});
+
   process.stdout.write('\n'+JSON.stringify({build:run('BUILD_ID'),checks})+'\n');
  })().catch(e=>{process.stdout.write('\n'+JSON.stringify({build:null,checks,crash:String(e&&e.message||e).split('\n')[0]})+'\n');});
 }
@@ -272,9 +358,9 @@ function outer(){
  const runs=[];
  for(let k=0;k<2;k++){let out='';try{out=cp.execFileSync(process.execPath,[__filename,'--run'],{env:process.env,encoding:'utf8',maxBuffer:64<<20,stdio:['ignore','pipe','ignore']});}catch(e){out=String(e.stdout||'');}
   let r=null;try{r=JSON.parse(out.trim().split('\n').pop());}catch(e){r={build:null,checks:[],crash:'no report'};}runs.push(r);}
- const a=runs[0],checks=NAMES.slice(0,8).map(n=>a.checks.find(c=>c.name===n)||{name:n,passed:false,failure:a.crash||'did not run'});
+ const D=NAMES.length-1,a=runs[0],checks=NAMES.slice(0,D).map(n=>a.checks.find(c=>c.name===n)||{name:n,passed:false,failure:a.crash||'did not run'});
  const allOk=checks.every(c=>c.passed),same=JSON.stringify(runs[0])===JSON.stringify(runs[1]);
- checks.push(allOk&&same?{name:NAMES[8],passed:true}:{name:NAMES[8],passed:false,failure:!allOk?'checks 1-8 must pass in both runs':'the two runs differ'});
+ checks.push(allOk&&same?{name:NAMES[D],passed:true}:{name:NAMES[D],passed:false,failure:!allOk?'checks 1-'+D+' must pass in both runs':'the two runs differ'});
  for(const c of checks)console.log(c.passed?'PASS':'FAIL',c.name,c.passed?(c.info?JSON.stringify(c.info):''):'— '+c.failure);
  const passed=checks.every(c=>c.passed);
  const report={build:a.build,passed,checks,method:'Actual runtime state, ticks and actions in Node with the shipped Three.js, the authored hero, the life modules and the v35 modules; clock35, Math.random and Date.now stubbed; run twice in child processes and compared.'};

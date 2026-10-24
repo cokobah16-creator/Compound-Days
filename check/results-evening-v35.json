@@ -1,5 +1,5 @@
 {
-  "build": "v35-01eaa7a2",
+  "build": "v35-f6dcede2",
   "passed": true,
   "checks": [
     {
@@ -127,7 +127,7 @@
             "walk-in": 201,
             "hold": 15,
             "lines": 181,
-            "departure": 191,
+            "departure": 179,
             "hand-back": 151
           }
         },
@@ -161,7 +161,7 @@
       "name": "5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule",
       "passed": true,
       "info": {
-        "handedOffAfterSeconds": 6.3
+        "handedOffAfterSeconds": 5.91
       }
     },
     {
@@ -288,7 +288,7 @@
               "walk-in": 260,
               "hold": 15,
               "lines": 91,
-              "departure": 250,
+              "departure": 236,
               "hand-back": 151
             }
           },
@@ -397,7 +397,7 @@
               "walk-in": 230,
               "hold": 15,
               "lines": 91,
-              "departure": 220,
+              "departure": 207,
               "hand-back": 151
             }
           },
@@ -506,7 +506,7 @@
               "walk-in": 196,
               "hold": 15,
               "lines": 91,
-              "departure": 186,
+              "departure": 174,
               "hand-back": 151
             }
           },
@@ -615,7 +615,7 @@
               "walk-in": 201,
               "hold": 15,
               "lines": 91,
-              "departure": 191,
+              "departure": 179,
               "hand-back": 151
             }
           },
@@ -628,7 +628,246 @@
       }
     },
     {
-      "name": "9. Determinism: two runs give identical reports",
+      "name": "9. Everyone else keeps clear at 390x844 through the real base frame: with walkers on the base street routes heading into the group and the foreground, the keke and a resident walking the street, from the trigger to the end of the talk nobody else comes within 1 m of a guest’s spot or the player, or covers the player or a guest within 2 m of its spot on screen from nearer the camera; once the guests have gone they all move on",
+      "passed": true,
+      "info": {
+        "walkInFrames": 246,
+        "closestMarginBeyondOneMetre": 0.95,
+        "movedAfterwards": [
+          17.72,
+          7.41,
+          18.9,
+          14.37,
+          25.78,
+          11.33
+        ]
+      }
+    },
+    {
+      "name": "10. The evening nudge toast never covers the Today page: it goes as the journal opens (and stays gone), while other toasts over the journal and the nudge with no journal open are untouched",
+      "passed": true,
+      "info": {
+        "nudge": "The neighbours are coming by your veranda this evening. Head home."
+      }
+    },
+    {
+      "name": "11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): leaving, no guest comes within 0.8 m of the line from the camera to the player anywhere south of the rail row (they cross it only beside the rail), and each still walks out to the gate",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "routes": [
+            [
+              [
+                -7.7,
+                7.8
+              ],
+              [
+                -5.89,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -8.45,
+                7.8
+              ],
+              [
+                -5.89,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -9.2,
+                7.8
+              ],
+              [
+                -5.89,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ]
+          ],
+          "nearestToTheLineSouthOfTheRail": 2.56,
+          "departureFrames": 237
+        },
+        "veranda column 2": {
+          "routes": [
+            [
+              [
+                -6.05,
+                7.8
+              ],
+              [
+                -4.09,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -6.8,
+                7.8
+              ],
+              [
+                -4.09,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -7.55,
+                7.8
+              ],
+              [
+                -4.09,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ]
+          ],
+          "nearestToTheLineSouthOfTheRail": 2.2,
+          "departureFrames": 208
+        },
+        "veranda column 5": {
+          "routes": [
+            [
+              [
+                -4.1,
+                7.8
+              ],
+              [
+                -1.39,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -4.85,
+                7.8
+              ],
+              [
+                -1.39,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -5.6,
+                7.8
+              ],
+              [
+                -1.39,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ]
+          ],
+          "nearestToTheLineSouthOfTheRail": 1.67,
+          "departureFrames": 175
+        },
+        "room by the door": {
+          "routes": [
+            [
+              [
+                -4.4,
+                7.8
+              ],
+              [
+                -1.59,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -5.15,
+                7.8
+              ],
+              [
+                -1.59,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ],
+            [
+              [
+                -5.9,
+                7.8
+              ],
+              [
+                -1.59,
+                7.8
+              ],
+              [
+                4,
+                9.6
+              ]
+            ]
+          ],
+          "nearestToTheLineSouthOfTheRail": 1.72,
+          "departureFrames": 180
+        }
+      }
+    },
+    {
+      "name": "12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame of the talk no floating label shows over a guest or the player, and any label hidden for the talk is shown again after it",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "labelsHiddenForTheTalk": 0
+        },
+        "veranda column 2": {
+          "labelsHiddenForTheTalk": 0
+        },
+        "veranda column 5": {
+          "labelsHiddenForTheTalk": 1
+        },
+        "room by the door": {
+          "labelsHiddenForTheTalk": 1
+        }
+      }
+    },
+    {
+      "name": "13. Determinism: two runs give identical reports",
       "passed": true
     }
   ],
