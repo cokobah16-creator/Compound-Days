@@ -11,6 +11,8 @@ const LOG35={cap:300,
  count(n,k,a){const r=LOG35.day(n);if(!r)return 0;if(!r.events)return (r.counts&&r.counts[k])||0;
   return r.events.filter(e=>e.k===k&&(a===undefined||e.a===a||String(e.a).startsWith(a+':'))).length;}};
 const DAYS35={planLead:{recipe:'nkechi',photo:'ada',garden:'tunde'},nightHTML:null,lastInput:0,savedAt:0,dirty:false,todayRated:0,
+ // the return after time away (see input below): the last real input, the last logged return, when the page was hidden (wall time, ms)
+ lastReal:0,backAt:0,hiddenAt:0,AWAY:600000,
  // The morning table: the first row whose day and test match wins. day: exactly that day; slot: the cycle slot (days 7+ repeat 4-6); min: that day or later.
  rows:[
   // the evening leads the morning on alternate days while it is pending, so the day 4-6 rows still get their mornings (Today's evening card says it on the others)
@@ -26,6 +28,14 @@ const DAYS35={planLead:{recipe:'nkechi',photo:'ada',garden:'tunde'},nightHTML:nu
   {id:'evening-fish',slot:6,test:c=>!c.caughtCatfish,marker:'fish'},
   {id:'shells',min:4,test:()=>true,marker:'shells',lead:'ada',who:'ada'},
   {id:'quiet',min:2,test:()=>true,lead:'plan-day2'}],
+ // a real input (a key, a tap or click, a held touch drag, a gamepad): after 10 minutes of wall time with none (or since the last logged
+ // return) the day's log gets a 'resume' event with the wall time, so a tab left open on the morning page still shows when the player came
+ // back. Only on a day already woken: an unwoken day's wake carries the time. Not the companion's or the game's own dispatches.
+ input(){if(typeof silentMode==='function'&&silentMode())return;const now=clock35(),since=Math.max(DAYS35.lastReal,DAYS35.backAt);DAYS35.lastReal=now;
+  if(since>0&&now-since>=DAYS35.AWAY)days_resume35(now);DAYS35.activity();},
+ // the page shown again after at least 10 minutes hidden is a return too (logged at once, so the next input does not log it twice)
+ onVisibility(){if(typeof document==='undefined')return;const now=clock35();if(document.hidden){DAYS35.hiddenAt=now;return;}
+  const h=DAYS35.hiddenAt;DAYS35.hiddenAt=0;if(h>0&&now-h>=DAYS35.AWAY&&!(typeof silentMode==='function'&&silentMode()))days_resume35(now);},
  // marks player activity now; the day's record gets its startedAt from the first one
  activity(){if(typeof silentMode==='function'&&silentMode())return;DAYS35.lastInput=clock35();if(S&&S.phase==='play'&&S.life&&!online34())days_wake35();},
  // the day-3 prompts save as they are typed (the base bind handler writes the value, never saves), at most once a second
@@ -33,13 +43,16 @@ const DAYS35={planLead:{recipe:'nkechi',photo:'ada',garden:'tunde'},nightHTML:nu
   if(clock35()-DAYS35.savedAt>=1000){save();DAYS35.savedAt=clock35();DAYS35.dirty=false;}},
  // the directions marker without the "is marked" toast, so nothing covers the morning card
  // a finger held on the touch stick sends pointermove only, so a held drag counts as activity (once a second); a hovering mouse does not
- onMove(e){if(!e||!(e.pointerType==='touch'||e.buttons))return;if(clock35()-DAYS35.lastInput<1000)return;DAYS35.activity();},
+ onMove(e){if(!e||!(e.pointerType==='touch'||e.buttons))return;if(clock35()-DAYS35.lastInput<1000)return;DAYS35.input();},
  mark(place){const t=toast;toast=function(){};try{navigate34(place);}finally{toast=t;}}};
 
 /* ---------- The record ---------- */
 function days_blank35(){return {startedAt:null,sleptAt:null,playedMs:0,panelMs:0,rating:null,want:null,neighbour:null,dropped:0,events:[]};}
 // the day's record exists from the start of the day; it is only woken (given a startedAt) by the player's first activity
 function days_ensure35(){if(!S||!S.p||!S.life||online34())return null;const d=S.life.days||(S.life.days={}),k=String(S.day);return d[k]||(d[k]=days_blank35());}
+// a return to a woken day (local and companion households): a 'resume' event with the wall time; later returns count from this one
+function days_resume35(now){if(!S||S.phase!=='play'||!S.life||!S.p||online34())return false;const rec=days_ensure35();DAYS35.backAt=now;if(!rec||rec.startedAt===null)return false;
+ days_push35(rec,{t:Math.round((rec.playedMs+rec.panelMs)/1000),k:'resume',w:now});return true;}
 function days_push35(rec,e){if(!rec.events)return;if(rec.events.length>=LOG35.cap){rec.dropped=(rec.dropped||0)+1;return;}rec.events.push(e);}
 function days_wake35(){const rec=days_ensure35();if(!rec)return null;if(rec.startedAt===null){rec.startedAt=clock35();days_push35(rec,{t:0,k:'wake'});
  if(rec.morning){days_push35(rec,{t:0,k:'morning',a:String(rec.morning)});delete rec.morning;}}return rec;}
@@ -124,7 +137,7 @@ function days_tick35(dt,active){const st=days_tickState35,now=clock35(),d=st.las
  if(!S||!S.p||S.phase!=='play'||!S.life||online34())return;
  const rec=days_ensure35();
  if(now-st.pad>=250){st.pad=now;try{const pads=typeof navigator!=='undefined'&&navigator.getGamepads?navigator.getGamepads():null;
-  if(pads)for(const g of pads){if(!g)continue;if(g.buttons&&g.buttons.some(b=>b&&b.pressed)||g.axes&&g.axes.some(a=>Math.abs(a)>.5)){DAYS35.activity();break;}}}catch(e){}}
+  if(pads)for(const g of pads){if(!g)continue;if(g.buttons&&g.buttons.some(b=>b&&b.pressed)||g.axes&&g.axes.some(a=>Math.abs(a)>.5)){DAYS35.input();break;}}}catch(e){}}
  for(const p of players){if(!p||!p.g||(typeof AI!=='undefined'&&AI.on&&p.i===AI.i))continue;const r=Math.hypot(p.g.position.x-12.4,p.g.position.z-14.2),was=st.rocks[p.i];
   st.rocks[p.i]=r;if(r<3&&(p.y||0)<1&&typeof was==='number'&&was>=3)LOG35.add('at-rocks');}
  if(DAYS35.dirty&&now-DAYS35.savedAt>=1000){save();DAYS35.savedAt=now;DAYS35.dirty=false;}
@@ -160,9 +173,8 @@ TICK_HOOKS.push(days_tick35);
  // the bite and the veranda evening reach the log through the cue bus
  if(typeof CUE35_HOOKS!=='undefined')CUE35_HOOKS.push(n=>{if(n==='bite')LOG35.add('bite');else if(n==='evening')LOG35.add('evening','done');});
 
- // wrap: Continue notes the wall time of the sitting (without waking the day)
- const prevContinue=ACTIONS.continue;ACTIONS.continue=function(){const r=prevContinue.apply(this,arguments);
-  if(S&&S.phase==='play'&&S.life&&!online34()){const rec=days_ensure35();if(rec&&rec.startedAt!==null)days_push35(rec,{t:Math.round((rec.playedMs+rec.panelMs)/1000),k:'resume',w:clock35()});}return r;};   // an unwoken day's wake carries the wall time
+ // wrap: Continue notes the wall time of the sitting (without waking the day); an unwoken day's wake carries the wall time
+ const prevContinue=ACTIONS.continue;ACTIONS.continue=function(){const r=prevContinue.apply(this,arguments);days_resume35(clock35());return r;};
 
  // wrap: Sleep logs and stamps the day; the new day gets its record (not yet woken), its morning row, the marker and the Today page
  const prevNext=ACTIONS.nextday;ACTIONS.nextday=function(){
@@ -212,11 +224,18 @@ TICK_HOOKS.push(days_tick35);
    if(!(typeof eveningStatusText34==='function'&&eveningStatusText34()))actions.insertAdjacentHTML('beforeend',btn('Copy timeline and days','copyTimeline',{},'quiet'));
    // feel's button copies the same text; it says so, so testers look for one name (docs/TESTING_v35.md)
    else{const b=actions.querySelector&&actions.querySelector('[data-act="copyTimeline"]');if(b)b.textContent='Copy timeline and days';}}return r;};
+ // wrap: two pages drawn by earlier code. The copy fallback (feel-v34's copyTimeline shows the text when there is no clipboard) is titled for
+ // what it now holds; the housewarming card's counts (index.html finishParty) say "1 meal", "1 recipe" and "1 moment", not "1 meals".
+ const prevOpen=openPanel;openPanel=function(h){if(typeof h==='string'){
+   if(h.startsWith('<h2>Evening timeline</h2><pre')&&h.includes('Compound Days days ('))h='<h2>Timeline and days</h2>'+h.slice(25);
+   if(h.includes(' meals cooked together</li>'))h=h.replace(/<li>(\d+) recipes known, (\d+) meals cooked together<\/li>/,(m,r,c)=>`<li>${r} recipe${r==='1'?'':'s'} known, ${c} meal${c==='1'?'':'s'} cooked together</li>`).replace('<li>1 moments in the album</li>','<li>1 moment in the album</li>');}
+  return prevOpen.apply(this,arguments.length>1?[h].concat(Array.prototype.slice.call(arguments,1)):[h]);};
  // wrap: the day log stays on this device; the morning row and the line bookkeeping stay in the shared document
  const prevStrip=stripState;stripState=function(){const o=prevStrip.apply(this,arguments);if(o&&o.life)delete o.life.days;return o;};
 
  // listeners: input from any device wakes the day; the prompts save as typed
- if(typeof window!=='undefined'&&window.addEventListener){window.addEventListener('keydown',()=>DAYS35.activity(),true);window.addEventListener('pointerdown',()=>DAYS35.activity(),true);
+ if(typeof window!=='undefined'&&window.addEventListener){window.addEventListener('keydown',()=>DAYS35.input(),true);window.addEventListener('pointerdown',()=>DAYS35.input(),true);
   window.addEventListener('pointermove',e=>DAYS35.onMove(e),true);}
+ if(typeof document!=='undefined'&&document.addEventListener)document.addEventListener('visibilitychange',()=>DAYS35.onVisibility());
  if(typeof panel!=='undefined'&&panel&&panel.addEventListener){panel.addEventListener('input',e=>DAYS35.onInput(e));panel.addEventListener('change',e=>DAYS35.onInput(e));}
 }

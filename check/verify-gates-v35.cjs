@@ -61,6 +61,9 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
   for(const [i,ix] of [[0,0],[1,0],[0,0],[1,1]])act('cookans',{i,ix});act('serve');run('closePanel()');walk(10);toNPC('ada');act('hs',{i:0,id:'talk:ada'});
   home();act('eveningHost');act('ptdish',{ix:0});act('ptmusic',{v:'none'});act('ptinv',{k:'tunde'});if(run("guestOK('ada').ok"))act('ptinv',{k:'ada'});act('partystart');
   for(let r=0;r<4;r++)run("dispatch('ptpick',{i:0,v:S.party.opts[0].id});dispatch('ptpick',{i:1,v:(S.party.opts[1]||S.party.opts[0]).id});dispatch('ptgo');");
+  // the housewarming card counts one meal (the jollof) in the singular, as drawn on the page
+  const card=run('panel.innerHTML');R.mealLine=(card.match(/<li>\d+ recipes? known, \d+ meals? cooked together<\/li>/)||[''])[0];
+  assert.equal(R.mealLine.replace(/^<li>\d+ recipes? known, /,''),'1 meal cooked together</li>','the card says "1 meal cooked together": '+R.mealLine);
   act('eveningGift',{v:'art'});act('eveningPlan',{v:'garden'});assert.equal(run('S.firstEvening.completed'),true);run('closePanel()');linger(22);night(1,2);morning();
   // day 2: plant, water, the rocks, keep one fish, Nkechi, sell until ₦9,000, the armchair
   run('closePanel()');veranda();walk(10);act('lifePlant');act('lifeWater');assert.equal(stage(),1);home();hooks(2);rocks();walk(20);fish('keep');
@@ -82,10 +85,10 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
   night(3,3);run('T35+=2000');bind('life.days.3.want','A reading lamp by the window');run('T35+=2000');bind('life.days.3.neighbour','Tunde talks to his peppers, “quietly”');
   morning();R.paste2=copyButton();R.days=J('S.life.days');
   const d=R.days;for(const n of [1,2,3])assert(d[n].startedAt!==null&&d[n].sleptAt!==null&&d[n].rating,'day '+n+' complete');
-  return {sold,ratings:[1,2,3].map(n=>d[n].rating),day3Events:[...new Set(d[3].events.map(e=>e.k))]};});
+  return {sold,ratings:[1,2,3].map(n=>d[n].rating),day3Events:[...new Set(d[3].events.map(e=>e.k))],housewarmingCounts:R.mealLine.replace(/<\/?li>/g,'')};});
 
- check('Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly',()=>{
-  const t=R.paste2;assert(t.startsWith('Compound Days first evening ('),'the timeline first');assert(t.includes('complete:'));assert(t.includes('\n\nCompound Days days ('));
+ check('Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly; with no clipboard the page that shows it is titled “Timeline and days”',()=>{
+  const t=R.paste2;assert(run('panel.innerHTML').startsWith('<h2>Timeline and days</h2><pre'),'the fallback page is titled Timeline and days: '+run('panel.innerHTML').slice(0,40));assert(t.startsWith('Compound Days first evening ('),'the timeline first');assert(t.includes('complete:'));assert(t.includes('\n\nCompound Days days ('));
   for(const n of [1,2,3])assert(t.includes('\nDay '+n+' · started '),'day '+n+' readable');
   assert(t.includes('\nData for the reviewer’s gates tool (the same days as above):\nCD35/1 '),'the block follows the days');
   const lines=t.split('\n'),blk=lines.filter(l=>l.startsWith('CD35/1 '));assert(blk.every(l=>l.length<=71&&!/\s/.test(l.slice(7))||/^CD35\/1 end \d+ [0-9a-f]{8}$/.test(l)),'short lines with no spaces');
@@ -112,7 +115,7 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
   assert.deepEqual(t.firstCatch,{seconds:ct.t-rk.t,rocksDay:2,catchDay:2});assert.equal(t.eveningDay,3);assert.equal(t.reachedDay,4);
   // day 3 was woken by the copy at the end of sitting 1; the return is the Continue's wall time
   assert.equal(d[3].startedAt,R.copy1At,'the copy woke day 3');const res=d[3].events.find(e=>e.k==='resume');assert.equal(res.w,R.resumeAt);
-  const g2=gate(a,2);assert.equal(g2.status,'PASS');assert(g2.lines[0].includes(((R.resumeAt-d[2].sleptAt)/3600000).toFixed(1)+' h (by its Continue)'),g2.lines[0]);
+  const g2=gate(a,2);assert.equal(g2.status,'PASS');assert(g2.lines[0].includes(((R.resumeAt-d[2].sleptAt)/3600000).toFixed(1)+' h (by its return)'),g2.lines[0]);
   assert.deepEqual(statuses(a),['NOT YET','PASS','PASS','PASS','PASS','PASS','PASS'],JSON.stringify(statuses(a)));assert(gate(a,1).lines[1].includes('still to note: amaka'),'gate 1 waits for the reviewer');
   // sitting 1 alone: day 2 slept, day 3 woken by the copy and not yet played, so gate 2 is not yet decided
   const a1=A([{name:'amaka-1.txt',text:R.paste1}],{testers:1});assert.equal(gate(a1,2).status,'NOT YET');assert(gate(a1,2).lines[0].includes('amaka not back yet'));
@@ -182,16 +185,31 @@ const tmp=fs.mkdtempSync(path.join(os.tmpdir(),'cd35-gates-'));
   const early=set(mix({3:{stop:2,unslept:2},4:{stop:2,unslept:2}}),{a:{final:false}});assert.equal(gate(early,1).status,'NOT YET','two still playing day 2');
   return {four:gate(four,1).numbers,three:gate(three,1).numbers};});
 
- check('Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails); not back after 49 h by the copy time fails; not back yet is NOT YET',()=>{
+ check('Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET',()=>{
   const ok=set(mix({2:{gap:[20*HR,48*HR]}}));only(ok,2,'PASS','48 h');
   const over=set(mix({2:{gap:[20*HR,48*HR+1000]}}));only(over,2,'FAIL','48 h + 1 s');
   // the copy woke day 3 a minute after Sleep; the Continue came 47 h (or 49 h) after Sleep, within two minutes of that day's play
   const mk=h=>{const o=mix({});o[2]=Object.assign({},o[2],{gap:[20*HR,MIN]});const days=rec(Object.assign({offset:2*HR},o[2]));days[3].events.splice(2,0,{t:30,k:'resume',w:days[2].sleptAt+h});
    const inputs=[];NAMES.forEach((nm,i)=>{const d=i===2?days:rec(Object.assign({offset:i*HR},o[i]));inputs.push({name:nm+'.txt',text:'Coached: no\n'+pasteOf(d,T0+30*24*HR)});});return A(inputs,{testers:5,final:true});};
-  const r47=mk(47*HR),r49=mk(49*HR);only(r47,2,'PASS','resume 47 h');only(r49,2,'FAIL','resume 49 h');assert(gate(r47,2).lines[0].includes('chidi 47.0 h (by its Continue)'));
+  const r47=mk(47*HR),r49=mk(49*HR);only(r47,2,'PASS','resume 47 h');only(r49,2,'FAIL','resume 49 h');assert(gate(r47,2).lines[0].includes('chidi 47.0 h (by its return)'));
+  // the morning page saw a logged tap (the pot watered) before the tester left the tab; the return 49 h after Sleep is still the one that counts
+  const mkW=(h,t)=>{const o=mix({});o[2]=Object.assign({},o[2],{gap:[20*HR,MIN]});const days=rec(Object.assign({offset:2*HR},o[2]));days[3].events.splice(2,0,{t:5,k:'water',a:'2'},{t,k:'resume',w:days[2].sleptAt+h});
+   const inputs=[];NAMES.forEach((nm,i)=>{const d=i===2?days:rec(Object.assign({offset:i*HR},o[i]));inputs.push({name:nm+'.txt',text:'Coached: no\n'+pasteOf(d,T0+30*24*HR)});});return A(inputs,{testers:5,final:true});};
+  const w49=mkW(49*HR,8);only(w49,2,'FAIL','a logged tap, then the return 49 h after Sleep');assert(gate(w49,2).lines[0].includes('chidi 49.0 h (by its return)'),gate(w49,2).lines[0]);
+  const w47=mkW(47*HR,8);only(w47,2,'PASS','a logged tap, then the return 47 h after Sleep');
+  // a pause after more than two minutes of day-3 play is not the return: the day was already being played (from its start, a minute after Sleep)
+  const late=mkW(60*HR,200);only(late,2,'PASS','a pause after 3:20 of play');assert(gate(late,2).lines[0].includes('chidi 0.0 h'),gate(late,2).lines[0]);
+  // the shipped runtime: a household sleeps on day 2, the tester copies on the day-3 morning page (which wakes day 3) and leaves the tab open;
+  // 47 h (or 49 h) after Sleep a tap in the same tab (no reload, no Continue) logs the return, and the gates tool reads it
+  const live=h=>{run('var KEEP35=S;');try{fresh();run("S.firstEvening.enabled=false;DAYS35.input();");run('T35+=60000');act('nextday');run('T35+=60000;DAYS35.input();T35+=60000');act('nextday');
+    const slept=J('LOG35.day(2).sleptAt');run('T35+=60000');const p1=copyButton();assert.equal(J('LOG35.day(3).startedAt'),run('T35'),'the copy woke day 3');
+    run(`T35=${slept}+${h};DAYS35.input();`);const res=J("LOG35.events(3).filter(e=>e.k==='resume')");assert.equal(res.length,1,'one resume');assert.equal(res[0].w,slept+h,'with the wall time of the tap');
+    const p2=copyButton();return {slept,a:A([{name:'femi-1.txt',text:'Coached: no\n'+p1},{name:'femi-2.txt',text:p2}],{testers:1,final:true})};}finally{run('S=KEEP35;delete globalThis.KEEP35;');}};
+  const l47=live(47*HR),l49=live(49*HR);assert.equal(gate(l47.a,2).status,'PASS',gate(l47.a,2).lines[0]);assert(gate(l47.a,2).lines[0].includes('femi 47.0 h (by its return)'),gate(l47.a,2).lines[0]);
+  assert.equal(gate(l49.a,2).status,'FAIL',gate(l49.a,2).lines[0]);assert(gate(l49.a,2).lines[0].includes('femi 49.0 h (by its return)'),gate(l49.a,2).lines[0]);
   const gone=set(mix({2:{stop:2,copiedAt:T0+2*HR+(25+5)*MIN+20*HR+(27+5)*MIN+49*HR}}));assert.equal(gate(gone,2).status,'FAIL');assert(gate(gone,2).lines[0].includes('chidi not back after 49.0 h'));
   const wait=set(mix({2:{stop:2}}),{a:{final:false}});assert.equal(gate(wait,2).status,'NOT YET');assert(gate(wait,2).lines[0].includes('chidi not back yet'));
-  return {ok:gate(ok,2).numbers,over:gate(over,2).numbers,resume47:gate(r47,2).status,resume49:gate(r49,2).status};});
+  return {ok:gate(ok,2).numbers,over:gate(over,2).numbers,resume47:gate(r47,2).status,resume49:gate(r49,2).status,afterATap49:gate(w49,2).status,pauseAfterPlay:gate(late,2).status,sameTab47:gate(l47.a,2).status,sameTab49:gate(l49.a,2).status};});
 
  check('Synthetic gate 3. Day-3 mean equal to day 1’s with exactly three top faces passes; two top faces fails; a day-3 mean one step below day 1’s fails',()=>{
   const eq=set({0:{rating:[3,2,3]},1:{rating:[3,2,3]},2:{rating:[2,2,3]},3:{rating:[2,2,2]},4:{rating:[3,2,2]}});only(eq,3,'PASS','equal means');assert.equal(gate(eq,3).numbers.day1Mean,gate(eq,3).numbers.day3Mean);assert.equal(gate(eq,3).numbers.day3Top,3);

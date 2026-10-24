@@ -89,7 +89,7 @@ const checks=[];let runFn=null;
  const log=J('S.firstEvening.log');assert.deepEqual(log.map(l=>l.stage),['move','shop','cook','host','gift','tomorrow','complete']);
  for(let i=1;i<log.length;i++){assert(log[i].played>=log[i-1].played);assert(log[i].at>=log[i-1].at);assert.equal(typeof log[i].day,'number');assert.equal(typeof log[i].time,'number');}
  assert(log[log.length-1].played>0);assert.deepEqual(J('load().firstEvening.log').map(l=>l.stage),log.map(l=>l.stage));assert.equal(run('stripState().firstEvening.log'),undefined);assert.equal(run('stripState().firstEvening.stage'),'complete');
- assert(run('eveningStatusText34()').startsWith('First evening: move 0 min · shop '));assert(/ · total \d+(\.\d)? min$/.test(run('eveningStatusText34()')));run('openMenu()');run("delete navigator.clipboard;dispatch('copyTimeline')");assert(run("panel.innerHTML.includes('Evening timeline')&&panel.innerHTML.includes('complete:')"));
+ assert(run('eveningStatusText34()').startsWith('First evening: move 0 min · shop '));assert(/ · total \d+(\.\d)? min$/.test(run('eveningStatusText34()')));run('openMenu()');run("delete navigator.clipboard;dispatch('copyTimeline')");assert(run("panel.innerHTML.includes(typeof daysText35==='function'&&daysText35()?'<h2>Timeline and days</h2>':'<h2>Evening timeline</h2>')&&panel.innerHTML.includes('complete:')"));
  pass('Stage timing log records every transition and survives reload',{stages:log.map(l=>l.stage+'@'+l.played+'s')});
 
  // 11. Performance floor decisions: ten contiguous seconds under 24 fps step the render scale, then lite; never up.

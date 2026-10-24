@@ -8,14 +8,14 @@ const NAMES=[
  '2. Day 3 at 18:30 with the human on the veranda: the guests walk in from the gate to validated street spots, clear of the sightline, kept through reroute and placeNPCs; a blocked street retries at most once a second',
  '3. The guests reach their spots well inside 20 s of stubbed time; through the real base frame (whose NPC loop turns idle NPCs to the nearest player) each stays turned from the camera towards the player, within 70 degrees of the camera, the speaker a three-quarter face',
  '4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the real camera (measured every frame of the first two lines) eased nearer, up to a quarter, only as far as the player and all three guests still fit, never cutting anyone, never moving back out while it eases in, and changing under 1% a frame after its first eased frame; a whole evening at 1280x800 recorded on every frame from the trigger to the hand-back to the normal camera (no change over 2.5% a frame anywhere, none over 1% from the first frame of line 1 to the end of line 3, nobody cut while they talk, no jump at the hand-back); and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone',
- '5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule',
+ '5. After the third line: saved once with one cue and one memory, the guests walk away west along the street and return to their schedule',
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
  '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
  '9. Everyone else keeps clear at 390x844 through the real base frame: with walkers on the base street routes heading into the group and the foreground, the keke and a resident walking the street, from the trigger to the end of the talk nobody else comes within 1 m of a guest\u2019s spot or the player, or covers the player or a guest within 2 m of its spot on screen from nearer the camera; once the guests have gone they all move on',
  '10. The evening nudge toast never covers the Today page: it goes as the journal opens (and stays gone), while other toasts over the journal and the nudge with no journal open are untouched',
- '11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): leaving, no guest comes within 0.8 m of the line from the camera to the player anywhere south of the rail row (they cross it only beside the rail), and each still walks out to the gate',
- '12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame of the talk no floating label shows over a guest or the player, and any label hidden for the talk is shown again after it',
+ '11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): the guests leave west along the street, away from the player, by a way clear of walls and props that never brings them nearer the camera-to-player line; on every frame from Goodnight to 2 s after the hand-back no guest stands between the camera and the player on screen (its screen box over the player\u2019s from nearer the camera; only a guest still within 0.3 m of its spot may keep the corner overlap it had standing there, and that never grows); each goes back to its schedule on the first frame it is off every human view, placed where no view sees it',
+ '12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame from the trigger to the hand-back no floating label is drawn over an arriving, talking or leaving guest, the player or the companion unless it is fading out (within 0.3 s of starting to); a label once hidden stays hidden until the guests are handed back; no label vanishes or appears in one frame (each fade takes about 0.3 s); every label is fully shown again within 0.4 s of the hand-back',
  '13. Determinism: two runs give identical reports'];
 
 function inner(){
@@ -203,7 +203,8 @@ function inner(){
    run('T35+=300;EVENING35.next();');assert.equal(state(),'leaving');assert.equal(J('S.life.evening35.doneDay'),3);
    assert.equal(J("CUES.filter(n=>n==='evening').length")-c0,1,'one evening cue');assert.equal(J("S.memories.filter(m=>/came by the veranda/.test(m.caption)).length")-m0,1,'one memory');
    assert.equal(run('EVENING35.shown'),false,'caption hidden');assert.equal(J("JSON.parse(localStorage.getItem(KEY)||'{}').life?.evening35?.doneDay??null"),3,'saved');
-   assert.deepEqual(J("['tunde','nkechi','ada'].map(k=>npcs[k].route[npcs[k].route.length-1])"),[[4,9.6],[4,9.6],[4,9.6]],'walking back to the gate');
+   const ends=J("['tunde','nkechi','ada'].map(k=>npcs[k].route[npcs[k].route.length-1])");
+   for(const e of ends)assert(e[0]===-30&&[9.2,9.6,10.2].includes(e[1]),'walking away west along the street: '+JSON.stringify(ends));
    const k=until("EVENING35.state==='idle'",900);assert.equal(state(),'idle');
    const after=J("['tunde','nkechi','ada'].map(k=>{const n=npcs[k],sp=NPC_SPOTS[k][slot()];return {cool:n.cool<1e9,toSpot:sp?!!(n.dest&&n.dest[0]===sp[0]&&n.dest[1]===sp[1]):n.hideAtEnd===true};})");
    for(const a of after){assert(a.cool,'cool restored');assert(a.toSpot,'handed to the schedule');}
@@ -319,34 +320,78 @@ function inner(){
    finally{run('for(const [e,c] of CL35)e.classList=c;');}});
 
   await step(10,()=>{run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');const out={};
+   // each frame's evening step is watched from inside the frame: just before it, every leaving guest is judged off or on the human view with
+   // this check's own projection (the view's camera as the last frame left it, the guest where this frame's walk put it); just after it, who
+   // was handed back and where they now stand
+   run(`var DEP35=null;var off35=(c,x,z)=>{c.updateMatrixWorld();const b=box35(c,x,0,z,.6,1.9,.6);return b.x1<=-1.02||b.x0>=1.02||b.y1<=-1.02||b.y0>=1.02;};
+     {const t0=EVENING35.tick;EVENING35.tick=function(){if(!DEP35||EVENING35.state!=='leaving')return t0.apply(this,arguments);const c=cams[0],pre={};
+      for(const k of EVENING35.walkers){const n=npcs[k];pre[k]={off:off35(c,n.g.position.x,n.g.position.z),ended:!n.route,hidden:!n.g.visible,x:n.g.position.x,z:n.g.position.z};}
+      const r=t0.apply(this,arguments);
+      for(const k in pre){if(EVENING35.walkers.includes(k))continue;const n=npcs[k],sp=NPC_SPOTS[k][slot()];
+       DEP35.push({k,frame:FT35,pre:pre[k],placedOff:!n.g.visible||off35(c,n.g.position.x,n.g.position.z),schedule:sp?!!(n.dest&&n.dest[0]===sp[0]&&n.dest[1]===sp[1]):n.hideAtEnd===true,x:n.g.position.x,z:n.g.position.z});}
+      for(const k of EVENING35.walkers)if(pre[k].off||pre[k].ended||pre[k].hidden)DEP35.push({k,frame:FT35,pre:pre[k],kept:true});
+      return r;};}`);
    try{for(const [label,hx,hz,cx,cz] of PHONE_CASES){fresh();at(hx,hz);at(cx,cz,1);toTalk(label);
-     for(let l=0;l<3;l++){frames(10);run('T35+=300;EVENING35.next();');}assert.equal(state(),'leaving',label+': leaving');
-     const routes=J("EVENING35.walkers.map(k=>npcs[k].route.map(q=>q.map(v=>Math.round(v*100)/100)))");
-     for(const r of routes)assert.deepEqual(r[r.length-1],[4,9.6],label+': out to the gate');
-     let worst=null,n=0;
-     for(let k=0;k<900&&state()==='leaving';k++){frames(1);n++;
-      const s=J(`(()=>{const c=cams[0].position,p=players[0].g.position,ux=c.x-p.x,uz=c.z-p.z,L=Math.hypot(ux,uz),o=[];
-       for(const k of EVENING35.walkers){const g=npcs[k].g;if(!g.visible)continue;const qx=g.position.x-p.x,qz=g.position.z-p.z;o.push({k,x:g.position.x,z:g.position.z,t:(qx*ux+qz*uz)/L,lat:Math.abs(qx*uz-qz*ux)/L,L});}return o;})()`);
-      for(const q of s)if(q.t>0&&q.t<q.L&&q.z>8.2){if(!worst||q.lat<worst.lat)worst=q;
-       assert(q.lat>=0.8,label+': '+q.k+' walks between the camera and the player, '+q.lat.toFixed(2)+' m from the line at ('+q.x.toFixed(2)+', '+q.z.toFixed(2)+'), '+q.t.toFixed(2)+' m out from the player, on departure frame '+n);}}
-     assert.equal(state(),'idle',label+': the guests reach the gate');
-     out[label]={routes,nearestToTheLineSouthOfTheRail:worst&&Math.round(worst.lat*100)/100,departureFrames:n};}}
-   finally{run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
+     for(let l=0;l<3;l++){frames(10);if(l<2)run('T35+=300;EVENING35.next();');}
+     // the screen boxes at Goodnight: a guest's overlap with the player's box from nearer the camera, as it stands on its spot
+     const ov=`(c,k)=>{c.updateMatrixWorld();const p=players[0].g.position,pb=box35(c,p.x,0,p.z,.6,1.9,.6),g=npcs[k].g.position,b=box35(c,g.x,0,g.z,.6,1.9,.6);
+       return over35(b,pb)&&b.dep<pb.dep?Math.min(b.x1,pb.x1)-Math.max(b.x0,pb.x0):0;}`;
+     const start=J(`(()=>{const f=${ov};const o={};for(const k of EVENING35.walkers)o[k]=f(cams[0],k);return o;})()`);
+     run('T35+=300;EVENING35.next();');assert.equal(state(),'leaving',label+': leaving');run('DEP35=[];');const ft0=run('FT35');
+     // the way out: west to the street's end, clear of walls and props, never nearer the line from the player towards the camera than the spot
+     const ways=J(`EVENING35.walkers.map(k=>{const n=npcs[k],p=players[0].g.position,c=cams[0].position,ux=c.x-p.x,uz=c.z-p.z,L=Math.hypot(ux,uz),pts=[[n.g.position.x,n.g.position.z],...n.route];
+       const lat=(x,z)=>((x-p.x)*uz-(z-p.z)*ux)/L,l0=lat(pts[0][0],pts[0][1]);let nearer=0,blockedAt=null;
+       for(const [x,z] of EVENING35.along(pts,0.2)){const a=((x-p.x)*ux+(z-p.z)*uz)/L,l=lat(x,z);if(a>0&&(l*l0<0||Math.abs(l)<Math.abs(l0)-0.05))nearer=Math.max(nearer,Math.abs(l0)-Math.abs(l));if(!blockedAt&&blocked(x,z,0.25))blockedAt=[x,z];}
+       return {k,route:n.route.map(q=>q.map(v=>Math.round(v*100)/100)),west:n.route[n.route.length-1][0]<pts[0][0]-10,nearer,blockedAt};})`);
+     for(const w of ways){assert(w.west,label+': '+w.k+' leaves west along the street: '+JSON.stringify(w.route));assert.equal(w.blockedAt,null,label+': '+w.k+'’s way is clear: '+JSON.stringify(w));
+      assert.equal(w.nearer,0,label+': '+w.k+'’s way never comes nearer the camera-to-player line than the spot: '+JSON.stringify(w));}
+     let n=0,worst=0,spotFrames=0,after=-1;const sp=J('EVENING35.spots');
+     for(let k=0;k<900&&(after<0||after<60);k++){frames(1);n++;if(after>=0)after++;else if(state()==='idle')after=0;
+      const s=J(`(()=>{const f=${ov};const o=[];for(const k of EVENING35.guests){const g=npcs[k].g;if(!g.visible)continue;o.push({k,x:g.position.x,z:g.position.z,leaving:EVENING35.walkers.includes(k),ov:f(cams[0],k)});}return o;})()`);
+      for(const g of s){if(!(g.ov>0))continue;const d=Math.hypot(g.x-sp[g.k][0],g.z-sp[g.k][1]);
+       assert(g.leaving&&d<0.3&&g.ov<=start[g.k]+1e-9,label+': '+g.k+' stands between the camera and the player on screen at ('+g.x.toFixed(2)+', '+g.z.toFixed(2)+'), '+d.toFixed(2)+' m from its spot, overlap '+g.ov.toFixed(3)+' (at Goodnight '+start[g.k].toFixed(3)+'), departure frame '+n);
+       spotFrames++;worst=Math.max(worst,g.ov);}}
+     assert.equal(state(),'idle',label+': the guests are handed back');
+     const dep=J('DEP35');run('DEP35=null;');const handed={};
+     for(const e of dep){if(e.kept)assert.fail(label+': '+e.k+' was off every human view (or at its way’s end) but not handed back: '+JSON.stringify(e));
+      assert(e.pre.off||e.pre.ended||e.pre.hidden,label+': '+e.k+' handed back while still on the human view: '+JSON.stringify(e));
+      assert(e.placedOff,label+': '+e.k+' placed where the view sees it: '+JSON.stringify(e));assert(e.schedule,label+': '+e.k+' back on its schedule: '+JSON.stringify(e));
+      handed[e.k]={departureFrame:Math.round((e.frame-ft0)/33),offView:e.pre.off,placed:[Math.round(e.x*100)/100,Math.round(e.z*100)/100]};}
+     assert.deepEqual(Object.keys(handed).sort(),['ada','nkechi','tunde'],label+': all three handed back');
+     out[label]={ways:ways.map(w=>w.route[w.route.length-1]),cornerOverlapAtSpotFrames:spotFrames,largestCornerOverlapNdc:Math.round(worst*1000)/1000,handedBack:handed};}}
+   finally{run('DEP35=null;innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
    return out;});
 
   await step(11,()=>{run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');const out={};
    // the base builds its sign sprites once the fonts are ready (boot); here they are built for this check and taken away after it
    const before=run('FADEABLE.filter(m=>m.isSprite).length');if(!before)run('buildSigns();');const signs=run('FADEABLE.filter(m=>m.isSprite).length');assert(signs>0,'the signs are built');
-   const sample=`(()=>{const c=cams[0];c.updateMatrixWorld();const r=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,0),u=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,1),v=new THREE.Vector3();
-     const grp=[['the player',players[0].g.position]];for(const k of EVENING35.guests)if(npcs[k].g.visible)grp.push([k,npcs[k].g.position]);const gb=grp.map(([k,p])=>[k,box35(c,p.x,0,p.z,.6,1.9,.6)]);
-     const bad=[];let hidden=0;for(const m of FADEABLE){if(!m.isSprite)continue;if(!m.visible){hidden++;continue;}let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,ok=true;
+   // each sign as drawn this frame (visible, its opacity, the evening's fade record) and whether its screen box meets, on screen, the box of an
+   // arriving, talking or leaving guest, the player or the companion (a body of 0.6 x 1.9 x 0.6 m projected with the game's camera)
+   const sample=`(()=>{const c=cams[0];c.updateMatrixWorld();const r=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,0),u=new THREE.Vector3().setFromMatrixColumn(c.matrixWorld,1),v=new THREE.Vector3(),st=EVENING35.state;
+     const grp=[['the player',players[0].g.position],['the companion',players[1].g.position]];
+     for(const k of EVENING35.guests){const n=npcs[k];if(n.g.visible&&(st==='arriving'||st==='talking'||EVENING35.walkers.includes(k)))grp.push([k,n.g.position]);}
+     const gb=grp.map(([k,p])=>[k,box35(c,p.x,0,p.z,.6,1.9,.6)]),F=EVENING35.labelFades,out=[];let i=0;
+     for(const m of FADEABLE){if(!m.isSprite)continue;const id=i++;let x0=1e9,x1=-1e9,y0=1e9,y1=-1e9,ok=true;
       for(const a of [-.5,.5])for(const b of [-.5,.5]){v.copy(m.position).addScaledVector(r,a*m.scale.x).addScaledVector(u,b*m.scale.y).project(c);if(Math.abs(v.z)>1)ok=false;x0=Math.min(x0,v.x);x1=Math.max(x1,v.x);y0=Math.min(y0,v.y);y1=Math.max(y1,v.y);}
-      if(!ok)continue;const L={x0,x1,y0,y1};for(const [k,q] of gb)if(over35(L,q))bad.push('the label at ('+m.position.x+', '+m.position.z+') over '+k);}
-     return {st:EVENING35.state,line:EVENING35.line,bad,hidden};})()`;
-   try{for(const [label,hx,hz,cx,cz] of PHONE_CASES){fresh();at(hx,hz);at(cx,cz,1);toTalk(label);let hid=0,n=0;
-     for(let l=0;l<3;l++){for(let k=0;k<45;k++){frames(1);n++;const s=J(sample);hid=Math.max(hid,s.hidden);assert.deepEqual(s.bad,[],label+', line '+(l+1)+', frame '+n+': '+s.bad[0]);}run('T35+=300;EVENING35.next();');}
-     assert.equal(state(),'leaving');frames(2);const after=J(sample);assert.equal(after.hidden,0,label+': every label is shown again after the talk');
-     out[label]={labelsHiddenForTheTalk:hid};}}
+      const over=[];if(ok)for(const [k,q] of gb){const L={x0:Math.max(x0,q.x0,-1),x1:Math.min(x1,q.x1,1),y0:Math.max(y0,q.y0,-1),y1:Math.min(y1,q.y1,1)};if(L.x0<L.x1&&L.y0<L.y1)over.push(k);}
+      const f=F&&F.get(m);out.push({id,at:m.position.x+', '+m.position.z,drawn:m.visible&&m.material.opacity>0.01,op:m.material.opacity,f:f?f.f:1,hide:!!(f&&f.hide),over});}
+     return {st,signs:out,fades:F?F.size:-1};})()`;
+   try{for(const [label,hx,hz,cx,cz] of PHONE_CASES){fresh();at(hx,hz);at(cx,cz,1);run('EVENING35.checkAt=1e18;');frames(60);run('EVENING35.checkAt=0;');
+     let n=0,prev=null,hid=0,overFading=0,endAt=-1,shownAt=-1;const since={},phases={};
+     const look=()=>{frames(1);n++;const s=J(sample);assert(s.fades>=0,label+': the evening keeps a fade record for the signs');
+      if(endAt<0&&s.st==='idle'&&n>1)endAt=n;
+      for(const g of s.signs){const p=prev&&prev.signs[g.id];
+       if(g.hide&&!(g.id in since))since[g.id]=n;if(!g.hide&&s.st!=='idle')assert(!(g.id in since),label+': the sign at ('+g.at+') came back before the hand-back, frame '+n);
+       if(p)assert(Math.abs(g.f-p.f)<=0.13,label+': the sign at ('+g.at+') changed its fade from '+p.f.toFixed(2)+' to '+g.f.toFixed(2)+' in one frame, frame '+n);
+       if(p&&p.drawn&&p.f>=0.99&&!g.drawn)assert.fail(label+': the sign at ('+g.at+') vanished in one frame, frame '+n);
+       if(s.st!=='idle'&&g.drawn&&g.over.length){assert(g.hide&&n-since[g.id]<=10,label+': the sign at ('+g.at+') shows over '+g.over.join(', ')+' ('+s.st+', frame '+n+', opacity '+g.op.toFixed(2)+')');overFading++;}}
+      hid=Math.max(hid,s.signs.filter(g=>g.hide).length);if(s.st!=='idle'&&n>1)phases[s.st]=(phases[s.st]||0)+1;prev=s;return s;};
+     for(let k=0;k<900&&state()!=='talking';k++)look();assert.equal(state(),'talking',label+': talking');
+     for(let l=0;l<3;l++){for(let k=0;k<45;k++)look();run('T35+=300;EVENING35.next();');}
+     assert.equal(state(),'leaving');for(let k=0;k<900&&state()!=='idle';k++)look();assert.equal(state(),'idle',label+': handed back');
+     for(let k=0;k<13;k++){const s=look();if(shownAt<0&&s.fades===0&&s.signs.every(g=>g.f===1&&!g.hide))shownAt=n;}
+     assert(shownAt>0,label+': every sign is fully shown again within 0.4 s of the hand-back');
+     out[label]={signsHidden:hid,framesWithAFadingSignOverTheGroup:overFading,framesByPhase:phases,shownAgainFramesAfterHandBack:shownAt-endAt};}}
    finally{if(!before)run('for(let k=FADEABLE.length-1;k>=0;k--)if(FADEABLE[k].isSprite){scene.remove(FADEABLE[k]);FADEABLE.splice(k,1);}');run('innerWidth=1280;innerHeight=800;navigator.maxTouchPoints=0;');}
    return out;});
 

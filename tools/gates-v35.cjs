@@ -124,9 +124,14 @@ const daySec=r=>{const ev=r&&r.events||[];return Math.max(Math.round(realMs(r)/1
 function specific(s){if(s==null)return false;const v=String(s).trim().toLowerCase().replace(/[’`]/g,'\'').replace(/[!.?,;:]+$/,'').replace(/\s+/g,' ');
  if(NON_ANSWERS.has(v))return false;const letters=(v.match(/\p{L}/gu)||[]).length;if(letters<3)return false;const words=v.split(' ').filter(w=>/\p{L}/u.test(w));
  return words.length>=2||letters>=4;}
-// when the tester came back for day 3 (see gate 2): {at, how:'start'|'resume'} or null while day 3 has not really been played
-function returnAt(r){if(!r||r.startedAt==null)return null;if(!r.events)return {at:r.startedAt,how:'start'};
- for(const e of r.events){if(e[1]==='wake'||e[1]==='morning')continue;if(e[1]==="resume"&&e[0]<BACK_S&&typeof e[2]==='number')return {at:e[2],how:'resume'};return {at:r.startedAt,how:'start'};}
+// when the tester came back for day N (see gate 2): {at, how:'start'|'resume'} or null while day N has not really been played. A tap on the
+// morning page (closing it, or Menu > Copy) wakes the day at once, so the start may be that tap; the game logs a 'resume' with the wall time
+// on Continue and on the first input after 10 minutes away (or the page shown after 10 minutes hidden). The return is the first resume after
+// the previous day's Sleep (`after`) logged before two minutes of that day's play (a later one is a pause in a day already being played);
+// without one it is the day's start, once the day shows play beyond its wake and morning.
+function returnAt(r,after){if(!r||r.startedAt==null)return null;if(!r.events)return {at:r.startedAt,how:'start'};
+ for(const e of r.events)if(e[1]==='resume'&&typeof e[2]==='number'&&e[0]<BACK_S&&(after==null||e[2]>after))return {at:e[2],how:'resume'};
+ if(r.events.some(e=>e[1]!=='wake'&&e[1]!=='morning'&&e[1]!=='resume'))return {at:r.startedAt,how:'start'};
  return realMs(r)>=BACK_S*1000?{at:r.startedAt,how:'start'}:null;}
 function reached(t){let r=0;for(const [n,d] of Object.entries(t.days))if(d.startedAt!=null)r=Math.max(r,+n);return r;}
 const slept=(t,n)=>!!(t.days[n]&&t.days[n].sleptAt!=null);
@@ -168,12 +173,12 @@ function gates(testers,opt){const N=opt.testers,K4=Math.ceil(N*4/5),K3=Math.ceil
    numbers:{sleptDay2:logCount,confirmedNotCoached:yes.length,awaitingNote:logOnly.length,coached:no.filter(s=>/coached/.test(s)).length,notYet:pend.length,missing},
    lines:[`The log shows ${logCount} of ${N} slept on day 2 (${names(yes.concat(logOnly))}); ${K4} needed.`,
     `Coaching is the reviewer’s call, not the log’s: ${yes.length} confirmed “Coached: no”`+(logOnly.length?`, still to note: ${logOnly.join(', ')}`:'')+(no.length?`; not counted: ${no.join(', ')}`:'')+'.']});}
- // 2. Day-3 startedAt within 48 hours of day-2 sleptAt. A tap on the morning page (closing it, or Menu > Copy) wakes day 3 at once, so when day 3
- // shows nothing but its wake before a Continue that came within two minutes of play, the return is that Continue's wall time.
+ // 2. Day-3 startedAt within 48 hours of day-2 sleptAt. A tap on the morning page (closing it, or Menu > Copy) wakes day 3 at once, so day 3's
+ // start for this gate is the first return logged after day 2's Sleep (Continue, or the first input after 10 minutes away), when there is one.
  {const rows=[],yes=[],no=[],pend=[];testers.forEach((t,i)=>{const m=ms[i],d2=t.days[2],d3=t.days[3];
    if(!(d2&&d2.sleptAt!=null)){if(!m.fin&&m.reached<3)pend.push(t.name);return;}
-   const back=returnAt(d3);
-   if(back){const g=back.at-d2.sleptAt;rows.push(`${t.name} ${hours(g)}${back.how==='resume'?' (by its Continue)':''}`);(g<=H48?yes:no).push(t.name);return;}
+   const back=returnAt(d3,d2.sleptAt);
+   if(back){const g=back.at-d2.sleptAt;rows.push(`${t.name} ${hours(g)}${back.how==='resume'?' (by its return)':''}`);(g<=H48?yes:no).push(t.name);return;}
    const asOf=Math.max(t.copiedAt||0,opt.now||0);if(asOf&&asOf-d2.sleptAt>H48){no.push(t.name);rows.push(`${t.name} not back after ${hours(asOf-d2.sleptAt)}`);}
    else if(m.fin){no.push(t.name);rows.push(`${t.name} did not come back for day 3`);}else{pend.push(t.name);rows.push(`${t.name} not back yet`);}});
   const st=every(yes.length,no.length,pend.length,opt,missing);

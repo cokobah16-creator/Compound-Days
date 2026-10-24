@@ -223,17 +223,38 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   return {pages,cap:300,dropped:7};});
 
  // 12. Continue logs the sitting's wall time; records older than seven days are compacted to counts, keeping the prompts.
- check('Resume and compaction: Continue on an unwoken day adds nothing (the wake carries the time); on a woken day one resume with its wall time; after nine nights days 1-3 keep counts and prompts, 4-10 keep events',()=>{isMod();
+ check('Resume and compaction: Continue on an unwoken day adds nothing (the wake carries the time); on a woken day one resume with its wall time; without a reload, the first real input after 10 minutes of wall time with none, or the page shown again after 10 minutes hidden, logs one resume with its wall time (not after 9 minutes, nor 5 minutes hidden, never twice for one return, not for the game\u2019s own dispatches, not online, not on an unwoken day, where the wake carries the time); after nine nights days 1-3 keep counts and prompts, 4-10 keep events',()=>{isMod();
   fresh();hooks(2);run('save();T35+=7200000;ACTIONS.continue();');const r=J('LOG35.day(1)');assert.equal(r.startedAt,null,'resume does not wake');
   assert.deepEqual(r.events,[],'no resume before the wake');
   run('S.firstEvening.enabled=false;DAYS35.activity();save();T35+=3600000;ACTIONS.continue();');const w=run('T35'),r1=J('LOG35.day(1)');
   assert.deepEqual(r1.events.map(e=>[e.k,e.w||null]),[['wake',null],['resume',w]],'the wake first, then one resume with its wall time');
-  for(let k=0;k<9;k++){if(run('S.day')===3){run("S.life.days['3'].want='A reading lamp';S.life.days['3'].neighbour='Tunde hums to his plants';");}wakeNext();}
+  // a return without a reload (a tab left open on the morning page, say): the first real input (DAYS35.input, from a key, a tap, a held drag or a
+  // gamepad) after 10 minutes of wall time with none logs one resume; nine minutes do not; the next input adds none
+  const resumes=n=>J(`LOG35.events(${n}).filter(e=>e.k==='resume').map(e=>e.w)`);
+  run('DAYS35.input();T35+=540000;DAYS35.input();');assert.deepEqual(resumes(1),[w],'nine minutes away is not a return');
+  run('T35+=600000;DAYS35.input();');const w2=run('T35');run('T35+=1000;DAYS35.input();');assert.deepEqual(resumes(1),[w,w2],'ten minutes with no input, then a tap: one resume with its wall time');
+  // the game's own dispatches (the companion's acts, a pack-away) are not input: they neither log a return nor shorten the time away
+  run('T35+=300000;DAYS35.activity();T35+=300000;DAYS35.input();');const w3=run('T35');assert.deepEqual(resumes(1),[w,w2,w3],'a dispatch in between does not hide the return');
+  // the page hidden for ten minutes and shown again: one resume at once (before any input), and the input that follows adds none
+  run('T35+=1000;document.hidden=true;DAYS35.onVisibility();T35+=600000;document.hidden=false;DAYS35.onVisibility();');const w4=run('T35');
+  assert.deepEqual(resumes(1),[w,w2,w3,w4],'shown again after ten minutes hidden: one resume');run('T35+=1000;DAYS35.input();');assert.deepEqual(resumes(1),[w,w2,w3,w4],'not twice');
+  run('T35+=1000;document.hidden=true;DAYS35.onVisibility();T35+=300000;document.hidden=false;DAYS35.onVisibility();T35+=1000;DAYS35.input();');assert.deepEqual(resumes(1),[w,w2,w3,w4],'five minutes hidden is not a return');
+  // Continue, then the first tap: Continue's resume only
+  run('T35+=3600000;save();ACTIONS.continue();');const w5=run('T35');run('T35+=1000;DAYS35.input();');assert.deepEqual(resumes(1),[w,w2,w3,w4,w5],'Continue and its first tap are one return');
+  // the copy carries each return's wall time, in the readable lines and in the block
+  const txt=run('daysText35()');for(const t of [w2,w3,w4])assert(txt.includes(' resume '+new Date(t).toISOString()),'readable resume '+t);
+  // online play keeps no log: no return is logged
+  run('NET.on=true;T35+=700000;DAYS35.input();T35+=1000;document.hidden=true;DAYS35.onVisibility();T35+=700000;document.hidden=false;DAYS35.onVisibility();NET.on=false;');
+  assert.deepEqual(resumes(1),[w,w2,w3,w4,w5],'none online');
+  // a new day not yet woken: the tap after ten minutes wakes it, and its wake carries the time (no resume)
+  run('T35+=1000');act('nextday');run('T35+=700000;DAYS35.input();');const r2=J('LOG35.day(2)');assert.equal(r2.startedAt,run('T35'),'the tap wakes day 2');
+  assert.deepEqual(resumes(2),[],'no resume on the day the tap woke');
+  for(let k=0;k<8;k++){if(run('S.day')===3){run("S.life.days['3'].want='A reading lamp';S.life.days['3'].neighbour='Tunde hums to his plants';");}wakeNext();}
   assert.equal(run('S.day'),10);const d=J('S.life.days');
   for(const n of [1,2,3]){assert(d[n].counts&&!d[n].events,'day '+n+' compacted');}for(let n=4;n<=10;n++)assert(Array.isArray(d[n].events),'day '+n+' keeps events');
   assert.equal(d[3].want,'A reading lamp');assert.equal(d[3].neighbour,'Tunde hums to his plants');assert.equal(run("LOG35.count(1,'wake')"),1);assert.equal(run("LOG35.has(2,'sleep')"),true);
   assert(/\n {2}counts: wake 1 · /.test(run('daysText35()')),'daysText35 prints counts');assert.deepEqual(J('LOG35.events(1)'),[]);
-  return {compacted:[1,2,3],kept:[4,10],day1counts:d[1].counts};});
+  return {compacted:[1,2,3],kept:[4,10],day1counts:d[1].counts,returnsLoggedOnDay1:5};});
 
  // 13. The subset pass runs in a child process on a dist without the later v35 modules.
  {let d=null;try{d=subsetDir35('days-v35.js');const out=cp.execFileSync(process.execPath,[__filename,'--subset'],{env:{...process.env,COMPOUND_GAME_DIR:d},encoding:'utf8',stdio:['ignore','pipe','inherit']});

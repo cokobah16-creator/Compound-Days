@@ -1,5 +1,5 @@
 {
-  "build": "v35-f6dcede2",
+  "build": "v35-93dae475",
   "passed": true,
   "checks": [
     {
@@ -127,7 +127,7 @@
             "walk-in": 201,
             "hold": 15,
             "lines": 181,
-            "departure": 179,
+            "departure": 62,
             "hand-back": 151
           }
         },
@@ -158,10 +158,10 @@
       }
     },
     {
-      "name": "5. After the third line: saved once with one cue and one memory, the guests walk back to the gate and return to their schedule",
+      "name": "5. After the third line: saved once with one cue and one memory, the guests walk away west along the street and return to their schedule",
       "passed": true,
       "info": {
-        "handedOffAfterSeconds": 5.91
+        "handedOffAfterSeconds": 3.1
       }
     },
     {
@@ -281,14 +281,14 @@
               "walk-in": 2.38,
               "hold": 0,
               "lines": 0.47,
-              "departure": 2.32,
-              "hand-back": 0
+              "departure": 2.13,
+              "hand-back": 2.32
             },
             "frames": {
               "walk-in": 260,
               "hold": 15,
               "lines": 91,
-              "departure": 236,
+              "departure": 27,
               "hand-back": 151
             }
           },
@@ -390,14 +390,14 @@
               "walk-in": 2.38,
               "hold": 0,
               "lines": 0.45,
-              "departure": 2.32,
-              "hand-back": 0
+              "departure": 2.21,
+              "hand-back": 2.32
             },
             "frames": {
               "walk-in": 230,
               "hold": 15,
               "lines": 91,
-              "departure": 207,
+              "departure": 27,
               "hand-back": 151
             }
           },
@@ -500,13 +500,13 @@
               "hold": 0,
               "lines": 0.35,
               "departure": 2.32,
-              "hand-back": 0
+              "hand-back": 2.32
             },
             "frames": {
               "walk-in": 196,
               "hold": 15,
               "lines": 91,
-              "departure": 174,
+              "departure": 24,
               "hand-back": 151
             }
           },
@@ -609,13 +609,13 @@
               "hold": 0,
               "lines": 0.32,
               "departure": 2.32,
-              "hand-back": 0
+              "hand-back": 2.32
             },
             "frames": {
               "walk-in": 201,
               "hold": 15,
               "lines": 91,
-              "departure": 179,
+              "departure": 23,
               "hand-back": 151
             }
           },
@@ -634,12 +634,12 @@
         "walkInFrames": 246,
         "closestMarginBeyondOneMetre": 0.95,
         "movedAfterwards": [
-          17.72,
-          7.41,
-          18.9,
-          14.37,
-          25.78,
-          11.33
+          8.81,
+          7.05,
+          9.4,
+          8.22,
+          24.67,
+          9.99
         ]
       }
     },
@@ -651,218 +651,230 @@
       }
     },
     {
-      "name": "11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): leaving, no guest comes within 0.8 m of the line from the camera to the player anywhere south of the rail row (they cross it only beside the rail), and each still walks out to the gate",
+      "name": "11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): the guests leave west along the street, away from the player, by a way clear of walls and props that never brings them nearer the camera-to-player line; on every frame from Goodnight to 2 s after the hand-back no guest stands between the camera and the player on screen (its screen box over the player’s from nearer the camera; only a guest still within 0.3 m of its spot may keep the corner overlap it had standing there, and that never grows); each goes back to its schedule on the first frame it is off every human view, placed where no view sees it",
       "passed": true,
       "info": {
         "veranda column 0": {
-          "routes": [
+          "ways": [
             [
-              [
-                -7.7,
-                7.8
-              ],
-              [
-                -5.89,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -8.45,
-                7.8
-              ],
-              [
-                -5.89,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -9.2,
-                7.8
-              ],
-              [
-                -5.89,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ]
           ],
-          "nearestToTheLineSouthOfTheRail": 2.56,
-          "departureFrames": 237
+          "cornerOverlapAtSpotFrames": 2,
+          "largestCornerOverlapNdc": 0.048,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 21,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 22,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 28,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
         },
         "veranda column 2": {
-          "routes": [
+          "ways": [
             [
-              [
-                -6.05,
-                7.8
-              ],
-              [
-                -4.09,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -6.8,
-                7.8
-              ],
-              [
-                -4.09,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -7.55,
-                7.8
-              ],
-              [
-                -4.09,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ]
           ],
-          "nearestToTheLineSouthOfTheRail": 2.2,
-          "departureFrames": 208
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 16,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 22,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 28,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
         },
         "veranda column 5": {
-          "routes": [
+          "ways": [
             [
-              [
-                -4.1,
-                7.8
-              ],
-              [
-                -1.39,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -4.85,
-                7.8
-              ],
-              [
-                -1.39,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -5.6,
-                7.8
-              ],
-              [
-                -1.39,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ]
           ],
-          "nearestToTheLineSouthOfTheRail": 1.67,
-          "departureFrames": 175
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 15,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 20,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 25,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
         },
         "room by the door": {
-          "routes": [
+          "ways": [
             [
-              [
-                -4.4,
-                7.8
-              ],
-              [
-                -1.59,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -5.15,
-                7.8
-              ],
-              [
-                -1.59,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ],
             [
-              [
-                -5.9,
-                7.8
-              ],
-              [
-                -1.59,
-                7.8
-              ],
-              [
-                4,
-                9.6
-              ]
+              -30,
+              9.2
             ]
           ],
-          "nearestToTheLineSouthOfTheRail": 1.72,
-          "departureFrames": 180
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 15,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 19,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 24,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
         }
       }
     },
     {
-      "name": "12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame of the talk no floating label shows over a guest or the player, and any label hidden for the talk is shown again after it",
+      "name": "12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame from the trigger to the hand-back no floating label is drawn over an arriving, talking or leaving guest, the player or the companion unless it is fading out (within 0.3 s of starting to); a label once hidden stays hidden until the guests are handed back; no label vanishes or appears in one frame (each fade takes about 0.3 s); every label is fully shown again within 0.4 s of the hand-back",
       "passed": true,
       "info": {
         "veranda column 0": {
-          "labelsHiddenForTheTalk": 0
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 274,
+            "talking": 136,
+            "leaving": 27
+          },
+          "shownAgainFramesAfterHandBack": 9
         },
         "veranda column 2": {
-          "labelsHiddenForTheTalk": 0
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 244,
+            "talking": 136,
+            "leaving": 27
+          },
+          "shownAgainFramesAfterHandBack": 9
         },
         "veranda column 5": {
-          "labelsHiddenForTheTalk": 1
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 210,
+            "talking": 136,
+            "leaving": 24
+          },
+          "shownAgainFramesAfterHandBack": 9
         },
         "room by the door": {
-          "labelsHiddenForTheTalk": 1
+          "signsHidden": 2,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 215,
+            "talking": 136,
+            "leaving": 23
+          },
+          "shownAgainFramesAfterHandBack": 9
         }
       }
     },

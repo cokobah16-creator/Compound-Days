@@ -209,17 +209,20 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   return {potReach:reach,verandaCellsReachedFromInside:walk.cells,decoratableVerandaColumns:[1,2,6]};});
 
  // 8. Paint
- check(8,'Paint: the six flat walls and the floor are tagged; buy at Finds, paint at home, undo, reload and a courtyard style keep it; env keeps its own materials',()=>{
+ check(8,'Paint: the six flat walls and the floor are tagged; buy at Finds (each card\u2019s swatch is its paint\u2019s colour, Adire indigo a deep indigo #3F5B8E), paint at home, undo, reload and a courtyard style keep it; env keeps its own materials',()=>{
   assert.equal(run('TUNE35.flat.walls.length'),6,'six flat walls tagged during buildWorld');assert.equal(run('!!(TUNE35.flat.floor&&TUNE35.flat.floor.isMesh)'),true,'the floor slab tagged');
   oldHH(20000);at(...STALL);run("openLife34('market')");const mk=run('panel.innerHTML');assert.equal((mk.match(/paint35-card/g)||[]).length,5);
   assert.deepEqual([...mk.matchAll(/<span class="life-label34">([A-Z’ ]+)/g)].map(m=>m[1].trim()).slice(0,5),Array(5).fill('TODAY’S FIND'));assert(!WEEKDAY35.test(mk));
+  // the Finds swatch shows the colour the walls take; Adire indigo is a deep indigo (not the pale lilac it read as at #8C9BC0)
+  assert.deepEqual([...mk.matchAll(/class="paint35-swatch" style="background:(#[0-9A-Fa-f]{6})"/g)].map(m=>m[1]),J('PAINTS35.map(p=>p.hex)'),'swatches match the paints');
+  assert.equal(run("PAINTS35.find(p=>p.id==='indigo').hex"),'#3F5B8E','Adire indigo');
   at(...AWAY);run("dispatch('buyPaint35',{id:'indigo'});");assert.equal(run('S.money'),20000,'away from the stall: nothing charged');
   at(...STALL);run("dispatch('buyPaint35',{id:'indigo'});dispatch('buyPaint35',{id:'indigo'});dispatch('buyPaint35',{id:'nope'});");assert.equal(run('S.money'),17500,'charged once');assert.deepEqual(J('S.home.paints'),['indigo']);
   assert(run("panel.innerHTML.includes('Yours')"));
   const orig=run("globalThis.ORIG=TUNE35.flat.walls.map(m=>m.material);globalThis.ORIGHEX=ORIG.map(m=>m.color.getHex());globalThis.FORIG=TUNE35.flat.floor.material;ORIG.length");assert.equal(orig,6);
   at(...AWAY);run("dispatch('paint35',{id:'indigo'});");assert.equal(run('S.home.wall'),undefined,'away from home: nothing');
   at(...HOME);run("dispatch('paint35',{id:'nope'});dispatch('paint35',{id:'teak'});");assert.equal(run('S.home.wall===undefined&&S.home.floor===undefined'),true,'unknown or unowned paints refused');
-  run("dispatch('paint35',{id:'indigo'});");assert.equal(run('S.home.wall'),'indigo');const want=run("new THREE.Color('#8C9BC0').getHex()");
+  run("dispatch('paint35',{id:'indigo'});");assert.equal(run('S.home.wall'),'indigo');const want=run("new THREE.Color(PAINTS35.find(p=>p.id==='indigo').hex).getHex()");
   assert.deepEqual(J('TUNE35.flat.walls.map(m=>m.material.color.getHex())'),Array(6).fill(want),'all six walls painted');
   assert.equal(run('TUNE35.flat.walls.every((m,k)=>m.material!==ORIG[k]&&ORIG[k].color.getHex()===ORIGHEX[k])'),true,'the shared materials keep their colour');
   assert.equal(run('TUNE35.flat.floor.material===FORIG'),true,'the floor is untouched');
@@ -241,7 +244,7 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   run("FADEABLE.splice(FADEABLE.indexOf(FW),1);envApplyMaterials(ENV_PRESETS.find(p=>p.id===ENV23.id)||ENV_PRESETS[0]);");
   // an unknown paint id (a later build's) renders unpainted and is kept
   run("S.home.wall='mystery';applyPaint35();openLife34('home');");assert.equal(run('TUNE35.flat.walls.every(m=>!m.userData.paint35Own)'),true);assert.equal(run('S.home.wall'),'mystery');
-  run("delete S.home.wall;applyPaint35();");return {wallHex:'#8C9BC0',prices:J('PAINTS35.map(p=>p.price)')};});
+  run("delete S.home.wall;applyPaint35();");return {wallHex:run("PAINTS35.find(p=>p.id==='indigo').hex"),prices:J('PAINTS35.map(p=>p.price)')};});
 
  // 9. Copy
  check(9,'Copy: no “two watered nights”; plan details start “Tomorrow morning,” without a lesson price; Tunde’s card, the note and the almanac follow the rules',()=>{

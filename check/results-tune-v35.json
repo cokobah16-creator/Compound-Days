@@ -1,5 +1,5 @@
 {
-  "build": "v35-f6dcede2",
+  "build": "v35-93dae475",
   "passed": true,
   "checks": [
     {
@@ -84,10 +84,10 @@
       }
     },
     {
-      "name": "8. Paint: the six flat walls and the floor are tagged; buy at Finds, paint at home, undo, reload and a courtyard style keep it; env keeps its own materials",
+      "name": "8. Paint: the six flat walls and the floor are tagged; buy at Finds (each card’s swatch is its paint’s colour, Adire indigo a deep indigo #3F5B8E), paint at home, undo, reload and a courtyard style keep it; env keeps its own materials",
       "passed": true,
       "info": {
-        "wallHex": "#8C9BC0",
+        "wallHex": "#3F5B8E",
         "prices": [
           2500,
           2000,

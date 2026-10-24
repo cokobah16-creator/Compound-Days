@@ -45,7 +45,7 @@ The build ships three wall colours and two floors as flat colours on the existin
 
 | Finish | Kind | Stand-in colour | Final swatch should read as |
 |---|---|---|---|
-| Adire indigo | wall | `#8C9BC0` | Indigo limewash with the soft unevenness of adire dye, not a flat blue |
+| Adire indigo | wall | `#3F5B8E` | Indigo limewash with the soft unevenness of adire dye, not a flat blue |
 | Palm green | wall | `#A9BF9C` | Matt green plaster, slightly chalky |
 | Ochre limewash | wall | `#E6C98C` | Warm yellow-ochre limewash with brush variation |
 | Cream terrazzo | floor | `#DCCFB8` | Poured terrazzo with small grey, black and brown chips |

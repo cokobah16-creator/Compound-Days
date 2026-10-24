@@ -12,7 +12,7 @@ function cue35(name,data){if(typeof silentMode==='function'&&silentMode())return
 
 /* Wall colours and floors, always on offer at Palm Court Finds (₦1,500–2,500). */
 const PAINTS35=[
- {id:'indigo',kind:'wall',name:'Adire indigo',hex:'#8C9BC0',price:2500},
+ {id:'indigo',kind:'wall',name:'Adire indigo',hex:'#3F5B8E',price:2500},     // deep enough to read as indigo limewash under the evening light, not lilac
  {id:'palm',kind:'wall',name:'Palm green',hex:'#A9BF9C',price:2000},
  {id:'ochre',kind:'wall',name:'Ochre limewash',hex:'#E6C98C',price:1500},
  {id:'terrazzo',kind:'floor',name:'Cream terrazzo',hex:'#DCCFB8',price:2500},

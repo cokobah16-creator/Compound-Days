@@ -1,5 +1,5 @@
 {
-  "build": "v35-f6dcede2",
+  "build": "v35-93dae475",
   "passed": true,
   "checks": [
     {
@@ -24,11 +24,12 @@
           "paint",
           "evening",
           "sleep"
-        ]
+        ],
+        "housewarmingCounts": "2 recipes known, 1 meal cooked together"
       }
     },
     {
-      "name": "Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly",
+      "name": "Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly; with no clipboard the page that shows it is titled “Timeline and days”",
       "passed": true,
       "info": {
         "blockLines": 24,
@@ -52,7 +53,7 @@
         "minutes": [
           22.49,
           22.59,
-          22.56
+          22.72
         ],
         "statuses": [
           "NOT YET",
@@ -76,7 +77,7 @@
       "name": "Real 6. The command line: two files of one tester, the plain report and --json agree with the module; exit code 0; an unreadable file gives a message and exit code 2",
       "passed": true,
       "info": {
-        "row": "amaka 4 22.5 / 22.6 / 22.6 2 3 3 2/2 0:20 day 3"
+        "row": "amaka 4 22.5 / 22.6 / 22.7 2 3 3 2/2 0:20 day 3"
       }
     },
     {
@@ -182,7 +183,7 @@
       }
     },
     {
-      "name": "Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails); not back after 49 h by the copy time fails; not back yet is NOT YET",
+      "name": "Synthetic gate 2. Day 3 started exactly 48 h after day-2 Sleep passes and 48 h plus one second fails; a morning-page copy that woke day 3 is read by the Continue that followed (47 h passes, 49 h fails), also when the morning page saw a tap that was logged (watering) before the tester left; a pause logged after two minutes of day-3 play is not the return; in the shipped runtime, a copy on the day-3 morning page and a tap in the same tab 47 h or 49 h after Sleep (no reload, no Continue) logs a resume and is read as the return (passes, fails); not back after 49 h by the copy time fails; not back yet is NOT YET",
       "passed": true,
       "info": {
         "ok": {
@@ -196,7 +197,11 @@
           "notYet": 0
         },
         "resume47": "PASS",
-        "resume49": "FAIL"
+        "resume49": "FAIL",
+        "afterATap49": "FAIL",
+        "pauseAfterPlay": "PASS",
+        "sameTab47": "PASS",
+        "sameTab49": "FAIL"
       }
     },
     {

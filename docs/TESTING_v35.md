@@ -6,7 +6,7 @@ This is how build v35 ("Three days in Palm Court") is tested before the town gro
 - **B.** The guide for the five new testers (plan section 7).
 - **C.** How to run the gates tool and read its report.
 
-The game must be on the live link before any of this. Test on the live link, not on a laptop.
+The game must be on the live link before any of this. The live link serves the build on the `master` branch, so v35 must be merged into `master` and deployed before anyone starts, the owner included. Check that the small print at the foot of the Menu names a v35 build. Test on the live link, not on a laptop.
 
 ---
 
@@ -52,7 +52,9 @@ Note first: phone model, browser, and whether the phone is in low-power mode.
 - [ ] On day 3, before six, Today offers “Wait on the veranda until six”. Use it, or stand on the veranda at six.
 - [ ] Tunde, Mama Nkechi and Ada walk in from the gate and stand in a row by the rail. All three, you and your companion fit on the screen in portrait.
 - [ ] Nobody turns their back to the camera. The camera moves smoothly, with no jumps, from the gate to Goodnight.
-- [ ] Nobody else walks through the group or in front of it while they talk, no street sign (such as Suya) sits over them, and on the way out nobody walks between the camera and you.
+- [ ] Nobody else walks through the group or in front of it while they talk.
+- [ ] From the moment they arrive until they have gone, no street sign (such as Suya) sits over them, you or your companion. A sign that would fades out, and fades back in once they have gone. Nothing blinks off or on.
+- [ ] After Goodnight they walk off to the left along the street, away from you, and nobody walks between the camera and you. Once they are off the screen they go back to their usual places.
 - [ ] Each says one line. Ada’s mentions the armchair if it is placed.
 - [ ] Screenshots: the harvest (d3-harvest) and the evening (d3-evening).
 
@@ -118,15 +120,17 @@ Write the time from your own watch next to each note.
 
 ### Sittings
 - A sitting can stop anywhere. Days 2 and 3 can be later sittings.
-- Ask them to come back for day 3 within two days of finishing day 2, but do not push. Gate 2 measures whether they do.
+- Tell them to play again whenever they feel like it. Do not name a day or a deadline.
+- Note for the owner: gate 2 measures whether testers come back on their own. Naming a deadline, such as “within two days”, would bias it.
 
 ### After each sitting: the copy button
 Ask the tester to:
-1. If the day is over, press **Sleep until tomorrow** and choose a face.
+1. If the day is over, press **Sleep until tomorrow**, choose a face, then press **Sleep until tomorrow** again. The second press ends the day: without it the log does not record that they slept.
 2. Close any open page (for example **Back to the compound**).
 3. Open the **Menu** (top right) and tap **Copy timeline and days**. A message says “Timeline copied.”
    If a page with the text opens instead, press and hold on the text, select all of it, and copy.
 4. Paste it into a message to you (text message, WhatsApp or e-mail). Paste **all** of it: the last line starts `CD35/1 end`.
+5. Close the browser tab. Next time, they open the link again and press **Continue**.
 
 You (the reviewer):
 - Save each paste as a plain text file named for the tester and the sitting: `amaka-1.txt`, `amaka-2.txt`, and so on.
@@ -136,7 +140,7 @@ You (the reviewer):
   - `Note: asked where the rocks were` (as many as you like)
   - `Done: yes` once that tester has finished all their sittings.
 
-Copying on the morning page counts as starting the next day in the log. That is fine: the tool takes the real return from the next Continue.
+Copying on the morning page counts as starting the next day in the log. That is fine: the tool takes the real return from the next Continue, or, if the tab was left open, from the first tap after ten minutes or more away.
 
 ### The day-3 prompts
 - After they choose a face for day 3, two optional boxes appear on the night page: “One thing you want for your flat” and “One thing you know about a neighbour”. They save as they are typed.
@@ -174,7 +178,7 @@ The table has one row per tester:
 
 Each gate then shows **PASS**, **FAIL** or **NOT YET**, with its numbers:
 1. **Four of five finish day 2 without coaching.** The log shows who slept on day 2. Coaching is your call, so a tester only counts once their file says `Coached: no`. Until then the gate says NOT YET and names who is missing a note.
-2. **Day 3 within 48 hours of day 2’s Sleep.** If the copy on the morning page woke day 3, the tool uses the Continue that followed as the return.
+2. **Day 3 within 48 hours of day 2’s Sleep.** Day 3 starts at the first return logged after day 2’s Sleep: a Continue, or the first tap after ten minutes or more away (or the page shown again after ten minutes hidden). The report marks it “(by its return)”. Without one, it is day 3’s first tap.
 3. **Day 3’s mean rating is at least day 1’s, and three of five give day 3 the top face.**
 4. **Both day-3 prompts answered specifically.** The tool counts an answer with two words, or one word of four letters or more, unless it is a non-answer such as “nothing” or “idk”. The report quotes every answer. Read them yourself.
 5. **The median real day is 20 to 35 minutes.** It uses days 1 to 3 that were slept. If it stays under 20, the plan slows the clock outside the guided evening.
