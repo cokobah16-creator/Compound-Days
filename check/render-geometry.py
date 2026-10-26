@@ -28,7 +28,7 @@ def render(file,yaw=0,head=False,seating=False,world=False,size=(650,850)):
         tex=m.get('texture');texture_id=-1
         if tex:
             if tex not in texture_ids:
-                source=Path(__file__).resolve().parents[1]/'dist'/tex
+                source=Path(__file__).resolve().parents[1]/'public'/'play'/tex
                 # Fixed offline mip level prevents high-frequency weave aliasing.
                 texture_ids[tex]=len(textures);textures.append(np.array(Image.open(source).convert('RGB').resize((128,128),Image.Resampling.LANCZOS).resize((512,512),Image.Resampling.BILINEAR)))
             texture_id=texture_ids[tex]

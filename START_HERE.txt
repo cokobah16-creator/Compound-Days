@@ -1,48 +1,53 @@
-COMPOUND DAYS — WATERSIDE
-Build: v34-a15c4aa3
+COMPOUND DAYS v36 — ONE PHONE EACH, ONE SHARED HOUSEHOLD
+Build: v36-70429384
 
-PLAY THE HOSTED GAME
-https://compound-days-waterside.snugguppy7.chatgpt.site
-The hosted game remains private to its owner.
+PLAY ONLINE
+https://compound-days-waterside.superokie123.chatgpt.site
 
-PLAY THIS COPY ON A COMPUTER
+Give your partner viewer access to the private Site. Each person signs in with
+their own ChatGPT account, on their own phone. One starts a household; the other
+joins with its code. Each person chooses their own character and confirms ready.
+
+Your shared home saves on the server. Opening this ZIP alone does not connect
+two phones, and this export does not contain your live household database.
+
+PLAY THE DOWNLOADED CLIENT LOCALLY
 1. Extract the entire ZIP.
-2. Open a terminal inside the extracted Compound_Days_v34 folder.
-3. With Python 3 installed, run:
-   python3 -m http.server 8000 --bind 127.0.0.1 --directory dist
-   On Windows, use:
-   py -m http.server 8000 --bind 127.0.0.1 --directory dist
-4. Open http://localhost:8000 in a WebGL-capable browser.
-5. Press Ctrl+C in the terminal when finished.
+2. Open a terminal in the Compound_Days_v36 folder.
+3. Run: python -m http.server 8000 --directory public/play
+   Use python3 instead of python if needed.
+4. Open http://localhost:8000 and choose "Play on this device".
 
-Do not launch dist/index.html by double-clicking: file:// can block assets.
-The game itself needs no package installation or build command.
-The ZIP is a browser-game source package, not an iOS or Android installer.
-On a phone, use the hosted link.
+This static command supports companion/local play only. Do not double-click
+index.html: file:// can prevent asset loading.
 
-CONTROLS
-Player 1: WASD to walk, E to act.
-Player 2: arrow keys to walk, Enter to act.
-Touch devices: on-screen sticks and action buttons.
-Choose a companion for solo play, or two people on the same screen.
-Open Tasks for the new Today / Almanac / Garden / Finds / People / Home journal.
+WHAT IS INCLUDED
+- public/play/: playable client, Three.js, assets, game source and controls.
+- app/, lib/, worker/: shared-household API and hosting source.
+- db/, drizzle/: database schema and migration SQL (no player records).
+- package.json, pnpm-lock.yaml, scripts/: server build/development setup.
+- check/: tests, results and clearly labelled historical review renders.
+- tools/: asset-generation tools.
+- README.md: features, limitations, save behavior and a 25-minute playtest.
 
-INCLUDED
-dist/       Playable HTML, JavaScript, styles, bundled engine and all assets.
-tools/      Character, wardrobe, material and build-generation source tools.
-check/      Runtime tests, reports and historical offline review images.
-README.md   Features, setup, verification and known limits.
-RIG_CONTRACT_V32.md   Current rig and garment conventions.
-SHA256SUMS.txt        Checksums for every payload file in this ZIP.
+SERVER DEVELOPMENT
+Use Node.js >=22.13 and the pnpm version specified in package.json.
+Install dependencies with: pnpm install --frozen-lockfile
+Build with: pnpm build
+Apply the supplied migration to a fresh local D1 database:
+node --import ./scripts/sites-env.mjs ./node_modules/wrangler/bin/wrangler.js d1 execute DB --local --config dist/server/wrangler.json --persist-to .wrangler/state --file drizzle/0000_tense_hobgoblin.sql
+Then run: pnpm dev
+Use the local URL printed by the development server. A portable local preview
+can simulate one development identity; real two-account play uses the hosted
+Site's authentication and D1 database. Do not fake identity headers in production.
 
-SAVE AND VERIFICATION NOTES
-Saves belong to the browser and origin. The hosted save does not automatically
-transfer to localhost, another browser or another device. No personal saves
-are included. Cross-device network co-op is not provided by this static copy.
+The .openai/hosting.json file retains this existing Site's project identity.
+It is not a credential. Preserve it when updating this Site; use the normal
+Sites creation workflow when deploying a separate copy as a different Site.
+Dependencies, Git history, credentials and live database contents are excluded.
 
-The v34 tests and earlier regressions passed. WebGL visual review and real-phone
-performance remain unverified; the preview browser could not create a WebGL
-context. Images under check/review* are older offline reference renders, not
-v34 gameplay screenshots. See README.md for the full limitations.
-
-Published source commit: 244e8b4fa089c3ab057b3edfc8d53e9906bedb50
+VALIDATION AND LIMITS
+43 automated test groups passed for this release. Physical two-phone latency,
+touch usability and WebGL visual verification still need a real-device playtest.
+Continuous furniture carrying is local-only in this first online slice;
+shared decorating uses the Home editor. See README.md for full details.

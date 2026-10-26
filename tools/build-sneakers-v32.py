@@ -5,7 +5,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 ROOT=Path(__file__).resolve().parents[1]
 spec=importlib.util.spec_from_file_location('io32',ROOT/'tools/build-starter-v30.py');io=importlib.util.module_from_spec(spec);spec.loader.exec_module(io)
-body=json.loads((ROOT/'dist/assets/characters/efe.gltf.json').read_text());prim=body['meshes'][0]['primitives'][0];neutral=io.read_accessor(body,prim['attributes']['POSITION'])
+body=json.loads((ROOT/'public/play/assets/characters/efe.gltf.json').read_text());prim=body['meshes'][0]['primitives'][0];neutral=io.read_accessor(body,prim['attributes']['POSITION'])
 d=copy.deepcopy(body);d.pop('animations',None);keep=set(d['skins'][0]['joints'])|{0}
 for node in d['nodes']:
  node['children']=[n for n in node.get('children',[]) if n in keep];node.pop('mesh',None);node.pop('skin',None)
@@ -46,5 +46,5 @@ for side in [1,-1]:
   F.extend([[start,start+1,start+2],[start,start+2,start+3]])
  emit(P,F,2,side)
 d['meshes']=[{'name':'sneakers32','primitives':prims}];node=len(d['nodes']);d['nodes'].append({'name':'sneakers32','mesh':0,'skin':0});d['nodes'][0]['children'].append(node)
-(ROOT/'dist/assets/wardrobe/sneakers.gltf.json').write_text(json.dumps(d,separators=(',',':')))
+(ROOT/'public/play/assets/wardrobe/sneakers.gltf.json').write_text(json.dumps(d,separators=(',',':')))
 print('Sneakers: continuous upper/collar, two soles, eight lace bars; 2960 triangles')

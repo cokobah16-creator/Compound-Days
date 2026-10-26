@@ -1,12 +1,13 @@
 // Executes the shipped game logic and real Three.js/glTF loader without WebGL.
 // This is geometry/state verification, not a browser or GPU performance test.
 const fs=require('fs'),path=require('path'),vm=require('vm');
-const root=process.env.COMPOUND_GAME_DIR||path.resolve(__dirname,'..','dist');
+const root=process.env.COMPOUND_GAME_DIR||path.resolve(__dirname,'..','public','play');
 const THREE=require(path.join(root,'assets/vendor/three-r128.min.js'));
 const noop=()=>{};
 function element(){
+  const classes=new Set();const classList={add:(...c)=>c.forEach(x=>classes.add(x)),remove:(...c)=>c.forEach(x=>classes.delete(x)),contains:c=>classes.has(c),toggle(c,force){const add=force===undefined?!classes.has(c):force;if(add)classes.add(c);else classes.delete(c);return add;}};
   const ctx=new Proxy({measureText:s=>({width:String(s).length*9}),createLinearGradient:()=>({addColorStop:noop}),createRadialGradient:()=>({addColorStop:noop}),createImageData:(w,h)=>({data:new Uint8ClampedArray(w*h*4)}),getImageData:(x,y,w,h)=>({data:new Uint8ClampedArray(w*h*4)})},{get:(o,k)=>k in o?o[k]:noop});
-  const e={style:{},classList:{add:noop,remove:noop,toggle:noop,contains:()=>false},dataset:{},children:[],innerHTML:'',textContent:'',clientWidth:800,clientHeight:600,width:800,height:600,
+  const e={style:{},classList,dataset:{},children:[],innerHTML:'',textContent:'',clientWidth:800,clientHeight:600,width:800,height:600,
     addEventListener:noop,removeEventListener:noop,setAttribute:noop,getAttribute:()=>null,appendChild(c){this.children.push(c);c.parentNode=this;return c},removeChild:noop,remove:noop,contains:()=>true,querySelector:()=>null,querySelectorAll:()=>[],insertAdjacentHTML:noop,getContext:()=>ctx,toDataURL:()=>'',getBoundingClientRect:()=>({left:0,top:0,width:800,height:600}),focus:noop,blur:noop};return e;
 }
 const els=new Map(),storage=new Map();

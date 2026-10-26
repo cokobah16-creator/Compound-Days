@@ -1,0 +1,43 @@
+{
+  "build": "v36-70429384",
+  "passed": true,
+  "checks": [
+    {
+      "name": "Additive bench save preserves household, money, belongings and daily life",
+      "passed": true
+    },
+    {
+      "name": "Each player holds a distinct end; move and turn controls contribute independently",
+      "passed": true
+    },
+    {
+      "name": "Safe drop, role swap and interrupted-carry reload release both players without losing the bench",
+      "passed": true
+    },
+    {
+      "name": "Swept collision prevents wall tunnelling and reset restores a safe checkpoint",
+      "passed": true
+    },
+    {
+      "name": "Complete gate / generator / courtyard / veranda route is traversable with bench and both holders",
+      "passed": true
+    },
+    {
+      "name": "Placement needs two approvals, changing the proposal clears consent, and reload preserves the committed choice",
+      "passed": true
+    },
+    {
+      "name": "Both existing rigs sit on the bench; saving seated characters retains safe standing resume positions",
+      "passed": true
+    },
+    {
+      "name": "Three complete deliveries succeed; replay cannot duplicate money, items or the first bench memory",
+      "passed": true
+    },
+    {
+      "name": "Rebuilding is idempotent; finite bench meshes and activity UI are available",
+      "passed": true
+    }
+  ],
+  "method": "Shipped Three.js runtime, full compound collisions, keyboard input roles, saves, seating and three controlled deliveries in Node. Cloud preview cannot create WebGL; no rendered or human playtest claim."
+}

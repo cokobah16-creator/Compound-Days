@@ -21,7 +21,7 @@ def export_fit():
     subprocess.run(['node','-e',code,str(filename)],cwd=ROOT,check=True)
     return np.array(json.loads(filename.read_text())).reshape(-1,3)
 
-body=json.loads((ROOT/'dist/assets/characters/efe.gltf.json').read_text())
+body=json.loads((ROOT/'public/play/assets/characters/efe.gltf.json').read_text())
 primitive=body['meshes'][0]['primitives'][0]
 neutral=io.read_accessor(body,primitive['attributes']['POSITION']).astype(float)
 fit=export_fit();offset=fit-neutral
@@ -258,7 +258,7 @@ def make(name):
     d['materials']=[{'name':'top','doubleSided':True,'pbrMetallicRoughness':{'baseColorFactor':[.8,.75,.65,1],'metallicFactor':0,'roughnessFactor':.94}}]
     d['meshes']=[{'name':name+'_sewn32','primitives':[{'attributes':attrs,'indices':index,'material':0}]}]
     node=len(d['nodes']);d['nodes'].append({'name':name+'_sewn32','mesh':0,'skin':0});d['nodes'][0]['children'].append(node)
-    (ROOT/'dist/assets/wardrobe'/f'{name}.gltf.json').write_text(json.dumps(d,separators=(',',':')))
+    (ROOT/'public/play/assets/wardrobe'/f'{name}.gltf.json').write_text(json.dumps(d,separators=(',',':')))
     return {'asset':name,'vertices':len(P),'triangles':len(F),'hidden':len(hidden)}
 
 if __name__=='__main__':

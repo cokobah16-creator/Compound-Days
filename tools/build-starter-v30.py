@@ -12,7 +12,7 @@ import numpy as np
 from scipy.spatial import cKDTree
 
 ROOT = Path(__file__).resolve().parents[1]
-ASSETS = ROOT / 'dist/assets'
+ASSETS = ROOT / 'public/play/assets'
 DTYPES = {5126: '<f4', 5125: '<u4', 5123: '<u2', 5121: 'u1'}
 WIDTHS = {'SCALAR': 1, 'VEC2': 2, 'VEC3': 3, 'VEC4': 4, 'MAT4': 16}
 

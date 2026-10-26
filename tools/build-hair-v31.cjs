@@ -34,7 +34,7 @@ function exportHair(name,geos,description){
  const out={bufferView:view,componentType:component,type,count:data.length/width};if(type==='VEC3'){out.min=[0,1,2].map(k=>data.filter((v,i)=>i%3===k).reduce((a,v)=>Math.min(a,v),Infinity));out.max=[0,1,2].map(k=>data.filter((v,i)=>i%3===k).reduce((a,v)=>Math.max(a,v),-Infinity));}d.accessors.push(out);return d.accessors.length-1;}
  const attributes={POSITION:accessor(P,3,'VEC3'),NORMAL:accessor(N,3,'VEC3'),COLOR_0:accessor(C,3,'VEC3')},indices=accessor(I,1,'SCALAR',5125);
  d.meshes=[{name,primitives:[{attributes,indices,material:0}]}];const bytes=Buffer.concat(chunks);d.buffers=[{byteLength:bytes.length,uri:'data:application/octet-stream;base64,'+bytes.toString('base64')}];
- fs.writeFileSync(path.join(__dirname,'../dist/assets/wardrobe',name+'.gltf.json'),JSON.stringify(d));return {name,triangles:I.length/3};
+ fs.writeFileSync(path.join(__dirname,'../public/play/assets/wardrobe',name+'.gltf.json'),JSON.stringify(d));return {name,triangles:I.length/3};
 }
 const coils=[shell('curls')];
 for(let ring=0;ring<8;ring++){

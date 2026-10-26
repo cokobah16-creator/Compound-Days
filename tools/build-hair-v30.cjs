@@ -1,7 +1,7 @@
 // Three compact hairstyles authored directly around the v29 skull, in Head space.
 const fs=require('fs'),path=require('path');
-const THREE=require('../dist/assets/vendor/three-r128.min.js');
-const outDir=path.join(__dirname,'../dist/assets/wardrobe');
+const THREE=require('../public/play/assets/vendor/three-r128.min.js');
+const outDir=path.join(__dirname,'../public/play/assets/wardrobe');
 function cap(rx=.085,ry=.097,rz=.102){
  const p=[],idx=[],rows=14,cols=48;
  for(let r=0;r<=rows;r++)for(let j=0;j<=cols;j++){

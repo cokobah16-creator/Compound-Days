@@ -2,7 +2,7 @@
 from pathlib import Path
 import numpy as np
 from PIL import Image,ImageDraw,ImageFilter
-ROOT=Path(__file__).resolve().parents[1]/'dist/assets/materials'
+ROOT=Path(__file__).resolve().parents[1]/'public/play/assets/materials'
 ROOT.mkdir(parents=True,exist_ok=True)
 rng=np.random.default_rng(31018);N=512
 y,x=np.mgrid[:N,:N]

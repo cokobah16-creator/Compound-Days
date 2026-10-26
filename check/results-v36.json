@@ -1,0 +1,21 @@
+{
+  "build": "v36-70429384",
+  "passed": true,
+  "checks": [
+    "Authenticated membership, two-person capacity and per-account household discovery",
+    "Concurrent duplicate requests charge once and replay after an ambiguous response",
+    "Conflicting spending cannot overwrite a newer shared purse",
+    "Different player contributions merge without lost updates",
+    "Partner character ownership and patch path validation are enforced server-side",
+    "Independent presence, safe session takeover and partner departure",
+    "Real game runtimes create, join, choose separate characters and enter full-screen views",
+    "Movement presence is separate from shared saves and the online day does not drift per phone",
+    "Shared home placement propagates actual furnishings and conserves storage",
+    "Client retains an unsent change and safely retries a lost commit response",
+    "Returning to a household restores shared furniture and money",
+    "Menus stay on their own phone; real cooking accepts concurrent contributions from both stations",
+    "Both present players confirm a new day, and the same day reaches both devices",
+    "The actual renderer uses one full portrait viewport and the local character camera"
+  ],
+  "method": "Two separate shipped game runtimes against the actual shared-household handler and local Cloudflare D1. No GPU or physical phone claim."
+}

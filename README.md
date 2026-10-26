@@ -1,19 +1,133 @@
 # Compound Days — Waterside
 
-Build **v34-a15c4aa3** — the first living-compound loop, continuing the published v33 guide and v32 visual foundation.
+Build **v36-70429384** — One shared household, continuing the v35 game and v32 visual foundation.
 
 A browser life game set in a Nigerian compound. Create two independent players, move the sofa into your flat, shop, cook, learn crafts, furnish your home and host neighbours.
 
-## Play
+## v36 — One phone each, one shared household
 
-Choose **Start with a companion** to play alone, or **Start a new household on this phone** for two people sharing one screen.
+The primary title screen now opens a shared household. Each person signs in with
+**their own ChatGPT account** on their own phone and gets a single full-screen
+camera, one thumbstick, and Act. Keyboard/gamepad controls still work.
 
-- Player 1: WASD to move, E to interact.
-- Player 2: arrow keys to move, Enter to interact.
-- Phones: use the on-screen sticks and action buttons. Landscape gives both players more room.
-- Saves stay in that browser on that device. Published v30–v34 share an origin and additive save schema.
+1. The Site owner shares the private Site with their partner as a viewer.
+2. One person selects **Start our shared household**, or explicitly copies their
+   existing device-local save with **Copy this phone’s household online**.
+3. The partner selects **Join with a household code** and enters the full code.
+4. Each person makes their own character, confirms ready, then moves in.
+5. Later, either person selects their household on the title screen. Both phones
+   can be closed between sessions; the shared save does not need a host phone.
 
-Cross-device play requires the inherited host's room/database API, which is unavailable on this static hosted copy. Companion and same-screen play are supported.
+A household code grants one of two membership slots inside the game. It does not
+change the Site audience or bypass Site sign-in. The existing Site remains private;
+the partner needs Site access before they can join. A second tab for the same
+account returns to the same character, with explicit takeover if already active.
+
+The prototype synchronizes positions, home placement/storage, the household purse,
+pantry, dishes, garden, discoveries and neighbour progress. Menus remain on the
+phone that opened them. Both players can contribute to the existing two-station
+cooking activity. The online day advances through actions, avoiding two independent
+clocks; both present players confirm before advancing to tomorrow. Either may
+continue when the other is away. Existing offline saves are preserved separately.
+
+Shared furniture placement uses the Home editor. Furniture is delivered for a new
+online household so the old sofa-carrying tutorial does not block entry. The v35
+bench delivery and continuous prop physics remain local-mode activities pending
+online adaptation. Shared album records retain captions; captured image bytes
+are not uploaded in this version. This is the first online household slice, not
+a claim that every legacy physical co-op activity has been networked.
+
+### Save and connection behavior
+
+- Server-side membership uses the Sites-provided user identity.
+- D1 transactions commit changes with field preconditions, a revision check and
+  retry receipts. Repeated requests do not apply the same purchase twice.
+- Unrelated field changes can merge. Conflicting edits keep the latest save and
+  tell the affected player to retry; they never silently replace a partner’s edit.
+- Changes awaiting acknowledgement are retained on the originating device and
+  retried with the same operation ID. Further edits pause during reconnection.
+- Position updates are independent of household saves; remote movement is
+  interpolated. Phone latency and frame rate still need a real-device playtest.
+- Gameplay calculations run in the clients. Membership, character ownership,
+  write ordering and save integrity are checked by the server. This is a trusted
+  two-person co-op model, not a competitive anti-cheat server.
+
+### Validation
+
+```sh
+node check/verify-v36.mjs
+node check/verify-v35.cjs
+node check/verify-v33.cjs
+node check/verify-v34.cjs
+```
+
+The online test runs two separate copies of the shipped game code against the
+actual API handler and a local Cloudflare D1 database. It covers membership,
+concurrent writes, retries, character setup, movement, decorating, cooking,
+reconnection, shared-day approval, and the single full-screen render path.
+The tests do not substitute for a physical two-phone session. The managed browser
+previously could not create WebGL; visual and phone performance remain unverified.
+
+### A 25-minute two-phone playtest
+
+- 0–5: join using two accounts, create characters, move in.
+- 5–10: walk apart. Open a menu on one phone while the other keeps walking.
+- 10–15: place the starter lamp using Home. Confirm its position on both phones.
+- 15–20: cook at separate stations; swap who starts the next activity.
+- 20–25: leave and rejoin; confirm furnishings, purse and dishes. Briefly interrupt
+  one connection and confirm that a pending change saves once after reconnection.
+
+Observe whether both players keep control, whether both screens show the same
+household changes, and whether saving/reconnecting is understandable. Ask: What
+felt like a shared home? When did you wait unnecessarily? Was it easy to find
+each other again?
+
+## Local play
+
+The title screen’s **Play on this device** section retains companion play and
+local two-player play. Player 1 uses WASD + E; Player 2 uses arrows + Enter.
+Local saves stay in that browser. Copying one online creates a separate shared
+household and does not overwrite the local save.
+
+## v35 — A Bench for Evening Gist
+
+Open **Tasks → Try the bench delivery** or **Menu → A Bench for Evening Gist**.
+Choose **Meet at the bench**. This opt-in activity uses two people on one device;
+a companion household can explicitly switch to local two-player controls in its
+activity panel. It does not support cross-device play or automatic companion steering.
+
+- Both players press Act (P1 **E**, P2 **Enter**) to hold different ends. Initially
+  P1 moves with WASD / their stick and P2 turns with left/right / their stick.
+  Gamepad movement and action inputs use the existing assignments.
+- Follow the gold rings from the gate, around the generator and planter, to the
+  courtyard-facing veranda outside your flat. Swept bench and holder collision
+  checks prevent sliding through walls or rotating a player into scenery.
+- Either action button sets the bench down. Use its Menu panel to swap roles,
+  reset to the last clear checkpoint, or pause the delivery and explore. The
+  in-game clock waits while the activity is active; paused delivery restores it.
+- At the veranda the characters step clear. Preview three positions with the
+  arrow buttons or either player's left/right controls. Both players must agree
+  using their own Act button or labelled approval button. A changed selection
+  clears previous approvals. Occupied spots cannot be committed.
+- The bench stays in the selected position after reloading. Stand nearby together
+  and press Act to sit, then Act to get up. The existing rig's seated IK follows
+  the bench's transform. Reload resumes safely on the ground, not on the seat.
+- Interrupted carries resume grounded with neither player trapped holding an end.
+  Replays require an explicit choice and do not duplicate the one-time memory.
+  The household's other possessions, purse, and existing progression are retained.
+
+Verification: `node check/verify-v35.cjs` runs nine groups against the shipped
+Three.js runtime with the actual compound and loaded prop collisions. It covers
+independent controls, the real main loop, pause/clock behaviour, safe resets,
+three complete simulated deliveries, all three placement choices, double
+approval, replay, reload, seating, and finite/idempotent geometry. The v33 and
+v34 progression regressions also run. These are automated checks, not a human
+co-op playtest. The cloud preview still cannot create a WebGL context; rendered
+appearance and real-device frame rate remain unverified.
+
+Suggested 25-minute playtest: 3 minutes to discover lifting, 7 for the first
+route, 7 to replay with roles swapped, 5 to compare positions/sit/reload, and
+3 to discuss whether both roles felt useful and which turns felt awkward.
 
 ## v34 — Your day in Palm Court
 
@@ -80,13 +194,24 @@ The v34 supervised browser preview served successfully, but the cloud browser re
 
 ## Run a local copy
 
-The game needs no build step or package installation. Serve `dist` through HTTP:
+The complete shared game now includes a server and database. The playable client
+source and bundled assets live in `public/play/`; `dist/` is generated deployment
+output. Hosting configuration is in `.openai/hosting.json`. Server endpoints are
+in `app/api/household/route.ts`, with game save logic in `lib/households.mjs`.
+
+Use the package manager specified in `package.json`, install dependencies and run
+`pnpm dev`. Local D1 must have the SQL files in `drizzle/` applied first. The
+included Sites scripts preserve the supported authentication and D1 bindings;
+production sign-in is supplied by Sites. Never emulate identity in production.
+
+For **offline/local play only**, the client still works without a build step:
 
 ```sh
-python -m http.server 8000 --directory dist
+python -m http.server 8000 --directory public/play
 ```
 
-Open `http://localhost:8000`. Opening `index.html` through `file://` can block asset loading.
+Open `http://localhost:8000` and choose **Play on this device**. This static command
+does not start the shared-household API. Opening through `file://` can block assets.
 
 ## Rebuild assets
 
