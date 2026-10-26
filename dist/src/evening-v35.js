@@ -1,11 +1,12 @@
 /* v35 veranda evening (plan 4.4, spec section 7). On day 3 or later, between 18:00 and 22:00, while a human player is in the flat or
    on the veranda row, Tunde, Mama Nkechi and Ada walk in from the gate to three standing spots in the open street just south of the
    veranda rail, face the veranda and say one line each (read from the LINES table, Ada's about the armchair when it is placed). The
-   companion stands beside the player. For the first line the camera eases nearer, up to a quarter, but only as far as the player and
-   all three guests stay in view; in a phone's portrait view, and at 1280x800, that is almost nothing. One smoothed camera runs from the
-   trigger to the hand-back: the guests' standing spots come into the framing over the first 1.5 s of the walk-in (while the guests are still
-   off-screen) and leave it over 1.5 s from Goodnight, and the camera distance moves towards the fitted one by at most 2.4% a frame (inwards
-   only 0.95% while they talk), so the evening has no camera jumps. Nobody sits and there are no props. While they arrive and talk, other
+   companion stands beside the player and, within about 2 m of them, is framed with them. For the first line the camera eases nearer, up
+   to a quarter, but only as far as the player, the companion beside them and all three guests stay in view; in a phone's portrait view,
+   and at 1280x800, that is almost nothing. One smoothed camera runs from the trigger to the hand-back: the guests' standing spots come
+   into the framing over the first 1.5 s of the walk-in (while the guests are still off-screen) and leave it over 1.5 s from Goodnight,
+   and the camera distance moves towards the fitted one by at most 2.4% a frame (inwards only 0.95% while they talk), so the evening has
+   no camera jumps. Nobody sits and there are no props. While they arrive and talk, other
    people keep out of the visit's patch and the camera's foreground (walkers turn back, the keke and residents on their schedules wait at its
    edge). A floating sign that a human view shows over a guest, the player or the companion fades out (0.3 s) and stays hidden from the trigger
    until the guests are handed back, then fades in. They leave west along the street, away from the player (or by whichever side never crosses
@@ -211,8 +212,17 @@ body.evening35-active #life-guide34{display:none!important}
   const inside=(x,y,z)=>{const qx=x-cx,qy=y-cy,qz=z-cz,dep=-(qx*CAM_DIR.x+qy*CAM_DIR.y+qz*CAM_DIR.z);if(dep<=0.5)return false;
    const sx=(qx*v21Right.x+qz*v21Right.z)/(dep*tanH),sy=(qx*v21Up.x+qy*v21Up.y+qz*v21Up.z)/(dep*tanV);return Math.abs(sx)<=0.82&&sy>=yLo&&sy<=yHi;};
   const box=(x,y,z)=>{for(const dx of [-.44,.44])for(const h of [-.06,1.98])for(const dz of [-.36,.36])if(!inside(x+dx,y+h,z+dz))return false;return true;};
-  if(!box(p.g.position.x,p.y||0,p.g.position.z))return false;
+  if(!box(p.g.position.x,p.y||0,p.g.position.z))return false;const c=E.compAt(i);if(c&&!box(c[0],0,c[1]))return false;
   for(const k of E.guests){const n=npcs[k];if(n&&n.g.visible&&near(i,n,6)&&!box(n.g.position.x,0,n.g.position.z))return false;}return true;};
+ // the companion beside the player of view i, as the framing counts it (null when not counted): its place drawn from the player towards it by
+ // a weight, the guests' share E.camW times the smaller of E.compW[i] and the nearness weight (1 within 2.2 m, 0 from 3 m). E.compW eases
+ // towards the nearness weight by at most 0.3 a second (set at once on the trigger frame, while E.camW is still 0), so a companion that walks
+ // up mid-line widens the camera slowly (under 1% a frame) and one that walks off leaves the framing at once
+ E.compW=[0,0];
+ const compNear=i=>{if(!(typeof AI!=='undefined'&&AI.on)||isAI(i)||!players[i])return null;const c=players[AI.i];if(!c||c===players[i])return null;
+  const h=players[i].g.position,dx=c.g.position.x-h.x,dz=c.g.position.z-h.z;return {h,dx,dz,w:Math.max(0,Math.min(1,(3-Math.hypot(dx,dz))/0.8))};};
+ E.compStep=function(t,first){for(let i=0;i<2;i++){const n=E.state==='idle'?null:compNear(i),want=n?n.w:0;E.compW[i]=first?want:want>E.compW[i]?Math.min(want,E.compW[i]+t*0.3):want;}};
+ E.compAt=function(i){if(E.state==='idle')return null;const n=compNear(i);if(!n)return null;const w=E.camW*Math.min(E.compW[i],n.w);return w>0?[n.h.x+n.dx*w,n.h.z+n.dz*w]:null;};
  // each frame while the guests arrive, talk or leave: the base loop turns every idle NPC within 4 m to face the nearest player (index.html,
  // the npcs loop in tick, which runs just before updateCameras); turn the guests back. Walking guests face their way; standing guests
  // face as E.faceYaw says, the speaker in three-quarter, using the human view's camera when there is a single view. The guest who speaks
@@ -251,7 +261,7 @@ body.evening35-active #life-guide34{display:none!important}
  const fitFrom=(i,lo)=>{if(E.fits(i,Math.max(0,lo-0.002)))return lo;if(!E.fits(i,1))return 1;let a=0.5,b=1;
   for(let n=0;n<16;n++){const m=(a+b)/2;if(E.fits(i,m))b=m;else a=m;}return Math.max(lo,Math.min(1,b+0.002));};
  const camPrev=updateCameras;updateCameras=function(dt){const t=Math.max(0,Math.min(+dt||0,0.1)),v21=typeof v21Dist!=='undefined';
-  E.camW=E.state==='arriving'||E.state==='talking'?Math.min(1,E.camW+t/RAMP):E.state==='leaving'?Math.max(0,E.camW-t/RAMP):0;
+  const first=E.camW===0&&E.state==='arriving';E.camW=E.state==='arriving'||E.state==='talking'?Math.min(1,E.camW+t/RAMP):E.state==='leaving'?Math.max(0,E.camW-t/RAMP):0;E.compStep(t,first);
   const pre=v21?[v21Dist[0],v21Dist[1]]:null,r=camPrev.apply(this,arguments);
   if(players.length&&v21){const si=singleIdx(),f30=t*30,limIn=Math.pow(1+(E.state==='talking'?CAM_TALK:CAM_MAX),f30),limOut=Math.pow(1+CAM_MAX,f30),kU=Math.pow(1+CAM_STEP,f30),alpha=1-Math.pow(.002,t);let wait=false;
    for(let i=0;i<2;i++){if((si>=0&&i!==si)||!cams[i]||!focus[i]||isAI(i)){E.camUsed[i]=1;E.camHeld[i]=false;continue;}if(E.state==='idle'&&!E.camHeld[i])continue;
@@ -266,12 +276,14 @@ body.evening35-active #life-guide34{display:none!important}
    E.camWait=wait;}
   faceGuests(dt);labels(dt);return r;};
  // wrap: from the trigger until the guests have gone, the human views' camera fit includes each guest's standing spot within 6 m of the
- // player, as the box a guest stands in (0.88 x 2 x 0.72 m), drawn from the player towards the spot by the share E.camW (24 reused points)
- const BOX=[];for(let k=0;k<24;k++)BOX.push(new THREE.Vector3());
+ // player, as the box a guest stands in (0.88 x 2 x 0.72 m), drawn from the player towards the spot by the share E.camW, and the companion
+ // beside the player (E.compAt) as the player's own box, so at 390x844 it is not cut by the right edge (32 reused points)
+ const BOX=[];for(let k=0;k<32;k++)BOX.push(new THREE.Vector3());
  const ptsPrev=v21InteractionPoints;v21InteractionPoints=function(i,joint){const pts=ptsPrev.apply(this,arguments);
   if(E.state==='idle'||isAI(i)||!Array.isArray(pts)||!players[i])return pts;const h=players[i].g.position,w=E.camW;let k=0;
   for(const g of E.guests){const n=npcs[g],s=E.spots[g];if(!n||!n.g.visible||!s||Math.hypot(s[0]-h.x,s[1]-h.z)>6)continue;const x=h.x+(s[0]-h.x)*w,z=h.z+(s[1]-h.z)*w;
    for(const dx of [-.44,.44])for(const y of [0,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(x+dx,y,z+dz));}
+  const c=E.compAt(i);if(c)for(const dx of [-.44,.44])for(const y of [-.06,1.98])for(const dz of [-.36,.36])pts.push(BOX[k++].set(c[0]+dx,y,c[1]+dz));
   return pts;};
  // wrap: during the evening the companion stands beside the player (east, west or north of them, inside the flat) instead of following behind
  // the only way between the room and the veranda is the door in the south wall (x -4.25 to -3.95): its inner and outer steps

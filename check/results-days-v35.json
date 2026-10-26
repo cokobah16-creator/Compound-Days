@@ -1,5 +1,5 @@
 {
-  "build": "v35-5b0ae3b9",
+  "build": "v35-e793d02d",
   "passed": true,
   "checks": [
     {
@@ -174,8 +174,8 @@
           "nkechi:ne02",
           "ada:ae01"
         ],
-        "cameraRatioFirstLine": 1,
-        "cameraMaxStepPercent": 0,
+        "cameraRatioFirstLine": 0.976,
+        "cameraMaxStepPercent": 0.79,
         "companionDistance": 0.76,
         "degreesToCameraPerLine": [
           [
@@ -191,7 +191,7 @@
           [
             65,
             65,
-            46
+            44
           ]
         ]
       }

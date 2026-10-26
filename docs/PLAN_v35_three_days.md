@@ -1,6 +1,6 @@
 # Compound Days — build plan v35: Three days in Palm Court
 
-Status: built as v35-5b0ae3b9 on branch `claude/authored-character`. The plan was written against v34b-3a5b01c3; changes made during the build are noted where they apply and summarised below.
+Status: built as v35-e793d02d on branch `claude/authored-character`. The plan was written against v34b-3a5b01c3; changes made during the build are noted where they apply and summarised below.
 
 **Build status.** Steps 0 and 2 to 7 of section 10 are built, with fourteen harnesses passing and reproducing byte for byte, a runtime review, a phone-viewport playthrough of all three days in headless Chromium, and a copy and culture read. Still to do: step 1 (a real-phone run) and step 8's phone pass and five testers. `docs/TESTING_v35.md` is the checklist for both, and `tools/gates-v35.cjs` scores the testers' pasted day logs against the seven gates in section 7. Changes from the plan during the build:
 - Day 2 opens with ₦1,700 to ₦1,800 on the shopping path (4.1).

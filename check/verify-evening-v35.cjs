@@ -11,7 +11,7 @@ const NAMES=[
  '5. After the third line: saved once with one cue and one memory, the guests walk away west along the street and return to their schedule',
  '6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk',
  '7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third',
- '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2 and 5 and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
+ '8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2, 3, 4 and 5 (column 1 holds the armchair) and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, the companion is fully on screen on every frame of the lines on which it stands beside the player (within 2 m), none stands in the player\u2019s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump',
  '9. Everyone else keeps clear at 390x844 through the real base frame: with walkers on the base street routes heading into the group and the foreground, the keke and a resident walking the street, from the trigger to the end of the talk nobody else comes within 1 m of a guest\u2019s spot or the player, or covers the player or a guest within 2 m of its spot on screen from nearer the camera; once the guests have gone they all move on',
  '10. The evening nudge toast never covers the Today page: it goes as the journal opens (and stays gone), while other toasts over the journal and the nudge with no journal open are untouched',
  '11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): the guests leave west along the street, away from the player, by a way clear of walls and props that never brings them nearer the camera-to-player line; on every frame from Goodnight to 2 s after the hand-back no guest stands between the camera and the player on screen (its screen box over the player\u2019s from nearer the camera; only a guest still within 0.3 m of its spot may keep the corner overlap it had standing there, and that never grows); each goes back to its schedule on the first frame it is off every human view, placed where no view sees it',
@@ -46,12 +46,16 @@ function inner(){
   run("var FT35=0;var frames35=n=>{const rf=renderFrame;renderFrame=function(){const si=singleIdx(),c=cams[si>=0?si:0];c.aspect=innerWidth/innerHeight;c.updateProjectionMatrix();};try{for(let k=0;k<n;k++){T35+=33;last=FT35;FT35+=33;tick(FT35);}}finally{renderFrame=rf;}};");
   // a per-frame record of the real camera and the guests (CAMREC35, when set): the camera's distance to its focus and its share of the fitted
   // distance, whether the player or a guest is cut by the screen edge (a body of 0.6 x 1.9 m projected with the game's camera), whether the
-  // camera could have come 1% nearer with everyone still fitting, and each guest's yaw and angle (degrees) from its facing to the camera
+  // camera could have come 1% nearer with everyone still fitting, each guest's yaw and angle (degrees) from its facing to the camera, and the
+  // companion: where it stands, how far from the player, and how far its body (the same 0.6 x 1.9 m) leaves the screen (in half-screens; <= 0 inside)
   run(`var CAMREC35=null;var camSample35=()=>{const si=singleIdx(),i=si>=0?si:0,c=cams[i];c.updateMatrixWorld();const cp=c.position,d=cp.distanceTo(focus[i]),r=d/v21Dist[i],v=new THREE.Vector3(),L=EVENING35.lines[EVENING35.line];let cut=null;
    for(const [k,o] of [['player',players[0].g],['tunde',npcs.tunde.g],['nkechi',npcs.nkechi.g],['ada',npcs.ada.g]]){if(!o.visible)continue;for(const dx of [-.3,.3])for(const y of [0,1.9])for(const dz of [-.3,.3]){v.set(o.position.x+dx,y,o.position.z+dz).project(c);if(Math.abs(v.x)>1||Math.abs(v.y)>1)cut=k;}}
    const g={};for(const k of ['tunde','nkechi','ada']){const o=npcs[k].g,fx=Math.sin(o.rotation.y),fz=Math.cos(o.rotation.y),cx=cp.x-o.position.x,cz=cp.z-o.position.z;
     g[k]={yaw:o.rotation.y,toCamera:Math.acos(Math.max(-1,Math.min(1,(fx*cx+fz*cz)/Math.hypot(cx,cz))))*180/Math.PI,speaker:!!(L&&L.k===k)};}
-   return {state:EVENING35.state,line:EVENING35.line,walk:EVENING35.walkers.some(k=>npcs[k]&&!!npcs[k].route),d,r,cut,nearer:r<0.9999?EVENING35.fits(i,r-0.01):null,g};};
+   const ci=AI.on?AI.i:-1;let comp=null;if(ci>=0&&ci!==i){const o=players[ci].g,h=players[i].g.position;let out=-1e9;
+    for(const dx of [-.3,.3])for(const y of [0,1.9])for(const dz of [-.3,.3]){v.set(o.position.x+dx,y,o.position.z+dz).project(c);out=Math.max(out,Math.abs(v.x)-1,Math.abs(v.y)-1);}
+    comp={x:o.position.x,z:o.position.z,near:Math.hypot(o.position.x-h.x,o.position.z-h.z),out};}
+   return {state:EVENING35.state,line:EVENING35.line,walk:EVENING35.walkers.some(k=>npcs[k]&&!!npcs[k].route),d,r,cut,nearer:r<0.9999?EVENING35.fits(i,r-0.01):null,g,comp};};
    {const f=frames35;frames35=n=>{for(let k=0;k<n;k++){f(1);if(CAMREC35)CAMREC35.push(camSample35());}};}`);
   const frames=n=>run(`frames35(${n})`);
   // the camera never cuts anyone, and from its first eased frame on its distance changes under 1% a frame (no twitch)
@@ -192,7 +196,7 @@ function inner(){
     cases[hx+'/'+cx+','+cz]=d;assert(d.d<=1.45&&d.veranda,'companion beside the player on the veranda: human '+hx+', from '+cx+','+cz+': '+JSON.stringify(d));}
    at(...hum0);at(-5.2,4.0,1);
    // all three guests are in the camera fit, only near the player
-   const nIn=J('v21InteractionPoints(0,false).length');at(15,5);const nFar=J('v21InteractionPoints(0,false).length');at(...hum0);assert.equal(nIn-nFar,24,'the three guests in the fit near the player, out of it far away');
+   const cpt='(EVENING35.compAt&&EVENING35.compAt(0)?8:0)',nIn=J('v21InteractionPoints(0,false).length-'+cpt);at(15,5);const nFar=J('v21InteractionPoints(0,false).length-'+cpt);at(...hum0);assert.equal(nIn-nFar,24,'the three guests in the fit near the player, out of it far away (the companion beside the player is 8 more points)');
    // a whole evening at 1280x800 through the real base frame, from the trigger to the hand-back to the normal camera (each line 60 frames);
    // then a fresh evening brought to its third line (Ada) for check 5
    fresh();const whole=wholeEvening('1280x800',60).summary;
@@ -247,17 +251,21 @@ function inner(){
 
   await step(7,()=>{const out={};
    run('innerWidth=390;innerHeight=844;navigator.maxTouchPoints=1;');      // a phone in portrait (v21Viewport keeps the touch margins)
-   try{for(const [label,hx,hz,cx,cz] of [['veranda column 0',-7.55,6.4,-7.4,3.6],['veranda column 2',-5.75,6.4,-5.6,3.6],['veranda column 5',-3.05,6.4,-3.3,3.6],['room by the door',-4.1,4.6,-6.0,3.5]]){
+   try{for(const [label,hx,hz,cx,cz] of [['veranda column 0',-7.55,6.4,-7.4,3.6],['veranda column 2',-5.75,6.4,-5.6,3.6],['veranda column 3',-4.85,6.4,-5.6,3.6],['veranda column 4',-3.95,6.4,-3.3,3.6],['veranda column 5',-3.05,6.4,-3.3,3.6],['room by the door',-4.1,4.6,-6.0,3.5]]){
     fresh();at(hx,hz);at(cx,cz,1);let spots=null;const lines=[];
     const whole=wholeEvening(label,30,line=>{if(line===0){const s=spotsOK(hx,hz);assert.equal(s.n,3,label);assert.deepEqual(s.bad,[],label+': spots valid and clear of the sightline');spots=J('EVENING35.spots');}
      const v=view();facingOK(v,label+', line '+(line+1));
      for(const k in v){const g=v[k];assert(g.x[0]>=0&&g.x[1]<=390&&g.y[0]>=0&&g.y[1]<=844,label+', line '+(line+1)+': '+k+' on screen: '+JSON.stringify(g));}
      lines.push(Object.fromEntries(Object.entries(v).map(([k,g])=>[k,{toCamera:g.toCamera,x:g.x}])));});
     const rec=whole.rec.filter(s=>s.state==='talking');assert(rec.length>=90,label+': every frame recorded');const cam=camSmooth(rec,label);
+    // the companion, whenever it stands beside the player (within 2 m, not moving), is fully on screen on every frame of the lines
+    let beside=0,compOut=-1e9,compMin=1e9;for(let k=1;k<rec.length;k++){const q=rec[k].comp,p=rec[k-1].comp;if(!q)continue;compMin=Math.min(compMin,q.near);
+     if(q.near<=2&&p&&Math.hypot(q.x-p.x,q.z-p.z)<0.005){beside++;compOut=Math.max(compOut,q.out);assert(q.out<=0,label+', frame '+k+': the companion beside the player ('+q.near.toFixed(2)+' m) is cut by the screen edge by '+q.out.toFixed(3)+' of the half-screen');}}
+    assert(beside>=60,label+': the companion stands beside the player through most of the lines: '+beside+' frames (closest '+compMin.toFixed(2)+' m)');
     let turn=0;for(let k=0;k<rec.length;k++)for(const g in rec[k].g){const q=rec[k].g[g];
      assert(q.toCamera<=(q.speaker?50.5:65.5),label+', frame '+k+': '+g+(q.speaker?' speaks':' listens')+' at '+q.toCamera.toFixed(1)+' degrees from the camera');
      if(k>0){const t=wrapD(q.yaw-rec[k-1].g[g].yaw);turn=Math.max(turn,t);assert(t<=8,label+', frame '+k+': '+g+' turned '+t.toFixed(1)+' degrees in one frame');}}
-    out[label]={spots,lines,camera:cam,wholeEvening:whole.summary,maxTurnPerFrame:Math.round(turn*10)/10};}
+    out[label]={spots,lines,camera:cam,wholeEvening:whole.summary,maxTurnPerFrame:Math.round(turn*10)/10,companion:{besideFrames:beside,closestMetres:Math.round(compMin*100)/100,worstEdge:Math.round(compOut*1000)/1000}};}
     // the player walks 4.5 m along the veranda at walking speed (3.4 m/s) during line 2: the camera widens in time, so nobody is cut
     fresh();at(-7.55,6.4);at(-7.4,3.6,1);run('EVENING35.checkAt=1e18;');frames(90);run('CAMREC35=[camSample35()];EVENING35.checkAt=0;');
     run("(()=>{for(let k=0;k<900&&EVENING35.state!=='talking';k++)frames35(1);})()");assert.equal(state(),'talking','walking: talking');

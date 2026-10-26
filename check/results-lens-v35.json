@@ -1,5 +1,5 @@
 {
-  "build": "v35-5b0ae3b9",
+  "build": "v35-e793d02d",
   "passed": true,
   "checks": [
     {
@@ -203,22 +203,22 @@
       "info": {
         "veranda column 0": {
           "talkingFrames": 91,
-          "maxStepPercentLines": 0.25,
+          "maxStepPercentLines": 0.93,
           "maxStepPercentAll": 2.38,
           "margins": {
-            "left": 51,
-            "right": 56,
-            "top": 251
+            "left": 46,
+            "right": 144,
+            "top": 315
           }
         },
         "veranda column 2": {
           "talkingFrames": 91,
-          "maxStepPercentLines": 0.25,
+          "maxStepPercentLines": 0.24,
           "maxStepPercentAll": 2.38,
           "margins": {
-            "left": 51,
-            "right": 55,
-            "top": 258
+            "left": 47,
+            "right": 125,
+            "top": 271
           }
         },
         "veranda column 5": {
@@ -233,12 +233,12 @@
         },
         "room by the door": {
           "talkingFrames": 91,
-          "maxStepPercentLines": 0.25,
+          "maxStepPercentLines": 0.2,
           "maxStepPercentAll": 2.38,
           "margins": {
-            "left": 48,
-            "right": 58,
-            "top": 237
+            "left": 46,
+            "right": 98,
+            "top": 246
           }
         }
       }
