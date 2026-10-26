@@ -1,0 +1,29 @@
+/* v36 Ada's bench: the per-view role chip, the hint arrows and the chooser strip. Move is warm yellow, Turn is teal (the grip wraps
+   and stand rings use the same two colours). The chip goes first on the prompt and never wraps; text stays at 12 px or more on phones. */
+.pr .role36{display:inline-flex;align-items:center;flex:none;white-space:nowrap;min-height:24px;padding:0 9px;border-radius:12px;font-size:max(12px,.8rem);font-weight:800;letter-spacing:.02em;color:#21170F}
+.pr .role36.move{background:#F2B33D}
+.pr .role36.turn{background:#3FB6A8}
+.pr .lb36{display:flex;flex-direction:column;min-width:0}
+.pr .hint36{font-size:max(12px,.74rem);font-weight:500;color:#E9D9BC;opacity:.9}
+.pr.on:has(.role36){flex-wrap:wrap}
+.bench36-arrow{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:2px;pointer-events:none;color:#FFF6E2;text-shadow:0 1px 3px #000a;opacity:.85}
+.bench36-arrow .g{display:block;font-size:42px;line-height:1;transition:transform .12s}
+.bench36-arrow .c{font-size:max(12px,.8rem);font-weight:700;background:rgba(37,27,20,.6);padding:2px 8px;border-radius:10px}
+.bench36-arrow.edge{top:auto;bottom:34%;left:auto;right:7%;transform:none;opacity:.75}
+.bench36-pick{position:absolute;right:12px;bottom:64px;max-width:min(360px,62%);background:rgba(37,27,20,.9);border:1px solid rgba(235,205,145,.3);border-radius:14px;padding:10px 12px;color:#F1E4CC;font-size:max(12px,.86rem);pointer-events:none;box-shadow:0 6px 20px #0005}
+.bench36-pick .t{font-weight:800;margin-bottom:4px}
+.bench36-pick .sel{display:flex;align-items:center;gap:8px;font-size:1.02rem}
+.bench36-pick .sel .ar{color:#F2B33D;font-size:.9rem}
+.bench36-pick .sel.off b{opacity:.5}
+.bench36-pick .nf{font-size:max(12px,.78rem);color:#E9A27C}
+.bench36-pick .d{opacity:.85;margin:2px 0 6px}
+.bench36-pick .ticks span{margin-right:10px;opacity:.75}
+.bench36-pick .ticks span.on{opacity:1;color:#8CCBAA;font-weight:700}
+.bench36-pick .k{margin-top:4px;font-size:max(12px,.76rem);opacity:.8}
+.bench36-menu{margin:8px 0}
+.bench36-note{font-family:'Caveat',cursive;font-size:1.35rem;line-height:1.35}
+@media (hover:none) and (pointer:coarse){.bench36-pick{bottom:214px}}
+@media (hover:none) and (pointer:coarse) and (orientation:portrait){#half0 .bench36-pick{bottom:64px}}
+/* phones: a compact strip (the choice, the ticks, the keys) just above each player's prompt, so the doorway bench and the ghost stay in sight */
+@media (orientation:portrait){.bench36-pick{max-width:none;left:12px;right:12px;padding:6px 10px}.bench36-pick .t,.bench36-pick .d{display:none}}
+@media (orientation:landscape) and (max-height:520px){.bench36-pick{padding:6px 10px;max-width:46%;bottom:150px}.bench36-pick .t,.bench36-pick .d{display:none}}
