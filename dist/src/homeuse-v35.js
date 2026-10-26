@@ -8,7 +8,7 @@
      the household is up again, so the screen glows again if it is evening.
    - Coffee table: while neighbours are visiting, the host's welcome: a round cane tray with a jug of zobo and three enamel cups. Visiting
      means the veranda evening from the guests' arrival at the gate until they have walked off (EVENING35.state not idle), or the
-     housewarming (S.party.on: from the first knock until the household sleeps, when the base sends the guests home).
+     housewarming (S.party.on: from the first knock until the next morning, when the base sends the guests home, so it stays on the night page).
    Both show only while the piece is placed in the flat; they hang on that piece's furniture group, so they turn and move with it.
    Everything is read from the saved and shared state (S.time, S._late, S.party, S.home.items) or from this device's evening, which
    is off in online play, so an old save needs nothing new and an online household sees what the shared document says. No save

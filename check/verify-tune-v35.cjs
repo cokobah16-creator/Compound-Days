@@ -321,7 +321,7 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   assert.deepEqual(vItems(),['planter@1']);assert.deepEqual(J('TUNE35.reach()'),[],'the pot and the walkway reached');
   return {allowedBesideThePot:Object.keys(placedOK),fromBuild:'planter@2'};});
 
- check(14,'Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; a replayed action from the other device is not second-guessed',()=>{
+ check(14,'Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; online, a refused placement or turn is never sent to the other device, while an allowed one is; a replayed action from the other device is not second-guessed',()=>{
   oldHH();at(...HOME);run("S.home.storage=['armchair','chairs','planter'];LIFE34.undo=null;rebuildFurniture();");
   assert.deepEqual(J("TUNE35.reach(S.home.items.concat([{id:'x',type:'armchair',x:3,y:4,rot:0}]))"),['pot'],'a piece on the path cell shuts the pot off');
   assert.deepEqual(J("TUNE35.reach(S.home.items.concat([{id:'x',type:'planter',x:4,y:4,rot:0}])).sort()"),['pot','walk'],'a piece on the walkway shuts both off');
@@ -339,12 +339,22 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
    // a replay from the other device (silent) places as it was placed there
    run("S.home.items=S.home.items.filter(i=>i.y!==FLAT.rows);rebuildFurniture();openLife34('home');LIFE34.selection=S.home.storage.indexOf('armchair');LIFE34.selType34b='armchair';LIFE34.rotation=0;_silent=true;ACTIONS.lifeCell({x:3,y:4});_silent=false;");
    assert.deepEqual(vItems(),['armchair@3'],'a replayed placement stands');run("S.home.items=S.home.items.filter(i=>i.y!==FLAT.rows);S.home.storage.push('armchair');rebuildFurniture();");
+   // online: a refused tap is stopped before it is sent, so the other device never places it; an allowed one is sent as usual
+   run("globalThis.EMITS35=[];globalThis.NETSAVE35={on:NET.on,room:NET.room,other:NET.otherOnline};NET.on=true;NET.otherOnline=true;NET.room={emit:(t,m)=>{EMITS35.push(m.name);return Promise.resolve();}};openLife34('home');LIFE34.selection=S.home.storage.indexOf('armchair');LIFE34.selType34b='armchair';LIFE34.rotation=0;TOASTS=[];");
+   try{run("dispatch('lifeCell',{x:3,y:4});");
+    assert.deepEqual(J("EMITS35.filter(n=>n==='lifeCell')"),[],'a refused placement is not sent to the other device');assert.deepEqual(J('TOASTS'),[LINE35]);assert.deepEqual(vItems(),[]);
+    run("dispatch('lifeCell',{x:5,y:4});");assert.deepEqual(J("EMITS35.filter(n=>n==='lifeCell')"),['lifeCell'],'an allowed placement is sent');}
+   finally{run("NET.on=NETSAVE35.on;NET.room=NETSAVE35.room;NET.otherOnline=NETSAVE35.other;S.home.items=S.home.items.filter(i=>i.y!==FLAT.rows);if(!S.home.storage.includes('armchair'))S.home.storage.push('armchair');rebuildFurniture();");}
    return out;});
   // a turn: allowed when harmless, refused (with the line) when the search says the turned piece would shut the pot (no real veranda piece
   // changes footprint when turned, so the search is stubbed for the turned layout)
   run("openLife34('home');");tapPlace('armchair',1,4);run("dispatch('lifeCancel');dispatch('lifeCell',{x:1,y:4});TOASTS=[];dispatch('lifeRotate');");assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'turned');assert.deepEqual(J('TOASTS'),[]);
   run("globalThis.R35=TUNE35.reach;TUNE35.reach=items=>R35(items).concat(items.some(i=>i.type==='armchair'&&i.rot===2)?['pot']:[]);TOASTS=[];dispatch('lifeRotate');TUNE35.reach=R35;");
   assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'not turned');assert.deepEqual(J('TOASTS'),[LINE35]);
+  // online, a refused turn is not sent either
+  try{run("globalThis.EMITS35=[];globalThis.NETSAVE35={on:NET.on,room:NET.room,other:NET.otherOnline};NET.on=true;NET.otherOnline=true;NET.room={emit:(t,m)=>{EMITS35.push(m.name);return Promise.resolve();}};TUNE35.reach=items=>R35(items).concat(items.some(i=>i.type==='armchair'&&i.rot===2)?['pot']:[]);TOASTS=[];dispatch('lifeRotate');");}
+  finally{run("TUNE35.reach=R35;NET.on=NETSAVE35.on;NET.room=NETSAVE35.room;NET.otherOnline=NETSAVE35.other;");}
+  assert.deepEqual(J("EMITS35.filter(n=>n==='lifeRotate')"),[],'a refused turn is not sent to the other device');assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'still not turned');
   return {refused:Object.keys(refused),line:LINE35};});
 
  check(15,'Veranda reach: an old playtester save with the armchair beside the pot loads unchanged and can be decorated; a save whose pot is already shut off (stubbed) loads as saved and still takes harmless pieces',()=>{

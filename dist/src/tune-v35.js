@@ -255,10 +255,11 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
   if(ids&&!silent())for(const it of S.home.items)if(!ids.has(it.id))TUNE35.shown={id:it.id,at:clock35()};return r;};
  const rotatePrev=ACTIONS.lifeRotate;
  // wrap: turning a placed piece is refused (one line) if the turned piece would shut the pot or the walkway off on foot
- ACTIONS.lifeRotate=function(){if(!silent()&&S&&S.home&&typeof home34==='function'&&home34()){if(typeof validSel34b==='function')validSel34b();
+ const rotateShuts=()=>{if(!S||!S.home||typeof home34!=='function'||!home34())return false;if(typeof validSel34b==='function')validSel34b();
    const it=LIFE34.selection===null||LIFE34.selection===undefined?S.home.items.find(x=>x.id===LIFE34.selectedItem):null;
-   if(it&&ITEMS[it.type]&&!ITEMS[it.type].wall){const r=((it.rot||0)+1)%4;if(fitsEditor34(it.type,it.x,it.y,r,it.id)&&TUNE35.shutsWay(S.home.items.map(x=>x===it?Object.assign({},x,{rot:r}):x))){refuseWay();return;}}}
-  return rotatePrev.apply(this,arguments);};
+   if(!it||!ITEMS[it.type]||ITEMS[it.type].wall)return false;const r=((it.rot||0)+1)%4;
+   return fitsEditor34(it.type,it.x,it.y,r,it.id)&&TUNE35.shutsWay(S.home.items.map(x=>x===it?Object.assign({},x,{rot:r}):x));};
+ ACTIONS.lifeRotate=function(){if(!silent()&&rotateShuts()){refuseWay();return;}return rotatePrev.apply(this,arguments);};
  if(typeof placeGhost==='function'){const ghostPrev=placeGhost;
   // wrap: a piece carried with Build (bought, from storage or picked up to move it) is not put down where it would shut the pot or the walkway
   // off on foot; the piece stays in hand so it can go elsewhere (the per-frame ghost check is untouched)
@@ -315,7 +316,9 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  const KEEP_UNDO=new Set(['paint35','paintUndo35','lifeTab','close','lifeSelect','lifeCancel']);
  const dispatchPrev=dispatch;
  // wrap: any other action ends the paint undo, as life's dispatch does for furniture
- dispatch=function(name){if(!KEEP_UNDO.has(name))TUNE35.paintUndo=null;return dispatchPrev.apply(this,arguments);};
+ // and a placement or turn the veranda rule refuses stops here, before the base dispatch runs it and sends it to the other device
+dispatch=function(name,d){if(!silent()&&((name==='lifeCell'&&cellShuts(d))||(name==='lifeRotate'&&rotateShuts()))){refuseWay();return;}
+  if(!KEEP_UNDO.has(name))TUNE35.paintUndo=null;return dispatchPrev.apply(this,arguments);};
 
  /* ---------- 4.8 Finds never asks for agreement; the companion approves ---------- */
  const approveLine=id=>{if(!(typeof AI!=='undefined'&&AI.on&&S.p[AI.i]))return '';const a=players[AI.i],h=players.find(p=>p&&p.i!==AI.i);

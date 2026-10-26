@@ -2,7 +2,7 @@
    exists, because phones are often muted. Web Audio only, no files to load. The cues arrive on TUNE's cue bus (cue35), which
    drops silent remote replays, so a peer's action never sounds here. The Sound setting is per device (localStorage 'cd3-sound',
    absent means on) and lives in the Menu; the action is LOCAL_ONLY. No tick hook and no per-frame work: nodes are made per cue
-   and disconnected when they end. Loads last, after days-v35.js and evening-v35.js. Public name: AUDIO35 only. */
+   and disconnected when they end. Loads after days-v35.js and evening-v35.js (homeuse-v35.js and lens-v35.js follow it). Public name: AUDIO35 only. */
 const AUDIO35={ctx:null,master:null,noise:null,played:[],recipes:{},
  // what a muted phone sees instead of each sound (all drawn by life, the bridge or TUNE; listed so the pairing stays explicit)
  twins:{cast:'The float lands in open water with its ring, and the panel float bobs.',

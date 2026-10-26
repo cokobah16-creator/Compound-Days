@@ -1,5 +1,5 @@
 {
-  "build": "v35-de7e7226",
+  "build": "v35-5b0ae3b9",
   "passed": true,
   "checks": [
     {
@@ -144,7 +144,7 @@
       }
     },
     {
-      "name": "14. Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; a replayed action from the other device is not second-guessed",
+      "name": "14. Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; online, a refused placement or turn is never sent to the other device, while an allowed one is; a replayed action from the other device is not second-guessed",
       "passed": true,
       "info": {
         "refused": [
