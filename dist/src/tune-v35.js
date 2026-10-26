@@ -12,7 +12,8 @@ function cue35(name,data){if(typeof silentMode==='function'&&silentMode())return
 
 /* Wall colours and floors, always on offer at Palm Court Finds (₦1,500–2,500). */
 const PAINTS35=[
- {id:'indigo',kind:'wall',name:'Adire indigo',hex:'#3F5B8E',price:2500},     // deep enough to read as indigo limewash under the evening light, not lilac
+ {id:'indigo',kind:'wall',name:'Adire indigo',hex:'#6D8AB8',price:2500},     // a soft indigo limewash: still blue, not lilac, under the evening light, and well clear of
+                                                                             // every top the wardrobe gives a player (#3F5B8E read as a flat royal blue, the tee's own colour)
  {id:'palm',kind:'wall',name:'Palm green',hex:'#A9BF9C',price:2000},
  {id:'ochre',kind:'wall',name:'Ochre limewash',hex:'#E6C98C',price:1500},
  {id:'terrazzo',kind:'floor',name:'Cream terrazzo',hex:'#DCCFB8',price:2500},
@@ -208,10 +209,63 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
   if(d&&d.outdoor&&!d.anywhere&&y===FLAT.rows){d.anywhere=true;try{ok=fitsPrev.call(this,type,x,y,rot,ignore);}finally{delete d.anywhere;}}else ok=fitsPrev.call(this,type,x,y,rot,ignore);
   if(!ok)return false;const fp=footprint34(type,rot),R=TUNE35.reserved;for(let k=0;k<R.length;k++){const rx=R[k][0],ry=R[k][1];if(rx>=x&&rx<x+fp[0]&&ry>=y&&ry<y+fp[1])return false;}return true;};
 
+ /* ---------- 4.5 Veranda reach: no placement, move or turn may shut the pot or the walkway off on foot from inside the flat ---------- */
+ // A breadth-first walk over blocked() at the player's radius, on a 0.1 m grid aligned with the cell centres, from the room cell just inside
+ // the veranda door (always kept clear, so it is inside the flat). It runs only when a placement, move or turn is tried, never per frame.
+ // Only the pepper pot and the walkway outside the door count: a free veranda cell may be cut off (an armchair beside the pot may close the
+ // far end of the row, as Tunde's line and the day-2 beat have it). A change is refused only if it shuts off one of those two that was
+ // reachable before it, so a layout already saved stays as it is and can still be decorated (nothing is moved for the player).
+ TUNE35.copy.blockWay='That would block the way along the veranda.';
+ TUNE35.reachRuns=0;
+ const RG={x0:-8.15,z0:4.8,nx:59,nz:23};               // x -8.15..-2.35, z 4.8..7.0: the front row of the room and the veranda, inside their walls
+                                                       // (the veranda opens only through the door above the start, so deeper room never helps)
+ const gi=x=>Math.round((x-RG.x0)*10),gj=z=>Math.round((z-RG.z0)*10);
+ // the furniture boxes a layout would give (the same boxes life's rebuildFurniture makes), without building any meshes
+ const boxesFor=items=>{const out=[],c=FLAT.cell;for(const it of items){const d=ITEMS[it.type];if(!d||d.flat||d.wall)continue;const [w,h]=footprint34(it.type,it.rot||0),[cx,cz]=cellToWorld(it.x,it.y);
+   const v=it.y===FLAT.rows,wx=cx+(w-1)*c/2,wz=v?cz:cz+(h-1)*c/2;out.push({x1:wx-w*c/2+.1,x2:wx+w*c/2-.1,z1:wz-(v?.4:h*c/2-.1),z2:wz+(v?.4:h*c/2-.1),tag:'furn'});}return out;};
+ // the targets a layout cannot reach on foot: 'pot' for the pepper pot, 'walk' for the walkway cell outside the veranda door
+ TUNE35.reach=function(items){TUNE35.reachRuns++;items=items||(S&&S.home&&S.home.items)||[];
+  const pot=typeof BRIDGE34B!=='undefined'?BRIDGE34B.potCell:[2,FLAT.rows],walk=(TUNE35.reserved.find(r=>r[2]==='the walkway')||[4,FLAT.rows]);
+  const tg=[['pot',pot[0]],['walk',walk[0]]].map(([k,x])=>{const [wx,wz]=cellToWorld(x,FLAT.rows);return {k,n:gi(wx)*RG.nz+gj(wz)};});
+  const keep=FURN_OBS,seen=new Uint8Array(RG.nx*RG.nz),q=new Int32Array(RG.nx*RG.nz);FURN_OBS=boxesFor(items);
+  try{const s=cellToWorld(4,3),si=gi(s[0]),sj=gj(s[1]+.05),free=(i,j)=>!blocked(RG.x0+i/10,RG.z0+j/10,PR,{noCrate:true,noSofa:true});
+   if(!free(si,sj))return [];                           // nowhere to start from (never in a real flat): refuse nothing
+   let head=0,tail=0,left=tg.length;q[tail++]=si*RG.nz+sj;seen[si*RG.nz+sj]=1;
+   while(head<tail&&left>0){const n=q[head++],i=(n/RG.nz)|0,j=n-i*RG.nz;for(const t of tg)if(t.n===n&&!t.hit){t.hit=true;left--;}
+    for(const [a,b] of [[i+1,j],[i-1,j],[i,j+1],[i,j-1]]){if(a<0||b<0||a>=RG.nx||b>=RG.nz)continue;const m=a*RG.nz+b;if(seen[m])continue;seen[m]=1;if(free(a,b))q[tail++]=m;}}}
+  finally{FURN_OBS=keep;}
+  return tg.filter(t=>!t.hit).map(t=>t.k);};
+ // would this layout shut off the pot or the walkway that the current layout reaches?
+ TUNE35.shutsWay=function(after){const a=TUNE35.reach(after);if(!a.length)return false;const b=TUNE35.reach(S.home.items);return a.some(k=>!b.includes(k));};
+ const refuseWay=()=>toast(TUNE35.copy.blockWay);
+ // a placement from storage on the Home page, exactly as life's lifeCell would make it
+ const cellShuts=d=>{if(!S||!S.home||!d||typeof home34!=='function'||!home34())return false;if(typeof validSel34b==='function')validSel34b();const ix=LIFE34.selection;if(ix===null||ix===undefined)return false;
+  const t=S.home.storage[ix],x=Number(d.x),y=Number(d.y),r=LIFE34.rotation||0;if(!t||!ITEMS[t]||!fitsEditor34(t,x,y,r)||(ITEMS[t].replaces&&placed(t)))return false;
+  return TUNE35.shutsWay(S.home.items.filter(it=>!ITEMS[t].replaces||it.type!==ITEMS[t].replaces).concat([{id:'reach35',type:t,x,y,rot:r}]));};
+ const selectPrev=ACTIONS.lifeSelect;
+ // wrap: choosing another stored piece (say after a refusal) really chooses it; the bridge's follow-the-item rule otherwise put the earlier
+ // choice back while the Home page redrew, until that piece was placed
+ ACTIONS.lifeSelect=function(d){const i=Number(d&&d.ix);if(S&&S.home&&Number.isInteger(i)&&S.home.storage[i]&&typeof home34==='function'&&home34())LIFE34.selType34b=S.home.storage[i];
+  return selectPrev.apply(this,arguments);};
  const cellPrev=ACTIONS.lifeCell;
- // wrap: a piece newly placed from the Home page is remembered, so closing the page can frame it (closePanel above)
- ACTIONS.lifeCell=function(){const ids=S&&S.home?new Set(S.home.items.map(x=>x.id)):null;const r=cellPrev.apply(this,arguments);
+ // wrap: a placement that would shut the pot or the walkway off on foot is refused with one line; a piece newly placed from the Home page
+ // is remembered, so closing the page can frame it (closePanel above)
+ ACTIONS.lifeCell=function(d){if(!silent()&&cellShuts(d)){refuseWay();return;}
+  const ids=S&&S.home?new Set(S.home.items.map(x=>x.id)):null;const r=cellPrev.apply(this,arguments);
   if(ids&&!silent())for(const it of S.home.items)if(!ids.has(it.id))TUNE35.shown={id:it.id,at:clock35()};return r;};
+ const rotatePrev=ACTIONS.lifeRotate;
+ // wrap: turning a placed piece is refused (one line) if the turned piece would shut the pot or the walkway off on foot
+ ACTIONS.lifeRotate=function(){if(!silent()&&S&&S.home&&typeof home34==='function'&&home34()){if(typeof validSel34b==='function')validSel34b();
+   const it=LIFE34.selection===null||LIFE34.selection===undefined?S.home.items.find(x=>x.id===LIFE34.selectedItem):null;
+   if(it&&ITEMS[it.type]&&!ITEMS[it.type].wall){const r=((it.rot||0)+1)%4;if(fitsEditor34(it.type,it.x,it.y,r,it.id)&&TUNE35.shutsWay(S.home.items.map(x=>x===it?Object.assign({},x,{rot:r}):x))){refuseWay();return;}}}
+  return rotatePrev.apply(this,arguments);};
+ if(typeof placeGhost==='function'){const ghostPrev=placeGhost;
+  // wrap: a piece carried with Build (bought, from storage or picked up to move it) is not put down where it would shut the pot or the walkway
+  // off on foot; the piece stays in hand so it can go elsewhere (the per-frame ghost check is untouched)
+  placeGhost=function(i){const gh=ghosts[i];
+   if(gh&&gh.ok&&!silent()&&S&&S.home&&ITEMS[gh.type]){const d=ITEMS[gh.type],rep=gh.buy&&d.replaces;
+    if(TUNE35.shutsWay(S.home.items.filter(it=>!rep||it.type!==rep).concat([{id:'reach35',type:gh.type,x:gh.cell[0],y:gh.cell[1],rot:0}]))){refuseWay();return;}}
+   return ghostPrev.apply(this,arguments);};}
  if(typeof v21InteractionPoints==='function'){const FB=[];for(let k=0;k<8;k++)FB.push(new THREE.Vector3());const ptsPrev=v21InteractionPoints;
   // wrap: while a just-placed piece is being shown, the human view's camera fit includes its box
   v21InteractionPoints=function(i){const pts=ptsPrev.apply(this,arguments);const f=TUNE35.frame;if(!f||!Array.isArray(pts))return pts;

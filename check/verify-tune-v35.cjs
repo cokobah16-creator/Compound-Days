@@ -209,13 +209,14 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   return {potReach:reach,verandaCellsReachedFromInside:walk.cells,decoratableVerandaColumns:[1,2,6]};});
 
  // 8. Paint
- check(8,'Paint: the six flat walls and the floor are tagged; buy at Finds (each card\u2019s swatch is its paint\u2019s colour, Adire indigo a deep indigo #3F5B8E), paint at home, undo, reload and a courtyard style keep it; env keeps its own materials',()=>{
+ check(8,'Paint: the six flat walls and the floor are tagged; buy at Finds (each card\u2019s swatch is its paint\u2019s colour, Adire indigo a soft indigo limewash #6D8AB8), paint at home, undo, reload and a courtyard style keep it; env keeps its own materials',()=>{
   assert.equal(run('TUNE35.flat.walls.length'),6,'six flat walls tagged during buildWorld');assert.equal(run('!!(TUNE35.flat.floor&&TUNE35.flat.floor.isMesh)'),true,'the floor slab tagged');
   oldHH(20000);at(...STALL);run("openLife34('market')");const mk=run('panel.innerHTML');assert.equal((mk.match(/paint35-card/g)||[]).length,5);
   assert.deepEqual([...mk.matchAll(/<span class="life-label34">([A-Z’ ]+)/g)].map(m=>m[1].trim()).slice(0,5),Array(5).fill('TODAY’S FIND'));assert(!WEEKDAY35.test(mk));
-  // the Finds swatch shows the colour the walls take; Adire indigo is a deep indigo (not the pale lilac it read as at #8C9BC0)
+  // the Finds swatch shows the colour the walls take; Adire indigo is a soft indigo limewash (not the pale lilac it read as at #8C9BC0, nor the
+  // flat royal blue of #3F5B8E, which was the blue tee's own colour); check 17 measures it against every top
   assert.deepEqual([...mk.matchAll(/class="paint35-swatch" style="background:(#[0-9A-Fa-f]{6})"/g)].map(m=>m[1]),J('PAINTS35.map(p=>p.hex)'),'swatches match the paints');
-  assert.equal(run("PAINTS35.find(p=>p.id==='indigo').hex"),'#3F5B8E','Adire indigo');
+  assert.equal(run("PAINTS35.find(p=>p.id==='indigo').hex"),'#6D8AB8','Adire indigo');
   at(...AWAY);run("dispatch('buyPaint35',{id:'indigo'});");assert.equal(run('S.money'),20000,'away from the stall: nothing charged');
   at(...STALL);run("dispatch('buyPaint35',{id:'indigo'});dispatch('buyPaint35',{id:'indigo'});dispatch('buyPaint35',{id:'nope'});");assert.equal(run('S.money'),17500,'charged once');assert.deepEqual(J('S.home.paints'),['indigo']);
   assert(run("panel.innerHTML.includes('Yours')"));
@@ -296,7 +297,115 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   run("remember('The square’s stage, finished. Film night next Saturday.','moment');");scan('memory',run('S.memories[S.memories.length-1].caption'));
   assert.deepEqual(bad,[]);const s=subOK('12');return Object.assign({scanned:'blurbs, square, occasions, presets, copy table, five journal tabs, noticeboard, toast, memory, talk'},s);});
 
- const report={build:run('BUILD_ID'),passed:checks.every(c=>c.passed)&&checks.length===12,checks,method:'Actual runtime state and actions in Node with the shipped Three.js and the authored hero; companion households made through dispatch(aiStart); the wall clock stubbed through CLOCK35; checks 3 and 12 include a subset pass that loads the v35 modules only up to tune-v35.js. Nothing rendered here; layout was looked at separately in headless Chromium.'};
+ // 13-16. Veranda reach: a placement, move or turn that would shut the pot or the walkway off on foot from inside the flat is refused;
+ // a free veranda cell may be cut off (the armchair beside the pot closes the far end of the row, as Tunde's line tu10 has it)
+ const LINE35='That would block the way along the veranda.';
+ const vItems=()=>J("S.home.items.filter(i=>i.y===FLAT.rows).map(i=>i.type+'@'+i.x+(i.rot?'r'+i.rot:'')).sort()");
+ // select a stored piece on the Home page and tap a cell, as the player does
+ const tapPlace=(t,x,y)=>run(`dispatch('lifeSelect',{ix:S.home.storage.indexOf('${t}')});TOASTS=[];dispatch('lifeCell',{x:${x},y:${y}});`);
+ // carry a stored piece with Build and aim it at veranda column x (the per-frame ghost aims at the cell in front of the player)
+ const carryTo=(t,x)=>run(`dispatch('ghoststore',{ix:S.home.storage.indexOf('${t}'),i:0});{const p=players[0],w=cellToWorld(${x},FLAT.rows)[0];p.y=0;p.g.position.set(w,0,5.3);p.prev=[w,5.3];p.face=[0,1];}updateGhost(0);TOASTS=[];`);
+ // a real blocking layout: with the path cell (column 4) let go for the length of fn, a piece there shuts the pot off
+ const unreserved=fn=>{run("globalThis.RS35=TUNE35.reserved;TUNE35.reserved=RS35.filter(r=>r[2]!=='the path to the pot');");try{return fn();}finally{run("TUNE35.reserved=RS35;");}};
+ check(13,'Veranda reach: the armchair, the chairs or a planter beside the pot (column 2, column 1 left free behind it) is allowed from the Home page and from Build; the pot and the walkway stay reachable; another piece can be chosen straight after',()=>{
+  oldHH();at(...HOME);run("S.home.storage=['armchair','chairs','planter'];LIFE34.undo=null;rebuildFurniture();");
+  assert.deepEqual(J("TUNE35.reach(S.home.items.concat([{id:'x',type:'armchair',x:1,y:4,rot:0}]))"),[],'beside the pot, the pot and the walkway are still reached (column 1 behind it may be cut off)');
+  const placedOK={};
+  for(const t of ['armchair','chairs','planter']){tapPlace(t,1,4);placedOK[t]=J('TOASTS');assert.deepEqual(placedOK[t],[],t+': no refusal');assert.deepEqual(vItems(),[t+'@1'],t+': placed beside the pot');
+   run("dispatch('lifeUndo');");assert.deepEqual(vItems(),[],t+': undo takes it back');}
+  // the lifeSelect fix: choosing another piece chooses it (the earlier choice used to come back)
+  run("dispatch('lifeSelect',{ix:S.home.storage.indexOf('armchair')});dispatch('lifeSelect',{ix:S.home.storage.indexOf('chairs')});");assert.equal(run('S.home.storage[LIFE34.selection]'),'chairs','choosing another piece chooses it');
+  assert(run("panel.innerHTML.includes('Choose a green space for your '+ITEMS.chairs.name.toLowerCase())"),'the Home page asks where the chairs go');run("dispatch('lifeCancel');");
+  // carried with Build: put down beside the pot
+  run("closePanel();");carryTo('planter',1);assert.deepEqual(J('[ghosts[0].cell,ghosts[0].ok]'),[[1,4],true]);run("placeGhost(0);");assert(!J('TOASTS').includes(LINE35),'no refusal');assert.equal(run('!!ghosts[0]'),false,'put down');
+  assert.deepEqual(vItems(),['planter@1']);assert.deepEqual(J('TUNE35.reach()'),[],'the pot and the walkway reached');
+  return {allowedBesideThePot:Object.keys(placedOK),fromBuild:'planter@2'};});
+
+ check(14,'Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; a replayed action from the other device is not second-guessed',()=>{
+  oldHH();at(...HOME);run("S.home.storage=['armchair','chairs','planter'];LIFE34.undo=null;rebuildFurniture();");
+  assert.deepEqual(J("TUNE35.reach(S.home.items.concat([{id:'x',type:'armchair',x:3,y:4,rot:0}]))"),['pot'],'a piece on the path cell shuts the pot off');
+  assert.deepEqual(J("TUNE35.reach(S.home.items.concat([{id:'x',type:'planter',x:4,y:4,rot:0}])).sort()"),['pot','walk'],'a piece on the walkway shuts both off');
+  const refused=unreserved(()=>{const out={};
+   for(const t of ['armchair','chairs','planter']){assert.equal(run(`fitsEditor34('${t}',3,4,0)`),true,t+' fits there by the cell rules alone');const sig=run('homeSig34b()');tapPlace(t,3,4);
+    out[t]=J('TOASTS');assert.deepEqual(out[t],[LINE35],t+': one line');assert.equal(run('homeSig34b()'),sig,t+': the flat and storage are unchanged');assert.equal(run('LIFE34.undo'),null,t+': nothing to undo');
+    assert.equal(run(`S.home.storage[LIFE34.selection]`),t,t+': still chosen, so another cell can be tapped');run("dispatch('lifeCancel');");}
+   assert.equal(run('panel.innerHTML.includes(\'data-act="lifeCell"\')'),true,'the Home page stays open');
+   // carried with Build: put down on the path cell is refused and the piece stays in hand; a picked-up piece moved there goes the same way
+   run("closePanel();");carryTo('planter',3);assert.deepEqual(J('[ghosts[0].cell,ghosts[0].ok]'),[[3,4],true],'the ghost itself shows the cell as fitting');
+   run("placeGhost(0);");assert.deepEqual(J('TOASTS'),[LINE35]);assert.equal(run("!!ghosts[0]&&ghosts[0].type==='planter'"),true,'the planter stays in hand');assert.deepEqual(vItems(),[]);
+   run("clearGhost(0);");assert(run("S.home.storage.includes('planter')"),'put away again');
+   run("S.home.items.push({id:'mv',type:'planter',x:5,y:4,rot:0});rebuildFurniture();TOASTS=[];dispatch('pickup',{id:'mv',i:0});{const p=players[0],w=cellToWorld(3,FLAT.rows)[0];p.g.position.set(w,0,5.3);p.prev=[w,5.3];p.face=[0,1];}updateGhost(0);TOASTS=[];placeGhost(0);");
+   assert.deepEqual(J('TOASTS'),[LINE35],'a picked-up planter moved onto the path');assert.equal(run("!!ghosts[0]"),true);run("clearGhost(0);");
+   // a replay from the other device (silent) places as it was placed there
+   run("S.home.items=S.home.items.filter(i=>i.y!==FLAT.rows);rebuildFurniture();openLife34('home');LIFE34.selection=S.home.storage.indexOf('armchair');LIFE34.selType34b='armchair';LIFE34.rotation=0;_silent=true;ACTIONS.lifeCell({x:3,y:4});_silent=false;");
+   assert.deepEqual(vItems(),['armchair@3'],'a replayed placement stands');run("S.home.items=S.home.items.filter(i=>i.y!==FLAT.rows);S.home.storage.push('armchair');rebuildFurniture();");
+   return out;});
+  // a turn: allowed when harmless, refused (with the line) when the search says the turned piece would shut the pot (no real veranda piece
+  // changes footprint when turned, so the search is stubbed for the turned layout)
+  run("openLife34('home');");tapPlace('armchair',1,4);run("dispatch('lifeCancel');dispatch('lifeCell',{x:1,y:4});TOASTS=[];dispatch('lifeRotate');");assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'turned');assert.deepEqual(J('TOASTS'),[]);
+  run("globalThis.R35=TUNE35.reach;TUNE35.reach=items=>R35(items).concat(items.some(i=>i.type==='armchair'&&i.rot===2)?['pot']:[]);TOASTS=[];dispatch('lifeRotate');TUNE35.reach=R35;");
+  assert.equal(run("S.home.items.find(i=>i.type==='armchair').rot"),1,'not turned');assert.deepEqual(J('TOASTS'),[LINE35]);
+  return {refused:Object.keys(refused),line:LINE35};});
+
+ check(15,'Veranda reach: an old playtester save with the armchair beside the pot loads unchanged and can be decorated; a save whose pot is already shut off (stubbed) loads as saved and still takes harmless pieces',()=>{
+  const saved=[{id:'i1',type:'mattress',x:0,y:0},{id:'i2',type:'table',x:2,y:2},{id:'i3',type:'fan',x:0,y:3},{id:'i4',type:'stove',x:5,y:0},{id:'i5',type:'fridge',x:4,y:0},{id:'i6',type:'sofa',x:2,y:0},{id:'i7',type:'rug',x:0,y:1},{id:'i8',type:'armchair',x:1,y:4,rot:0}];
+  run(`AI.on=false;S=newState();S.phase='play';S.born35=true;S.day=3;S.home.items=${JSON.stringify(saved)};S.home.seq=8;S.home.storage=['lamp','chairs','planter'];save();ACTIONS.continue();closePanel();TOASTS=[];PH='';`);at(...AWAY,1);at(...HOME);
+  assert.deepEqual(J('S.home.items'),saved,'loaded exactly as saved: nothing moved for the player');assert.deepEqual(J('TUNE35.reach()'),[],'the pot and the walkway reached');
+  run("openLife34('home');");const cell=J("(()=>{for(let y=0;y<4;y++)for(let x=0;x<6;x++)if(fitsEditor34('lamp',x,y,0))return [x,y];})()");tapPlace('lamp',cell[0],cell[1]);
+  assert.deepEqual(J('TOASTS'),[],'a lamp in the room');assert.equal(run("S.home.items.some(i=>i.type==='lamp')"),true);
+  run("dispatch('lifeCell',{x:1,y:4});TOASTS=[];dispatch('lifeRotate');");assert.equal(run("S.home.items.find(i=>i.id==='i8').rot"),1,'the armchair turns in place');assert.deepEqual(J('TOASTS'),[]);
+  run("dispatch('lifeStore');");tapPlace('chairs',0,4);tapPlace('armchair',1,4);assert.deepEqual(J('TOASTS'),[]);assert.deepEqual(vItems(),['armchair@1','chairs@0'],'stored and put back beside the pot');
+  // a layout whose pot is already shut off (as the stub reports it): a change that shuts nothing new is allowed, so the save is never stuck
+  run("globalThis.R35=TUNE35.reach;TUNE35.reach=items=>R35(items).concat(['pot']);");
+  try{tapPlace('planter',5,4);assert.deepEqual(J('TOASTS'),[],'nothing newly shut off: allowed');}finally{run("TUNE35.reach=R35;");}
+  assert.deepEqual(vItems(),['armchair@1','chairs@0','planter@5']);
+  return {items:saved.length,veranda:vItems()};});
+
+ check(16,'Veranda reach costs nothing per frame: 90 real frames with a piece carried beside the pot and the Home grid drawn run no search; only putting it down does',()=>{
+  oldHH();at(...HOME);run("S.home.storage=['planter','armchair'];LIFE34.undo=null;rebuildFurniture();openLife34('home');dispatch('lifeSelect',{ix:1});");
+  const r0=run('TUNE35.reachRuns');assert.equal(typeof r0,'number','the search counts its runs');
+  run("homeHTML34();homeHTML34();");assert.equal(run('TUNE35.reachRuns'),r0,'the Home grid (30 cells, each checked with fitsEditor34) runs no search');run("dispatch('lifeCancel');closePanel();");
+  carryTo('planter',1);run("globalThis.FC35=0;globalThis.FH35=fitsHome34;fitsHome34=function(){FC35++;return FH35.apply(this,arguments);};");
+  run("(()=>{const rf=renderFrame;renderFrame=()=>{};try{for(let k=0;k<90;k++){T35+=33;last=0;tick(33);}}finally{renderFrame=rf;fitsHome34=FH35;}})()");
+  const fc=run('FC35'),r1=run('TUNE35.reachRuns');assert(fc>=90,'the ghost was checked every frame: '+fc);assert.equal(r1,r0,'no search in 90 frames');assert.deepEqual(J('ghosts[0].cell'),[1,4]);
+  run("placeGhost(0);");const r2=run('TUNE35.reachRuns');assert(r2>r1&&r2-r1<=2,'one placement, at most two searches (after, then before): '+(r2-r1));if(run('!!ghosts[0]'))run("clearGhost(0);");
+  return {framesChecked:fc,searchesInFrames:r1-r0,searchesOnPlacement:r2-r1};});
+
+ // 17. Adire indigo against every top the wardrobe gives a player
+ check(17,'Adire indigo: a soft indigo limewash, ΔE2000 15 or more from every top colour the wardrobe gives a player (the colours the game computes), and the Finds swatch and Home chip match it',()=>{
+  const hex=run("PAINTS35.find(p=>p.id==='indigo').hex");
+  // every look a player can wear: the six everyday outfits as player 1 and player 2, and each tailored outfit (fabric, its trim colour, plain or
+  // patterned, robe or not); the top colour heroOutfit computes, or, for a patterned top, the colours its cloth texture is drawn in
+  const tops=J(`(()=>{const out={},ct=clothTexture;let rec=null;clothTexture=function(k,a,b){if(rec)rec.push(a,b);return ct.apply(this,arguments);};
+   const add=(look,name)=>{rec=[];const f=heroOutfit(look);const cs=f.topMap?rec:[f.top];rec=null;for(const c of cs)if(c)(out[String(c).toUpperCase()]=out[String(c).toUpperCase()]||[]).push(name);};
+   try{for(const o of OUTFITS)for(const pi of [0,1])add({outfit:o.id,pi},o.id+'/'+(pi+1));
+    for(const [k,F] of Object.entries(ING).filter(([k,v])=>v.fabric))for(const oc of [F.oc,F.oc==='#2E4A8F'?'#B5512C':'#2E4A8F'])for(const pattern of [F.pattern,'none'])for(const robe of [false,true])
+     add({outfit:'asoebi',pi:0,oc,oc2:F.oc2,pattern,robe},'tailored '+k+(oc!==F.oc?' trim':'')+(pattern==='none'?' plain':'')+(robe?' robe':''));}finally{clothTexture=ct;}return out;})()`);
+  const lab=h=>{const v=[1,3,5].map(i=>{const c=parseInt(h.slice(i,i+2),16)/255;return c<=0.04045?c/12.92:((c+0.055)/1.055)**2.4;});
+   const f=t=>t>0.008856?Math.cbrt(t):7.787*t+16/116,X=f((0.4124*v[0]+0.3576*v[1]+0.1805*v[2])/0.95047),Y=f(0.2126*v[0]+0.7152*v[1]+0.0722*v[2]),Z=f((0.0193*v[0]+0.1192*v[1]+0.9505*v[2])/1.08883);
+   return [116*Y-16,500*(X-Y),200*(Y-Z)];};
+  const rad=d=>d*Math.PI/180,deg=r=>(r*180/Math.PI+360)%360;
+  const de00Lab=([L1,a1,b1],[L2,a2,b2])=>{const Cb=(Math.hypot(a1,b1)+Math.hypot(a2,b2))/2,G=0.5*(1-Math.sqrt(Cb**7/(Cb**7+25**7)));
+   const A1=(1+G)*a1,A2=(1+G)*a2,C1=Math.hypot(A1,b1),C2=Math.hypot(A2,b2),h1p=deg(Math.atan2(b1,A1)),h2p=deg(Math.atan2(b2,A2));
+   let dh=h2p-h1p;if(C1*C2===0)dh=0;else if(dh>180)dh-=360;else if(dh<-180)dh+=360;const dL=L2-L1,dC=C2-C1,dH=2*Math.sqrt(C1*C2)*Math.sin(rad(dh/2)),Lb=(L1+L2)/2,Cbp=(C1+C2)/2;
+   let hb=h1p+h2p;if(C1*C2!==0)hb=Math.abs(h1p-h2p)<=180?hb/2:(hb<360?(hb+360)/2:(hb-360)/2);
+   const T=1-0.17*Math.cos(rad(hb-30))+0.24*Math.cos(rad(2*hb))+0.32*Math.cos(rad(3*hb+6))-0.2*Math.cos(rad(4*hb-63)),dt=30*Math.exp(-(((hb-275)/25)**2)),Rc=2*Math.sqrt(Cbp**7/(Cbp**7+25**7));
+   const Sl=1+0.015*(Lb-50)**2/Math.sqrt(20+(Lb-50)**2),Sc=1+0.045*Cbp,Sh=1+0.015*Cbp*T,Rt=-Math.sin(rad(2*dt))*Rc;
+   return Math.sqrt((dL/Sl)**2+(dC/Sc)**2+(dH/Sh)**2+Rt*(dC/Sc)*(dH/Sh));};
+  const de00=(h1,h2)=>de00Lab(lab(h1),lab(h2));
+  // the formula itself, on pairs from Sharma, Wu and Dalal's CIEDE2000 test data
+  for(const [p,q,want] of [[[50,2.6772,-79.7751],[50,0,-82.7485],2.0425],[[50,0,0],[50,-1,2],2.3669],[[50,2.5,0],[73,25,-18],27.1492]])assert(Math.abs(de00Lab(p,q)-want)<1e-4,'CIEDE2000 test pair: '+de00Lab(p,q));
+  const keys=Object.keys(tops).sort(),dist=keys.map(k=>[k,+de00(hex,k).toFixed(1),tops[k][0]]).sort((a,b)=>a[1]-b[1]);
+  assert(keys.includes('#3B5BA9')&&keys.includes('#2E4A8F')&&keys.includes('#1F2F5C')&&keys.includes('#A9C7EC'),'the blue tops are all there: '+keys.join(' '));
+  assert(dist[0][1]>=15,'nearest top '+dist[0][2]+' '+dist[0][0]+' at ΔE2000 '+dist[0][1]);
+  const [L,a,b]=lab(hex),C=Math.hypot(a,b),H=deg(Math.atan2(b,a));
+  assert(H>=265&&H<=295,'an indigo hue (blue, leaning violet): '+H.toFixed(0));assert(C>=20,'not a grey: chroma '+C.toFixed(1));assert(L>=45&&L<=60,'a limewash between deep and the pale lilac of #8C9BC0 (L 64): '+L.toFixed(1));
+  // the swatch at Finds and the chip at home are the same colour
+  oldHH(20000);at(...STALL);run("openLife34('market')");assert(run('panel.innerHTML').includes(`class="paint35-swatch" style="background:${hex}"`),'Finds swatch');
+  run("dispatch('buyPaint35',{id:'indigo'});");at(...HOME);run("openLife34('home')");assert(run('panel.innerHTML').includes(`aria-label="Paint the walls Adire indigo"><span style="background:${hex}">`),'Home chip');
+  return {hex,lch:[+L.toFixed(1),+C.toFixed(1),+H.toFixed(1)],tops:keys.length,nearest:dist.slice(0,3)};});
+
+ const report={build:run('BUILD_ID'),passed:checks.every(c=>c.passed)&&checks.length===17,checks,method:'Actual runtime state and actions in Node with the shipped Three.js and the authored hero; companion households made through dispatch(aiStart); the wall clock stubbed through CLOCK35; checks 3 and 12 include a subset pass that loads the v35 modules only up to tune-v35.js; check 16 drives the real base frame (index.html tick, nothing drawn). Nothing rendered here; layout and the indigo were looked at separately in headless Chromium.'};
  fs.writeFileSync(OUT,JSON.stringify(report,null,2)+'\n');if(!report.passed)process.exitCode=1;
 })().catch(e=>{console.error(e);if(SUBSET){process.exitCode=1;return;}let build=null;try{build=runFn&&runFn('BUILD_ID');}catch(_){}
  fs.writeFileSync(OUT,JSON.stringify({build,passed:false,checks,failure:String(e&&e.message||e).split('\n')[0]},null,2)+'\n');process.exitCode=1;});

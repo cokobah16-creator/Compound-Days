@@ -45,7 +45,7 @@ The build ships three wall colours and two floors as flat colours on the existin
 
 | Finish | Kind | Stand-in colour | Final swatch should read as |
 |---|---|---|---|
-| Adire indigo | wall | `#3F5B8E` | Indigo limewash with the soft unevenness of adire dye, not a flat blue |
+| Adire indigo | wall | `#6D8AB8` | Indigo limewash with the soft unevenness of adire dye, not a flat blue |
 | Palm green | wall | `#A9BF9C` | Matt green plaster, slightly chalky |
 | Ochre limewash | wall | `#E6C98C` | Warm yellow-ochre limewash with brush variation |
 | Cream terrazzo | floor | `#DCCFB8` | Poured terrazzo with small grey, black and brown chips |
@@ -71,9 +71,9 @@ Every furnishing can be named by a neighbour: Tunde, Mama Nkechi and Ada each ha
 | Shelf | Shows the lantern | None |
 | Woven armchair | Ada's chair; allowed on the veranda | Check it reads outdoors (section 3) |
 | Wall art | None beyond home-vibe tags | A small change by time of day, or a print that catches the evening light |
-| Coffee table | None beyond home-vibe tags | Something on it that changes: a tray of drinks when guests come, a newspaper in the morning |
+| Coffee table | A tray with a jug and cups appears while neighbours visit | A modelled tray and cups to replace the procedural stand-in; a newspaper in the morning |
 | Wardrobe | None beyond home-vibe tags | Doors that open when the player changes outfit |
-| TV console | None beyond home-vibe tags | A screen glow in the evening, or the radio playing |
+| TV console | The screen glows from 18:00 until bed | A screen texture to replace the flat glow |
 
 ## 6. Delivery checklist
 

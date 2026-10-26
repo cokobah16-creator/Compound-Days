@@ -1,0 +1,376 @@
+{
+  "build": "v35-de7e7226",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. Loads after audio-v35.js with LENS35 its only new top-level name, no tick hook, and off by default: no saved setting, no ?lens=30, the 34-degree lens and the classic CAM_DIR and v21Up exactly",
+      "passed": true,
+      "info": {
+        "order": [
+          "src/audio-v35.js",
+          "src/homeuse-v35.js",
+          "src/lens-v35.js"
+        ],
+        "classic": {
+          "fov": 34,
+          "pitch": 37
+        },
+        "lens": {
+          "fov": 30,
+          "pitch": 50
+        }
+      }
+    },
+    {
+      "name": "2. Off, the game camera is identical to the build without lens-v35.js: every frame of a scripted run (standing in the flat and on the veranda, a placed piece shown, fishing behind the bottom sheet, a sofa carry through the passage, at 390x844 and 1280x800) gives the same camera position, rotation, field of view, focus and fitted distance, to the last bit",
+      "passed": true,
+      "info": {
+        "frames": 600,
+        "identical": true,
+        "fittedDistance": {
+          "phoneFlat": 7.2,
+          "phoneCarryMax": 13.777
+        }
+      }
+    },
+    {
+      "name": "3. On: both game cameras at 30 degrees and 50 degrees of pitch, the same compass direction (v21Right, FACE_YAW, the stick mapping and the evening sightline unchanged), v21Up square to the new view; switching back restores the classic values exactly",
+      "passed": true,
+      "info": {
+        "fov": 30,
+        "pitch": 50,
+        "classicPitch": 37,
+        "camDir": [
+          0.2745,
+          0.766,
+          0.5812
+        ]
+      }
+    },
+    {
+      "name": "4. On: the fixed minimum distances (7.1 m portrait, 7.3 m landscape, 5.5 m carry) are scaled by tan(17)/tan(15), so the width seen at the player matches the classic lens, the player is framed in the same usable area, and the classic aim is kept",
+      "passed": true,
+      "info": {
+        "390x844": {
+          "classic": 7.2,
+          "high": 8.201,
+          "factor": 1.141,
+          "screenY": [
+            0.147,
+            0.147
+          ]
+        },
+        "1280x800": {
+          "classic": 7.4,
+          "high": 8.429,
+          "factor": 1.141,
+          "screenY": [
+            -0.005,
+            -0.005
+          ]
+        }
+      }
+    },
+    {
+      "name": "5. On: the carry framing is kept: on every frame of the real gate-to-flat carry through the passage with the companion, at 390x844 and 1280x800, both players and the sofa stay in the usable area of the view, leaving it by no more than 0.06 of the half-screen while the camera catches up and never by 0.015 more than the classic lens does on the same walk",
+      "passed": true,
+      "info": {
+        "classic 390x844": {
+          "frames": 245,
+          "carried": 244,
+          "worstOverUsable": 0.046,
+          "minFit": 9.974
+        },
+        "classic 1280x800": {
+          "frames": 245,
+          "carried": 244,
+          "worstOverUsable": 0.015,
+          "minFit": 5.977
+        },
+        "high 390x844": {
+          "frames": 245,
+          "carried": 244,
+          "worstOverUsable": 0.051,
+          "minFit": 11.262
+        },
+        "high 1280x800": {
+          "frames": 245,
+          "carried": 244,
+          "worstOverUsable": 0.028,
+          "minFit": 6.762
+        }
+      }
+    },
+    {
+      "name": "6. On: the veranda armchair is not hidden by the veranda wall: placed at veranda column 1, with the player next to it on the veranda, in the room behind it and while the placed piece is shown (“See it in the room”), at 390x844, it is on screen (at least 90% of its width), at least 85% of the cushion and all of the cane back are in sight over the wall and at least 60% of its projected box is above the wall top, where the classic lens hides 44% of the cushion from the veranda",
+      "passed": true,
+      "info": {
+        "classic, on the veranda next to it": {
+          "cushion": 0.556,
+          "back": 1,
+          "boxAbove": 0.476,
+          "onScreen": true,
+          "box": [
+            297,
+            513
+          ],
+          "lr": [
+            1,
+            172
+          ],
+          "wallTop": 400
+        },
+        "classic, in the room behind it": {
+          "cushion": 0.778,
+          "back": 1,
+          "boxAbove": 0.619,
+          "onScreen": true,
+          "box": [
+            538,
+            822
+          ],
+          "lr": [
+            87,
+            299
+          ],
+          "wallTop": 714
+        },
+        "classic, the placed piece shown": {
+          "cushion": 0.556,
+          "back": 1,
+          "boxAbove": 0.502,
+          "onScreen": true,
+          "box": [
+            387,
+            488
+          ],
+          "lr": [
+            51,
+            131
+          ],
+          "wallTop": 438
+        },
+        "high, on the veranda next to it": {
+          "cushion": 0.889,
+          "back": 1,
+          "boxAbove": 0.652,
+          "onScreen": true,
+          "box": [
+            270,
+            491
+          ],
+          "lr": [
+            0,
+            172
+          ],
+          "wallTop": 414
+        },
+        "high, in the room behind it": {
+          "cushion": 1,
+          "back": 1,
+          "boxAbove": 0.802,
+          "onScreen": true,
+          "box": [
+            576,
+            833
+          ],
+          "lr": [
+            94,
+            293
+          ],
+          "wallTop": 783
+        },
+        "high, the placed piece shown": {
+          "cushion": 0.889,
+          "back": 1,
+          "boxAbove": 0.675,
+          "onScreen": true,
+          "box": [
+            393,
+            496
+          ],
+          "lr": [
+            51,
+            131
+          ],
+          "wallTop": 462
+        }
+      }
+    },
+    {
+      "name": "7. On: the veranda evening at 390x844 from veranda columns 0, 2 and 5 and the room by the door: on every frame of the three lines the player and all three guests are fully on screen, and the evening smoothing holds (under 1% a frame through the lines after the first eased frame, no more than 2.5% a frame from the trigger to the hand-back, handed back to the normal fit)",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "talkingFrames": 91,
+          "maxStepPercentLines": 0.25,
+          "maxStepPercentAll": 2.38,
+          "margins": {
+            "left": 51,
+            "right": 56,
+            "top": 251
+          }
+        },
+        "veranda column 2": {
+          "talkingFrames": 91,
+          "maxStepPercentLines": 0.25,
+          "maxStepPercentAll": 2.38,
+          "margins": {
+            "left": 51,
+            "right": 55,
+            "top": 258
+          }
+        },
+        "veranda column 5": {
+          "talkingFrames": 91,
+          "maxStepPercentLines": 0.25,
+          "maxStepPercentAll": 2.38,
+          "margins": {
+            "left": 48,
+            "right": 50,
+            "top": 283
+          }
+        },
+        "room by the door": {
+          "talkingFrames": 91,
+          "maxStepPercentLines": 0.25,
+          "maxStepPercentAll": 2.38,
+          "margins": {
+            "left": 48,
+            "right": 58,
+            "top": 237
+          }
+        }
+      }
+    },
+    {
+      "name": "8. On: the fishing panel framing: with the phone bottom sheet open, the angler and the float stand inside the space above it, as with the classic lens",
+      "passed": true,
+      "info": {
+        "classic": {
+          "anglerBottomPx": 310,
+          "floatBottomPx": 465,
+          "topPx": 110,
+          "sheetTop": 470,
+          "fit": 14.77
+        },
+        "high": {
+          "anglerBottomPx": 281,
+          "floatBottomPx": 457,
+          "topPx": 105,
+          "sheetTop": 470,
+          "fit": 18.988
+        }
+      }
+    },
+    {
+      "name": "9. The creator preview (prevCam), the wardrobe photos (THUMB.cam) and the title camera (camera) are unchanged with the lens on, and the module assigns none of them",
+      "passed": true,
+      "info": {
+        "title": {
+          "fov": 34,
+          "position": [
+            14,
+            13,
+            20
+          ]
+        },
+        "creator face": {
+          "fov": 28,
+          "position": [
+            0,
+            1.68,
+            1.4
+          ]
+        },
+        "creator body": {
+          "fov": 28,
+          "position": [
+            0,
+            1.34,
+            4.3
+          ]
+        },
+        "photo hair": {
+          "fov": 26,
+          "position": [
+            0.05,
+            1.69,
+            1.42
+          ]
+        },
+        "photo outfit": {
+          "fov": 26,
+          "position": [
+            0,
+            1.38,
+            4.6
+          ]
+        }
+      }
+    },
+    {
+      "name": "10. The Menu toggle: \"Camera: classic\" right after Sound, in the Sound button’s style with aria-pressed; tapping it saves “high” for this device, switches the camera at once and reopens the Menu with \"Camera: high and close\"; tapping again saves “classic” and restores the classic camera; LOCAL_ONLY, shown online, nothing on a silent replay, and a session choice that holds when storage throws",
+      "passed": true,
+      "info": {
+        "labels": [
+          "Camera: classic",
+          "Camera: high and close"
+        ],
+        "key": "cd3-lens",
+        "afterSound": true,
+        "localOnly": true
+      }
+    },
+    {
+      "name": "11. Restore on load: a saved “high” turns the lens on at load, a saved “classic” or nothing leaves it off, ?lens=30 turns it on without saving, and storage that throws leaves it off",
+      "passed": true,
+      "info": {
+        "saved high": {
+          "on": true,
+          "fov": 30,
+          "saved": "high"
+        },
+        "saved classic": {
+          "on": false,
+          "fov": 34,
+          "saved": "classic"
+        },
+        "nothing saved": {
+          "on": false,
+          "fov": 34,
+          "saved": null
+        },
+        "?lens=30": {
+          "on": true,
+          "fov": 30,
+          "saved": null
+        },
+        "?lens=30 over a saved classic": {
+          "on": true,
+          "fov": 30,
+          "saved": "classic"
+        },
+        "?lens=300": {
+          "on": false,
+          "fov": 34,
+          "saved": null
+        },
+        "storage throws": {
+          "on": false,
+          "fov": 34,
+          "saved": "throws"
+        }
+      }
+    },
+    {
+      "name": "12. Determinism: two runs give identical reports",
+      "passed": true,
+      "info": {
+        "runs": 2,
+        "identical": true
+      }
+    }
+  ],
+  "method": "Actual runtime modules in Node with the shipped Three.js and the authored armchair model; views measured by projecting with the game cameras (cams) after the real camera wrappers, the evening through the real base frame; clocks, rng and performance.now stubbed. Nothing is drawn here; judge the look on the test phones."
+}
