@@ -10,25 +10,37 @@ const assert=require('assert/strict'),fs=require('fs'),path=require('path'),os=r
 const OUT=path.join(__dirname,'results-bench-v36.json');
 const GAME=process.env.COMPOUND_GAME_DIR||path.resolve(__dirname,'..','dist');process.env.COMPOUND_GAME_DIR=GAME;
 const PLAN=JSON.parse(fs.readFileSync(path.join(__dirname,'bench-route-v36.json'),'utf8'));
+const {guideHash}=require(path.join(__dirname,'..','tools','bench-route-v36.cjs'));
 const NAMES=[
  '1. Foundation: a local pair (two cameras, singleIdx -1) in which each player’s keys move only that player, also both at once; each player’s prompt shows beside their own view near a hotspot',
  '2. Inert until started: 3,000 seeded points give the same blocked() result, a 600-frame two-player walk leaves the save, the camera distances and the hotspot labels identical, and the save’s top-level keys, the tick hooks and the LINES35 counts match the build without bench-v36.js; the companion household’s Menu matches too, apart from the one line at its top saying the bench needs two players on one device; no bench mesh exists',
- '3. Both must participate: one player alone cannot move it; the mover’s keys only translate it along its axis and the turner’s only turn it about its centre (the turner’s forward keys move nothing); with the turner’s keys zeroed for 120 s the plan never reaches the passage, and with the mover’s zeroed the centre never moves',
- '4. Three consecutive deliveries by real keys through the gate, both corners and the doorway: no reset and the state sequence exactly the machine’s; the second with roles swapped before the lift, the third with four set-downs by alternating holders and a mid-route swap that changes the leading end; each under 240 s of game time; Out, Gate and Water placed; the saved item untouched until each new agreement; the fresh start moves the crate; the preflight refuses an armchair over the slot and a piece in the room lane, and Build refuses the lane while a delivery is open',
- '5. Walls are never passed: on every frame of checks 4, 6 and 7 and of a seeded fuzz (6 x 1,000 frames of random keys and Acts for both players from the five checkpoints and the doorway, each loaded where asked) an independent exact box test finds the bench clear of every wall, piece of furniture and the crate, and between carried frames within 0.1 mm; the holders stand clear on level ground at their squeezed-in radius, nobody steps to a stand point through a wall, and every frame of the glide, and every moment between its frames, is clear of the walls, the pot and both players',
- '6. Never trapped: every set-down the fuzz makes is one the harness’s own walk finds both players can lift (one at each end), every refusal one it finds they cannot, and nobody but a holder ever stands inside the grounded bench (also after a set-down the frame after the lift); a reset after a stall at corner 2 with both players in the room lands on a liftable checkpoint, never on the old room pose; with no checkpoint liftable the bench goes to the gate with the players; a save made mid-carry with the leading holder on the row reloads liftable or at the gate; a player waiting out on the street (south of z 11) neither makes a grounded bench stuck nor sends it back on a reload, and a set-down by the street gate is not refused for them',
+ '3. Both must participate: one player alone cannot move it; the mover’s keys only translate it along its axis and the turner’s only turn it about its centre (the turner’s forward keys move nothing); with the turner’s keys zeroed for 120 s the plan never reaches the passage, and with the mover’s zeroed the centre never moves; at four corner poses (inside the gate 40° off, corner 1 half-turned, the flat door 20° off, the veranda doorway 15° off) 120 s of the mover’s keys alone (ratcheting either way, or random) leave the yaw exactly as it was, 120 s of the turner’s keys alone move the centre at most 0.08 m, and BENCH36.yawLeak stays 0',
+ '4. Three consecutive deliveries by real keys through the gate, both corners and the doorway: no reset and the state sequence exactly the machine’s; the second with roles swapped before the lift, the third with four set-downs by alternating holders and a mid-route swap that changes the leading end; each under 60 s of game time with at most 3 bumps; Out, Gate and Water placed; the plan is the one made for the running scheme (guided-lateral) and its guidance (the BENCH36.GUIDE hash); the saved item untouched until each new agreement; the fresh start moves the crate; the preflight refuses an armchair over the slot and a piece in the room lane, and Build refuses the lane while a delivery is open',
+ '5. Walls are never passed: on every frame of checks 4, 6 and 7 and of a seeded fuzz (6 x 1,000 frames of random keys and Acts for both players from the five checkpoints and the doorway, each loaded where asked, and 300 frames each of the mover’s random keys alone and of both players’ random keys and Acts from 5, 10, 14 and 20 degrees off at the passage mouth, the flat door and the veranda doorway and with a holder 0.05 m from each of their six jambs) an independent exact box test finds the bench clear of every wall, piece of furniture and the crate, and between carried frames within 0.1 mm, with the walls’ sideways help used on some of those frames; the holders stand clear on level ground at their squeezed-in radius, nobody steps to a stand point through a wall, and every frame of the glide, and every moment between its frames, is clear of the walls, the pot and both players',
+ '6. Never trapped: every set-down the fuzz makes (the openings’ fuzz included) is one the harness’s own walk finds both players can lift (one at each end, in an order in which the first holder’s body leaves the other their way round), every refusal one it finds they cannot, and nobody but a holder ever stands inside the grounded bench (also after a set-down the frame after the lift); a reset after a stall at corner 2 with both players in the room lands on a liftable checkpoint, never on the old room pose; with no checkpoint liftable the bench goes to the gate with the players; a save made mid-carry with the leading holder on the row reloads liftable or at the gate; a player waiting out on the street (south of z 11) neither makes a grounded bench stuck nor sends it back on a reload, and a set-down by the street gate is not refused for them',
  '7. Set down and swap anywhere: at 12 points along the plan the pair sets the bench down (alternating holders), swaps roles, lifts and carries on, the role lines and chips follow the swap, and the delivery completes',
  '8. Gentle stop at dt 1/60 and 1/30: pushed into a rail for 2 s, the bench moves at most 1 mm after first contact and then not at all, the holders’ walking flag does not flicker, at most one bump per 0.4 s, and the mesh recoil stays within 6 cm and returns to the pose; what meets the rail is the leading holder’s body at its squeezed-in 0.22 m (not a walking 0.33 m), so the dust rises beside that holder and both prompts say who is up against what',
- '9. Stuck and reset: held accepted keys against the corner-2 wall make it stuck in about 2.5 s and the hint shows in the holders’ prompts; a key held outside the cone for 5 s does not (and its arrow hint shows after 0.6 s); a set-down ends the stall (no hint, and a player at an end gets “Take this end”, never the reset); a grounded bench nobody can lift (the crate pushed onto an end) offers “Reset the bench” beside it, and Act puts it on a liftable checkpoint with the crate moved clear; the Menu reset works with the bench in the passage and sits at the top of the Menu',
+ '9. Stuck and reset: held accepted keys against the vestibule wall at corner 2 (the porch turn after the passage, plan segment 7) make it stuck in about 2.5 s and the hint shows in the holders’ prompts; a key held outside the cone for 5 s does not (and its arrow hint shows after 0.6 s for the mover, 0.35 s for the turner); three swings refused within 4 s put “Your end is on the wall. Try the other way, or ask … to back up a little.” in the turner’s prompt and “… needs room. Back up a little.” in the mover’s; a set-down ends the stall (no hint, and a player at an end gets “Take this end”, never the reset); a grounded bench nobody can lift (the crate pushed onto an end) offers “Reset the bench” beside it, and Act puts it on a liftable checkpoint with the crate moved clear; the Menu reset works with the bench in the passage and sits at the top of the Menu',
  '10. Controls feel: a 100 ms tap moves at most 3 cm or turns at most 1.5 degrees, a release from full speed coasts at most 5 cm or 3 degrees, forward and back speeds are equal, one held key completes a 95-degree turn, and a Menu opened and closed mid-carry leaves the bench at rest',
  '11. Placement: Out, Gate and Water pass the arrangement rule with the default, chairs-at-(5,4) and armchair-at-(5,4) layouts and inside the first chooser (reach start free, a reach run each time); a candidate over the pot keep fails; a player in the way is moved clear before the bench goes; the ghost stands at the pose; one agreement does not commit and a change clears both; both agree gives the item and the day log line; with an armchair, chairs or a plant beside the doorway (cell 5,4) the bench still glides to each arrangement (in two legs), every frame and every move between frames clear',
- '12. Save and reload: a placed bench, a bench in the chooser and a bench saved mid-carry come back as they were (grounded and liftable for the carry); an old save gets nothing; a placed state with no item heals; online the shared document keeps only {v, state, choice}; ?bench=fresh applies once; Build cannot store or pick up the bench and shows neither button; browsing in a fresh delivery’s chooser never changes the saved arrangement, so “Leave the bench where it was” leaves the save, the shared document and the next run on the placed one; in playtest mode the next run starts from the job each player did not start the last one with',
+ '12. Save and reload: a placed bench, a bench in the chooser and a bench saved mid-carry come back as they were (grounded and liftable for the carry); an old save gets nothing; a placed state with no item heals; online the shared document keeps only {v, state, choice}; ?bench=fresh applies once; Build cannot store or pick up the bench and shows neither button; browsing in a fresh delivery’s chooser never changes the saved arrangement, so “Leave the bench where it was” leaves the save, the shared document and the next run on the placed one; in playtest mode the next run starts from the job each player did not start the last one with, and a run that is lifted and then left where it was puts back the first mover and the mover it started from, so the run after it is pre-swapped from the completed one',
  '13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close',
  '14. Split views keep prompts and visibility: at 1280x800 and 1280x720 at the five checkpoints of a delivery, in both views the bench, both holders and the next-corner point are inside the usable area, the corner point is kept, the smaller holder is at least 70 px tall and the prompt carries the right Move or Turn chip; the camera distance changes by at most 2.5% a frame; the ghost is in both views in the chooser; at 390x844 and 844x390 the corner point is dropped for the arrow, which points where that view draws the next corner (within 3 degrees) from the edge of its framed area, and the heights are recorded',
  '15. Modes: a holder’s pad disconnecting sets it down; online it is set down, paused and absent from blocked() and the scene, an open fresh delivery is cancelled, and back on one device a player who stood where it lay is moved clear (it stays put); a pair sitting on it stand up when the household goes online; a companion household sees no offer but the two-hands line from day 2 without any flag (and nothing spawns), an online one the one-device line; a first delivery can be left for now (gone, the offer back); the evening waits while the bench is in hands, starts with it lying on the ground or placed, its pending() untouched; Ada thanks them once after placement; LINES35 is untouched',
  '16. Hotspots: with each arrangement placed a player at the pepper pot’s own point gets the pot; a player at (-5.95, 6.4) gets “Sit on the bench together” or “Wait for …”; both players pressing Act at the same end on the same frame give one holder and the toast; a player whose step to the stand point would cut through the doorway jamb is asked to come round, and takes the end once straight on',
- '17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests, a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses',
- '18. Glyph and page: after E and Enter presses the prompts show E and ⏎, not the pad’s A; while the bench is held the page is marked busy (the wayfinding pill and, on small screens, the Pantry card step aside), after the first two lifts the carry prompt is marked compact, the chooser marks the page for its top strip, and a see-through outline of the bench shows only while it is held'];
+ '17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests (also on the frames the walls help, whose peak is recorded), a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses; weighed in box tests (a blocked() call 3, one answered from the reach run’s index 1/4, a walk-grid cell 1/64), no frame from the lift to the bench in its place weighs more than 1,200 (about 6 ms), and the frame the chooser opens in runs no arrangement check',
+ '18. Glyph and page: Ada’s note says one walks it and one turns it, the lift toast names who walks it and who turns it, and the first lift’s hints say how; after E and Enter presses the prompts show E and ⏎, not the pad’s A; while the bench is held the area captions are hidden in both views (and the same ones come back once it is down) and the page is marked busy (the wayfinding pill and, on small screens, the Pantry card step aside), after the first two lifts the carry prompt is marked compact, the chooser marks the page for its top strip, and a see-through outline of the bench shows only while it is held',
+ '19. Walls guide, never turn: the passage, the flat door and the veranda doorway measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames',
+ '20. Solo: one player alone for 120 s (the mover ratcheting either way or pressing random keys, or the turner pressing random keys) from eight poses (by the gate 25 and 45 degrees off, inside the gate 40 off, corner 1 half-turned, the passage mouth 30 and 15 off, the flat door 20 off, the veranda doorway 15 off) never changes the yaw by the mover’s keys, never moves the centre more than 0.08 m by the turner’s, never passes more than one opening and only along a straight, and reaches the chooser only in the two straight pushes from 15 degrees off at the veranda doorway (which the build before the guided walls delivers too); the walls’ help is used in these runs',
+ '21. Key repeat: an OS key repeat on E or Enter is never a fresh Act anywhere in the bench (the page’s own keydown listeners, fired by hand): a held E after taking an end never swaps roles, held E and Enter while carrying never set it down (one fresh press still does), a held E in the chooser never takes the agreement back, a held E on the bench never stands them up; with no bench about, a repeat still sets the latch as before',
+ '22. Focus loss: a window blur mid-push (a key held and a stick leaning) and the page hidden mid-swing let go of every key, both sticks and the Act latches; the carried bench stops dead where it is, still held, and does not move in the next 60 frames; in the chooser a held arrow stops stepping',
+ '23. The clock pauses only while the bench is busy: 300 frames carried along the plan, 300 frames in the chooser and every frame of the glide move the clock by 0 h (so a carry begun at 24.19 h meets no “Past midnight” card), while 300 frames with the bench lying untouched, with one player holding an end, and sitting on it move it by the normal 1/6 h',
+ '24. The directions pill: shown before, it is out of sight with one end taken, while carried, in the chooser and while sitting, and comes back exactly as it was after a set-down, after the chooser and after standing up',
+ '25. Something to do together: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why',
+ '26. The chooser by touch: each view’s strip has ◀ and ▶ and its own player’s “agrees” button (tapped through the strip’s own handler), a tap browses and clears both agreements, the agreed state shows on the button, two taps commit; the ghost is in the role yellow when free and red when not, its body itself in that colour (not pale cream), with a seat-height outline, a broad 5 cm outline and a large seat arrow (0.44 m) at the arrangement and faint outlines at the other two, all seen through the parapet; the arrangement’s name is at least 1.4 rem at the desk and 16 px on phones; the buttons take taps and are at least 44 px (the stylesheet)',
+ '27. Pause and find: “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again',
+ '28. A companion household with two players: its Menu and Today offer “Play this with two players on this device”, which switches to two-player controls (AI.on and S.ai false, both views) and starts the delivery; a reload mid-switch stays two-player with “Back to my companion”; a pause restores the companion exactly (AI.on, S.ai, AI.i, its position, the views, the save’s keys); a second switch through to placing, sitting and standing up restores it again, and so does leaving an again run; online there is no switch',
+ '29. A holder never pins the other player in (the doorway trap the guided prototype’s seed 7 found): with the bench set down in the room and its end in the veranda doorway’s mouth, a player in the room is asked to leave that end to the partner standing in the doorway (“Ola needs this end”, and Act says why), takes the far end instead, and the partner comes round and they lift; a holder who stands in the partner’s only way round is asked to let go (“Let go · Ola can’t get round”, the partner sees “Ask Efe to let go”), lets go by Act or by himself after 2.5 s, and steps back on his own side of the jamb; a set-down there puts each holder on their own side of any wall, and the harness’s walk, with the first holder’s body in the way, finds an order in which they can lift'];
 // one-place changes to bench-v36.js, each of which must turn its check red
 const MUTANTS=[
  {name:'M1 bench36Valid always true',check:5,find:'function bench36Valid(pose,inflate){',replace:'function bench36Valid(pose,inflate){return true;'},
@@ -46,7 +58,31 @@ const MUTANTS=[
  {name:'M11 the step to the stand point outlives a set-down',check:6,find:'B.pose={x:pose.x,z:pose.z,yaw:pose.yaw};B.snap=null;',replace:'B.pose={x:pose.x,z:pose.z,yaw:pose.yaw};'},
  {name:'M12 holders are tested at the walking radius',check:8,find:'HR:0.22,',replace:'HR:0.33,'},
  {name:'M13 a set-down keeps the stall',check:9,find:'function benchUnstick36(){const B=BENCH36;',replace:'function benchUnstick36(){const B=BENCH36;return;'},
- {name:'M14 the glide’s shortcuts are not tested',check:11,find:'const L=(a,b)=>benchPlanSafe36(raw[a],raw[b],boxes,discs);',replace:'const L=(a,b)=>true;'}];
+ {name:'M14 the glide’s shortcuts are not tested',check:11,find:'const L=(a,b)=>benchPlanSafe36(raw[a],raw[b],boxes,discs);',replace:'const L=(a,b)=>true;'},
+ {name:'M15 the funnel turns the bench again',check:19,find:"const q=O.ax==='z'?{x:p.x+dl,z:p.z,yaw:p.yaw}:{x:p.x,z:p.z+dl,yaw:p.yaw};",replace:"const dy=Math.sign(d)*Math.min(Math.abs(d),30*Math.PI/180*dsAbs),q=O.ax==='z'?{x:p.x+dl,z:p.z,yaw:p.yaw+dy}:{x:p.x,z:p.z+dl,yaw:p.yaw+dy};"},
+ {name:'M16 no cap on the sideways help a contact',check:19,find:'CAPL:0.15,',replace:'CAPL:99,'},
+ {name:'M17 a correction is tested at its end only',check:19,find:'function benchTryG36(p,q,s0){if(!bench36Valid(q))return 0;',replace:'function benchTryG36(p,q,s0){return bench36Valid(q)?1:0;'},
+ {name:'M18 no cap on the centre’s step for a refused swing',check:3,find:'CAPS:0.08,',replace:'CAPS:99,'},
+ {name:'M19 the sideways help may also turn the bench half a degree',check:3,find:'const q={x:base.x+s*l*n[0],z:base.z+s*l*n[1],yaw:p.yaw},r=',replace:'const q={x:base.x+s*l*n[0],z:base.z+s*l*n[1],yaw:p.yaw+(l===G.LAT?0.5*Math.PI/180:0)},r='},
+ {name:'M20 a held Act key repeats again',check:21,find:'if(e&&e.repeat){act[r[0]]=r[1];',replace:'if(e&&e.repeat){'},
+ {name:'M21 a blur lets go of the keys but not the carry’s speed',check:22,find:'B.raw=[[0,0],[0,0]];B.latch=[null,null];B.vel.s=0;B.vel.w=0;',replace:'B.raw=[[0,0],[0,0]];B.latch=[null,null];'},
+ {name:'M22 the clock stops whenever a delivery is open',check:23,find:"return !B.paused&&(s==='carrying'||s==='choosing'||s==='settling');}",replace:"return !B.paused&&(s==='grounded'||s==='ready'||s==='carrying'||s==='choosing'||s==='settling');}"},
+ {name:'M23 the clock also stops while they sit',check:23,find:"return !B.paused&&(s==='carrying'||s==='choosing'||s==='settling');}",replace:"return !B.paused&&(s==='carrying'||s==='choosing'||s==='settling'||s==='seated');}"},
+ {name:'M24 the pill is never brought back',check:24,find:'else if(!hide&&B.pillHid){',replace:'else if(false){'},
+ {name:'M25 the agree button does not show the agreement',check:26,find:"` aria-pressed=\"${B.agree[i]?'true':'false'}\"`",replace:"' aria-pressed=\"false\"'"},
+ {name:'M26 a ghost that is not free keeps the free colour',check:26,find:'col=ok?B.COL.move:B.COL.nofree;',replace:'col=B.COL.move;'},
+ {name:'M27 the Find marker outlives the grab',check:27,find:"if(s!=='grounded')benchFindClear36();",replace:''},
+ {name:'M28 the companion comes back where the pair left it',check:28,find:'if(q)benchPlace36(i,q[0],q[1]);}',replace:'}'},
+ {name:'M29 the switch is not saved, so a reload loses the way back',check:28,find:'L.duo={v:1,ai:!!S.ai,i,',replace:'BENCH36.duo36={v:1,ai:!!S.ai,i,'},
+ {name:'M30 a player may take the end the partner needs to get round',check:29,find:'function benchTakeBoxesC36(i,e){',replace:'function benchTakeBoxesC36(i,e){return false;'},
+ {name:'M31 a holder who pins the partner never lets go by himself',check:29,find:'B.pinT36+=dt;if(B.pinT36<B.PINWAIT)return;',replace:'return;'},
+ {name:'M32 a holder’s body is not in the way',check:29,find:'R=B.HR+PR,R2=R*R;',replace:'R=0,R2=0;'},
+ {name:'M33 a holder steps back to the first free point, even beyond the jamb',check:29,find:'benchSlideClear36([x,z],[sx,sz])?[x,z]:benchNudgeSpot36(sx,sz,box);',replace:'true?[x,z]:benchRing36(sx,sz,box);'},
+ {name:'M34 “Cook” hides “Take this end” again',check:29,find:"else list.push({id:'bench36Take',label:'Take this end',dist:dd-0.5});",replace:"else list.push({id:'bench36Take',label:'Take this end',dist:dd});"},
+ {name:'M35 a cancelled run keeps its first mover',check:12,find:"benchUnkeep36(L);const it=benchItem36();",replace:'const it=benchItem36();'},
+ {name:'M36 the reach run walks the whole obstacle list again',check:17,find:'miss=benchReachFast36(()=>TUNE35.reach(',replace:'miss=(f=>f())(()=>TUNE35.reach('},
+ {name:'M37 the chooser checks the selected arrangement in the delivery frame again',check:17,find:'B.arrFrame=B.frame;B.heavy=B.frame;benchShowGhost36();',replace:'benchArrNow36(B.choice);benchShowGhost36();'},
+ {name:'M38 the ghost’s body is pale again',check:26,find:'o.material.color.set(col);o.material.opacity=0.86;',replace:''}];
 
 // a copy of dist with index.html changed by htmlFn and bench-v36.js by benchFn (everything else linked)
 function variantDir(htmlFn,benchFn){const d=fs.mkdtempSync(path.join(os.tmpdir(),'cd36-bench-'));
@@ -146,10 +182,65 @@ async function world(){const {benchWorld}=require(path.join(__dirname,'..','tool
  var hbMatch36=(p,pos)=>{const {X0,Z0,S0,NX,NZ}=HB36,ax=Math.cos(p.yaw),az=-Math.sin(p.yaw),ends=[[p.x-ax*0.9,p.z-az*0.9],[p.x+ax*0.9,p.z+az*0.9]];
   for(const [x,z] of ends)if(blocked(x,z,BENCH36.HR,{noBench:true})||!carryLevelOK34(x,z))return false;
   const g=hbGrid36().slice();for(let i=0;i<NX;i++){const x=X0+i*S0;if(Math.abs(x-p.x)>1.2)continue;for(let j=0;j<NZ;j++){const z=Z0+j*S0;if(Math.abs(z-p.z)>1.2)continue;if(hbInBox36(x,z,PR,p))g[i*NZ+j]=1;}}
-  const reach=q=>{const seen=new Uint8Array(NX*NZ);let si=Math.round((q[0]-X0)/S0),sj=Math.round((q[1]-Z0)/S0);if(si<0||sj<0||si>=NX||sj>=NZ){si=Math.round((4.0-X0)/S0);sj=Math.round((10.2-Z0)/S0);}let s=-1,bd=1e9;for(let a=-7;a<=7;a++)for(let b=-7;b<=7;b++){const i=si+a,j=sj+b;if(i<0||j<0||i>=NX||j>=NZ||g[i*NZ+j])continue;if(a*a+b*b<bd&&a*a+b*b<=49){bd=a*a+b*b;s=i*NZ+j;}}
+  const reach=(q,g)=>{const seen=new Uint8Array(NX*NZ);let si=Math.round((q[0]-X0)/S0),sj=Math.round((q[1]-Z0)/S0);if(si<0||sj<0||si>=NX||sj>=NZ){si=Math.round((4.0-X0)/S0);sj=Math.round((10.2-Z0)/S0);}let s=-1,bd=1e9;for(let a=-7;a<=7;a++)for(let b=-7;b<=7;b++){const i=si+a,j=sj+b;if(i<0||j<0||i>=NX||j>=NZ||g[i*NZ+j])continue;if(a*a+b*b<bd&&a*a+b*b<=49){bd=a*a+b*b;s=i*NZ+j;}}
    if(s<0)return [false,false];const Q=[s];seen[s]=1;for(let h=0;h<Q.length;h++){const n=Q[h],i=(n/NZ)|0,j=n-i*NZ;for(const m of [i>0?n-NZ:-1,i<NX-1?n+NZ:-1,j>0?n-1:-1,j<NZ-1?n+1:-1])if(m>=0&&!seen[m]&&!g[m]){seen[m]=1;Q.push(m);}}
    return ends.map(([ex,ez])=>{for(let i=Math.floor((ex-0.8-X0)/S0);i<=Math.ceil((ex+0.8-X0)/S0);i++)for(let j=Math.floor((ez-0.8-Z0)/S0);j<=Math.ceil((ez+0.8-Z0)/S0);j++){if(i<0||j<0||i>=NX||j>=NZ)continue;const n=i*NZ+j;if(seen[n]&&Math.hypot(X0+i*S0-ex,Z0+j*S0-ez)<=0.8)return true;}return false;});};
-  const r0=reach(pos[0]),r1=reach(pos[1]);return (r0[0]&&r1[1])||(r0[1]&&r1[0]);};`);
+  const r0=reach(pos[0],g),r1=reach(pos[1],g);if(!((r0[0]&&r1[1])||(r0[1]&&r1[0])))return false;
+  // and an order: the first to take an end stands at it (a body of 0.22 + 0.33 m the other does not walk through), and the other still
+  // reaches theirs (someone standing in that body starts from its edge on their own side)
+  const R=0.55,held=h=>{const w=g.slice(),[hx,hz]=ends[h];for(let i=Math.floor((hx-R-X0)/S0);i<=Math.ceil((hx+R-X0)/S0);i++)for(let j=Math.floor((hz-R-Z0)/S0);j<=Math.ceil((hz+R-Z0)/S0);j++){if(i<0||j<0||i>=NX||j>=NZ)continue;if(Math.hypot(X0+i*S0-hx,Z0+j*S0-hz)<R)w[i*NZ+j]=1;}return w;};
+  const out=(q,h)=>{const [hx,hz]=ends[h],d=Math.hypot(q[0]-hx,q[1]-hz);if(d>=R+0.05)return q;if(d<1e-6){const sg=h?1:-1;return [hx+ax*sg*(R+0.05),hz+az*sg*(R+0.05)];}return [hx+(q[0]-hx)/d*(R+0.05),hz+(q[1]-hz)/d*(R+0.05)];};
+  const H=[held(0),held(1)],r=[r0,r1];
+  for(const m of [[0,1],[1,0]]){if(!(r[0][m[0]]&&r[1][m[1]]))continue;for(const f of [0,1]){const t=1-f;if(reach(out(pos[t],m[f]),H[m[f]])[m[t]])return true;}}
+  return false;};`);
+ // the lone player (checks 3 and 20, after the judge's solo tool): a pose is lifted where asked (or at the nearest of a few nudges round it),
+ // then ONE player acts for 120 s by keys only while the other holds their end and presses nothing
+ run(`var REG36=(x,z)=>z>6.1?'street':(x>-2.35&&x<0.9&&z>2.9&&z<5.85)||(x>-2.35&&x<-1.15&&z>1.5&&z<5.85)?'passage':x<=-2.35&&z>2&&z<5.6?'room':x<=-2.35&&z>=5.6?'veranda':'courtyard';
+ var NUDGE36=[[0,0],[0.1,0],[-0.1,0],[0,0.1],[0,-0.1],[0.2,0],[-0.2,0],[0,0.2],[0,-0.2],[0.15,0.15],[-0.15,0.15],[0.15,-0.15],[-0.15,-0.15],[0.3,0],[-0.3,0],[0,0.3],[0,-0.3]];
+ // lift a bench loaded at (x, z, deg) or at the first nudge that loads where asked and lifts; returns the pose it was lifted at, or null
+ var liftAt36=(x,z,deg,nudges)=>{for(const [ox,oz] of (nudges||NUDGE36)){const X=x+ox,Z=z+oz,P={x:X,z:Z,yaw:deg*Math.PI/180};fresh36();start36();atEnds36(P);loadAt36(X,Z,deg);
+   const g=bench36Pose();if(Math.abs(g.x-X)>1e-9||Math.abs(g.z-Z)>1e-9||Math.abs(g.yaw-P.yaw)>1e-9)continue;noKeys36();press36(0);frames36(3);press36(1);frames36(4);if(BENCH36.state==='carrying')return [X,Z,deg];}return null;};
+ var SOLOP36={'by the gate 25° off':[3.9,7.1,120],'by the gate 45° off':[3.9,7.1,140],'inside the gate 40° off':[3.6,5.0,135],'corner 1 half-turned':[-1.0,0.95,215],
+  'passage mouth 30° off':[-1.65,1.0,240],'passage mouth 15° off':[-1.65,1.0,255],'flat door 20° off':[-2.0,4.9,200],'veranda doorway 15° off':[-4.1,4.85,255]};
+ var soloRun36=(name,pat)=>{const [x,z,deg]=SOLOP36[name],at=liftAt36(x,z,deg);if(!at)return {name,pat,err:'not lifted'};const B=BENCH36,p0=bench36Pose(),leak0=B.yawLeak,as0=B.cost.assist+B.cost.funnel;
+  R36.seed(Math.round(x*100+z*10+deg));let ymax=0,dmax=0,ph=0,phT=0,s0=null,dir=null,reg=[REG36(p0.x,p0.z)],cross=[],chose=false;
+  for(let f=0;f<3600;f++){if(B.state!=='carrying')break;const m=B.mover,t=1-m,a=benchAxis36(B.pose.yaw),fs=B.front?1:-1;
+   if(pat.startsWith('ratchet')){const sg=pat.endsWith('+')?1:-1;      // push along the bench for up to 1.5 s or until it stops, then back off 0.35 m
+    if(ph===0){setKeys36(m,combo36(a[0]*fs*sg,a[1]*fs*sg));phT++;if(phT>45||(phT>8&&!B.movedPrev)){ph=1;phT=0;s0=[B.pose.x,B.pose.z];}}
+    else{setKeys36(m,combo36(-a[0]*fs*sg,-a[1]*fs*sg));phT++;if(Math.hypot(B.pose.x-s0[0],B.pose.z-s0[1])>=0.35||phT>30){ph=0;phT=0;}}setKeys36(t,null);}
+   else{if(f%6===0){const r=R36.next();dir=r<0.15?null:[Math.floor(R36.next()*3)-1,Math.floor(R36.next()*3)-1];if(dir&&!dir[0]&&!dir[1])dir=null;}
+    const who=pat==='turner-random'?t:m;setKeys36(who,dir);setKeys36(1-who,null);}
+   frames36(1);const q=B.pose,dy=Math.abs(benchWrapA36(q.yaw-p0.yaw));if(dy>ymax)ymax=dy;dmax=Math.max(dmax,Math.hypot(q.x-p0.x,q.z-p0.z));
+   const rg=REG36(q.x,q.z);if(!reg.includes(rg)){reg.push(rg);cross.push(+(q.yaw*180/Math.PI).toFixed(1));}if(B.state==='choosing')chose=true;}
+  noKeys36();const p=bench36Pose(),st=B.state;if(st==='choosing'){ACTIONS.bench36RoomDown();frames36(2);}
+  return {name,pat,at,yawMax:ymax,moved:+dmax.toFixed(4),movedRaw:dmax,regions:reg,cross,chose,leak:B.yawLeak-leak0,assisted:B.cost.assist+B.cost.funnel-as0,end:[+p.x.toFixed(2),+p.z.toFixed(2),+(p.yaw*180/Math.PI).toFixed(1)],state:st};};`);
+ // check 19: the openings by the harness's own box list (a point is free when no box holds it strictly), and a push by the mover's keys alone
+ run(`var OPEN19=[{n:'passage',ax:'z',c:-1.75,s:2.3},{n:'flat door',ax:'x',c:4.9,s:-2.475},{n:'veranda doorway',ax:'z',c:-4.1,s:5.725}];
+ var hbGap36=O=>{const free=v=>{const x=O.ax==='z'?v:O.s,z=O.ax==='z'?O.s:v;for(const b of hbBoxes36(x,z,0.05))if(x>b.x1&&x<b.x2&&z>b.z1&&z<b.z2)return false;return true;};
+  const edge=dir=>{let a=0,b=0.02;while(free(O.c+dir*b)&&b<1.5){a=b;b+=0.02;}for(let k=0;k<20;k++){const m=(a+b)/2;if(free(O.c+dir*m))a=m;else b=m;}return O.c+dir*(a+b)/2;};
+  const lo=edge(-1),hi=edge(1);return {lo,hi,c:(lo+hi)/2,w:hi-lo};};
+ // lift at (x, z, deg) (nudged along the opening's axis only), the mover holds a key towards world direction dir for n frames (or until the
+ // centre has gone far), then lets go
+ var push19=(x,z,deg,dir,n,ax,far)=>{const nud=[0,0.05,-0.05,0.1,-0.1,0.15,-0.15].map(d=>ax==='z'?[0,d]:[d,0]);const at=liftAt36(x,z,deg,nud);if(!at)return {err:'not lifted'};
+  const B=BENCH36,p0=bench36Pose(),c0=[B.cost.assist,B.cost.funnel],leak0=B.yawLeak;setKeys36(B.mover,combo36(dir[0],dir[1]));for(let k=0;k<n&&!(far&&Math.hypot(B.pose.x-p0.x,B.pose.z-p0.z)>=far);k++)frames36(1);noKeys36();frames36(8);const p1=bench36Pose();
+  const a=benchAxis36(p0.yaw),nn=[Math.sin(p0.yaw),Math.cos(p0.yaw)],dx=p1.x-p0.x,dz=p1.z-p0.z;
+  // the move split into the mover's slide along the bench (s) and a sideways shift across the opening (D, along world x or z)
+  const e=ax==='z'?[1,0]:[0,1],en=e[0]*nn[0]+e[1]*nn[1],D=(dx*nn[0]+dz*nn[1])/en,sl=(dx-D*e[0])*a[0]+(dz-D*e[1])*a[1];
+  return {at,p0,p1,along:dx*a[0]+dz*a[1],perp:dx*nn[0]+dz*nn[1],slide:sl,shift:D,assist:B.cost.assist-c0[0],funnel:B.cost.funnel-c0[1],leak:B.yawLeak-leak0,state:B.state};};`);
+ // the page's key, focus and visibility listeners (checks 21 and 22): Node's addEventListener does nothing, so the base game's own keydown and
+ // keyup lines (read from index.html) and the module's list (BENCH36.listeners, when there is one) are registered again into a recorder in page
+ // order, and fire36 calls them as the browser would: capture listeners first, then the others in the order they were added
+ {const lines=fs.readFileSync(path.join(GAME,'index.html'),'utf8').split('\n').map(l=>l.trim()).filter(l=>/^window\.addEventListener\('key(down|up)',e=>\{/.test(l));
+  run('var EV36={window:[],document:[]};');
+  for(const l of lines)run(`{const keep=window.addEventListener;window.addEventListener=(t,f,c)=>EV36.window.push([t,f,c===true||!!(c&&c.capture)]);try{${l}}finally{window.addEventListener=keep;}}`);
+  run(`if(typeof BENCH36!=='undefined'&&Array.isArray(BENCH36.listeners))for(const [tg,t,f,c] of BENCH36.listeners)EV36[tg].push([t,f,!!c]);
+   var fire36=(tg,type,ev)=>{ev=Object.assign({type,repeat:false,preventDefault(){},stopPropagation(){}},ev||{});const L=EV36[tg].filter(x=>x[0]===type);for(const x of L)if(x[2])x[1](ev);for(const x of L)if(!x[2])x[1](ev);return true;};
+   var keyAct36=(i,repeat)=>fire36('window','keydown',{key:i?'Enter':'e',repeat:!!repeat}),keyUp36=i=>fire36('window','keyup',{key:i?'Enter':'e'});
+   var chooserAt36=extra=>{benchTeardown36();life34();S.life.bench36=Object.assign({v:1,state:'choosing',pos:[-4.0166,5.0218],yaw:4.5307,mover:0,choice:'out',deliveries:0,again:false,hints:2,placedDay:null,playtest:false,runs:[]},extra||{});at36(0,-4.2154,6.1037);at36(1,-3.8178,3.9399);reload36();frames36(3);};
+   var placedAt36=k=>{benchTeardown36();life34();S.life.bench36={v:1,state:'placed',pos:[0,0],yaw:0,mover:0,choice:k||'out',deliveries:1,again:false,hints:2,placedDay:2,playtest:false,runs:[]};S.home.items=S.home.items.filter(i=>i.type!=='bench');S.home.items.push({id:'i98',type:'bench',x:0,y:4,rot:0,pose36:k||'out'});reload36();};
+   var strips36=()=>[0,1].map(i=>{const h=document.getElementById('half'+i),c=(h.children||[]).filter(x=>x.className==='bench36-pick');return c.length?c[c.length-1].innerHTML:'';});
+   var tap36=(act,d)=>{if(typeof benchStripTap36!=='function')return false;benchStripTap36({target:{closest:()=>({dataset:Object.assign({act},d)})},preventDefault(){},stopPropagation(){}});return true;};
+   var companion36=()=>{NET.on=false;dispatch('aiStart');S.p[0].name='Efe';S.p[1].name='Ola';dispatch('setupnext',{i:0});dispatch('setupnext',{i:1});closePanel();dispatch('movein');closePanel();sofa.carrying=true;sofa.holder=[0,1];sofaSuccess();closePanel();dispatch('nextday');closePanel();screen36(1280,800,false);frames36(2);PH='';TOASTS=[];};`);}
  return h;}
 
 const r3=v=>Math.round(v*1000)/1000,deg=v=>Math.round(v*180/Math.PI*100)/100;
@@ -159,7 +250,7 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
  const FE=PLAN.start.yaw===0?1:0;                                              // the end the plan leads with
  // places along the plan, found by what the segments do (so a regenerated plan keeps them): the courtyard run west, corner 1, corner 2 and the
  // run through the flat door
- const SEG=(()=>{const S=PLAN.segments,court=S.findIndex(s=>s.op==='fwd'&&s.until.x<0),c2=S.findIndex(s=>s.op.startsWith('turn')&&s.until.z>4.0);
+ const SEG=(()=>{const S=PLAN.segments,court=S.findIndex(s=>s.op==='fwd'&&s.until.x<0),c2=S.findIndex(s=>s.op.startsWith('turn')&&s.until.x<-1.0&&s.until.z>4.0);   // the porch turn after the passage (not the street turn)
   return {courtyard:court,corner1:court+1,corner2:c2,flatDoor:S.findIndex((s,k)=>k>c2&&s.op==='fwd'&&s.until.x<-2.3),stops:S.length-3};})();
  const out=[];const check=(n,fn)=>{if(only&&!only.includes(n))return;const name=NAMES[n-1];
   try{const info=fn();out.push({name,passed:true,info});}catch(e){out.push({name,passed:false,failure:String(e&&e.message||e).slice(0,400)});}
@@ -188,10 +279,14 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   assert.equal(a.module,true);assert.equal(b.module,false);
   for(const k of ['blocked','save','dist','labels','keys','tickHooks','lines','mesh']){assert.deepEqual(a[k],b[k],k+' differs from the build without the module');}
   // the companion household (day 2, the sofa in) is told, once, that the bench needs two players on one device; nothing else in its Menu changes
-  const TWO='<div class="card small bench36-menu">Ada’s bench needs two pairs of hands: one to walk it, one to steer it. Play it with a second player on this device.</div>';
+  const TWO='<div class="card small bench36-menu">Ada’s bench needs two pairs of hands: one to walk it, one to turn it.<div class="actions">'+run("btn('Play this with two players on this device','bench36Duo',{},'primary')")+'</div></div>';
   assert(a.menu.startsWith(TWO),'the companion Menu opens with the two-hands line');assert.equal(a.menu.split('bench36-menu').length-1,1,'one bench line');assert.equal(a.menu.slice(TWO.length),b.menu,'the rest of the companion Menu is unchanged');
   assert.equal(a.mesh,0);return {points:a.blocked.length,frames:a.labels.length,keys:a.keys.length,tickHooks:a.tickHooks,lines:a.lines,companion:'two-hands line only'};});
 
+ // the lone player's runs, shared by checks 3 and 20 (each pose and pattern runs once in a process)
+ const SOLO={},PATS=['ratchet+','ratchet-','mover-random','turner-random'];
+ const solo=names=>{const out=[];for(const n of names)for(const pat of PATS){const k=n+'|'+pat;if(!SOLO[k])SOLO[k]=J(`soloRun36(${JSON.stringify(n)},'${pat}')`);out.push(SOLO[k]);}return out;};
+ const leakNow=()=>J('BENCH36.yawLeak===undefined?null:BENCH36.yawLeak');
  check(3,()=>{run('fresh36();start36();');run(`at36(0,${'benchEnd36(BENCH36.pose,'+FE+',1.05)[0]'},${'benchEnd36(BENCH36.pose,'+FE+',1.05)[1]'});at36(1,6,10.5);frames36(2);press36(0);frames36(4);`);
   assert.equal(J('BENCH36.state'),'ready');const p0=J('bench36Pose()');
   // alone: pushing into the bench and sideways for 3 s
@@ -212,7 +307,14 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   const zT=J('[bench36Pose(),FOL36.k,BENCH36.state]');assert(!(zT[0].x<-1.15&&zT[0].z>1.5),'reached the passage without the turner');
   run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;FOL36.zeroT=false;FOL36.zeroM=true;');const c0=J('bench36Pose()');run('drive36(PLAN36,900)');const zM=J('bench36Pose()');
   assert.equal(zM.x,c0.x);assert.equal(zM.z,c0.z);run('FOL36.zeroM=false;');
-  return {mover:r3(Math.hypot(dx,dz)),turner:deg(q2.yaw-q1.yaw),noTurner:{x:r3(zT[0].x),z:r3(zT[0].z),segment:zT[1]},noMover:{x:r3(zM.x),z:r3(zM.z)}};});
+  // the corner poses: the mover's keys alone never turn it (the walls only step it sideways), the turner's alone move the centre at most CAPS
+  const S3=solo(['inside the gate 40° off','corner 1 half-turned','flat door 20° off','veranda doorway 15° off']);let ym=0,tm=0;
+  for(const r of S3){assert(!r.err,r.name+' '+r.pat+': '+r.err);
+   if(r.pat==='turner-random'){assert(r.movedRaw<=0.08+1e-9,`${r.name}: the turner alone moved the centre ${r.movedRaw} m`);tm=Math.max(tm,r.movedRaw);}
+   else{assert(r.yawMax<=1e-12,`${r.name} ${r.pat}: the mover alone turned it ${r.yawMax} rad`);ym=Math.max(ym,r.yawMax);}}
+  assert.equal(leakNow(),0,'BENCH36.yawLeak');
+  return {mover:r3(Math.hypot(dx,dz)),turner:deg(q2.yaw-q1.yaw),noTurner:{x:r3(zT[0].x),z:r3(zT[0].z),segment:zT[1]},noMover:{x:r3(zM.x),z:r3(zM.z)},
+   corners:{runs:S3.length,moverYaw:ym,turnerMoved:r3(tm),yawLeak:0}};});
 
  // shared by check 4 and check 5: three deliveries with the wall sampler on every frame
  let delivered=null;
@@ -252,10 +354,13 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   const st3=J('benchStats36()');assert.equal(agreeOn('water'),'placed');
   const want3=['grounded','ready','carrying'];for(let k=0;k<4;k++)want3.push('grounded','ready','carrying');want3.push('choosing','settling','placed');assert.deepEqual(stateSeq(),want3,'delivery 3 states');
   res.push({dur:r3(st3.dur),bumps:st3.bumps,setdowns:st3.setdowns,swaps:st3.swaps,resets:st3.resets,settle:J('BENCH36.lastSettle'),placed:J("S.home.items.find(i=>i.type==='bench').pose36"),downs});
-  for(const r of res){assert(r.dur<240,'under 240 s: '+r.dur);assert.equal(r.resets,0);assert.equal(r.settle,'glide','the bench glides to its place');}
+  for(const r of res){assert(r.dur<60,'under 60 s: '+r.dur);assert(r.bumps<=3,'at most 3 bumps: '+r.bumps);assert.equal(r.resets,0);assert.equal(r.settle,'glide','the bench glides to its place');}
   assert.equal(J('S.life.bench36.deliveries'),3);
   delivered={res,crate:[crate0,crate1.map(r3)],refusals:[t1,t2]};return delivered;};
- check(4,()=>threeDeliveries());
+ check(4,()=>{// the plan was made for the running carry scheme and its guidance
+  const sc=J('typeof BENCH36.SCHEME==="string"?BENCH36.SCHEME:null'),gh=J('BENCH36.GUIDE?BENCH36.GUIDE:null');
+  assert.equal(PLAN.scheme,sc,'the plan’s scheme against the module’s');assert(gh,'the module declares its guidance');assert.equal(PLAN.guide,guideHash(gh),'the plan’s guidance hash against the module’s');
+  return Object.assign({scheme:PLAN.scheme,guide:PLAN.guide},threeDeliveries());});
 
  // the fuzz (checks 5 and 6): random keys and Acts for both players from the five checkpoints and the doorway
  let fuzzed=null;
@@ -281,7 +386,25 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
      for(const i of [0,1]){const q=pos36(i),B=BENCH36;if(B.state!=='carrying'&&Math.hypot(q[0]-B.pose.x,q[1]-B.pose.z)>3){const e=benchEnd36(B.pose,i,1.1);if(!blocked(e[0],e[1],PR))at36(i,e[0],e[1]);}}
      if(R36.next()<0.03)press36(0);if(R36.next()<0.03)press36(1);frames36(1);if(BENCH36.state==='choosing'){ACTIONS.bench36RoomDown();}if(BENCH36.state==='placed'||BENCH36.state==='settling')break;}}noKeys36();`);
    runs.push(J('[BENCH36.state,+BENCH36.pose.x.toFixed(2),+BENCH36.pose.z.toFixed(2)]'));}
-  fuzzed={runs,sd:J('{acc:SD36.acc,ref:SD36.ref,accBad:SD36.accBad,refBad:SD36.refBad,inBox:SD36.inBox}')};run('ONF36=null;');return fuzzed;};
+  // the openings: 300 frames of the mover's random keys alone, and of both players' random keys and Acts, from 5, 10, 14 and 20 degrees off
+  // at the passage mouth, the flat door and the veranda doorway, and with a holder 0.05 m from each of their six jambs (lifted first)
+  run(`var opFuzz36=(x,z,deg,pat,seed,nud)=>{const at=liftAt36(x,z,deg,nud);if(!at)return {err:'not lifted '+[x,z,deg]};const B=BENCH36,a0=B.cost.assist,f0=B.cost.funnel;
+    ONF36=sdFrame36;SD36.prev=B.state;SD36.toasts=TOASTS.length;WALL36.prev=null;R36.seed(seed);let d0=null,d1=null;
+    const rnd=()=>{const r=R36.next();return r<0.25?null:[Math.floor(R36.next()*3)-1,Math.floor(R36.next()*3)-1];};
+    for(let f=0;f<300;f++){if(R36.next()<0.12)d0=rnd();if(pat==='both'&&R36.next()<0.12)d1=rnd();const ok=d=>d&&(d[0]||d[1])?d:null;
+     if(pat==='mover'){if(B.state!=='carrying')break;setKeys36(B.mover,ok(d0));setKeys36(1-B.mover,null);}
+     else{setKeys36(0,ok(d0));setKeys36(1,ok(d1));
+      for(const i of [0,1]){const q=pos36(i);if(B.state!=='carrying'&&Math.hypot(q[0]-B.pose.x,q[1]-B.pose.z)>3){const e=benchEnd36(B.pose,i,1.1);if(!blocked(e[0],e[1],PR))at36(i,e[0],e[1]);}}
+      if(R36.next()<0.03)press36(0);if(R36.next()<0.03)press36(1);}
+     frames36(1);if(B.state==='choosing')ACTIONS.bench36RoomDown();if(B.state==='placed'||B.state==='settling')break;}
+    noKeys36();ONF36=null;return {at,assist:B.cost.assist-a0,funnel:B.cost.funnel-f0,end:[B.state,+B.pose.x.toFixed(2),+B.pose.z.toFixed(2)]};};`);
+  const OPS=[];for(const t of [5,10,14,20])OPS.push(['passage '+t,-1.70,1.0,270-t],['flat door '+t,-2.0,4.9,180+t],['veranda doorway '+t,-4.0,4.85,270-t]);
+  const ALONG=[[0,0],[0,0.1],[0,-0.1],[0,0.2],[0,-0.2]],ACROSS=[[0,0],[0.1,0],[-0.1,0],[0.2,0],[-0.2,0]];
+  OPS.push(['passage west jamb',-2.08,1.0,270,ALONG],['passage east jamb',-1.42,1.0,270,ALONG],['flat door south jamb',-2.475,4.57,180,ACROSS],['flat door north jamb',-2.475,5.23,180,ACROSS],
+   ['veranda doorway west jamb',-4.33,4.8,90,ALONG],['veranda doorway east jamb',-3.87,4.8,90,ALONG]);
+  const opens=[];let seed=200;
+  for(const [n,x,z,dg,nud] of OPS)for(const pat of ['mover','both']){const r=J(`opFuzz36(${x},${z},${dg},'${pat}',${seed++},${JSON.stringify(nud||null)})`);assert(!r.err,n+': '+r.err);opens.push([n,pat,r.at.map(v=>+v.toFixed(2)),r.assist,r.funnel,r.end]);}
+  fuzzed={runs,opens,sd:J('{acc:SD36.acc,ref:SD36.ref,accBad:SD36.accBad,refBad:SD36.refBad,inBox:SD36.inBox}')};run('ONF36=null;');return fuzzed;};
 
  check(5,()=>{const F=fuzz();const W=J('WALL36');assert.deepEqual(W.bad,[],'the exact test found the bench in a wall');assert(W.sweep<=0.0001,'between carried frames '+W.sweep);
   assert.equal(W.hold,0,'a holder in a wall');assert.equal(W.raised,0,'a holder on raised ground');assert.equal(W.snap,0,'a player stepped to a stand point through a wall');
@@ -289,7 +412,9 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   // the settle end points: the three arrangements are clear
   for(const k of ['out','gate','water'])assert.equal(J(`hbDepth36(benchPoseOf36('${k}'))`),0,k+' is clear');
   if(!only||only.includes(4)){assert(W.settle>0,'glide frames tested');assert.equal(W.dissolve,0,'every settle glides');}
-  return {tested:W.n>=5000,glide:W.settle>0,sweepUnder01mm:W.sweep<=0.0001,fuzz:F.runs};});
+  // the openings' fuzz used the walls' sideways help (and the funnel)
+  const helped=F.opens.reduce((a,o)=>a+o[3],0),fun=F.opens.reduce((a,o)=>a+o[4],0);assert(helped>0,'the walls’ help was used in the openings’ fuzz');
+  return {tested:W.n>=5000,glide:W.settle>0,sweepUnder01mm:W.sweep<=0.0001,fuzz:F.runs,openings:F.opens.map(o=>[o[0],o[1],o[5]]),helpedSteps:helped,funnelSteps:fun};});
 
  check(6,()=>{
   // lift, then set down on the very next frame: the lifter's step to the stand point ends with the set-down, so nobody is left inside the box
@@ -318,7 +443,7 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   const okL=J('hbMatch36(BENCH36.pose,[pos36(0),pos36(1)])')||(L[1].x===4&&L[1].z===8.6);assert(okL,'reloads liftable or at the gate');
   // the fuzz last (its set-downs, refusals and positions)
   const F=fuzz();assert.deepEqual(F.sd.accBad,[],'a set-down nobody can lift');assert.deepEqual(F.sd.refBad,[],'a refusal that could have been lifted');assert.deepEqual(F.sd.inBox,[],'a player inside the grounded bench');
-  return {acc:F.sd.acc,ref:F.sd.ref,reset:J('BENCH36.CHECK['+cp1+'].n'),reload:L[1].x===4&&L[1].z===8.6?'gate':'liftable',street:{stuck:st[1],reload:'kept',setDown:sa[0]}};});
+  return {acc:F.sd.acc,ref:F.sd.ref,openingRuns:F.opens.length,reset:J('BENCH36.CHECK['+cp1+'].n'),reload:L[1].x===4&&L[1].z===8.6?'gate':'liftable',street:{stuck:st[1],reload:'kept',setDown:sa[0]}};});
 
  check(7,()=>{walls();run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');const N=PLAN.segments.length,pts=[];for(let k=0;k<12;k++)pts.push(Math.floor(1+k*(N-2)/12));
   const roles=[];for(let k=0;k<12;k++){const at=pts[k];const r=J(`drive36(PLAN36,7200,seg=>seg>=${at})`);if(r.r!=='stop'&&J('BENCH36.state')!=='carrying')break;
@@ -351,9 +476,14 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);');run('{const B=BENCH36,a=benchAxis36(B.pose.yaw);setKeys36(B.mover,combo36(-a[1],a[0]));}frames36(15);');const early=J('BENCH36.arrowShown[BENCH36.mover]');
   run('frames36(6);');const shown=J('BENCH36.arrowShown[BENCH36.mover]');run('frames36(130);');const notStuck=J('BENCH36.stuck');run('noKeys36();frames36(2);');
   assert.equal(early,'','no arrow before 0.6 s');assert.equal(shown,'hint','the arrow hint shows');assert.equal(notStuck,false,'out-of-cone input is never stuck');
+  // Turn aid 1: the turner's key outside its cone (along the bench) shows the turner's arrow after 0.35 s, not before
+  run('{const B=BENCH36,a=benchAxis36(B.pose.yaw);setKeys36(1-B.mover,combo36(a[0],a[1]));}frames36(9);');const tEarly=J('[BENCH36.arrowShown[1-BENCH36.mover],BENCH36.outT[1]]');
+  run('frames36(3);');const tShown=J('[BENCH36.arrowShown[1-BENCH36.mover],BENCH36.outT[1]]');run('noKeys36();frames36(2);');
+  assert.equal(tEarly[0],'','no turner arrow at 0.3 s: '+JSON.stringify(tEarly));assert.equal(tShown[0],'hint','the turner’s arrow at 0.4 s: '+JSON.stringify(tShown));
   // wedged at corner 2: the mover pushes on into the vestibule wall
   run('FOL36.k=0;FOL36.o=null;');const r=J('drive36(PLAN36,7200,seg=>seg>='+SEG.corner2+')');assert.equal(r.r,'stop');run(`{const B=BENCH36,a=benchAxis36(B.pose.yaw),f=B.front?1:-1;setKeys36(B.mover,combo36(a[0]*f,a[1]*f));}`);for(let k=0;k<60&&!J('BENCH36.wall.s');k++)run('frames36(1)');run('frames36(90);');
-  const stuck=J('[BENCH36.stuck,BENCH36.stuckT,bench36Pose(),BENCH36.wall,BENCH36.front,FOL36.k,BENCH36.state]');const hint=J("document.getElementById('pr'+BENCH36.mover).innerHTML");run('noKeys36();frames36(2);');assert.equal(stuck[0],true,'stuck after 3 s: '+JSON.stringify(stuck));
+  const stuck=J('[BENCH36.stuck,BENCH36.stuckT,bench36Pose(),BENCH36.wall,BENCH36.front,FOL36.k,BENCH36.state]');
+  assert(stuck[2].x<-1.0&&stuck[2].x>-2.35&&stuck[2].z>4.0&&stuck[2].z<5.6&&stuck[5]>=SEG.corner2,'wedged at corner 2 (the porch turn after the passage): '+JSON.stringify(stuck[2]));const hint=J("document.getElementById('pr'+BENCH36.mover).innerHTML");run('noKeys36();frames36(2);');assert.equal(stuck[0],true,'stuck after 3 s: '+JSON.stringify(stuck));
   assert(hint.includes('<span class="hint36">Stuck? Back up a little, or set it down and swap roles.</span>'),'the stuck hint is in the prompt: '+hint);
   // set down: the stall is over, and a player at an end gets the end, never the reset
   let tries=0;while(J('BENCH36.state')==='carrying'&&tries++<5)run('press36(0);frames36(10);');assert.equal(J('BENCH36.state'),'grounded');run('frames36(9);');
@@ -368,9 +498,17 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   assert.equal(J('benchCrateIntrudes36(crate.position.x,crate.position.z)'),false,'the crate moved clear');
   // the Menu reset with the bench in the passage
   run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,7200,()=>BENCH36.pose.x<-1.15&&BENCH36.pose.z>2.4)');const inP=J('bench36Pose()');assert(inP.x<-1.15&&inP.x>-2.35&&inP.z>1.6&&inP.z<3.2,'in the passage');
+  // Turn aid 2: in the passage the turner swings into the wall, lets go and tries again: the third refusal within 4 s puts the lines up
+  const aid=[];run('noKeys36();frames36(6);');for(let k=0;k<3;k++){run(`{const B=BENCH36,f=B.front?1:-1;setKeys36(1-B.mover,combo36(Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f));}`);
+   for(let j=0;j<45&&J('BENCH36.wall.w')===0;j++)run('frames36(1)');run('frames36(3);noKeys36();frames36(9);');aid.push(J("[0,1].map(i=>document.getElementById('pr'+i).innerHTML.replace(/<[^>]+>/g,' ').replace(/\\s+/g,' ').trim())"));}
+  const mv=J('BENCH36.mover'),mvN=J('benchPlayerName36(BENCH36.mover)'),tnN=J('benchPlayerName36(1-BENCH36.mover)');
+  const TL=`Your end is on the wall. Try the other way, or ask ${mvN} to back up a little.`,ML=`${tnN} needs room. Back up a little.`;
+  assert(!aid[1][1-mv].includes(TL)&&!aid[1][mv].includes(ML),'not after two refusals: '+JSON.stringify(aid[1]));
+  assert(aid[2][1-mv].includes(TL),'the turner’s line after three: '+aid[2][1-mv]);assert(aid[2][mv].includes(ML),'the mover’s line after three: '+aid[2][mv]);
+  run('frames36(130);');const gone=J("[0,1].map(i=>document.getElementById('pr'+i).innerHTML).join('|')");assert(!gone.includes('needs room'),'the lines go after 4 s');
   run('openMenu();');const menu=J('panel.innerHTML');assert(menu.includes('data-act="bench36Reset"'),'the Menu offers the reset');assert(menu.indexOf('bench36Reset')<menu.indexOf('<h2>'),'at the top of the Menu');run('dispatch("bench36Reset");frames36(1);');
   const cp2=J('BENCH36.CHECK.findIndex(c=>Math.abs(c.x-BENCH36.pose.x)<1e-6&&Math.abs(c.z-BENCH36.pose.z)<1e-6)');assert.equal(J('BENCH36.state'),'grounded');assert(cp2>=0,'menu reset on a checkpoint');
-  return {stuckAfter:r3(stuck[1]),reset:J('BENCH36.CHECK['+cp+'].n'),menuReset:J('BENCH36.CHECK['+cp2+'].n')};});
+  return {corner2:{segment:SEG.corner2,at:[r3(stuck[2].x),r3(stuck[2].z),deg(stuck[2].yaw)]},stuckAfter:r3(stuck[1]),turnerArrowAt:r3(tShown[1]),reset:J('BENCH36.CHECK['+cp+'].n'),turnAid:[aid[2][1-mv],aid[2][mv]],menuReset:J('BENCH36.CHECK['+cp2+'].n')};});
 
  check(10,()=>{const out={};const setup=()=>{run('fresh36();start36();');run(`{const e=benchEnd36(BENCH36.pose,1,1.05),w=benchEnd36(BENCH36.pose,0,1.05);at36(0,e[0],e[1]);at36(1,w[0],w[1]);}frames36(2);press36(0);frames36(3);press36(1);frames36(3);`);
    assert.equal(J('BENCH36.state'),'carrying');};
@@ -460,8 +598,12 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   assert.deepEqual(lv,['gate',true,{v:1,state:'placed',choice:'gate'},'gate'],'left where it was: Gate everywhere');run('ACTIONS.bench36Again();');assert.equal(J('BENCH36.choice'),'gate','the next run starts from Gate');run('ACTIONS.bench36Cancel();');
   // playtest: the next run starts each player in the job the other started the last one with, whoever ended up walking it after a swap
   run("fresh36();life34();S.life.bench36={v:1,state:'placed',pos:[0,0],yaw:0,mover:0,choice:'out',deliveries:1,again:false,hints:2,placedDay:2,playtest:true,runs:[],firstMover:1,lastMover:0};S.home.items.push({id:'i97',type:'bench',x:0,y:4,rot:0,pose36:'out'});reload36();ACTIONS.bench36Again();");
-  assert.equal(J('BENCH36.mover'),0,'started by Player 2 walking it, so Player 1 walks it next');run('ACTIONS.bench36Cancel();');
-  out.placed=w;out.carry=true;return {placed:[r3(w.x),r3(w.z),deg(w.yaw)],carry:'grounded',strip:st,browse:'kept',preSwap:'from the first mover'};});
+  assert.equal(J('BENCH36.mover'),0,'started by Player 2 walking it, so Player 1 walks it next');
+  // that run is lifted (Player 1 walking it) and then left where it was: the cancelled run leaves no trace, so the next one starts the same
+  run('takeEnds36('+FE+',0);lift36(0,1);');assert.equal(J('BENCH36.state'),'carrying','the again run lifted');run('ACTIONS.bench36Cancel();frames36(1);');
+  const kept=J('[S.life.bench36.firstMover,S.life.bench36.mover,S.life.bench36.keep36===undefined]');assert.deepEqual(kept,[1,0,true],'a cancelled run puts back the first mover and the mover: '+JSON.stringify(kept));
+  run('ACTIONS.bench36Again();');assert.equal(J('BENCH36.mover'),0,'the next run is pre-swapped from the completed run, not the cancelled one');run('ACTIONS.bench36Cancel();');
+  out.placed=w;out.carry=true;return {placed:[r3(w.x),r3(w.z),deg(w.yaw)],carry:'grounded',strip:st,browse:'kept',preSwap:'from the first mover',cancelled:'no trace'};});
 
  check(13,()=>{run("fresh36();life34();S.life.bench36={v:1,state:'placed',pos:[0,0],yaw:0,mover:0,choice:'out',deliveries:1,again:false,hints:2,placedDay:2,playtest:false,runs:[]};S.home.items.push({id:'i91',type:'bench',x:0,y:4,rot:0,pose36:'out'});reload36();");
   run('at36(0,-5.95,6.4);at36(1,-5.4,6.5);frames36(2);');assert.equal(J('hotspotCache[0].label'),'Sit on the bench together');run('press36(0);frames36(3);');
@@ -555,35 +697,311 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
 
  check(17,()=>{run('fresh36();');
   run(`var CO36={on:false,bl:0,box:0,frames:[],idle:[]};{const b=blocked;blocked=function(){if(CO36.on)CO36.bl++;return b.apply(this,arguments);};const o=bench36ObbHit;bench36ObbHit=function(){if(CO36.on)CO36.box++;return o.apply(this,arguments);};
-   const st=bench36Step;bench36Step=function(dt){const s0=BENCH36.state,n0=BENCH36.cost.substeps;CO36.on=true;CO36.bl=0;CO36.box=0;try{return st.apply(this,arguments);}finally{CO36.on=false;const n=BENCH36.cost.substeps-n0;if(s0==='carrying'&&BENCH36.state==='carrying')CO36.frames.push([n,CO36.bl,CO36.box]);else if(s0==='off'||s0==='placed')CO36.idle.push(CO36.bl);}};
+   const helped=()=>(BENCH36.cost.assist||0)+(BENCH36.cost.funnel||0);const st=bench36Step;bench36Step=function(dt){const s0=BENCH36.state,n0=BENCH36.cost.substeps,h0=helped();CO36.on=true;CO36.bl=0;CO36.box=0;try{return st.apply(this,arguments);}finally{CO36.on=false;const n=BENCH36.cost.substeps-n0;if(s0==='carrying'&&BENCH36.state==='carrying')CO36.frames.push([n,CO36.bl,CO36.box,helped()>h0?1:0]);else if(s0==='off'||s0==='placed')CO36.idle.push(CO36.bl);}};
    const hk=bench36Hot;HOTSPOT_HOOKS[HOTSPOT_HOOKS.indexOf(hk)]=function(){CO36.on=true;const c0=CO36.bl;try{return hk.apply(this,arguments);}finally{CO36.on=false;if(BENCH36.state==='off'||BENCH36.state==='placed')CO36.idle.push(CO36.bl-c0);CO36.bl=c0;}};}`);
   // the bench's own work each frame (all of tick: an Act's work too), counted: planner box tests, arrangement checks, walks and their cells
-  run(`var W17={prev:null,max:{},plan:0,choose:0},W17on=()=>{ONF36=()=>{const c=BENCH36.cost,s=BENCH36.state;if(W17.prev&&s!=='off'&&s!=='placed'){for(const k of ['nodes','arr','bfs','cells'])W17.max[k]=Math.max(W17.max[k]||0,c[k]-W17.prev[k]);
-    if(s==='choosing')W17.choose++;if(s==='settling'&&BENCH36.settle&&BENCH36.settle.kind==='plan'&&BENCH36.settleFrames>0)W17.plan++;}W17.prev={nodes:c.nodes,arr:c.arr,bfs:c.bfs,cells:c.cells};};};`);
+  // and each frame's work weighed in box tests (a planner gap or a box test 1, a blocked() call 3, one answered from the module's index 1/4, a
+  // walk cell 1/64; the harness's own weights, measured: a gap about 5 microseconds, a full blocked() call 13-15, a cell under 0.1)
+  run(`var W17={prev:null,max:{},plan:0,choose:0,work:0,workAt:'',chooseWork:0,delivArr:-1},W17on=()=>{ONF36=()=>{const c=BENCH36.cost,s=BENCH36.state,fast=c.fast||0;if(W17.prev&&s!=='off'&&s!=='placed'){const P=W17.prev;for(const k of ['nodes','arr','bfs','cells'])W17.max[k]=Math.max(W17.max[k]||0,c[k]-P[k]);
+    const w=(c.nodes-P.nodes)+(c.box-P.box)+3*(c.blocked-P.blocked-(fast-P.fast))+0.25*(fast-P.fast)+(c.cells-P.cells)/64;if(w>W17.work){W17.work=w;W17.workAt=P.s+'>'+s;}if(s==='choosing'||P.s==='choosing')W17.chooseWork=Math.max(W17.chooseWork,w);if(P.s!=='choosing'&&s==='choosing')W17.delivArr=c.arr-P.arr;
+    if(s==='choosing')W17.choose++;if(s==='settling'&&BENCH36.settle&&BENCH36.settle.kind==='plan'&&BENCH36.settleFrames>0)W17.plan++;}W17.prev={nodes:c.nodes,arr:c.arr,bfs:c.bfs,cells:c.cells,box:c.box,blocked:c.blocked,fast,s};};};`);
   run('frames36(30);start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,7200,seg=>seg>='+SEG.corner1+')');
   run(`{const B=BENCH36,a=benchAxis36(B.pose.yaw),f=B.front?1:-1;setKeys36(B.mover,combo36(-a[0]*f,-a[1]*f));setKeys36(1-B.mover,combo36(Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f));}frames36(60);noKeys36();frames36(5);`);
   run('FOL36.o=null;');J('drive36(PLAN36,1500)');
+  // the walls at work: a push scraping along the passage's east wall 20 degrees off (sideways help to its cap), then swings into the walls
+  run(`liftAt36(-1.75,1.0,290,[[0,0]]);{const B=BENCH36;setKeys36(B.mover,combo36(0,1));frames36(60);noKeys36();const f=B.front?1:-1;for(const sg of [1,-1]){setKeys36(1-B.mover,combo36(Math.sin(B.pose.yaw)*f*sg,Math.cos(B.pose.yaw)*f*sg));frames36(45);noKeys36();frames36(6);}}`);
   run('fresh36();start36();W17on();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,7200)');assert.equal(J('BENCH36.state'),'choosing','delivered');
   run('frames36(40);');assert.equal(agreeOn('water'),'placed');const W17=J('W17');run('ONF36=null;');
   assert(W17.max.arr<=1,'arrangement checks in one frame: '+W17.max.arr);assert(W17.max.nodes<=J('BENCH_PLAN36.FRAME'),'planner box tests in one frame: '+W17.max.nodes);
   assert.equal(W17.plan,0,'the glide was planned before both agreed');
+  assert.equal(W17.delivArr,0,'the frame the chooser opens in runs no arrangement check (the selected one is checked in the next)');
+  // the reach run's index answers exactly as the full list: every point of the walk window (and beyond it) at 0.33 and 0.05 m, with each
+  // arrangement's box in place
+  const eq=J(`(()=>{let n=0,diff=0;const slow=blocked,B=BENCH36;if(typeof benchReachFast36!=='function')return [0,0];for(const k of B.ORDER){B.override=benchBox36(benchPoseOf36(k),0);benchReachFast36(()=>{const fast=blocked;for(let x=-9.05;x<=10.05;x+=0.13)for(let z=-3.55;z<=16.05;z+=0.11)for(const r of [0.33,0.05]){n++;if(fast(x,z,r,{noCrate:true,noSofa:true})!==slow(x,z,r,{noCrate:true,noSofa:true}))diff++;}});}B.override=null;return [n,diff];})()`);
+  assert(eq[0]>50000&&eq[1]===0,'the reach index gives the same answers: '+JSON.stringify(eq));
+  assert(W17.work<=1200,'no frame from the lift to the bench in its place weighs more than 1,200 box tests (about 6 ms): '+r3(W17.work)+' at '+W17.workAt);
   run("fresh36();life34();S.life.bench36={v:1,state:'placed',pos:[0,0],yaw:0,mover:0,choice:'out',deliveries:1,again:false,hints:2,placedDay:2,playtest:false,runs:[]};S.home.items.push({id:'i95',type:'bench',x:0,y:4,rot:0,pose36:'out'});reload36();at36(0,-5.95,6.4);at36(1,-5.4,6.5);");assert.equal(J('BENCH36.state'),'placed');
-  run('frames36(30);');const C=J('CO36');let worst={sub:0,bl:0,box:0};for(const [n,bl,box] of C.frames){if(!n)continue;worst.sub=Math.max(worst.sub,n);worst.bl=Math.max(worst.bl,(bl-4)/n);worst.box=Math.max(worst.box,(box-2)/n);}
+  run('frames36(30);');const C=J('CO36');let worst={sub:0,bl:0,box:0},aw={n:0,bl:0,box:0};for(const [n,bl,box,hp] of C.frames){if(!n)continue;worst.sub=Math.max(worst.sub,n);worst.bl=Math.max(worst.bl,(bl-4)/n);worst.box=Math.max(worst.box,(box-2)/n);
+   if(hp){aw.n++;aw.bl=Math.max(aw.bl,(bl-4)/n);aw.box=Math.max(aw.box,(box-2)/n);}}
+  assert(aw.n>0,'frames on which the walls helped: '+aw.n);
   assert(worst.sub<=2,'sub-steps '+worst.sub);assert(worst.bl<=24,'blocked() calls a sub-step '+worst.bl);assert(worst.box<=12,'box tests a sub-step '+worst.box);
   assert(C.idle.length>0&&C.idle.every(v=>v===0),'idle frames call blocked(): '+C.idle.length+' '+JSON.stringify(C.idle.filter(v=>v).slice(0,5)));
-  return {frames:C.frames.length,subMax:worst.sub,blockedMax:worst.bl,boxMax:worst.box,idle:Math.max(...C.idle),frameMax:W17.max};});
+  return {frames:C.frames.length,subMax:worst.sub,blockedMax:worst.bl,boxMax:worst.box,helped:{frames:aw.n,blockedMax:aw.bl,boxMax:aw.box},idle:Math.max(...C.idle),frameMax:W17.max,workMax:Math.round(W17.work),chooserWorkMax:Math.round(W17.chooseWork),indexSame:eq};});
 
  check(18,()=>{run('fresh36();');
   // the page's classes, seen through a recording class list
   run("var CL36=new Set();document.body.classList={add:c=>CL36.add(c),remove:c=>CL36.delete(c),contains:c=>CL36.has(c),toggle:(c,v)=>{const on=v===undefined?!CL36.has(c):!!v;if(on)CL36.add(c);else CL36.delete(c);return on;}};var cls36=()=>[...CL36].filter(c=>/^bench36/.test(c)).sort().join(' ');");
-  run('start36();');const e=J('benchEnd36(BENCH36.pose,1,1.05)'),w=J('benchEnd36(BENCH36.pose,0,1.05)');const c0=J('cls36()');run(`at36(0,${e[0]},${e[1]});at36(1,${w[0]},${w[1]});frames36(2);press36(0);frames36(2);press36(1);frames36(10);`);
+  // Ada's note, the lift toast and the first lift's hints; the area captions (the place-name signs) step out of both views while it is held
+  run('PH="";ACTIONS.bench36Start();');const note=J('PH');run('ACTIONS.close();if(!FADEABLE.some(m=>m.isSprite))buildSigns();');
+  assert(note.includes('One of you in front to walk it, one behind to turn it. Mind my corners.'),'Ada’s note: '+note);
+  const caps=()=>J('FADEABLE.filter(m=>m.isSprite).map(m=>m.visible?1:0).join("")');const cap0=caps();assert(/1/.test(cap0),'the captions show before the lift');
+  const e=J('benchEnd36(BENCH36.pose,1,1.05)'),w=J('benchEnd36(BENCH36.pose,0,1.05)');const c0=J('cls36()');run(`at36(0,${e[0]},${e[1]});at36(1,${w[0]},${w[1]});frames36(2);TOASTS=[];press36(0);frames36(2);press36(1);frames36(10);`);
+  const lifted=J("[TOASTS.slice(),[0,1].map(i=>document.getElementById('pr'+i).innerHTML)]"),cap1=caps();
+  assert(lifted[0].includes('Lifted. Efe walks it, Ola turns it.'),'the lift toast: '+JSON.stringify(lifted[0]));
+  assert(lifted[1][0].includes('Push it along: towards your end or away from it.'),'the mover’s hint: '+lifted[1][0]);assert(lifted[1][1].includes('Push your end left or right to turn it.'),'the turner’s hint: '+lifted[1][1]);
+  assert(!/1/.test(cap1),'no caption while it is held: '+cap1);
   const g=J('[glyph(0),glyph(1),lastInput.slice()]');assert.equal(g[0],'E');assert.equal(g[1],'⏎');const pr=J("document.getElementById('pr0').innerHTML");assert(pr.startsWith('<span class="k">E</span>'),'P1 prompt glyph');
   const c1=J('cls36()'),xr=J('!!(BENCH36.xray&&BENCH36.xray.visible)');assert.equal(c0,'','nothing marked before the lift');assert.equal(c1,'bench36-busy','held: busy (and not yet compact: the first lift’s hint is showing)');assert.equal(xr,true,'the see-through outline shows while held');
   // the third lift onwards, once its hint time is over: compact
   run('press36(0);frames36(10);S.life.bench36.hints=2;press36(0);frames36(3);press36(1);frames36(6);');const c2=J('cls36()');assert.equal(c2,'bench36-busy bench36-compact','after the first two lifts the carry prompt is compact');
   run('press36(0);frames36(10);');const c3=J('[cls36(),!!(BENCH36.xray&&BENCH36.xray.visible)]');assert.deepEqual(c3,['',false],'on the ground: nothing marked, no outline');
+  assert.equal(caps(),cap0,'the same captions are back once it is down');
   run('reload36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,7200)');assert.equal(J('BENCH36.state'),'choosing');const c4=J('cls36()');assert.equal(c4,'bench36-busy bench36-choose','the chooser marks the page');
-  run('document.body.classList={add(){},remove(){},toggle(){},contains:()=>false};');return {glyphs:[g[0],g[1]],classes:[c0,c1,c2,c3[0],c4]};});
+  run('document.body.classList={add(){},remove(){},toggle(){},contains:()=>false};');return {glyphs:[g[0],g[1]],classes:[c0,c1,c2,c3[0],c4],toast:'Lifted. Efe walks it, Ola turns it.',captions:{before:cap0.length,held:cap1.replace(/0/g,'').length}};});
+ check(19,()=>{const out={};
+  // the openings: the module's measured centres, the harness's own scan of its own box list and the typed centres agree
+  run('fresh36();start36();frames36(1);');const chk=J('BENCH36.openChk||null');assert(chk&&chk.list&&chk.list.length===3,'the module measured its openings');
+  const gaps=J('OPEN19.map(hbGap36)');out.openings=[];
+  for(let k=0;k<3;k++){const O=J('OPEN19['+k+']'),M=chk.list[k],g=gaps[k];assert.equal(M.n,O.n);assert(M.ok,O.n+' is on');assert(Math.abs(g.c-O.c)<=0.03,O.n+': the walls say '+g.c);
+   assert(Math.abs(M.c-g.c)<=0.005,O.n+': the module measured '+M.c+', the harness '+g.c);out.openings.push([O.n,r3(g.lo),r3(g.hi),r3(M.c)]);}
+  // a jamb moved 4 cm (a strip inside the passage's east wall): that opening's funnel goes off, and the log says so; taken away, it is back
+  run('var JAMB19={x1:-1.23,x2:-1.15,z1:1.5,z2:2.9,lvl:0};OBS.push(JAMB19);frames36(2);');const off=J('[BENCH36.openChk.list.map(o=>o.ok),(BENCH36.openLog||[]).slice(-1)[0]||""]');
+  run('OBS.splice(OBS.indexOf(JAMB19),1);frames36(2);');const back=J('BENCH36.openChk.list.map(o=>o.ok)');
+  assert.deepEqual(off[0],[false,true,true],'a moved jamb switches its funnel off: '+JSON.stringify(off));assert(/passage/.test(off[1])&&/funnel is off/.test(off[1]),'and logs it: '+off[1]);
+  assert.deepEqual(back,[true,true,true],'back on once the jamb is back');out.movedJamb=off[1];
+  // the funnel: from 5 cm off the centre line on the side the bench's own heading carries it away from, the mover pushes in (at 20 degrees
+  // from 10 cm off on the other side, so that the push meets nothing)
+  const FUN=[['passage',-1.70,1.0,270,[0,1],60,'z',-1.75,0.6,0.32],['flat door',-1.6,4.95,180,[-1,0],60,'x',4.9,0.6,0.32],['veranda doorway',-4.05,4.7,270,[0,1],60,'z',-4.1,0.32,0.2]];out.funnel=[];
+  for(const [n,x0,z0,base,dir,fr,ax,c,far0,far20] of FUN)for(const th of [5,10,14,20]){const far=th<15?far0:far20,x=th<15||ax==='x'?x0:2*c-x0-0.05,z=th<15||ax==='z'?z0:2*c-z0-0.05;
+   const r=J(`push19(${x},${z},${base+th},${JSON.stringify(dir)},${fr},'${ax}',${far})`);assert(!r.err,n+' '+th+': '+r.err);
+   const o0=ax==='z'?c-r.p0.x:c-r.p0.z,o1=ax==='z'?c-r.p1.x:c-r.p1.z;assert.equal(r.p1.yaw,r.p0.yaw,`${n} ${th}°: the yaw changed`);assert.equal(r.leak,0);assert(Math.abs(r.along)>0.6*far,`${n} ${th}°: pushed ${r.along} `+JSON.stringify(r));
+   if(th<15){assert(Math.abs(o1)<Math.abs(o0),`${n} ${th}°: not drawn to the centre line (${o0} -> ${o1})`);assert(Math.abs(r.shift)<=0.30*Math.abs(r.slide)+1e-9,`${n} ${th}°: sideways ${r.shift} for ${r.slide} pushed`);
+    assert(r.funnel>0,`${n} ${th}°: no funnel step`);assert.equal(r.assist,0,`${n} ${th}°: the push met something`);}
+   else{assert.equal(r.assist,0,`${n} 20°: the push met something`);assert(Math.abs(r.perp)<=1e-12,`${n} 20°: moved sideways ${r.perp}`);assert.equal(r.funnel,0,`${n} 20°: a funnel step`);}
+   out.funnel.push([n,th,r3(r.slide),r3(r.shift),r3(Math.abs(o0)),r3(Math.abs(o1))]);}
+  // a refused push: at most 0.15 m of sideways help a contact (20 degrees off in the passage mouth, pushed north, the leading corner scrapes
+  // along the east wall; the funnel is off at that angle)
+  const P19=[-1.75,1.0,290];const cap=J(`push19(${P19},[0,1],90,'z')`);assert(!cap.err,'cap: '+cap.err);
+  assert(Math.abs(cap.perp)<=0.15+1e-9,'sideways help in one contact: '+cap.perp);assert(Math.abs(cap.perp)>=0.1,'the walls helped: '+cap.perp);assert(cap.assist>0);
+  // after 0.35 m back (unassisted travel) the allowance is back
+  run(`{const B=BENCH36,p=bench36Pose(),a=benchAxis36(p.yaw);setKeys36(B.mover,combo36(a[0]*-1,a[1]*-1));for(let k=0;k<60&&Math.hypot(B.pose.x-p.x,B.pose.z-p.z)<0.35;k++)frames36(1);noKeys36();frames36(8);}`);
+  const re=J(`(()=>{const B=BENCH36,p0=bench36Pose(),a0=B.cost.assist;setKeys36(B.mover,combo36(0,1));frames36(60);noKeys36();frames36(8);const p1=bench36Pose(),n=[Math.sin(p0.yaw),Math.cos(p0.yaw)];return {perp:(p1.x-p0.x)*n[0]+(p1.z-p0.z)*n[1],assist:B.cost.assist-a0};})()`);
+  assert(re.assist>0&&Math.abs(re.perp)>0.005,'help again after 0.35 m back: '+JSON.stringify(re));
+  // after a set-down and lift the allowance is back
+  const cap2=J(`push19(${P19},[0,1],90,'z')`);assert(Math.abs(cap2.perp)>=0.1);
+  run('{const B=BENCH36,h=B.holder[0];let t=0;while(B.state==="carrying"&&t++<4){press36(h);frames36(10);}}');const down=J('BENCH36.state');
+  run('{const B=BENCH36;press36(0);frames36(3);press36(1);frames36(4);}');const up=J('BENCH36.state');
+  const sd=J(`(()=>{const B=BENCH36,p0=bench36Pose(),a0=B.cost.assist;setKeys36(B.mover,combo36(0,1));frames36(60);noKeys36();frames36(8);const p1=bench36Pose(),n=[Math.sin(p0.yaw),Math.cos(p0.yaw)];return {perp:(p1.x-p0.x)*n[0]+(p1.z-p0.z)*n[1],assist:B.cost.assist-a0};})()`);
+  assert.equal(down,'grounded','set down');assert.equal(up,'carrying','lifted');assert(sd.assist>0&&Math.abs(sd.perp)>0.005,'help again after a set-down and lift: '+JSON.stringify(sd));
+  out.cap={first:r3(cap.perp),afterBack:r3(re.perp),afterSetDown:r3(sd.perp)};
+  // a 2 cm post just inside the flat door, its corner 7.5 mm into the path of the bench's edge: a correction that would cut the post's corner
+  // is refused (it is tested at its midpoint), on every one of ten starts a fraction of a step apart
+  walls();run('WALL36.sweep=0;WALL36.bad=[];');out.post=[];
+  for(let k=0;k<10;k++){const x0=-2.43-0.0017*k;run(`var POST19={x1:${x0-0.02},x2:${x0},z1:${4.9+0.26-0.0075},z2:${4.9+0.26+0.0125},lvl:0};OBS.push(POST19);`);
+   const at=J('liftAt36(-1.5,4.9,180,[[0,0]])');assert(at,'post start lifted');run('WALL36.prev=null;{const B=BENCH36;setKeys36(B.mover,combo36(-1,0));}frames36(45);noKeys36();frames36(4);');
+   const r=J('[bench36Pose(),WALL36.sweep,WALL36.bad.length]');run('OBS.splice(OBS.indexOf(POST19),1);');out.post.push(r3(r[0].x));
+   assert(r[1]<=0.0001,'the post was cut between frames: '+r[1]+' (start '+k+')');assert.equal(r[2],0,'the bench in the post');assert(r[0].x-0.76<x0-0.1,'the bench’s leading face went past the post: '+r[0].x);}
+  return out;});
+ check(20,()=>{const names=J('Object.keys(SOLOP36)'),R=solo(names);
+  for(const r of R){assert(!r.err,r.name+' '+r.pat+': '+r.err);
+   if(r.pat==='turner-random'){assert(r.movedRaw<=0.08+1e-9,`${r.name}: the turner alone moved the centre ${r.movedRaw} m`);assert.equal(r.regions.length,1,`${r.name}: the turner alone took it out of ${r.regions[0]}`);}
+   else assert(r.yawMax<=1e-12,`${r.name} ${r.pat}: the mover alone turned it ${r.yawMax} rad`);
+   assert(r.regions.length<=2,`${r.name} ${r.pat}: through more than one opening (${r.regions.join(' > ')})`);assert.equal(r.leak,0,r.name+' '+r.pat+': yaw leak');}
+  const chose=R.filter(r=>r.chose).map(r=>r.name+' · '+r.pat);
+  assert.deepEqual(chose,['veranda doorway 15° off · ratchet-','veranda doorway 15° off · mover-random'],'lone deliveries: '+JSON.stringify(chose));
+  const helped=R.reduce((a,r)=>a+r.assisted,0);assert(helped>0,'the walls’ help was used in the lone runs: '+helped);assert.equal(leakNow(),0,'BENCH36.yawLeak');
+  return {runs:R.map(r=>[r.name,r.pat,r.at.map(v=>+v.toFixed(2)),r.moved,r.regions.join(' > ')+(r.cross.length?' at '+r.cross.join(', ')+'°':''),r.end,r.chose?'chooser':r.state]),lone:chose,helped:helped>0};});
+ // the round-2 checks (ideas from build v36-70429384, docs/PROVENANCE.md)
+ const dropIt=()=>{let t=0;while(J('BENCH36.state')==='carrying'&&t++<6){run(`press36(BENCH36.holder[0]);frames36(10);`);if(J('BENCH36.state')==='carrying')J('drive36(PLAN36,6)');}return J('BENCH36.state');};
+ check(21,()=>{const out={};
+  // with no bench about, a repeat still sets the latch, as the base game always did
+  run('fresh36();act[0]=false;keyAct36(0,true);');out.offRepeat=J('act[0]');run('act[0]=false;keyUp36(0);');assert.equal(out.offRepeat,true,'outside the bench a repeat is untouched');
+  // grounded: Player 1 takes an end with one press, then holds E (20 repeats a frame apart): one holder, roles as they were (a repeat would swap)
+  run(`start36();{const e=benchEnd36(BENCH36.pose,${FE},1.05),w=benchEnd36(BENCH36.pose,${1-FE},1.05);at36(0,e[0],e[1]);at36(1,w[0],w[1]);}frames36(2);`);
+  run('keyAct36(0,false);frames36(2);');assert.equal(J('BENCH36.state'),'ready');const m0=J('BENCH36.mover');
+  for(let k=0;k<20;k++)run('keyAct36(0,true);frames36(1);');
+  assert.deepEqual(J('[BENCH36.state,BENCH36.mover,benchStats36().swaps]'),['ready',m0,0],'a held E swapped roles');run('keyUp36(0);');
+  // Player 2 lifts with one Enter and holds it while Player 1 holds E again: a repeat would set it down
+  run('keyAct36(1,false);frames36(4);');assert.equal(J('BENCH36.state'),'carrying');
+  for(let k=0;k<20;k++)run('keyAct36(1,true);keyAct36(0,true);frames36(1);');assert.equal(J('BENCH36.state'),'carrying','a held Act set it down');run('keyUp36(0);keyUp36(1);');
+  run('keyAct36(0,false);frames36(12);keyUp36(0);');assert.equal(J('BENCH36.state'),'grounded','one fresh press still sets it down');
+  // the chooser: one press agrees, a held E never makes it "Not yet"
+  run('chooserAt36();');assert.equal(J('BENCH36.state'),'choosing');run('keyAct36(0,false);frames36(1);');for(let k=0;k<20;k++)run('keyAct36(0,true);frames36(1);');run('keyUp36(0);');
+  assert.deepEqual(J('BENCH36.agree'),[true,false],'a held E took the agreement back');
+  // sitting: one press sits, a held E never stands them up
+  run('placedAt36("out");at36(0,-5.95,6.4);at36(1,-5.4,6.5);frames36(2);keyAct36(0,false);frames36(3);');assert.equal(J('BENCH36.state'),'seated');
+  for(let k=0;k<20;k++)run('keyAct36(0,true);frames36(1);');run('keyUp36(0);');assert.equal(J('BENCH36.state'),'seated','a held E stood them up');
+  out.repeatsIgnored=J('BENCH36.repeats||0');return out;});
+
+ check(22,()=>{const out={};run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);');assert.equal(J('BENCH36.state'),'carrying');
+  // the mover holds a key back along the bench and the other stick leans; the window loses focus mid-push
+  run(`{const B=BENCH36,a=benchAxis36(B.pose.yaw),f=B.front?1:-1;setKeys36(B.mover,combo36(-a[0]*f,-a[1]*f));}frames36(20);`);const v0=J('BENCH36.vel.s');assert(Math.abs(v0)>0.5,'pushing before the blur: '+v0);
+  run("sticks[1].v=[0.6,-0.6];act[1]=true;fire36('window','blur',{});");const p0=J('bench36Pose()');run('frames36(60);');
+  const a=J('[bench36Pose(),BENCH36.state,BENCH36.vel.s,BENCH36.vel.w,Object.keys(keys).filter(k=>keys[k]),sticks.map(s=>s.v),act.slice()]');
+  assert.deepEqual(a[0],p0,'the bench moved after the blur');assert.equal(a[1],'carrying','still held');assert.deepEqual([a[2],a[3]],[0,0],'at rest');
+  assert.deepEqual(a[4],[],'keys let go');assert.deepEqual(a[5],[[0,0],[0,0]],'sticks let go');assert.deepEqual(a[6],[false,false],'Act latches cleared');
+  // the page hidden mid-swing: the turner's key held
+  run(`{const B=BENCH36,f=B.front?1:-1;setKeys36(1-B.mover,combo36(Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f));}frames36(8);`);const w0=J('BENCH36.vel.w');assert(Math.abs(w0)>0.1,'swinging: '+w0);
+  run("document.hidden=true;document.visibilityState='hidden';fire36('document','visibilitychange',{});document.hidden=false;delete document.visibilityState;");const q0=J('bench36Pose()');run('frames36(60);');
+  assert.deepEqual(J('bench36Pose()'),q0,'the bench turned on after the page was hidden');assert.equal(J('BENCH36.state'),'carrying');run('noKeys36();');
+  // the chooser: an arrow held through a blur stops stepping
+  run("chooserAt36();keys['d']=true;frames36(2);");const c1=J('BENCH36.choice');run("fire36('window','blur',{});frames36(40);");const c2=J('[BENCH36.choice,keys.d]');run("keys['d']=false;");
+  assert.notEqual(c1,'out','the arrow stepped once');assert.deepEqual(c2,[c1,false],'the arrow kept stepping after the blur');
+  out.blur={moved:0,vel:[0,0]};out.hidden='still';out.chooser=c1;return out;});
+
+ check(23,()=>{const out={},want=300*(1000/30/1000)/60,near=(v,w)=>Math.abs(v-w)<1e-9;
+  run('fresh36();S.time=9;start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');let t0=J('S.time');J('drive36(PLAN36,300)');
+  out.carried=J('S.time')-t0;assert.equal(J('BENCH36.state'),'carrying');assert.equal(out.carried,0,'the clock moved while carrying: '+out.carried);
+  // set down: lying untouched, the clock runs
+  assert.equal(dropIt(),'grounded');t0=J('S.time');run('noKeys36();frames36(300);');out.lying=J('S.time')-t0;assert(near(out.lying,want),'lying untouched: '+out.lying);
+  // one player holds an end, the other walks off
+  run(`press36(0);frames36(3);`);assert.equal(J('BENCH36.state'),'ready');t0=J('S.time');run(`{const q=pos36(1),c=BENCH36.pose,d=Math.hypot(q[0]-c.x,q[1]-c.z)||1;setKeys36(1,combo36((q[0]-c.x)/d,(q[1]-c.z)/d));}frames36(300);noKeys36();`);
+  out.oneHolds=J('S.time')-t0;assert(near(out.oneHolds,want),'one holding an end: '+out.oneHolds);
+  // a carry begun just before midnight meets no "Past midnight" card
+  run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;S.time=24.19;PH="";');J('drive36(PLAN36,300)');const late=J('[S.time,!!S._late,/Past midnight/.test(PH),BENCH36.state]');
+  assert.deepEqual(late,[24.19,false,false,'carrying'],'past midnight in a carry: '+JSON.stringify(late));run('S.time=10;');
+  // the chooser, then the glide: not a moment of clock
+  run('chooserAt36();S.time=11;var CK36={bad:0,n:0,prev:S.time};ONF36=()=>{const s=BENCH36.state;if(s==="choosing"||s==="settling"){CK36.n++;if(S.time!==CK36.prev)CK36.bad++;}CK36.prev=S.time;};');
+  run('frames36(300);');out.chooser=J('S.time')-11;assert.equal(out.chooser,0,'the clock moved in the chooser');
+  run('press36(0);frames36(1);press36(1);frames36(1);');for(let k=0;k<40&&J('BENCH36.state')==='settling';k++)run('frames36(10)');run('ONF36=null;');
+  assert.equal(J('BENCH36.state'),'placed');const ck=J('CK36');assert.equal(ck.bad,0,'the clock moved during the chooser or the glide');assert(ck.n>300,'frames watched: '+ck.n);
+  // sitting: the evening still comes
+  run('at36(0,-5.95,6.4);at36(1,-5.4,6.5);frames36(2);press36(0);frames36(3);');assert.equal(J('BENCH36.state'),'seated');t0=J('S.time');run('frames36(300);');out.seated=J('S.time')-t0;
+  assert(near(out.seated,want),'sitting: '+out.seated);
+  return {carried:out.carried,chooserAndGlide:0,lying:r3(out.lying),oneHolds:r3(out.oneHolds),seated:r3(out.seated),late:'no card'};});
+
+ check(24,()=>{const out={};const pill=()=>J('[lifeGuideEl34.style.display,lifeGuideEl34.style.visibility||""]');const mark=()=>run('LIFE34.waypoint={x:-5.6,z:6.35,name:"Your pepper pot"};refreshMarker34();frames36(10);');
+  run('fresh36();');mark();const v0=pill();assert.equal(v0[0],'flex','the pill shows');out.before=v0;
+  run('start36();frames36(10);');assert.deepEqual(pill(),v0,'on the ground it stays');
+  run(`{const e=benchEnd36(BENCH36.pose,${FE},1.05),w=benchEnd36(BENCH36.pose,${1-FE},1.05);at36(0,e[0],e[1]);at36(1,w[0],w[1]);}frames36(2);press36(0);frames36(10);`);assert.equal(J('BENCH36.state'),'ready');
+  assert.equal(pill()[1],'hidden','one end taken: hidden');run('press36(1);frames36(10);');assert.equal(J('BENCH36.state'),'carrying');assert.equal(pill()[1],'hidden','carried: hidden');
+  assert.equal(dropIt(),'grounded');run('frames36(10);');assert.deepEqual(pill(),v0,'back exactly after the set-down');
+  run('chooserAt36();');mark();assert.equal(pill()[1],'hidden','chooser: hidden');run('ACTIONS.bench36RoomDown();frames36(10);');assert.equal(J('BENCH36.state'),'grounded');assert.deepEqual(pill(),v0,'back after the chooser');
+  run('placedAt36("gate");');mark();run('at36(0,-5.95,6.4);at36(1,-5.4,6.5);frames36(2);press36(0);frames36(10);');assert.equal(J('BENCH36.state'),'seated');assert.equal(pill()[1],'hidden','sitting: hidden');
+  run('setKeys36(0,[0,-1]);frames36(12);noKeys36();frames36(10);');assert.equal(J('BENCH36.state'),'placed');assert.deepEqual(pill(),v0,'back after standing up');
+  run('LIFE34.waypoint=null;refreshMarker34();');return {before:v0,held:'hidden',after:v0};});
+
+ check(25,()=>{const out={},card=h=>{const m=h.match(/<div class="life-note34 bench36-card">[\s\S]*?<\/div>/);return m?m[0]:'';};const top=(m,a)=>m.includes(a)&&m.indexOf(a)<m.indexOf('<h2>');
+  run('fresh36();S.day=1;');assert.equal(card(J('todayHTML34()')),'','no card before it is due');run('S.day=2;');
+  const t0=J('todayHTML34()'),c0=card(t0);assert(c0.includes('<h3>Ada’s bench needs two pairs of hands</h3>')&&c0.includes('data-act="bench36Start"'),'Today offers the bench: '+c0);
+  assert(t0.indexOf('bench36-card')>t0.indexOf('life-hero34')&&t0.indexOf('bench36-card')<t0.indexOf('<div class="life-chips34">')&&t0.indexOf('bench36-card')<t0.indexOf('life-note34"'),'the card is Today’s first card');run('openMenu();');assert(top(J('panel.innerHTML'),'data-act="bench36Start"'),'the offer opens the Menu');run('closePanel();');
+  run('start36();');const c1=card(J('todayHTML34()'));assert(c1.includes('data-act="bench36Find"')&&c1.includes('waiting at your gate'),'waiting at the gate: '+c1);
+  run('openMenu();');const m1=J('panel.innerHTML');assert(top(m1,'data-act="bench36Find"')&&top(m1,'data-act="bench36Reset"')&&!m1.includes('bench36Pause'),'Find and the reset open the Menu');run('closePanel();');
+  run('takeEnds36('+FE+',0);lift36(0,1);');assert.equal(card(J('todayHTML34()')),'','no card while it is in hands');run('openMenu();');const m2=J('panel.innerHTML');
+  assert(top(m2,'data-act="bench36Pause"')&&m2.indexOf('bench36Pause')<m2.indexOf('bench36Reset'),'Pause next to the reset');run('closePanel();');
+  run('placedAt36("out");');assert.equal(card(J('todayHTML34()')),'','no card once placed');
+  run('companion36();');const c3=card(J('todayHTML34()'));assert(c3.includes('data-act="bench36Duo"')&&c3.includes('Play this with two players on this device'),'the companion’s card: '+c3);
+  run('AI.on=false;fresh36();NET.on=true;NET.room={emit:()=>Promise.resolve(),presence:()=>Promise.resolve(),leave:()=>{}};');const c4=card(J('todayHTML34()'));run('NET.on=false;');
+  assert(c4.includes('Carry Ada’s bench when you are both on one device.')&&!c4.includes('<button'),'online: '+c4);
+  out.cards=[c0,c1,c3,c4].map(c=>c.replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim());return out;});
+
+ check(26,()=>{const out={};run('fresh36();chooserAt36();frames36(4);');assert.equal(J('BENCH36.state'),'choosing');let st=J('strips36()');
+  for(const i of [0,1]){assert(st[i].includes('data-act="bench36Pick" data-v="-1"')&&st[i].includes('data-act="bench36Pick" data-v="1"'),'view '+i+': ◀ and ▶');
+   assert(st[i].includes(`data-act="bench36Vote" data-i="${i}" aria-pressed="false"`),'view '+i+': its own agree button');assert(!st[i].includes(`data-i="${1-i}"`),'view '+i+': not the other player’s');}
+  // the ghost: role yellow, an outline at seat height and a seat arrow at the arrangement, faint outlines at the others
+  const look=()=>J(`(()=>{const B=BENCH36,g=B.mesh.ghost,A=B.mesh.aux;const em=[],body=[],op=[];g.traverse(o=>{if(o.isMesh&&o.material){body.push(o.material.color.getHexString());op.push(o.material.opacity);if(o.material.emissive)em.push(o.material.emissive.getHexString());}});
+   const fr=A.userData.frame,ab=new THREE.Box3().setFromObject(A.userData.arrowMesh),az=ab.max.z-ab.min.z,ax=ab.max.x-ab.min.x;
+   const p=benchPoseOf36(B.choice),o=A.userData.outlines,ar=A.userData.arrow;return {col:B.ghostCol,em:[...new Set(em)],sel:o[B.choice].material.color.getHexString(),selOp:o[B.choice].material.opacity,others:B.ORDER.filter(k=>k!==B.choice).map(k=>[o[k].material.opacity,o[k].visible]),
+    at:[o[B.choice].position.x===p.x&&o[B.choice].position.z===p.z&&o[B.choice].rotation.y===p.yaw,ar.position.x===p.x&&ar.position.z===p.z&&ar.rotation.y===p.yaw],seen:A.visible&&g.visible,depth:o[B.choice].material.depthTest,body:[...new Set(body)],opMin:Math.min(...op),
+    frame:fr?{n:fr.children.length,at:fr.position.x===p.x&&fr.position.z===p.z&&fr.rotation.y===p.yaw,col:[...new Set(fr.children.map(m=>m.material.color.getHexString()))],depth:fr.children.every(m=>m.material.depthTest===false),w:+(fr.children[0].geometry.parameters.height).toFixed(3)}:null,arrow:[+Math.max(ax,az).toFixed(3),+Math.min(ax,az).toFixed(3)]};})()`);
+  const hex=c=>J(`new THREE.Color(${JSON.stringify(c)}).getHexString()`),YEL=hex(J('BENCH36.COL.move')),RED=hex(J('BENCH36.COL.nofree'));
+  const g0=look();assert.equal(g0.col,J('BENCH36.COL.move'));assert.deepEqual(g0.em,[YEL],'the ghost glows in the role yellow');assert.equal(g0.sel,YEL);assert.equal(g0.selOp,1);assert.deepEqual(g0.others,[[0.35,true],[0.35,true]],'faint outlines at the other two');
+  assert.deepEqual(g0.at,[true,true],'outline and arrow at the arrangement');
+  assert.deepEqual(g0.body,[YEL],'the ghost’s body itself is the role yellow (not pale cream): '+JSON.stringify(g0.body));assert(g0.opMin>=0.8,'and solid enough to read: '+g0.opMin);
+  assert(g0.frame&&g0.frame.n===4&&g0.frame.at&&g0.frame.depth&&g0.frame.w>=0.05,'a broad outline (5 cm strips) at the arrangement, seen through the parapet: '+JSON.stringify(g0.frame));assert.deepEqual(g0.frame.col,[YEL]);
+  assert(g0.arrow[0]>=0.4&&g0.arrow[1]>=0.35,'the seat arrow is large: '+JSON.stringify(g0.arrow));assert.equal(g0.seen,true);assert.equal(g0.depth,false,'seen through the parapet');
+  // tap ▶: Gate, both agreements cleared; tap Player 1's agree: shown on the button
+  run('press36(1);frames36(1);');assert.deepEqual(J('BENCH36.agree'),[false,true]);assert.equal(J('tap36("bench36Pick",{v:"1"})'),true,'the strip takes taps');run('frames36(1);');
+  assert.deepEqual(J('[BENCH36.choice,BENCH36.agree]'),['gate',[false,false]],'a tap browses and clears both');const g1=look();assert.deepEqual(g1.at,[true,true],'the ghost follows');
+  run('tap36("bench36Vote",{i:"0"});frames36(1);');st=J('strips36()');assert.deepEqual(J('BENCH36.agree'),[true,false]);
+  assert(st[0].includes('data-act="bench36Vote" data-i="0" aria-pressed="true">✓ Efe agrees'),'the agreed state on the button: '+st[0]);assert(st[1].includes('data-i="1" aria-pressed="false">Ola agrees'),'the other still open');
+  run('tap36("bench36Vote",{i:"0"});frames36(1);');assert.deepEqual(J('BENCH36.agree'),[false,false],'a second tap is “not yet”');
+  // an arrangement that is not free: the ghost turns red
+  run('BENCH36.okCache.water=false;tap36("bench36Pick",{v:"1"});frames36(1);');const g2=look();assert.equal(J('BENCH36.choice'),'water');assert.equal(g2.col,J('BENCH36.COL.nofree'),'not free: red');assert.deepEqual(g2.em,[RED]);assert.equal(g2.sel,RED);assert.deepEqual(g2.body,[RED]);assert.deepEqual(g2.frame.col,[RED]);
+  run('BENCH36.okCache.water=true;tap36("bench36Pick",{v:"-1"});frames36(1);');assert.equal(J('BENCH36.choice'),'gate');assert.equal(look().col,J('BENCH36.COL.move'));
+  run('tap36("bench36Vote",{i:"1"});frames36(1);tap36("bench36Vote",{i:"0"});frames36(1);');assert.equal(J('BENCH36.state'),'settling','two taps commit');
+  // the stylesheet: the buttons take taps and are at least 44 px both ways
+  const css=fs.readFileSync(path.join(GAME,'src','bench-v36.css'),'utf8'),rule=(css.match(/\.bench36-pick \.b36\{([^}]*)\}/)||[])[1]||'';
+  assert(/pointer-events:auto/.test(rule)&&/min-width:44px/.test(rule)&&/min-height:44px/.test(rule),'44 px tap targets: '+rule);
+  // the arrangement's name is large in the strip: at least 1.4 rem at the desk, 16 px on phones
+  const nm=(css.match(/\.bench36-pick \.sel \.nm36\{font-size:([0-9.]+)rem/)||[])[1],nmS=(css.match(/\.bench36-pick \.sel \.nm36\{font-size:max\(([0-9]+)px/)||[])[1];
+  assert(+nm>=1.4&&+nmS>=16,'the name is large: '+nm+' rem, '+nmS+' px');
+  out.ghost={free:g0.col,notFree:g2.col,body:g0.body[0]===YEL?'role yellow':g0.body[0],frame:g0.frame.w,arrow:g0.arrow,name:[+nm,+nmS]};out.taps='browse, agree, not yet, commit';return out;});
+
+ check(27,()=>{const out={};run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,7200,seg=>seg>='+SEG.courtyard+')');assert.equal(J('BENCH36.state'),'carrying');
+  run('openMenu();');const m=J('panel.innerHTML');assert(m.includes('data-act="bench36Pause">Pause delivery and explore</button>'),'the Menu offers the pause');const sd0=J('benchStats36().setdowns');
+  run('dispatch("bench36Pause");frames36(12);');const a=J('[BENCH36.state,BENCH36.holder,hbMatch36(BENCH36.pose,[pos36(0),pos36(1)]),benchStats36().setdowns]');
+  assert.deepEqual(a.slice(0,3),['grounded',[null,null],true],'set down safely and let go: '+JSON.stringify(a));assert.equal(a[3],sd0,'not counted as a set-down');
+  const q0=J('[pos36(0),pos36(1)]');run('setKeys36(0,[1,0]);setKeys36(1,[-1,0]);frames36(12);noKeys36();frames36(1);');const q1=J('[pos36(0),pos36(1)]');
+  assert(Math.hypot(q1[0][0]-q0[0][0],q1[0][1]-q0[0][1])>0.3&&Math.hypot(q1[1][0]-q0[1][0],q1[1][1]-q0[1][1])>0.3,'both walk freely after the pause');
+  // find: the destination marker on the bench, following a reset, gone when an end is taken
+  run('openMenu();');assert(J('panel.innerHTML').includes('data-act="bench36Find">Find the bench</button>'),'the Menu offers Find');run('dispatch("bench36Find");frames36(2);');
+  const f=J('[LIFE34.waypoint,!!LIFE34.marker,bench36Pose()]');assert(f[0]&&f[0].name==='Ada’s bench'&&f[0].x===f[2].x&&f[0].z===f[2].z&&f[1],'the marker is on the bench: '+JSON.stringify(f));
+  run('at36(0,-1.2,-1.6);at36(1,-0.6,-1.6);frames36(30);');assert.equal(J('LIFE34.waypoint&&LIFE34.waypoint.name'),'Ada’s bench','the marker stays while they walk');
+  run('dispatch("bench36Reset");frames36(2);');const fr=J('[LIFE34.waypoint,bench36Pose()]');assert(fr[0]&&fr[0].x===fr[1].x&&fr[0].z===fr[1].z,'the marker follows a reset');
+  run('takeEnds36(BENCH36.front,BENCH36.mover);press36(BENCH36.mover);frames36(3);');assert.equal(J('BENCH36.state'),'ready');assert.equal(J('LIFE34.waypoint'),null,'the marker goes when an end is taken');
+  run('press36(1-BENCH36.mover);frames36(4);');assert.equal(J('BENCH36.state'),'carrying','carrying on is just lifting');
+  // in the chooser: a pause leaves it in the doorway, both walk, and lifting it there opens the chooser again
+  run('chooserAt36();');const pc=J('bench36Pose()');run('openMenu();');assert(J('panel.innerHTML').includes('data-act="bench36Pause"'),'the chooser’s Menu offers the pause');run('dispatch("bench36Pause");frames36(3);');
+  const c=J('[BENCH36.state,bench36Pose(),hbMatch36(BENCH36.pose,[pos36(0),pos36(1)]),!!(BENCH36.mesh.ghost&&BENCH36.mesh.ghost.visible)]');
+  assert.equal(c[0],'grounded');assert.deepEqual(c[1],pc,'left in the doorway');assert.equal(c[2],true,'liftable');assert.equal(c[3],false,'no ghost');
+  const iv=J('(()=>{setKeys36(0,[1,0]);setKeys36(1,[-1,0]);const v=[inputVec(0),inputVec(1)].map(q=>Math.hypot(q[0],q[1]));noKeys36();return v;})()');assert(iv[0]>0.9&&iv[1]>0.9,'both players’ keys are their own again: '+iv);
+  run('{const B=BENCH36,e0=benchEnd36(B.pose,0,1.0),e1=benchEnd36(B.pose,1,1.0);at36(0,e0[0],e0[1]);at36(1,e1[0],e1[1]);}frames36(2);press36(0);frames36(3);press36(1);frames36(6);');
+  assert.equal(J('BENCH36.state'),'choosing','lifting it in the doorway opens the chooser again');
+  out.pause={setdowns:a[3]-sd0};out.find='marked, followed a reset, cleared on taking an end';out.chooser='paused in the doorway, lifted back into the chooser';return out;});
+
+ check(28,()=>{const out={};
+  run("var CL28=new Set(['bench36-x']);document.body.classList={add:c=>CL28.add(c),remove:c=>CL28.delete(c),contains:c=>CL28.has(c),toggle:(c,v)=>{const on=v===undefined?!CL28.has(c):!!v;if(on)CL28.add(c);else CL28.delete(c);return on;}};CL28.delete('bench36-x');");
+  const ctl=()=>J("[AI.on,!!S.ai,AI.i,singleIdx(),CL28.has('net')]");
+  try{
+  run('companion36();at36(1,1.0,2.0);frames36(1);');assert.deepEqual(ctl(),[true,true,1,0,true],'a companion household');assert.equal(J('(()=>{const q=pos36(1);return !!blocked(q[0],q[1],PR);})()'),false,'the companion stands on a free spot');const keys0=J('Object.keys(S).sort()');
+  run('openMenu();');assert(J('panel.innerHTML').includes('data-act="bench36Duo">Play this with two players on this device</button>'),'the Menu offers two players');run('closePanel();');
+  const c0=J('pos36(1)');run('PH="";dispatch("bench36Duo");');assert(J('PH').includes('A note from Ada'),'the delivery starts with Ada’s note');run('ACTIONS.close();frames36(2);');
+  assert.deepEqual(ctl(),[false,false,1,-1,false],'two players on this device');assert.equal(J('BENCH36.state'),'grounded');assert.deepEqual(J('S.life.bench36.duo.pos'),c0,'the companion’s place is kept');
+  // a reload mid-switch: still two players, with the way back
+  run('save();ACTIONS.continue();frames36(2);');assert.deepEqual(ctl(),[false,false,1,-1,false],'after a reload: still two players');run('openMenu();');
+  assert(J('panel.innerHTML').includes('data-act="bench36Solo">Back to my companion</button>'),'the way back is in the Menu');run('closePanel();');assert(J('todayHTML34()').includes('data-act="bench36Solo"'),'and on the Today page');
+  // carry it a little, then pause: the companion is back exactly
+  run('takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J('drive36(PLAN36,150)');assert.equal(J('BENCH36.state'),'carrying');run('dispatch("bench36Pause");for(let k=0;k<12&&!AI.on;k++)frames36(1);');
+  assert.deepEqual(ctl(),[true,true,1,0,true],'a pause restores the companion');assert.deepEqual(J('pos36(1)'),c0,'where it was');assert.equal(J('S.life.bench36.duo===undefined'),true,'the switch is over');
+  assert.deepEqual(J('Object.keys(S).sort()'),keys0,'the save keeps its shape');run('frames36(2);');assert.equal(J('BENCH36.paused'),true,'the companion household does not see the bench');
+  run('openMenu();');assert(J('panel.innerHTML').includes('bench36Duo'),'the switch is offered again to carry on');run('closePanel();');
+  // a second switch, through the chooser to placing, sitting and standing up
+  run('at36(1,1.4,1.7);frames36(1);');const c1=J('pos36(1)');assert.equal(J(`!!blocked(${c1[0]},${c1[1]},PR)`),false,'the companion stands on a free spot');run('dispatch("bench36Duo");frames36(2);');assert.deepEqual(ctl(),[false,false,1,-1,false]);assert.equal(J('BENCH36.paused'),false,'back in play');
+  run('{const d=S.life.bench36.duo;chooserAt36({duo:d});}');assert.equal(J('BENCH36.state'),'choosing');run('press36(0);frames36(1);press36(1);frames36(1);');for(let k=0;k<40&&J('BENCH36.state')==='settling';k++)run('frames36(10)');
+  assert.equal(J('BENCH36.state'),'placed');assert.deepEqual(ctl(),[false,false,1,-1,false],'still two players once placed');
+  run('at36(0,-5.95,6.4);at36(1,-5.4,6.5);frames36(2);press36(0);frames36(3);');assert.equal(J('BENCH36.state'),'seated');assert.deepEqual(ctl().slice(0,2),[false,false],'sitting together, two players');
+  run('setKeys36(0,[0,-1]);for(let k=0;k<30&&!AI.on;k++)frames36(1);noKeys36();');assert.equal(J('BENCH36.state'),'placed');assert.deepEqual(ctl(),[true,true,1,0,true],'standing up restores the companion');assert.deepEqual(J('pos36(1)'),c1,'where it was');
+  // an again run left where it was restores it too
+  run('dispatch("bench36Duo");frames36(2);');assert.deepEqual(J('[BENCH36.state,S.life.bench36.again,AI.on]'),['grounded',true,false],'carry it again with two players');run('dispatch("bench36Cancel");frames36(1);');
+  assert.deepEqual(J('[BENCH36.state,AI.on,!!S.ai]'),['placed',true,true],'leaving it where it was restores the companion');
+  // online: no switch
+  run('AI.on=false;S.ai=false;NET.on=true;NET.room={emit:()=>Promise.resolve(),presence:()=>Promise.resolve(),leave:()=>{}};delete S.life.bench36;S.home.items=S.home.items.filter(i=>i.type!=="bench");benchTeardown36();openMenu();');const mo=J('panel.innerHTML');run('closePanel();');
+  assert(!mo.includes('bench36Duo')&&mo.includes('Carry Ada’s bench when you are both on one device.'),'online: the one-device line, no switch');run('NET.on=false;');
+  }finally{run("document.body.classList={add(){},remove(){},toggle(){},contains:()=>false};AI.on=false;");}
+  out.restored=['pause','stand up','again left'];out.reload='two players, way back';return out;});
+ check(29,()=>{const out={};
+  // the doorway trap the guided prototype's seed 7 found: the bench set down in the room, its west end in the veranda doorway's mouth, one player
+  // (Efe) in the room west of it and the other (Ola) standing in the doorway beyond that end, whose only way round to the far end is the gap
+  // between the bench's corner and the west jamb, just where whoever holds the doorway end stands
+  const S7={x:-3.2741877655391227,z:4.601752309256528,yaw:-5.238674835810746},D7=S7.yaw*180/Math.PI;
+  const setup=(efe,ola)=>run(`fresh36();start36();at36(0,${efe[0]},${efe[1]});at36(1,${ola[0]},${ola[1]});loadAt36(${S7.x},${S7.z},${D7});frames36(2);TOASTS=[];`);
+  const pose=()=>J('bench36Pose()'),labs=()=>J('hotspotCache.map(h=>h?h.label:"")'),st=()=>J('[BENCH36.state,BENCH36.holder]');
+  setup([-4.32,5.16],[-3.965,5.541]);const p0=pose();assert(Math.abs(p0.x-S7.x)<1e-6&&Math.abs(p0.z-S7.z)<1e-6,'loaded where asked: '+JSON.stringify(p0));
+  assert.equal(J('hbMatch36(BENCH36.pose,[pos36(0),pos36(1)])'),true,'liftable: Ola can take the doorway end first, or Efe the far end');
+  let L=labs();assert.deepEqual(L,['Ola needs this end','Come round to this end'],'Efe is asked to leave the doorway end to Ola: '+JSON.stringify(L));
+  run('press36(0);frames36(3);');assert.deepEqual(st(),['grounded',[null,null]],'Efe cannot take it');assert(J('TOASTS').includes('Ola needs this end to get round. Take the other one.'),'and is told why');
+  out.trap={efe:L[0],ola:L[1]};
+  // Efe takes the far end instead; Ola comes round through the gap (nobody stands in it) and they lift
+  run(`{const e=benchEnd36(BENCH36.pose,1);let q=null;for(let r=0.2;r<=0.61&&!q;r+=0.05)for(let k=0;k<16&&!q;k++){const a=k/16*Math.PI*2,x=e[0]+Math.sin(a)*r,z=e[1]+Math.cos(a)*r;if(!blocked(x,z,PR)&&benchSlideClear36([x,z],e))q=[x,z];}at36(0,q[0],q[1]);}frames36(2);`);assert.equal(labs()[0],'Take this end','the far end is Efe’s to take (beside the stove, “Cook” does not hide it): '+JSON.stringify([labs(),J('pos36(0)')]));run('press36(0);frames36(4);');assert.deepEqual(st(),['ready',[null,0]],'Efe holds the far end: '+JSON.stringify([labs(),J('TOASTS'),J('pos36(0)'),J('benchEnd36(BENCH36.pose,1)')]));
+  assert.equal(J('benchPinned36()'),false,'Efe at the far end leaves Ola her way round');
+  run('at36(1,-4.2,5.05);frames36(3);');L=labs();assert.equal(L[1],'Lift together','Ola has come round into the room: '+JSON.stringify(L));run('press36(1);frames36(6);');assert.equal(J('BENCH36.state'),'carrying','and they lift');
+  // a holder who ends up pinning the other: Efe takes the doorway end while Ola is in the room, then Ola walks out into the doorway behind him
+  setup([-4.32,5.16],[-4.9,4.3]);run('press36(0);frames36(4);');assert.deepEqual(st(),['ready',[0,null]],'Efe holds the doorway end (Ola can still get round)');
+  run('at36(1,-3.965,5.541);frames36(3);');L=labs();assert.deepEqual(L,['Let go · Ola can’t get round','Ask Efe to let go'],'Efe is in Ola’s only way round: '+JSON.stringify(L));
+  run('press36(0);frames36(3);');assert.deepEqual(st(),['grounded',[null,null]],'Efe’s Act lets go');
+  const back=J('benchSlideClear36(pos36(0),benchEnd36(BENCH36.pose,0))');assert.equal(back,true,'Efe steps back on his own side of the jamb');
+  setup([-4.32,5.16],[-4.9,4.3]);run('press36(0);frames36(4);at36(1,-3.965,5.541);frames36(60);');assert.equal(J('BENCH36.state'),'ready','still held at 2 s');
+  run('frames36(20);');assert.deepEqual(st(),['grounded',[null,null]],'after 2.5 s he lets go by himself');assert(J('TOASTS').includes('Efe lets go, so Ola can get round.'),'with the toast');
+  out.pinned={prompt:L,letGo:'Act, or by himself after 2.5 s'};
+  // at set-down: carried there with Ola at the doorway end, she sets it down; each steps back on their own side of any wall (never out beyond
+  // the jamb, from where Ola would have to come all the way round), and the harness's walk finds it liftable in an order
+  setup([-4.32,5.16],[-4.2,5.05]);run(`{const e=benchEnd36(BENCH36.pose,1);let q=null;for(let r=0.2;r<=0.61&&!q;r+=0.05)for(let k=0;k<16&&!q;k++){const a=k/16*Math.PI*2,x=e[0]+Math.sin(a)*r,z=e[1]+Math.cos(a)*r;if(!blocked(x,z,PR)&&benchSlideClear36([x,z],e))q=[x,z];}at36(0,q[0],q[1]);}frames36(2);press36(0);frames36(4);press36(1);frames36(6);`);
+  assert.equal(J('BENCH36.state'),'carrying','lifted at the doorway pose');assert.deepEqual(J('[benchHolderOf36(0),benchHolderOf36(1)]'),[1,0],'Ola holds the doorway end');
+  run('press36(1);frames36(12);');assert.equal(J('BENCH36.state'),'grounded','set down');const sd=J('[pos36(0),pos36(1),[1,0].map((e,i)=>benchSlideClear36(pos36(i),benchEnd36(BENCH36.pose,e))),hbMatch36(BENCH36.pose,[pos36(0),pos36(1)])]');
+  assert.deepEqual(sd[2],[true,true],'both step back on their own side: '+JSON.stringify(sd));assert.equal(sd[3],true,'liftable');
+  out.setDown={ola:sd[1].map(r3),efe:sd[0].map(r3)};return out;});
+
  return out;}
 
 async function inner(only){const h=await world();const res=checks(h,only);return {build:h.run('BUILD_ID'),checks:res};}
@@ -599,16 +1017,17 @@ async function inertProbe(){const H=require(path.join(__dirname,'..','tools','be
  run("NET.on=false;dispatch('aiStart');S.p[0].name='Efe';S.p[1].name='Ola';dispatch('setupnext',{i:0});dispatch('setupnext',{i:1});closePanel();dispatch('movein');closePanel();sofa.carrying=true;sofa.holder=[0,1];sofaSuccess();closePanel();dispatch('nextday');closePanel();openMenu();");
  out.menu=J('panel.innerHTML');return out;}
 
-if(process.argv[2]==='--inner'){const only=process.argv[3]?process.argv[3].split(',').map(Number):null;inner(only).then(r=>{process.stdout.write(JSON.stringify(r)+'\n');process.exit(0);}).catch(e=>{console.error(e);process.exit(1);});}
+if(require.main!==module)module.exports={world};   // (required by a tool: the world and its helpers, no run)
+else if(process.argv[2]==='--inner'){const only=process.argv[3]?process.argv[3].split(',').map(Number):null;inner(only).then(r=>{process.stdout.write(JSON.stringify(r)+'\n');process.exit(0);}).catch(e=>{console.error(e);process.exit(1);});}
 else if(process.argv[2]==='--inert-probe'){inertProbe().then(r=>{process.stdout.write(JSON.stringify(r)+'\n');process.exit(0);}).catch(e=>{console.error(e);process.exit(1);});}
 else{(async()=>{
  const child=(args,env)=>new Promise(res=>{const p=cp.spawn(process.execPath,[__filename].concat(args),{env:Object.assign({},process.env,env||{}),stdio:['ignore','pipe','pipe']});let o='',e='';p.stdout.on('data',d=>o+=d);p.stderr.on('data',d=>e+=d);
   p.on('close',code=>{try{res(JSON.parse(o.trim().split('\n').pop()));}catch(x){res({error:(e||o).slice(-600)||('exit '+code)});}});});
- // the two full runs and the mutants, four children at a time (each mutant reruns only its own check in a copy of dist)
+ // the two full runs and the mutants, four children at a time (BENCH36_JOBS sets another number; each mutant reruns only its own check in a copy of dist)
  const src=fs.readFileSync(path.join(GAME,'src','bench-v36.js'),'utf8'),dirs=[],mut=[];let a,b;
  const jobs=[async()=>{a=await child(['--inner']);},async()=>{b=await child(['--inner']);}].concat(MUTANTS.map((m,k)=>async()=>{const n=src.split(m.find).length-1;if(n!==1){mut[k]={name:m.name,check:m.check,result:'stale ('+n+' matches)'};return;}
    const d=variantDir(null,t=>t.replace(m.find,m.replace));dirs.push(d);const r=await child(['--inner',String(m.check)],{COMPOUND_GAME_DIR:d});const c=r.checks&&r.checks[0];mut[k]={name:m.name,check:m.check,result:c?(c.passed?'green':'red'):'error'};}));
- try{const q=jobs.slice();await Promise.all([0,1,2,3].map(async()=>{while(q.length)await q.shift()();}));}finally{for(const d of dirs)fs.rmSync(d,{recursive:true,force:true});}
+ try{const q=jobs.slice(),nj=Math.max(1,Math.min(8,+process.env.BENCH36_JOBS||4));await Promise.all(Array.from({length:nj},async()=>{while(q.length)await q.shift()();}));}finally{for(const d of dirs)fs.rmSync(d,{recursive:true,force:true});}
  const same=JSON.stringify(a)===JSON.stringify(b);
  const report={build:a.build||null,passed:!a.error&&same&&a.checks.length===NAMES.length&&a.checks.every(c=>c.passed)&&mut.every(m=>m.result==='red'),checks:a.checks||[],mutants:mut,determinism:same?'identical':'differs'};
  if(a.error)report.error=a.error;

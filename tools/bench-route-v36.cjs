@@ -7,7 +7,10 @@
 // both holder discs, at the radius a holder squeezes in to, BENCH36.HR) inflated by 0.06 m. Both start orientations are tried (which end leads
 // is the mover's choice).
 // The plan is written to check/bench-route-v36.json as segments {op:'fwd'|'back'|'turnL'|'turnR', until:{x,z,yaw}} (yaw in degrees, the
-// direction from the centre to the leading end), with a signature of the world it was made in. Rerun whenever the world changes:
+// direction from the centre to the leading end), with a signature of the world it was made in, the carry scheme it was made for
+// (BENCH36.SCHEME, "guided-lateral") and a hash of the walls' guidance (BENCH36.GUIDE); the harness fails when either differs from the
+// running module. The search itself is the plain centre-pivot one: the guidance only ever helps a push sideways, and the follower closes
+// the loop on the pose. Rerun whenever the world, the scheme or the guidance changes:
 //   node tools/bench-route-v36.cjs            (about a minute)
 // The slack (the largest inflation that still leaves a route) is measured with
 //   node tools/bench-route-v36.cjs --slack    (tries 0.06 m upwards in 0.02 m steps and writes nothing)
@@ -32,13 +35,15 @@ async function benchWorld(){const H=require(path.join(ROOT,'check','runtime-harn
  return {run,context,J:c=>JSON.parse(run('JSON.stringify('+c+')'))};}
 
 // the exported world: boxes as [x1,x2,z1,z2] and the level rule on a grid
+// FNV-1a of the guidance as the module declares it (JSON, so numbers keep every digit)
+function guideHash(G){let h=2166136261>>>0;const s=JSON.stringify(G);for(let k=0;k<s.length;k++){h^=s.charCodeAt(k);h=Math.imul(h,16777619)>>>0;}return h.toString(16);}
 function worldSig(boxes){let h=2166136261>>>0;const s=JSON.stringify(boxes.map(b=>b.map(v=>Math.round(v*1000))));for(let k=0;k<s.length;k++){h^=s.charCodeAt(k);h=Math.imul(h,16777619)>>>0;}return h.toString(16)+':'+boxes.length;}
 async function exportWorld(){const {run,J}=await benchWorld();
  run("ACTIONS.bench36Start();ACTIONS.close();");
  if(J('BENCH36.state')!=='grounded')throw new Error('the delivery did not start: '+J('BENCH36.state'));
  const boxes=J("benchBoxes36(0,0,1e4,{}).map(o=>[o.x1,o.x2,o.z1,o.z2])");
  const lv=run(`(()=>{let s='';for(let i=0;i<=688;i++){for(let j=0;j<=520;j++){s+=carryLevelOK34(-8.6+i*0.025,-1.6+j*0.025)?'1':'0';}}return s;})()`);
- const start=J('[BENCH36.pose.x,BENCH36.pose.z,BENCH36.pose.yaw]');HR=J('BENCH36.HR');return {boxes,lv,start,sig:worldSig(boxes)};}
+ const start=J('[BENCH36.pose.x,BENCH36.pose.z,BENCH36.pose.yaw]');HR=J('BENCH36.HR');return {boxes,lv,start,sig:worldSig(boxes),scheme:J('BENCH36.SCHEME'),guide:guideHash(J('BENCH36.GUIDE'))};}
 
 function planner(W,m){const B=W.boxes;
  const LX0=-8.6,LZ0=-1.6,LR=0.025,LNZ=521;const lvOK=(x,z)=>{const i=Math.round((x-LX0)/LR),j=Math.round((z-LZ0)/LR);if(i<0||j<0||i>688||j>=LNZ)return false;return W.lv[i*LNZ+j]==='1';};
@@ -78,6 +83,6 @@ if(require.main===module&&process.argv.includes('--slack')){(async()=>{const W=a
  for(let m=0.06;m<0.3;m+=0.02){const p=plan(W,+m.toFixed(2));console.log(`inflation ${m.toFixed(2)} m (holders at ${(HR+m).toFixed(2)} m): ${p?p.segments.length+' segments':'no route'}`);if(!p)break;last=m;}
  console.log(`slack: ${last===null?'none':last.toFixed(2)+' m'}`);process.exit(0);})().catch(e=>{console.error(e);process.exit(1);});}
 else if(require.main===module){(async()=>{const W=await exportWorld();const p=plan(W,M);if(!p){console.error('no route at inflation '+M);process.exit(1);}
- const out={what:'v36 bench control plan (tools/bench-route-v36.cjs); yaw in degrees from the centre to the leading end',inflation:M,world:W.sig,start:{x:W.start[0],z:W.start[1],yaw:p.startYaw},segments:p.segments};
+ const out={what:'v36 bench control plan (tools/bench-route-v36.cjs); yaw in degrees from the centre to the leading end',inflation:M,world:W.sig,scheme:W.scheme,guide:W.guide,start:{x:W.start[0],z:W.start[1],yaw:p.startYaw},segments:p.segments};
  fs.writeFileSync(OUT,JSON.stringify(out,null,1)+'\n');console.log(`${p.segments.length} segments, ${p.moves} steps, world ${W.sig} -> ${path.relative(ROOT,OUT)}`);process.exit(0);})().catch(e=>{console.error(e);process.exit(1);});}
-module.exports={benchWorld,worldSig};
+module.exports={benchWorld,worldSig,guideHash};

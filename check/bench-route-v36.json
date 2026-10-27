@@ -2,6 +2,8 @@
  "what": "v36 bench control plan (tools/bench-route-v36.cjs); yaw in degrees from the centre to the leading end",
  "inflation": 0.06,
  "world": "f27b15e:175",
+ "scheme": "guided-lateral",
+ "guide": "5ab70f03",
  "start": {
   "x": 4,
   "z": 8.6,

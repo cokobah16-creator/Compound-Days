@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v36-934cd8fe (authored character, your day in Palm Court, a bench for evening gist)
+Build: v36-51c2a9ad (authored character, your day in Palm Court, a bench for evening gist)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE

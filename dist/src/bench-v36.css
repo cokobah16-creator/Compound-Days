@@ -38,3 +38,13 @@ body.bench36-busy #life-guide34{display:none!important}
  .bench36-pick .row{display:flex;flex-wrap:wrap;align-items:center;gap:2px 12px}.bench36-pick .sel{font-size:max(13px,.9rem)}.bench36-pick .k{margin-top:0}}
 @media (orientation:portrait){#half0 .bench36-pick{top:calc(58px + env(safe-area-inset-top,0px))}#half1 .bench36-pick{top:8px}}
 @media (orientation:landscape) and (max-height:520px){.bench36-pick{top:46px}}
+/* round 2: the chooser by touch. ◀ ▶ and each player's "agrees" take taps (44 px or more); everything else in the strip lets touches through */
+.bench36-pick .b36{pointer-events:auto;box-sizing:border-box;min-width:44px;min-height:44px;margin:0;border-radius:12px;border:2px solid rgba(242,179,61,.55);background:rgba(20,12,8,.55);color:#F1E4CC;font:inherit;font-weight:800;cursor:pointer;touch-action:manipulation;-webkit-user-select:none;user-select:none}
+.bench36-pick .b36.ar36{width:44px;padding:0;font-size:1rem;color:#F2B33D}
+.bench36-pick .b36.ag36{display:block;margin-top:6px;padding:0 14px;font-size:max(13px,.86rem)}
+.bench36-pick .b36.ag36.on{background:#3E7B5E;border-color:#8CCBAA;color:#F4FFF8}
+.bench36-pick .sel .nm36{font-size:1.45rem;line-height:1.15;min-width:7.2em;text-align:center;color:#FFE9B8}
+.bench36-pick .sel.off .nm36{opacity:.6}
+.bench36-pick .ticks{margin-top:2px}
+@media (orientation:portrait),(orientation:landscape) and (max-height:520px){.bench36-pick .b36.ag36{margin-top:0}.bench36-pick .sel .nm36{font-size:max(16px,1.15rem);min-width:6.4em}}
+@media (hover:hover) and (pointer:fine){.bench36-pick{bottom:76px}}

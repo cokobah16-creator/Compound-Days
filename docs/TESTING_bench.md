@@ -4,6 +4,19 @@ One session, two players, one device, 25 minutes. This is the owner's script for
 
 What is being tested: can two people carry Ada's bench from the street gate to the veranda by talking to each other, agree where it goes, and sit on it together, without anyone explaining the controls?
 
+## What changed in this build (for you, not for the players)
+
+- The bench is carried as before: the front player walks it along its length (**Move**, the yellow chip) and the rear player turns it (**Turn**, the teal chip).
+- Walls and doorways now nudge it **sideways** by a few centimetres when it is nearly lined up. They never turn it, so every corner is the turner's job.
+- When the turner's swing is stopped three times in a few seconds, their prompt says "Your end is on the wall. Try the other way, or ask … to back up a little." and the mover's says "… needs room. Back up a little."
+- The place-name captions ("The Waterfront" and the others) step out of both views while the bench is lifted.
+- A held E or Enter no longer repeats an action on the bench, and if the window loses focus every held key is let go (the bench stops where it is, still held).
+- The game clock stops only while the bench is carried, chosen or gliding home. It runs while the bench lies on the ground, while one player holds an end and while they sit.
+- The Today page has a card, "Ada's bench needs two pairs of hands". The Menu has **Pause delivery and explore** and **Find the bench** beside **Bench stuck? Put it back**.
+- In the chooser each half of the screen has ◀ and ▶ buttons and that player's own "… agrees" button (it shows a tick), as well as the keys. The ghost of the chosen arrangement is yellow when it fits (red when it does not), with an outline and an arrow showing which way the seat faces.
+
+**Do not explain any of this to the players.**
+
 ## Before the players arrive (about 10 minutes)
 
 You need: the machine, one keyboard (or two pads), this sheet printed or open on a second screen, a timer, and a pen.
@@ -35,7 +48,7 @@ If asked which keys: "Player 1, left side of the keyboard. Player 2, right side.
 
 ## Interventions
 
-If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give. (While a delivery is open, the bench lines sit at the top of the Menu, just under "Your day in Palm Court".)
+If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give. (The bench lines sit at the top of the Menu, just under "Your day in Palm Court": the offer, then **Find the bench** or **Pause delivery and explore** beside **Bench stuck? Put it back**. The Today page, behind "Your day in Palm Court" or Tasks, has the card "Ada’s bench needs two pairs of hands" while the bench waits for them.)
 
 The scripted lines and presses in the timeline below are **not** interventions. Resets the players choose themselves (the **Reset the bench** prompt, which only appears when neither of them can reach an end, or the Menu's **Bench stuck? Put it back**) are in-game actions: record them; they do not fail the session. If they choose the Menu's **Leave the bench for now** in the first delivery, the bench goes back to Ada and the Menu offers it again; record it (the session cannot pass without both deliveries).
 
@@ -46,12 +59,22 @@ The scripted lines and presses in the timeline below are **not** interventions. 
 | 0–3 | The players walk out, find the rings, take an end each and lift. | Nothing. | Can each of them say or show their role (Move or Turn) without coaching? Note the time to the lift, to the first slide along the bench, and to the first swing. |
 | 3–10 | First delivery: gate, courtyard, the narrow passage on the left (corner 1), the flat door (corner 2), the room, the veranda doorway. In the doorway a strip opens in each half of the screen with three arrangements; both agree; the bench glides out to its spot (the holder on the veranda steps aside first). | Nothing. | Callouts, verbatim. Where they bump (corner 1, the passage, corner 2, the doorway); the dust and the line under their prompts ("You're up against the wall." / "Ola is up against the post.") say whose end met what. Set-downs and swaps. Idle stretches over 8 seconds. Moments of confusion. Write down the toast after the agreement: "Delivery 1 · m:ss · n bumps · n resets". |
 | 10–17 | **Scripted.** Open **Menu**, press **Carry Ada's bench again** (at the top of the Menu), and say: "Now bring it again, and swap jobs." The bench is back at the gate and each player starts in the job the other started the first carry with (even if they swapped on the way). | The press and the line. | Does the second carry need less help? Do they call out more, or less? Compare the second toast with the first. |
-| 17–22 | In the second chooser they try the arrangements, agree, and sit. Then **scripted**: press **F5**, then **Continue**. | The F5 and Continue. | Does the chosen arrangement survive the reload? Does each player use their own agree key? Does **Sit on the bench together** work again after the reload? |
+| 17–22 | In the second chooser they try the arrangements, agree, and sit. Then **scripted**: press **F5**, then **Continue**. | The F5 and Continue. | Does the chosen arrangement survive the reload? Does each player use their own agree key (or, on a touch screen, their own "… agrees" button)? Does **Sit on the bench together** work again after the reload? |
 | 22–25 | Debrief. | Open **Menu** first, so the game clock stops. Ask the questions below. | Their own words. |
 
 If the second carry has not reached the doorway by minute 20, let it run to minute 22 and skip the F5 step; note it on the sheet.
 
-**Past midnight.** About 16 to 17 minutes of play after day 2 starts, the in-game day ends and a "Past midnight" card appears. If it appears, press **Start day 3** yourself, close the morning page with **Back to the compound**, and say "New day, carry on." It is scripted, not an intervention. A bench they were carrying stays in their hands, a bench on the ground stays where it is, and they carry on from where they stood. Note the clock time.
+**Watch for these, and note each on the sheet with its clock time:**
+
+- **Just inside the street gate:** is the bench turned the wrong way, with its front against the compound wall? This is where the computer model of two players stalls most often.
+- **The corner-2 jambs** at the flat door, both the north one and the south one.
+- **The veranda doorway's east jamb.**
+- **Does the Turn player know which key is "sideways"** once the bench has turned? Look for keys pressed at random, or "which one?".
+- **Does the turner read the "Try the other way" line** when it appears, and act on it?
+
+**Time guide.** A first delivery should take **under three minutes** of carrying; under 90 seconds is good. The second delivery should be quicker. Over three minutes, or any stretch of **60 seconds with no progress**, is a failure: record it with the place where it happened.
+
+**Past midnight.** The game clock stops while the bench is carried, in the chooser and while it glides home, so the in-game day mostly passes while they walk, sit or leave the bench lying. If a "Past midnight" card does appear, press **Start day 3** yourself, close the morning page with **Back to the compound**, and say "New day, carry on." It is scripted, not an intervention. A bench on the ground stays where it is, and they carry on from where they stood. Note the clock time.
 
 ## Observation sheet
 
@@ -63,7 +86,7 @@ Fill one row per notable moment. Times are from your timer. Use P1 and P2, or th
 | | | | | | |
 | | | | | | |
 
-**What happened**: one of grab, lift, slide, swing, bump at (corner 1 / passage / corner 2 / doorway / gate), set-down, swap, let go, stuck, reset, deliver, choose, agree, glide, sit, stand.
+**What happened**: one of grab, lift, slide, swing, bump at (corner 1 / passage / corner 2 / doorway / gate), set-down at (the place), swap, let go, stuck, reset, pause, find, deliver, choose, agree, glide, sit, stand. Write the place of **every** set-down (the gate, the courtyard, corner 1, the passage, corner 2, the room, the doorway).
 
 **Callouts** are what the players say to coordinate. Write them exactly, in their words and language, including Pidgin and half-sentences. Examples of the kind of thing to expect:
 
@@ -104,13 +127,23 @@ Playtest mode keeps a short log of each delivery in the save. Read it after the 
 
 How to read it:
 
-- **Time**: the first delivery usually takes one to three minutes. The second should be quicker if they learned from the first. Over five minutes for a first delivery means the controls need tuning before the next session.
+- **Time**: a first delivery should take under three minutes of carrying, and under 90 seconds is good. The second should be quicker. Over three minutes, or any 60 seconds with no progress, is a failure to record with its place (see the time guide above).
 - **Bumps**: every knock against a wall or a piece of furniture (at most one every 0.4 seconds while pushing into the same wall). A handful is normal at the two corners and the doorway. Dozens mean they were pushing blind; check your sheet for where.
 - **Set-downs**: how often a holder put it down on purpose. Letting go by walking off and the automatic set-down in the doorway are not counted. Many set-downs with no swaps can mean they were resting or regrouping; compare with your callouts.
 - **Swaps**: role swaps they chose while the bench was on the ground. The pre-swap at "Carry Ada's bench again" is not counted.
 - **Resets**: times the bench was put back at a checkpoint. Record them; they do not fail the session. A set-down ends a stall, so the in-game **Reset the bench** prompt only appears when the bench is on the ground and neither player can reach an end.
 
 The day log (Menu → **Copy timeline and days**) also shows a `place bench:veranda` event at each agreement, with the time into that day's play.
+
+Copy each "Delivery N" line and both delivery toasts onto the sheet, and beside them the place of every set-down from your rows.
+
+## On a phone (390×844)
+
+If the session is played on a phone, each player uses one thumb zone and their own Act button. Note:
+
+- whether the prompt card or a place-name caption hides the bench at the flat door;
+- whether either thumb wanders out of its zone;
+- whether they find the chooser's ◀, ▶ and "… agrees" buttons without help.
 
 ## Pass target (all three required)
 
@@ -119,6 +152,16 @@ The day log (Menu → **Copy timeline and days**) also shows a `place bench:vera
 3. **Each** player rates their own part at least **4 out of 5**.
 
 If any one is missed, the session does not pass. Note which one, and the moment on the sheet that best explains it.
+
+**Also record against this round's targets** (they do not change the pass above, but they decide what comes next):
+
+- first delivery in **3:00 or less of carrying**, with no intervention;
+- second delivery in **2:00 or less**;
+- **12 bumps or fewer** in each delivery;
+- no stretch of 60 seconds without progress;
+- each player can name their role (Move or Turn) by the first corner.
+
+If a stall still happens, write down where, and whether the turner's key looked like the problem.
 
 ## After the session
 

@@ -1,5 +1,5 @@
 {
-  "build": "v36-934cd8fe",
+  "build": "v36-51c2a9ad",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v36-934cd8fe"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v36-51c2a9ad"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v36-934cd8fe"
+        "build": "v36-51c2a9ad"
       }
     }
   ],
