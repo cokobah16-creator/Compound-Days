@@ -1,5 +1,5 @@
 {
- "build": "v36-a351f1ea",
+ "build": "v36-934cd8fe",
  "passed": true,
  "checks": [
   {
@@ -17,14 +17,15 @@
    }
   },
   {
-   "name": "2. Inert until started: 3,000 seeded points give the same blocked() result, a 600-frame two-player walk leaves the save, the camera distances and the hotspot labels identical, and the companion household’s Menu, the save’s top-level keys, the tick hooks and the LINES35 counts match the build without bench-v36.js; no bench mesh exists",
+   "name": "2. Inert until started: 3,000 seeded points give the same blocked() result, a 600-frame two-player walk leaves the save, the camera distances and the hotspot labels identical, and the save’s top-level keys, the tick hooks and the LINES35 counts match the build without bench-v36.js; the companion household’s Menu matches too, apart from the one line at its top saying the bench needs two players on one device; no bench mesh exists",
    "passed": true,
    "info": {
     "points": 3000,
     "frames": 600,
     "keys": 36,
     "tickHooks": 17,
-    "lines": "tunde:42,nkechi:41,ada:41"
+    "lines": "tunde:42,nkechi:41,ada:41",
+    "companion": "two-hands line only"
    }
   },
   {
@@ -34,7 +35,7 @@
     "mover": 0.398,
     "turner": 9.72,
     "noTurner": {
-     "x": 3.91,
+     "x": 3.807,
      "z": 8.6,
      "segment": 1
     },
@@ -50,14 +51,14 @@
    "info": {
     "res": [
      {
-      "dur": 38.7,
+      "dur": 38.633,
       "bumps": 0,
       "resets": 0,
       "settle": "glide",
       "placed": "out"
      },
      {
-      "dur": 38.7,
+      "dur": 38.633,
       "bumps": 0,
       "swaps": 1,
       "resets": 0,
@@ -65,7 +66,7 @@
       "placed": "gate"
      },
      {
-      "dur": 39.233,
+      "dur": 39.167,
       "bumps": 0,
       "setdowns": 4,
       "swaps": 1,
@@ -78,15 +79,15 @@
         "by": 0
        },
        {
-        "seg": 5,
+        "seg": 3,
         "by": 1
        },
        {
-        "seg": 8,
+        "seg": 5,
         "by": 0
        },
        {
-        "seg": 9,
+        "seg": 6,
         "by": 1
        }
       ]
@@ -109,22 +110,59 @@
    }
   },
   {
-   "name": "5. Walls are never passed: on every frame of checks 4, 6 and 7 and of a seeded fuzz (6 x 1,000 frames of random keys and Acts for both players from the checkpoints) an independent dense sampler of the bench footprint finds no wall, furniture or crate, the holders stand clear on level ground, and every frame of the settle (the glide, or a dissolve’s two ends) is clear of walls, the pot and both players",
+   "name": "5. Walls are never passed: on every frame of checks 4, 6 and 7 and of a seeded fuzz (6 x 1,000 frames of random keys and Acts for both players from the five checkpoints and the doorway, each loaded where asked) an independent exact box test finds the bench clear of every wall, piece of furniture and the crate, and between carried frames within 0.1 mm; the holders stand clear on level ground at their squeezed-in radius, nobody steps to a stand point through a wall, and every frame of the glide, and every moment between its frames, is clear of the walls, the pot and both players",
    "passed": true,
    "info": {
-    "sampled": true,
-    "settle": true,
-    "fuzz": 6
+    "tested": true,
+    "glide": true,
+    "sweepUnder01mm": true,
+    "fuzz": [
+     [
+      "ready",
+      4.77,
+      8.62
+     ],
+     [
+      "ready",
+      3.48,
+      3.72
+     ],
+     [
+      "grounded",
+      -0.28,
+      0.9
+     ],
+     [
+      "ready",
+      -1.62,
+      0.52
+     ],
+     [
+      "ready",
+      -3.49,
+      4.01
+     ],
+     [
+      "grounded",
+      -3.6,
+      4.3
+     ]
+    ]
    }
   },
   {
-   "name": "6. Never trapped: every set-down the fuzz makes is one the harness’s own walk finds both players can lift (one at each end) and every refusal one it finds they cannot; a reset after a stall at corner 2 with both players in the room lands on a liftable checkpoint, never on the old room pose; with no checkpoint liftable the bench goes to the gate with the players; a save made mid-carry with the leading holder on the row reloads liftable or at the gate",
+   "name": "6. Never trapped: every set-down the fuzz makes is one the harness’s own walk finds both players can lift (one at each end), every refusal one it finds they cannot, and nobody but a holder ever stands inside the grounded bench (also after a set-down the frame after the lift); a reset after a stall at corner 2 with both players in the room lands on a liftable checkpoint, never on the old room pose; with no checkpoint liftable the bench goes to the gate with the players; a save made mid-carry with the leading holder on the row reloads liftable or at the gate; a player waiting out on the street (south of z 11) neither makes a grounded bench stuck nor sends it back on a reload, and a set-down by the street gate is not refused for them",
    "passed": true,
    "info": {
-    "acc": 29,
+    "acc": 15,
     "ref": 0,
-    "reset": "room",
-    "reload": "liftable"
+    "reset": "before the passage",
+    "reload": "liftable",
+    "street": {
+     "stuck": false,
+     "reload": "kept",
+     "setDown": "grounded"
+    }
    }
   },
   {
@@ -133,17 +171,17 @@
    "info": {
     "points": [
      1,
+     1,
      2,
      3,
+     4,
      5,
      6,
+     7,
      8,
      9,
      10,
-     12,
-     13,
-     15,
-     16
+     11
     ],
     "movers": [
      1,
@@ -164,29 +202,39 @@
    }
   },
   {
-   "name": "8. Gentle stop at dt 1/60 and 1/30: pushed into a rail for 2 s, the bench moves at most 1 mm after first contact and then not at all, the holders’ walking flag does not flicker, at most one bump per 0.4 s, and the mesh recoil stays within 2 cm and returns to the pose",
+   "name": "8. Gentle stop at dt 1/60 and 1/30: pushed into a rail for 2 s, the bench moves at most 1 mm after first contact and then not at all, the holders’ walking flag does not flicker, at most one bump per 0.4 s, and the mesh recoil stays within 6 cm and returns to the pose; what meets the rail is the leading holder’s body at its squeezed-in 0.22 m (not a walking 0.33 m), so the dust rises beside that holder and both prompts say who is up against what",
    "passed": true,
    "info": {
     "30": {
-     "contactFrame": 26,
+     "contactFrame": 29,
+     "contactX": 4.78,
      "moved": 0,
      "bumps": 1,
-     "recoil": 0.015
+     "recoil": 0.05,
+     "cue": [
+      "E Move Set the bench down You’re up against the wall.",
+      "⏎ Turn Set the bench down Efe is up against the wall."
+     ]
     },
     "60": {
-     "contactFrame": 53,
+     "contactFrame": 59,
+     "contactX": 4.78,
      "moved": 0,
      "bumps": 1,
-     "recoil": 0.015
+     "recoil": 0.05,
+     "cue": [
+      "E Move Set the bench down You’re up against the wall.",
+      "⏎ Turn Set the bench down Efe is up against the wall."
+     ]
     }
    }
   },
   {
-   "name": "9. Stuck and reset: held accepted keys against the corner-2 wall make it stuck in about 2.5 s; a key held outside the cone for 5 s does not (and its arrow hint shows after 0.6 s); after a set-down \"Reset the bench\" appears and Act puts it on a liftable checkpoint with the crate moved clear; the Menu reset works with the bench in the passage",
+   "name": "9. Stuck and reset: held accepted keys against the corner-2 wall make it stuck in about 2.5 s and the hint shows in the holders’ prompts; a key held outside the cone for 5 s does not (and its arrow hint shows after 0.6 s); a set-down ends the stall (no hint, and a player at an end gets “Take this end”, never the reset); a grounded bench nobody can lift (the crate pushed onto an end) offers “Reset the bench” beside it, and Act puts it on a liftable checkpoint with the crate moved clear; the Menu reset works with the bench in the passage and sits at the top of the Menu",
    "passed": true,
    "info": {
     "stuckAfter": 3.033,
-    "reset": "before the passage",
+    "reset": "street",
     "menuReset": "before the passage"
    }
   },
@@ -206,7 +254,7 @@
    }
   },
   {
-   "name": "11. Placement: Out, Gate and Water pass the arrangement rule with the default, chairs-at-(5,4) and armchair-at-(5,4) layouts and inside the first chooser (reach start free, a reach run each time); a candidate over the pot keep fails; a player in the way is moved clear before the bench goes; the ghost stands at the pose; one agreement does not commit and a change clears both; both agree gives the item and the day log line",
+   "name": "11. Placement: Out, Gate and Water pass the arrangement rule with the default, chairs-at-(5,4) and armchair-at-(5,4) layouts and inside the first chooser (reach start free, a reach run each time); a candidate over the pot keep fails; a player in the way is moved clear before the bench goes; the ghost stands at the pose; one agreement does not commit and a change clears both; both agree gives the item and the day log line; with an armchair, chairs or a plant beside the doorway (cell 5,4) the bench still glides to each arrangement (in two legs), every frame and every move between frames clear",
    "passed": true,
    "info": {
     "default": [
@@ -232,11 +280,18 @@
       true
      ]
     },
-    "kind": true
+    "kind": true,
+    "legs": {
+     "armchair out": 2,
+     "armchair gate": 2,
+     "armchair water": 2,
+     "chairs water": 2,
+     "plant gate": 2
+    }
    }
   },
   {
-   "name": "12. Save and reload: a placed bench, a bench in the chooser and a bench saved mid-carry come back as they were (grounded and liftable for the carry); an old save gets nothing; a placed state with no item heals; online the shared document keeps only {v, state, choice}; ?bench=fresh applies once; Build cannot store or pick up the bench and shows neither button",
+   "name": "12. Save and reload: a placed bench, a bench in the chooser and a bench saved mid-carry come back as they were (grounded and liftable for the carry); an old save gets nothing; a placed state with no item heals; online the shared document keeps only {v, state, choice}; ?bench=fresh applies once; Build cannot store or pick up the bench and shows neither button; browsing in a fresh delivery’s chooser never changes the saved arrangement, so “Leave the bench where it was” leaves the save, the shared document and the next run on the placed one; in playtest mode the next run starts from the job each player did not start the last one with",
    "passed": true,
    "info": {
     "placed": [
@@ -249,7 +304,9 @@
      "v": 1,
      "state": "placed",
      "choice": "gate"
-    }
+    },
+    "browse": "kept",
+    "preSwap": "from the first mover"
    }
   },
   {
@@ -262,7 +319,7 @@
    }
   },
   {
-   "name": "14. Split views keep prompts and visibility: at 1280x800 and 1280x720 at the five checkpoints of a delivery, in both views the bench, both holders and the next-corner point are inside the usable area, the corner point is kept, the smaller holder is at least 70 px tall and the prompt carries the right Move or Turn chip; the camera distance changes by at most 2.5% a frame; the ghost is in both views in the chooser; at 390x844 and 844x390 the corner point is dropped for the arrow and the heights are recorded",
+   "name": "14. Split views keep prompts and visibility: at 1280x800 and 1280x720 at the five checkpoints of a delivery, in both views the bench, both holders and the next-corner point are inside the usable area, the corner point is kept, the smaller holder is at least 70 px tall and the prompt carries the right Move or Turn chip; the camera distance changes by at most 2.5% a frame; the ghost is in both views in the chooser; at 390x844 and 844x390 the corner point is dropped for the arrow, which points where that view draws the next corner (within 3 degrees) from the edge of its framed area, and the heights are recorded",
    "passed": true,
    "info": {
     "desk": [
@@ -287,27 +344,27 @@
      {
       "cp": "courtyard",
       "px": [
-       166,
-       227,
-       164,
-       224
+       167,
+       229,
+       165,
+       225
       ]
      },
      {
       "cp": "before the passage",
       "px": [
-       202,
+       205,
        262,
-       199,
+       202,
        236
       ]
      },
      {
       "cp": "room",
       "px": [
-       241,
+       237,
        261,
-       236,
+       233,
        235
       ]
      }
@@ -359,20 +416,21 @@
       ]
      }
     ],
+    "edgeArrows": 20,
     "camStep": true
    }
   },
   {
-   "name": "15. Modes: a holder’s pad disconnecting sets it down; online it is set down, paused and absent from blocked() and the scene, and an open fresh delivery is cancelled; a companion household sees no offer (and with ?bench= only the two-hands line, and nothing spawns); the evening waits while a delivery is open and starts once the bench is placed, its pending() untouched; Ada thanks them once after placement; LINES35 is untouched",
+   "name": "15. Modes: a holder’s pad disconnecting sets it down; online it is set down, paused and absent from blocked() and the scene, an open fresh delivery is cancelled, and back on one device a player who stood where it lay is moved clear (it stays put); a pair sitting on it stand up when the household goes online; a companion household sees no offer but the two-hands line from day 2 without any flag (and nothing spawns), an online one the one-device line; a first delivery can be left for now (gone, the offer back); the evening waits while the bench is in hands, starts with it lying on the ground or placed, its pending() untouched; Ada thanks them once after placement; LINES35 is untouched",
    "passed": true,
    "info": {
-    "evening": "waits",
+    "evening": "waits while carried",
     "adb36": true,
     "lines": "tunde:42,nkechi:41,ada:41"
    }
   },
   {
-   "name": "16. Hotspots: with each arrangement placed a player at the pepper pot’s own point gets the pot; a player at (-5.95, 6.4) gets “Sit on the bench together” or “Wait for …”; both players pressing Act at the same end on the same frame give one holder and the toast",
+   "name": "16. Hotspots: with each arrangement placed a player at the pepper pot’s own point gets the pot; a player at (-5.95, 6.4) gets “Sit on the bench together” or “Wait for …”; both players pressing Act at the same end on the same frame give one holder and the toast; a player whose step to the stand point would cut through the doorway jamb is asked to come round, and takes the end once straight on",
    "passed": true,
    "info": {
     "out": [
@@ -387,27 +445,41 @@
      "Tend the pepper pot",
      "Wait for Ola"
     ],
-    "same": "Efe has that end. Take the other one."
+    "same": "Efe has that end. Take the other one.",
+    "round": "Come round to this end"
    }
   },
   {
-   "name": "17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests, a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all",
+   "name": "17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests, a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses",
    "passed": true,
    "info": {
-    "frames": 2050,
+    "frames": 3241,
     "subMax": 2,
-    "blockedMax": 5,
+    "blockedMax": 12,
     "boxMax": 6,
-    "idle": 0
+    "idle": 0,
+    "frameMax": {
+     "nodes": 679,
+     "arr": 1,
+     "bfs": 1,
+     "cells": 3027
+    }
    }
   },
   {
-   "name": "18. Glyph: after E and Enter presses the prompts show E and ⏎, not the pad’s A",
+   "name": "18. Glyph and page: after E and Enter presses the prompts show E and ⏎, not the pad’s A; while the bench is held the page is marked busy (the wayfinding pill and, on small screens, the Pantry card step aside), after the first two lifts the carry prompt is marked compact, the chooser marks the page for its top strip, and a see-through outline of the bench shows only while it is held",
    "passed": true,
    "info": {
     "glyphs": [
      "E",
      "⏎"
+    ],
+    "classes": [
+     "",
+     "bench36-busy",
+     "bench36-busy bench36-compact",
+     "",
+     "bench36-busy bench36-choose"
     ]
    }
   }
@@ -466,6 +538,31 @@
   {
    "name": "M9 the hotspot hook also answers for a placed bench",
    "check": 16,
+   "result": "red"
+  },
+  {
+   "name": "M10 the walk grid stops at x 6.0 and z 11.0 again, and nobody outside it reaches anything",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M11 the step to the stand point outlives a set-down",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M12 holders are tested at the walking radius",
+   "check": 8,
+   "result": "red"
+  },
+  {
+   "name": "M13 a set-down keeps the stall",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M14 the glide’s shortcuts are not tested",
+   "check": 11,
    "result": "red"
   }
  ],

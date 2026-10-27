@@ -4,15 +4,19 @@
 // every box blocked() tests at level 0 and the carry level rule on a 2.5 cm grid. A fewest-control-changes search (0-1 BFS: continuing an
 // action costs nothing, changing it costs one) over the bench centre (5 cm) and yaw (5 degrees), with the spec's centre-pivot controls
 // (Move: along the bench; Turn: about its centre), finds a way from the gate to the veranda doorway with every shape (the bench box and
-// both holder discs) inflated by 0.06 m. Both start orientations are tried (which end leads is the mover's choice).
+// both holder discs, at the radius a holder squeezes in to, BENCH36.HR) inflated by 0.06 m. Both start orientations are tried (which end leads
+// is the mover's choice).
 // The plan is written to check/bench-route-v36.json as segments {op:'fwd'|'back'|'turnL'|'turnR', until:{x,z,yaw}} (yaw in degrees, the
 // direction from the centre to the leading end), with a signature of the world it was made in. Rerun whenever the world changes:
 //   node tools/bench-route-v36.cjs            (about a minute)
+// The slack (the largest inflation that still leaves a route) is measured with
+//   node tools/bench-route-v36.cjs --slack    (tries 0.06 m upwards in 0.02 m steps and writes nothing)
 const fs=require('fs'),path=require('path');
 const ROOT=path.resolve(__dirname,'..');
 const GAME=process.env.COMPOUND_GAME_DIR||path.join(ROOT,'dist');process.env.COMPOUND_GAME_DIR=GAME;
 const OUT=process.argv.includes('--out')?process.argv[process.argv.indexOf('--out')+1]:path.join(ROOT,'check','bench-route-v36.json');
 const M=0.06,STEP=0.05,DEG=5,NT=72,D2R=Math.PI/180;
+let HR=0.33;                                                                   // set from the game's BENCH36.HR by exportWorld()
 
 // the world the harness uses (keep in step with world() in check/verify-bench-v36.cjs)
 async function benchWorld(){const H=require(path.join(ROOT,'check','runtime-harness.cjs'));const {run,context,parse}=await H.load();
@@ -34,7 +38,7 @@ async function exportWorld(){const {run,J}=await benchWorld();
  if(J('BENCH36.state')!=='grounded')throw new Error('the delivery did not start: '+J('BENCH36.state'));
  const boxes=J("benchBoxes36(0,0,1e4,{}).map(o=>[o.x1,o.x2,o.z1,o.z2])");
  const lv=run(`(()=>{let s='';for(let i=0;i<=688;i++){for(let j=0;j<=520;j++){s+=carryLevelOK34(-8.6+i*0.025,-1.6+j*0.025)?'1':'0';}}return s;})()`);
- const start=J('[BENCH36.pose.x,BENCH36.pose.z,BENCH36.pose.yaw]');return {boxes,lv,start,sig:worldSig(boxes)};}
+ const start=J('[BENCH36.pose.x,BENCH36.pose.z,BENCH36.pose.yaw]');HR=J('BENCH36.HR');return {boxes,lv,start,sig:worldSig(boxes)};}
 
 function planner(W,m){const B=W.boxes;
  const LX0=-8.6,LZ0=-1.6,LR=0.025,LNZ=521;const lvOK=(x,z)=>{const i=Math.round((x-LX0)/LR),j=Math.round((z-LZ0)/LR);if(i<0||j<0||i>688||j>=LNZ)return false;return W.lv[i*LNZ+j]==='1';};
@@ -44,7 +48,7 @@ function planner(W,m){const B=W.boxes;
  const obb=(x,z,th,hx,hz)=>{const ux=Math.cos(th),uz=-Math.sin(th),nx=Math.sin(th),nz=Math.cos(th),ex=Math.abs(ux)*hx+Math.abs(nx)*hz,ez=Math.abs(uz)*hx+Math.abs(nz)*hz;
   for(const b of near(x,z)){if(x+ex<=b[0]||x-ex>=b[1]||z+ez<=b[2]||z-ez>=b[3])continue;const bhx=(b[1]-b[0])/2,bhz=(b[3]-b[2])/2,dx=(b[0]+b[1])/2-x,dz=(b[2]+b[3])/2-z;
    if(Math.abs(dx*ux+dz*uz)>=hx+bhx*Math.abs(ux)+bhz*Math.abs(uz))continue;if(Math.abs(dx*nx+dz*nz)>=hz+bhx*Math.abs(nx)+bhz*Math.abs(nz))continue;return true;}return false;};
- const PRr=0.33+m,hp=(x,z)=>{for(const o of near(x,z)){if(x+PRr>o[0]&&x-PRr<o[1]&&z+PRr>o[2]&&z-PRr<o[3])return true;}return false;};
+ const PRr=HR+m,hp=(x,z)=>{for(const o of near(x,z)){if(x+PRr>o[0]&&x-PRr<o[1]&&z+PRr>o[2]&&z-PRr<o[3])return true;}return false;};
  const valid=(cx,cz,th)=>{const ux=Math.cos(th),uz=-Math.sin(th);if(obb(cx,cz,th,0.76+m,0.26+m))return false;
   for(const s of [0.9,-0.9]){const x=cx+ux*s,z=cz+uz*s;if(hp(x,z)||!lvOK(x,z))return false;}for(const t of [-0.75,-0.375,0,0.375,0.75])if(!lvOK(cx+ux*t,cz+uz*t))return false;return true;};
  return valid;}
@@ -70,7 +74,10 @@ function plan(W,m){const valid=planner(W,m),ACTS=['fwd','back','turnL','turnR'],
  const segs=[];for(const p of path.slice(1)){const l=segs[segs.length-1];if(l&&l.op===p[3])l.until={x:+p[0].toFixed(4),z:+p[1].toFixed(4),yaw:p[2]};else segs.push({op:p[3],until:{x:+p[0].toFixed(4),z:+p[1].toFixed(4),yaw:p[2]}});}
  return {startYaw:path[0][2],segments:segs,moves:path.length-1};}
 
-if(require.main===module){(async()=>{const W=await exportWorld();const p=plan(W,M);if(!p){console.error('no route at inflation '+M);process.exit(1);}
+if(require.main===module&&process.argv.includes('--slack')){(async()=>{const W=await exportWorld();let last=null;
+ for(let m=0.06;m<0.3;m+=0.02){const p=plan(W,+m.toFixed(2));console.log(`inflation ${m.toFixed(2)} m (holders at ${(HR+m).toFixed(2)} m): ${p?p.segments.length+' segments':'no route'}`);if(!p)break;last=m;}
+ console.log(`slack: ${last===null?'none':last.toFixed(2)+' m'}`);process.exit(0);})().catch(e=>{console.error(e);process.exit(1);});}
+else if(require.main===module){(async()=>{const W=await exportWorld();const p=plan(W,M);if(!p){console.error('no route at inflation '+M);process.exit(1);}
  const out={what:'v36 bench control plan (tools/bench-route-v36.cjs); yaw in degrees from the centre to the leading end',inflation:M,world:W.sig,start:{x:W.start[0],z:W.start[1],yaw:p.startYaw},segments:p.segments};
  fs.writeFileSync(OUT,JSON.stringify(out,null,1)+'\n');console.log(`${p.segments.length} segments, ${p.moves} steps, world ${W.sig} -> ${path.relative(ROOT,OUT)}`);process.exit(0);})().catch(e=>{console.error(e);process.exit(1);});}
 module.exports={benchWorld,worldSig};

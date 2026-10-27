@@ -35,17 +35,17 @@ If asked which keys: "Player 1, left side of the keyboard. Player 2, right side.
 
 ## Interventions
 
-If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give.
+If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give. (While a delivery is open, the bench lines sit at the top of the Menu, just under "Your day in Palm Court".)
 
-The scripted lines and presses in the timeline below are **not** interventions. Resets the players choose themselves (the **Reset the bench** prompt or the Menu's **Bench stuck? Put it back**) are in-game actions: record them; they do not fail the session.
+The scripted lines and presses in the timeline below are **not** interventions. Resets the players choose themselves (the **Reset the bench** prompt, which only appears when neither of them can reach an end, or the Menu's **Bench stuck? Put it back**) are in-game actions: record them; they do not fail the session. If they choose the Menu's **Leave the bench for now** in the first delivery, the bench goes back to Ada and the Menu offers it again; record it (the session cannot pass without both deliveries).
 
 ## The 25 minutes
 
 | Clock | What happens | You do | Watch for |
 |---|---|---|---|
 | 0–3 | The players walk out, find the rings, take an end each and lift. | Nothing. | Can each of them say or show their role (Move or Turn) without coaching? Note the time to the lift, to the first slide along the bench, and to the first swing. |
-| 3–10 | First delivery: gate, courtyard, the narrow passage on the left (corner 1), the flat door (corner 2), the room, the veranda doorway. In the doorway a strip opens in each half of the screen with three arrangements; both agree; the bench glides out to its spot. | Nothing. | Callouts, verbatim. Where they bump (corner 1, the passage, corner 2, the doorway). Set-downs and swaps. Idle stretches over 8 seconds. Moments of confusion. Write down the toast after the agreement: "Delivery 1 · m:ss · n bumps · n resets". |
-| 10–17 | **Scripted.** Open **Menu**, press **Carry Ada's bench again**, and say: "Now bring it again, and swap jobs." The bench is back at the gate and the roles start already swapped. | The press and the line. | Does the second carry need less help? Do they call out more, or less? Compare the second toast with the first. |
+| 3–10 | First delivery: gate, courtyard, the narrow passage on the left (corner 1), the flat door (corner 2), the room, the veranda doorway. In the doorway a strip opens in each half of the screen with three arrangements; both agree; the bench glides out to its spot (the holder on the veranda steps aside first). | Nothing. | Callouts, verbatim. Where they bump (corner 1, the passage, corner 2, the doorway); the dust and the line under their prompts ("You're up against the wall." / "Ola is up against the post.") say whose end met what. Set-downs and swaps. Idle stretches over 8 seconds. Moments of confusion. Write down the toast after the agreement: "Delivery 1 · m:ss · n bumps · n resets". |
+| 10–17 | **Scripted.** Open **Menu**, press **Carry Ada's bench again** (at the top of the Menu), and say: "Now bring it again, and swap jobs." The bench is back at the gate and each player starts in the job the other started the first carry with (even if they swapped on the way). | The press and the line. | Does the second carry need less help? Do they call out more, or less? Compare the second toast with the first. |
 | 17–22 | In the second chooser they try the arrangements, agree, and sit. Then **scripted**: press **F5**, then **Continue**. | The F5 and Continue. | Does the chosen arrangement survive the reload? Does each player use their own agree key? Does **Sit on the bench together** work again after the reload? |
 | 22–25 | Debrief. | Open **Menu** first, so the game clock stops. Ask the questions below. | Their own words. |
 
@@ -80,7 +80,7 @@ Fill one row per notable moment. Times are from your timer. Use P1 and P2, or th
 **Also mark, in the last column:**
 
 - **Confusion**: a player says or shows they don't know what to do ("what does Turn mean?", pressing keys at random, both pushing the same way, asking you).
-- **Collision**: where the bench hit (the knock sound, the puff of dust) and whether they recovered on their own.
+- **Collision**: where the bench hit (the knock sound, the puff of dust, the line under their prompts) and whether they recovered on their own.
 - **Idle stretch**: both players doing nothing useful for more than 8 seconds. Note what they were waiting for.
 - **Coaching needed**: any moment where you wanted to help. Write what you would have said, even though you did not say it.
 - **Frustration**: sighs, laughter at failure, "this is impossible", one player taking over the other's keys.
@@ -108,7 +108,7 @@ How to read it:
 - **Bumps**: every knock against a wall or a piece of furniture (at most one every 0.4 seconds while pushing into the same wall). A handful is normal at the two corners and the doorway. Dozens mean they were pushing blind; check your sheet for where.
 - **Set-downs**: how often a holder put it down on purpose. Letting go by walking off and the automatic set-down in the doorway are not counted. Many set-downs with no swaps can mean they were resting or regrouping; compare with your callouts.
 - **Swaps**: role swaps they chose while the bench was on the ground. The pre-swap at "Carry Ada's bench again" is not counted.
-- **Resets**: times the bench was put back at a checkpoint. Record them; they do not fail the session.
+- **Resets**: times the bench was put back at a checkpoint. Record them; they do not fail the session. A set-down ends a stall, so the in-game **Reset the bench** prompt only appears when the bench is on the ground and neither player can reach an end.
 
 The day log (Menu → **Copy timeline and days**) also shows a `place bench:veranda` event at each agreement, with the time into that day's play.
 
