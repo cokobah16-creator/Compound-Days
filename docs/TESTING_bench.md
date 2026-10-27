@@ -26,6 +26,14 @@ Round 3 (the review fixes in this build):
 - The gate pillars fade when one hides a holder. While stuck, the player cards keep "Bench · Move" and "Bench · Turn".
 - While the first-evening guide is on, Tasks opens its journal, which now has the bench card too.
 
+Round 2b (the verifier's findings, fixed in this build):
+
+- The bench card is readable in the first-evening journal too (it was pale text on pale green there). Its small heading now reads "For the two of you".
+- The street gate now draws a nearly lined-up bench towards its middle, as the passage and the two doorways do.
+- A push the other way along the bench gets the walls' sideways help again. So a pair wedged in the corner by the west gate pillar can back out, even when the walls' help was used up on the way in. The walls still never turn the bench.
+- While the bench is held, any wall or piece of furniture that hides a holder from either half of the screen fades, not only the gate pillars. It comes back once nobody is hidden behind it.
+- On phones the faint arrows are placed before they appear, so they never show over the prompt card.
+
 **Do not explain any of this to the players.**
 
 ## Before the players arrive (about 10 minutes)
@@ -59,7 +67,7 @@ If asked which keys: "Player 1, left side of the keyboard. Player 2, right side.
 
 ## Interventions
 
-If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give. (The bench lines sit at the top of the Menu, just under "Your day in Palm Court": the offer, then **Find the bench** or **Pause delivery and explore** beside **Bench stuck? Put it back**. The Today page, behind "Your day in Palm Court" or Tasks, has the card "Ada’s bench needs two pairs of hands" while the bench waits for them.)
+If the players are stuck for more than 90 seconds (no progress and no new idea), say only: "Is there anything in the Menu?" Mark it on the sheet as an **intervention**, with the clock time. That is the only help you may give. (The bench lines sit at the top of the Menu, just under "Your day in Palm Court": the offer, then **Find the bench** or **Pause delivery and explore** beside **Bench stuck? Put it back**. The Today page, behind "Your day in Palm Court" or Tasks, has the card "For the two of you · Ada’s bench needs two pairs of hands" while the bench waits for them.)
 
 The scripted lines and presses in the timeline below are **not** interventions. Resets the players choose themselves (the **Reset the bench** prompt, which only appears when neither of them can reach an end, or the Menu's **Bench stuck? Put it back**) are in-game actions: record them; they do not fail the session. If they choose the Menu's **Leave the bench for now** in the first delivery, the bench goes back to Ada and the Menu offers it again; record it (the session cannot pass without both deliveries).
 
@@ -77,7 +85,7 @@ If the second carry has not reached the doorway by minute 20, let it run to minu
 
 **Watch for these, and note each on the sheet with its clock time:**
 
-- **Just inside the street gate:** is the bench turned the wrong way, with its front against the compound wall? This is where the computer model of two players stalls most often. Its slowest run still stalls there (see "Known risk" below). If the pair gets **Put it back** there, note whether they read it and use it.
+- **Just inside the street gate:** is the bench turned the wrong way, with its front against the compound wall? This is where the computer model of two players used to stall. In this build the model's pairs all get through, but watch whether a real pair ends up with one holder in the corner by the west pillar, how long they stay, and whether they back out. If they get **Put it back** there, note whether they read it and use it.
 - **The corner-2 jambs** at the flat door, both the north one and the south one.
 - **The veranda doorway's east jamb.**
 - **Does the Turn player know which key is "sideways"** once the bench has turned? Look for keys pressed at random, or "which one?".
@@ -176,7 +184,7 @@ If a stall still happens, write down where, and whether the turner's key looked 
 
 ## Known risk before this session
 
-The computer model of two players (36 held-out pairs) is the gate before people play. Its target is a slowest run of at most 120 s, and that target is still missed: 36 of 36 pairs deliver, one run has a 20-second stall and the median is 48.6 s, but the slowest run takes 151.0 s. That pair wedges the bench just inside the street gate, turned the wrong way with its rear end in the corner by the west pillar. The game refuses its set-downs there, correctly: the holder in the corner has no room to step back. The model reads only the set-down prompt, so it never presses **Put it back**, and it gets out only by backing up. Watch that spot, and note how long a real pair stays there and how they get out.
+The computer model of two players (36 held-out pairs) is the gate before people play, and this build meets its targets: 36 of 36 pairs deliver, none stalls for 20 seconds, the median is 44.4 s and the slowest takes 97.1 s (the target is at most 120 s), and one player alone never delivers. On the build before, its slowest pair wedged the bench just inside the street gate, one holder in the corner by the west pillar, and stayed there for two minutes; backing out of that corner now gets the walls' help. The model is not people: corners are still the turner's job, and a pair who never back up (the model's "less forgiving" pair) still often stalls, mostly at corner 2 and the doorway. Watch the gate corner, corner 2 and the doorway, and note how long a real pair stays stuck anywhere and how they get out.
 
 ## After the session
 

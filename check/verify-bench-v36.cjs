@@ -30,17 +30,22 @@ const NAMES=[
  '16. Hotspots: with each arrangement placed a player at the pepper pot’s own point gets the pot; a player at (-5.95, 6.4) gets “Sit on the bench together” or “Wait for …”; both players pressing Act at the same end on the same frame give one holder and the toast; a player whose step to the stand point would cut through the doorway jamb is asked to come round, and takes the end once straight on',
  '17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests (also on the frames the walls help, whose peak is recorded), a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses; weighed in box tests (a blocked() call 3, one answered from the reach run’s index 1/4, a walk-grid cell 1/64), no frame from the lift to the bench in its place weighs more than 1,200 (about 6 ms), and the frame the chooser opens in runs no arrangement check',
  '18. Glyph and page: Ada’s note says one walks it and one turns it, the lift toast names who walks it and who turns it, and the first lift’s hints say how; after E and Enter presses the prompts show E and ⏎, not the pad’s A; while the bench is held the area captions are hidden in both views (and the same ones come back once it is down) and the page is marked busy (the wayfinding pill and, on small screens, the Pantry card step aside), after the first two lifts the carry prompt is marked compact, the chooser marks the page for its top strip, and a see-through outline of the bench shows only while it is held',
- '19. Walls guide, never turn: the passage, the flat door and the veranda doorway measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames',
+ '19. Walls guide, never turn: the passage, the flat door, the veranda doorway and (round 2b) the street gate measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames',
  '20. Solo: one player alone for 120 s (the mover ratcheting either way or pressing random keys, or the turner pressing random keys) from ten poses (by the gate 25 and 45 degrees off, inside the gate 40 off, corner 1 half-turned, the passage mouth 30 and 15 off, the flat door 20 off, the veranda doorway 15 off, the room 25 and 45 degrees off the doorway’s axis) never changes the yaw by the mover’s keys, never moves the centre more than 0.08 m by the turner’s, never passes more than one opening and only along a straight, and reaches the chooser only in the two straight pushes from 15 degrees off at the veranda doorway and the two from 25 degrees off in the room (the shipped plan’s own last move; the build before the guided walls delivers these too), never from 45 degrees off (the delivery zone wants the bench within 30 degrees of the doorway’s axis); the walls’ help is used in these runs',
  '21. Key repeat: an OS key repeat on E or Enter is never a fresh Act anywhere in the bench (the page’s own keydown listeners, fired by hand): a held E after taking an end never swaps roles, held E and Enter while carrying never set it down (one fresh press still does), a held E in the chooser never takes the agreement back, a held E on the bench never stands them up; with no bench about, a repeat still sets the latch as before',
  '22. Focus loss: a window blur mid-push (a key held and a stick leaning) and the page hidden mid-swing let go of every key, both sticks and the Act latches; the carried bench stops dead where it is, still held, and does not move in the next 60 frames; in the chooser a held arrow stops stepping',
  '23. The clock pauses only while the bench is busy: 300 frames carried along the plan, 300 frames in the chooser and every frame of the glide move the clock by 0 h (so a carry begun at 24.19 h meets no “Past midnight” card), while 300 frames with the bench lying untouched, with one player holding an end, and sitting on it move it by the normal 1/6 h',
  '24. The directions pill: shown before, it is out of sight with one end taken, while carried, in the chooser and while sitting, and comes back exactly as it was after a set-down, after the chooser and after standing up',
- '25. Something to do together: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why; while the first-evening guide is on, Tasks opens its journal and the same card is in it, under its heading',
+ '25. The bench card: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why; while the first-evening guide is on, Tasks opens its journal and the same card is in it, under its heading',
  '26. The chooser by touch: each view’s strip has ◀ and ▶ and its own player’s “agrees” button (tapped through the strip’s own handler), a tap browses and clears both agreements, the agreed state shows on the button, two taps commit; the ghost is in the role yellow when free and red when not, its body itself in that colour (not pale cream), with a seat-height outline, a broad 5 cm outline and a large seat arrow (0.44 m) at the arrangement and faint outlines at the other two, all seen through the parapet; the arrangement’s name is at least 1.4 rem at the desk and 16 px on phones; the buttons take taps and are at least 44 px (the stylesheet)',
  '27. Pause and find: “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes',
  '28. A companion household with two players: its Menu and Today offer “Play this with two players on this device”, which switches to two-player controls (AI.on and S.ai false, both views) and starts the delivery; a reload mid-switch stays two-player with “Back to my companion”; a pause restores the companion exactly (AI.on, S.ai, AI.i, its position, the views, the save’s keys); a second switch through to placing, sitting and standing up restores it again, and so does leaving an again run; with the companion back and away, a player at the bench is not told to wait for it; online there is no switch',
- '29. A holder never pins the other player in (the doorway trap the guided prototype’s seed 7 found): with the bench set down in the room and its end in the veranda doorway’s mouth, a player in the room is asked to leave that end to the partner standing in the doorway (“Ola needs this end”, and Act says why), takes the far end instead, and the partner comes round and they lift; a holder who stands in the partner’s only way round is asked to let go (“Let go · Ola can’t get round”, the partner sees “Ask Efe to let go”), lets go by Act or by himself after 2.5 s, and steps back on his own side of the jamb; a set-down there puts each holder on their own side of any wall, and the harness’s walk, with the first holder’s body in the way, finds an order in which they can lift'];
+ '29. A holder never pins the other player in (the doorway trap the guided prototype’s seed 7 found): with the bench set down in the room and its end in the veranda doorway’s mouth, a player in the room is asked to leave that end to the partner standing in the doorway (“Ola needs this end”, and Act says why), takes the far end instead, and the partner comes round and they lift; a holder who stands in the partner’s only way round is asked to let go (“Let go · Ola can’t get round”, the partner sees “Ask Efe to let go”), lets go by Act or by himself after 2.5 s, and steps back on his own side of the jamb; a set-down there puts each holder on their own side of any wall, and the harness’s walk, with the first holder’s body in the way, finds an order in which they can lift',
+ // round 2b
+ '30. The bench card reads clearly, in our own words: by the page’s own stylesheets (read in page order, with the @media blocks that apply and the cascade over the card’s chain of elements), its kicker, heading and text have a contrast of at least 4.5:1 against the card’s own paper, which the card sets itself, in the first-evening journal (the dark panel) and on the Today page, at 1280x800 and at 390x844; its kicker is “FOR THE TWO OF YOU”, and no card says build v36-70429384’s “Something to do together”',
+ '31. Out of the pillar corner: lifted just inside the street gate and pushed into the corner by the west pillar until the walls’ sideways help for that contact is spent and the bench has stopped (by the mover alone, and with the turner swinging too), more of the same push gets no more help, and a push the other way backs it out (at least 0.3 m in 2 s) with the yaw exactly as it was and the walls’ help used again: backing out is a new contact',
+ '32. Scenery never hides a holder: with the bench in hands in the corner by the street gate’s west pillar, carried through the gate, at corner 1, at the flat door and in the veranda doorway, at 1280x800 and 390x844, every wall or prop mesh that the harness’s own rays from either camera to either holder’s knee, chest and head meet (all but the players, the bench, sprites, what the base already fades, see-through meshes and floors) is faded to at most 0.5 within a second, not only the gate pillars (in the corner the compound wall is one); once the bench is down every faded mesh has its own material back, and blocked() gives the same answers throughout',
+ '33. An arrow is placed before it is shown: at 844x390 and 390x844 (touch) and 1280x800, on the frame the mover’s hint, the turner’s hint or the edge arrow first appears it is laid out and placed but hidden, and from the next frame it shows, placed clear of the prompt card'];
 // one-place changes to bench-v36.js, each of which must turn its check red
 const MUTANTS=[
  {name:'M1 bench36Valid always true',check:5,find:'function bench36Valid(pose,inflate){',replace:'function bench36Valid(pose,inflate){return true;'},
@@ -98,7 +103,13 @@ const MUTANTS=[
  {name:'M50 Find leaves no destination behind',check:27,find:'LIFE34.waypoint=drop?null:prev;',replace:'LIFE34.waypoint=null;'},
  {name:'M51 the first-evening journal has no bench card',check:25,find:'if(typeof html===\'string\'&&html.indexOf(\'<div class="evening33">\')===0){',replace:'if(false){'},
  {name:'M52 a player waits for the companion at the bench',check:28,find:"if(near||!((typeof AI!=='undefined'&&AI.on)||",replace:"if(true||!((typeof AI!=='undefined'&&AI.on)||"},
- {name:'M53 a holder with no room is reported as boxed in',check:9,find:'function benchRefuseText36(pose,P){if(!P.pos){',replace:'function benchRefuseText36(pose,P){if(!P.pos)P={pos:[benchPos36(0),benchPos36(1)]};if(!P.pos){'}];
+ {name:'M53 a holder with no room is reported as boxed in',check:9,find:'function benchRefuseText36(pose,P){if(!P.pos){',replace:'function benchRefuseText36(pose,P){if(!P.pos)P={pos:[benchPos36(0),benchPos36(1)]};if(!P.pos){'},
+ // round 2b
+ {name:'M54 the street gate is not an opening',check:19,find:"{n:'street gate',ax:'z',c:4.0,yaw:Math.PI/2,r:[3.0,5.0,4.6,7.6]}]};",replace:']};'},
+ {name:'M55 the street gate typed 6 cm off its walls',check:19,find:"{n:'street gate',ax:'z',c:4.0,",replace:"{n:'street gate',ax:'z',c:4.06,"},
+ {name:'M56 a push the other way is no new contact',check:31,find:'if(A.sd&&A.sd!==sg&&(A.lat||A.sw)){A.lat=0;A.sw=0;}',replace:''},
+ {name:'M57 only the gate pillars fade again',check:32,find:'out.list.push(m);out.box.push(bb.clone());',replace:'if(k>=0){out.list.push(m);out.box.push(bb.clone());}'},
+ {name:'M58 an arrow shows on its first frame',check:33,find:'const first=show&&B.arrowVis36[i]!==cls;',replace:'const first=false;'}];
 
 // a copy of dist with index.html changed by htmlFn and bench-v36.js by benchFn (everything else linked)
 function variantDir(htmlFn,benchFn){const d=fs.mkdtempSync(path.join(os.tmpdir(),'cd36-bench-'));
@@ -147,7 +158,11 @@ async function world(){const {benchWorld}=require(path.join(__dirname,'..','tool
   // the bench is the same box either way round: at each segment start the plan's yaw is matched to the bench's axis (offset 0 or 180 degrees,
   // whichever end leads now), and the turn then goes the plan's way
   const f=B.front?1:-1,T=seg.until,wrap=a=>{while(a>Math.PI)a-=2*Math.PI;while(a<-Math.PI)a+=2*Math.PI;return a;};
-  if(FOL36.o===null){const prev=(FOL36.k>0?plan.segments[FOL36.k-1].until.yaw:plan.start.yaw)*Math.PI/180;FOL36.o=Math.abs(wrap(B.pose.yaw-prev))>Math.PI/2?Math.PI:0;}
+  // (round 2b) the offset is the one that puts the bench's yaw on the segment's arc, from the previous segment's yaw to this one's (or nearest
+  // to it): a turn of more than 90 degrees set down past its middle is still recognised the right way round
+  if(FOL36.o===null){const prev=(FOL36.k>0?plan.segments[FOL36.k-1].until.yaw:plan.start.yaw)*Math.PI/180,to=T.yaw*Math.PI/180;
+   const arcD=o=>{const a=prev+o,span=wrap(to-prev),d=wrap(B.pose.yaw-a);if(Math.abs(span)>1e-9&&Math.sign(d)===Math.sign(span)&&Math.abs(d)<=Math.abs(span))return 0;return Math.min(Math.abs(d),Math.abs(wrap(B.pose.yaw-(to+o))));};
+   FOL36.o=arcD(Math.PI)<arcD(0)?Math.PI:0;}
   const tT=T.yaw*Math.PI/180+FOL36.o;
   const m=B.mover,t=1-m;let mDir=null,tDir=null;const ux=Math.cos(tT),uz=-Math.sin(tT),e=[Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f];
   const dth=wrap(tT-B.pose.yaw),coastW=B.vel.w*B.vel.w/(2*B.WMAX/B.STOP)+Math.abs(B.vel.w)*DT36/1000;
@@ -253,7 +268,7 @@ async function world(){const {benchWorld}=require(path.join(__dirname,'..','tool
   noKeys36();const p=bench36Pose(),st=B.state;if(st==='choosing'){ACTIONS.bench36RoomDown();frames36(2);}
   return {name,pat,at,yawMax:ymax,moved:+dmax.toFixed(4),movedRaw:dmax,regions:reg,cross,chose,leak:B.yawLeak-leak0,assisted:B.cost.assist+B.cost.funnel-as0,end:[+p.x.toFixed(2),+p.z.toFixed(2),+(p.yaw*180/Math.PI).toFixed(1)],state:st};};`);
  // check 19: the openings by the harness's own box list (a point is free when no box holds it strictly), and a push by the mover's keys alone
- run(`var OPEN19=[{n:'passage',ax:'z',c:-1.75,s:2.3},{n:'flat door',ax:'x',c:4.9,s:-2.475},{n:'veranda doorway',ax:'z',c:-4.1,s:5.725}];
+ run(`var OPEN19=[{n:'passage',ax:'z',c:-1.75,s:2.3},{n:'flat door',ax:'x',c:4.9,s:-2.475},{n:'veranda doorway',ax:'z',c:-4.1,s:5.725},{n:'street gate',ax:'z',c:4.0,s:5.98}];
  var hbGap36=O=>{const free=v=>{const x=O.ax==='z'?v:O.s,z=O.ax==='z'?O.s:v;for(const b of hbBoxes36(x,z,0.05))if(x>b.x1&&x<b.x2&&z>b.z1&&z<b.z2)return false;return true;};
   const edge=dir=>{let a=0,b=0.02;while(free(O.c+dir*b)&&b<1.5){a=b;b+=0.02;}for(let k=0;k<20;k++){const m=(a+b)/2;if(free(O.c+dir*m))a=m;else b=m;}return O.c+dir*(a+b)/2;};
   const lo=edge(-1),hi=edge(1);return {lo,hi,c:(lo+hi)/2,w:hi-lo};};
@@ -283,6 +298,63 @@ async function world(){const {benchWorld}=require(path.join(__dirname,'..','tool
 
 const r3=v=>Math.round(v*1000)/1000,deg=v=>Math.round(v*180/Math.PI*100)/100;
 
+// check 30's own stylesheet reader: the page's stylesheets in page order (the linked files and the inline blocks), the rules of those @media
+// blocks that apply at a given screen, and a cascade over an element chain (tag, id, classes): selectors of tags, ids, classes, attributes,
+// :root and :not() joined by descendant or child combinators (anything else never matches), specificity, !important, inheritance of color
+// and of custom properties, var(); a colour is a hex, rgb()/rgba() or a few names, and a background is the nearest one in the chain
+function sheets36(game){const html=fs.readFileSync(path.join(game,'index.html'),'utf8'),out=[];const re=/<link[^>]*rel="stylesheet"[^>]*href="([^"]+)"[^>]*>|<style[^>]*>([\s\S]*?)<\/style>/g;let m;
+ while((m=re.exec(html))){if(m[1]){if(/^https?:/.test(m[1]))continue;out.push(fs.readFileSync(path.join(game,m[1]),'utf8'));}else out.push(m[2]);}return out;}
+function media36(q,scr){return q.split(',').some(part=>{let p=part.trim().toLowerCase(),neg=false;if(p.startsWith('not ')){neg=true;p=p.slice(4);}
+  const ok=p.split(/\s+and\s+/).every(t=>{t=t.trim();if(t==='screen'||t==='all'||t==='only screen')return true;const f=/^\(\s*([a-z-]+)\s*:\s*([^)]+?)\s*\)$/.exec(t);if(!f)return false;const v=f[2];
+   switch(f[1]){case 'max-width':return scr.w<=parseFloat(v);case 'min-width':return scr.w>=parseFloat(v);case 'max-height':return scr.h<=parseFloat(v);case 'min-height':return scr.h>=parseFloat(v);
+    case 'orientation':return v===(scr.h>scr.w?'portrait':'landscape');case 'hover':return v===(scr.touch?'none':'hover');case 'pointer':return v===(scr.touch?'coarse':'fine');
+    case 'prefers-color-scheme':return v===(scr.scheme||'light');default:return false;}});return neg?!ok:ok;});}
+function strip36(css){return css.replace(/\/\*[\s\S]*?\*\//g,'');}
+// the style rules in order: [{sel, decls:[[prop,value,important]]}], with the @media blocks that apply flattened in place
+function rules36(css,scr,out){css=strip36(css);out=out||[];let i=0;const n=css.length;
+ while(i<n){const ob=css.indexOf('{',i);if(ob<0)break;const head=css.slice(i,ob).trim();let d=1,j=ob+1;while(j<n&&d){if(css[j]==='{')d++;else if(css[j]==='}')d--;j++;}const body=css.slice(ob+1,j-1);i=j;
+  if(head.startsWith('@media')){if(media36(head.slice(6).trim(),scr))rules36(body,scr,out);continue;}if(head.startsWith('@'))continue;
+  const decls=[];for(const dcl of body.split(';')){const c=dcl.indexOf(':');if(c<0)continue;let p=dcl.slice(0,c).trim().toLowerCase(),v=dcl.slice(c+1).trim();const imp=/!important\s*$/.test(v);if(imp)v=v.replace(/!important\s*$/,'').trim();if(p)decls.push([p,v,imp]);}
+  for(const sel of splitTop36(head))out.push({sel:sel.trim(),decls,order:out.length});}
+ return out;}
+function splitTop36(s){const out=[];let d=0,cur='';for(const ch of s){if(ch==='('||ch==='[')d++;if(ch===')'||ch===']')d--;if(ch===','&&!d){out.push(cur);cur='';}else cur+=ch;}if(cur.trim())out.push(cur);return out;}
+// a compound selector against one element {tag, id, cls:[], attrs:{}, root}
+function compound36(c,el){let rest=c,spec=[0,0,0];const take=re=>{const m=re.exec(rest);if(!m)return null;rest=rest.slice(m[0].length);return m;};
+ let m=take(/^([a-zA-Z][a-zA-Z0-9-]*|\*)/);if(m){if(m[1]!=='*'){if(m[1].toLowerCase()!==el.tag)return null;spec[2]++;}}
+ while(rest.length){if((m=take(/^#([\w-]+)/))){if(el.id!==m[1])return null;spec[0]++;continue;}
+  if((m=take(/^\.([\w-]+)/))){if(!el.cls.includes(m[1]))return null;spec[1]++;continue;}
+  if((m=take(/^\[\s*([\w-]+)\s*(?:([~|^$*]?=)\s*["']?([^"'\]]*)["']?\s*)?\]/))){const v=(el.attrs||{})[m[1]];if(v===undefined)return null;if(m[2]&&!(m[2]==='='?v===m[3]:m[2]==='~='?v.split(/\s+/).includes(m[3]):m[2]==='^='?v.startsWith(m[3]):m[2]==='$='?v.endsWith(m[3]):v.includes(m[3])))return null;spec[1]++;continue;}
+  if((m=take(/^:root/))){if(!el.root)return null;spec[1]++;continue;}
+  if((m=take(/^:not\(([^()]*)\)/))){const r=compound36(m[1].trim(),el);if(r)return null;spec[1]++;continue;}
+  return null;}                                                                       // :hover, :has(), ::before and the rest never match here
+ return spec;}
+// a complex selector against the chain (root first, the element last): descendant and child combinators only
+function match36(sel,chain){const parts=sel.replace(/\s*>\s*/g,' > ').trim().split(/\s+/);if(parts.some(p=>p==='+'||p==='~'||/[+~]/.test(p.replace(/\[[^\]]*\]/g,''))))return null;
+ const total=[0,0,0];const last=parts.pop(),s0=compound36(last,chain[chain.length-1]);if(!s0)return null;s0.forEach((v,k)=>total[k]+=v);
+ let idx=chain.length-2;while(parts.length){let comb=' ';if(parts[parts.length-1]==='>'){comb='>';parts.pop();}const c=parts.pop();if(c===undefined)return null;
+  if(comb==='>'){if(idx<0)return null;const s=compound36(c,chain[idx]);if(!s)return null;s.forEach((v,k)=>total[k]+=v);idx--;}
+  else{let found=null;while(idx>=0){const s=compound36(c,chain[idx]);idx--;if(s){found=s;break;}}if(!found)return null;found.forEach((v,k)=>total[k]+=v);}}
+ return total;}
+function cmpSpec36(a,b){for(let k=0;k<3;k++)if(a[k]!==b[k])return a[k]-b[k];return 0;}
+// the cascaded value of prop on chain[k] (no inheritance), or undefined
+function cascaded36(R,chain,k,prop){let best=null;const sub=chain.slice(0,k+1);
+ for(const r of R){const d=r.decls.filter(x=>x[0]===prop);if(!d.length)continue;const sp=match36(r.sel,sub);if(!sp)continue;for(const x of d){const cand={v:x[1],imp:x[2],sp,o:r.order};
+   if(!best||(cand.imp!==best.imp?cand.imp:(cmpSpec36(cand.sp,best.sp)>0||(cmpSpec36(cand.sp,best.sp)===0&&cand.o>=best.o))))best=cand;}}
+ return best?best.v:undefined;}
+function inherited36(R,chain,k,prop){for(let j=k;j>=0;j--){const v=cascaded36(R,chain,j,prop);if(v!==undefined&&v!=='inherit')return [v,j];}return [undefined,-1];}
+function resolveVar36(R,chain,k,v,depth){depth=depth||0;if(depth>8)return v;return v.replace(/var\(\s*(--[\w-]+)\s*(?:,\s*([^)]*))?\)/g,(m,name,fb)=>{const [x,j]=inherited36(R,chain,k,name);return x!==undefined?resolveVar36(R,chain,j,x,depth+1):(fb||'');});}
+const NAMED36={white:[255,255,255,1],black:[0,0,0,1],transparent:[0,0,0,0]};
+function colour36(v){if(!v)return null;v=v.trim().toLowerCase();if(NAMED36[v])return NAMED36[v].slice();let m=/^#([0-9a-f]{3,8})$/.exec(v);
+ if(m){let h=m[1];if(h.length===3||h.length===4)h=h.split('').map(c=>c+c).join('');const n=[0,2,4].map(i=>parseInt(h.slice(i,i+2),16));n.push(h.length===8?parseInt(h.slice(6,8),16)/255:1);return n;}
+ m=/^rgba?\(([^)]*)\)$/.exec(v);if(m){const p=m[1].split(/[\s,\/]+/).filter(Boolean).map(parseFloat);return [p[0],p[1],p[2],p.length>3?p[3]:1];}return null;}
+// the element's colour (inherited) and the nearest background colour in the chain at or above it (a background shorthand's colour, or
+// background-color; a gradient or image counts as no colour, so the search goes on up)
+function colours36(R,chain){const k=chain.length-1;const [cv,cj]=inherited36(R,chain,k,'color');const fg=cv===undefined?[0,0,0,1]:colour36(resolveVar36(R,chain,cj,cv));
+ let bg=null,bgAt=-1;for(let j=k;j>=0&&!bg;j--){for(const p of ['background-color','background']){const v=cascaded36(R,chain,j,p);if(v===undefined)continue;const r=resolveVar36(R,chain,j,v);
+   const c=colour36(r)||colour36((/(#[0-9a-f]{3,8}|rgba?\([^)]*\))\s*$/i.exec(r)||[])[1]);if(c&&c[3]>=0.999&&!/gradient|url\(/i.test(r)){bg=c;bgAt=j;break;}}}
+ return {fg,bg:bg||[255,255,255,1],bgAt};}
+function lum36(c){const f=v=>{v/=255;return v<=0.03928?v/12.92:Math.pow((v+0.055)/1.055,2.4);};return 0.2126*f(c[0])+0.7152*f(c[1])+0.0722*f(c[2]);}
+function contrast36(fg,bg){const a=fg[3]===undefined?1:fg[3],mix=[0,1,2].map(i=>fg[i]*a+bg[i]*(1-a)),L1=lum36(mix),L2=lum36(bg);return (Math.max(L1,L2)+0.05)/(Math.min(L1,L2)+0.05);}
 // the checks: each returns a deterministic summary or throws
 function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')'));run('var PLAN36='+JSON.stringify(PLAN));
  const FE=PLAN.start.yaw===0?1:0;                                              // the end the plan leads with
@@ -489,6 +561,11 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);FOL36.k=0;FOL36.o=null;');J(`drive36(PLAN36,7200,()=>{const B=BENCH36;return B.state==='carrying'&&[0,1].some(i=>{const q=pos36(i);return q[1]>5.8&&q[0]<-2.6;});})`);
   assert.equal(J('BENCH36.state'),'carrying');run('reload36();');const L=J('[BENCH36.state,bench36Pose(),pos36(0),pos36(1)]');assert.equal(L[0],'grounded');
   const okL=J('hbMatch36(BENCH36.pose,[pos36(0),pos36(1)])')||(L[1].x===4&&L[1].z===8.6);assert(okL,'reloads liftable or at the gate');
+  // (round 2b) the corner-2 strand itself, fixed in place (the walk below now reaches corner 2 by another way, after the street gate became an
+  // opening): set down at (-1.662, 4.537), 239.2 degrees, with the holders stepped back to (-1.098, 3.593) and (-2.678, 5.081), one player
+  // has no clear straight step to either end; the game's liftable rule says so, as the harness's own walk does
+  {const P='{x:-1.6620892157981344,z:4.53733596734834,yaw:4.1744397198255925}',Q='[[-1.0984756435654959,3.592698607725524],[-2.677555312586156,5.080611020347954]]';
+   const st=J(`(fresh36(),start36(),[bench36Liftable(${P},${Q}),hbMatch36(${P},${Q})])`);assert.deepEqual(st,[false,false],'the corner-2 strand: liftable by the game / by the harness’s walk '+JSON.stringify(st));}
   // (round 3, H1) set down every 30 frames from the lift until the bench is through the flat door: every set-down the game accepts is lifted
   // again for real (each player placed at the nearest cell of their end from which the straight step is clear, as the harness's walk finds it,
   // and Act pressed), never stranded at corner 2; then the delivery completes
@@ -881,18 +958,18 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   run('document.body.classList={add(){},remove(){},toggle(){},contains:()=>false};');return {glyphs:[g[0],g[1]],classes:[c0,c1,c2,c3[0],c4],toast:'Lifted. Efe walks it, Ola turns it.',captions:{before:cap0.length,held:cap1.replace(/0/g,'').length}};});
  check(19,()=>{const out={};
   // the openings: the module's measured centres, the harness's own scan of its own box list and the typed centres agree
-  run('fresh36();start36();frames36(1);');const chk=J('BENCH36.openChk||null');assert(chk&&chk.list&&chk.list.length===3,'the module measured its openings');
+  run('fresh36();start36();frames36(1);');const chk=J('BENCH36.openChk||null');assert(chk&&chk.list&&chk.list.length===4,'the module measured its four openings: '+JSON.stringify(chk&&chk.list));
   const gaps=J('OPEN19.map(hbGap36)');out.openings=[];
-  for(let k=0;k<3;k++){const O=J('OPEN19['+k+']'),M=chk.list[k],g=gaps[k];assert.equal(M.n,O.n);assert(M.ok,O.n+' is on');assert(Math.abs(g.c-O.c)<=0.03,O.n+': the walls say '+g.c);
+  for(let k=0;k<4;k++){const O=J('OPEN19['+k+']'),M=chk.list[k],g=gaps[k];assert.equal(M.n,O.n);assert(M.ok,O.n+' is on');assert(Math.abs(g.c-O.c)<=0.03,O.n+': the walls say '+g.c);
    assert(Math.abs(M.c-g.c)<=0.005,O.n+': the module measured '+M.c+', the harness '+g.c);out.openings.push([O.n,r3(g.lo),r3(g.hi),r3(M.c)]);}
   // a jamb moved 4 cm (a strip inside the passage's east wall): that opening's funnel goes off, and the log says so; taken away, it is back
   run('var JAMB19={x1:-1.23,x2:-1.15,z1:1.5,z2:2.9,lvl:0};OBS.push(JAMB19);frames36(2);');const off=J('[BENCH36.openChk.list.map(o=>o.ok),(BENCH36.openLog||[]).slice(-1)[0]||""]');
   run('OBS.splice(OBS.indexOf(JAMB19),1);frames36(2);');const back=J('BENCH36.openChk.list.map(o=>o.ok)');
-  assert.deepEqual(off[0],[false,true,true],'a moved jamb switches its funnel off: '+JSON.stringify(off));assert(/passage/.test(off[1])&&/funnel is off/.test(off[1]),'and logs it: '+off[1]);
-  assert.deepEqual(back,[true,true,true],'back on once the jamb is back');out.movedJamb=off[1];
+  assert.deepEqual(off[0],[false,true,true,true],'a moved jamb switches its funnel off: '+JSON.stringify(off));assert(/passage/.test(off[1])&&/funnel is off/.test(off[1]),'and logs it: '+off[1]);
+  assert.deepEqual(back,[true,true,true,true],'back on once the jamb is back');out.movedJamb=off[1];
   // the funnel: from 5 cm off the centre line on the side the bench's own heading carries it away from, the mover pushes in (at 20 degrees
   // from 10 cm off on the other side, so that the push meets nothing)
-  const FUN=[['passage',-1.70,1.0,270,[0,1],60,'z',-1.75,0.6,0.32],['flat door',-1.6,4.95,180,[-1,0],60,'x',4.9,0.6,0.32],['veranda doorway',-4.05,4.7,270,[0,1],60,'z',-4.1,0.32,0.2]];out.funnel=[];
+  const FUN=[['passage',-1.70,1.0,270,[0,1],60,'z',-1.75,0.6,0.32],['flat door',-1.6,4.95,180,[-1,0],60,'x',4.9,0.6,0.32],['veranda doorway',-4.05,4.7,270,[0,1],60,'z',-4.1,0.32,0.2],['street gate',4.05,5.0,270,[0,1],60,'z',4.0,0.6,0.32]];out.funnel=[];
   for(const [n,x0,z0,base,dir,fr,ax,c,far0,far20] of FUN)for(const th of [5,10,14,20]){const far=th<15?far0:far20,x=th<15||ax==='x'?x0:2*c-x0-0.05,z=th<15||ax==='z'?z0:2*c-z0-0.05;
    const r=J(`push19(${x},${z},${base+th},${JSON.stringify(dir)},${fr},'${ax}',${far})`);assert(!r.err,n+' '+th+': '+r.err);
    const o0=ax==='z'?c-r.p0.x:c-r.p0.z,o1=ax==='z'?c-r.p1.x:c-r.p1.z;assert.equal(r.p1.yaw,r.p0.yaw,`${n} ${th}°: the yaw changed`);assert.equal(r.leak,0);assert(Math.abs(r.along)>0.6*far,`${n} ${th}°: pushed ${r.along} `+JSON.stringify(r));
@@ -1140,6 +1217,76 @@ function checks(h,only){const {run}=h,J=c=>JSON.parse(run('JSON.stringify('+c+')
   run('press36(1);frames36(12);');assert.equal(J('BENCH36.state'),'grounded','set down');const sd=J('[pos36(0),pos36(1),[1,0].map((e,i)=>benchSlideClear36(pos36(i),benchEnd36(BENCH36.pose,e))),hbMatch36(BENCH36.pose,[pos36(0),pos36(1)])]');
   assert.deepEqual(sd[2],[true,true],'both step back on their own side: '+JSON.stringify(sd));assert.equal(sd[3],true,'liftable');
   out.setDown={ola:sd[1].map(r3),efe:sd[0].map(r3)};return out;});
+
+
+ // ---- round 2b ----
+ check(30,()=>{const out={contrast:[]};const SH=sheets36(GAME),E=(tag,id,cls,attrs)=>({tag,id:id||'',cls:cls||[],attrs:attrs||{}});
+  const base=[Object.assign(E('html'),{root:true}),E('body'),E('div','ov',['on'])];
+  // the chains the card sits in: the first-evening journal (Tasks while the guide is on: the plain dark panel) and the Today page (the life panel)
+  const ctx={journal:base.concat([E('div','panel',[],{role:'dialog'}),E('div','',['evening33'])]),today:base.concat([E('div','panel',['life-panel34'],{role:'dialog'}),E('section','',['life34'])])};
+  for(const scr of [{w:1280,h:800,touch:false,n:'1280x800'},{w:390,h:844,touch:true,n:'390x844'}]){const R=[];for(const css of SH)rules36(css,scr,R);
+   for(const [cn,ch] of Object.entries(ctx)){const card=ch.concat([E('div','',['life-note34','bench36-card'])]);assert.equal(colours36(R,card).bgAt,card.length-1,`${scr.n} ${cn}: the card sets its own paper`);
+    for(const [n,el] of [['kicker',E('p','',['life-kicker'])],['heading',E('h3')],['text',E('p')]]){const r=colours36(R,card.concat([el])),c=contrast36(r.fg,r.bg);
+     assert(c>=4.5,`${scr.n} ${cn}: the card’s ${n} is ${c.toFixed(2)}:1 (${r.fg.join(',')} on ${r.bg.join(',')})`);out.contrast.push([scr.n,cn,n,+c.toFixed(2)]);}}}
+  // the card from the game, on the Today page and in the journal, in our own words
+  const card=h=>{const m=h.match(/<div class="life-note34 bench36-card">[\s\S]*?<\/div>/);return m?m[0]:'';};run('fresh36();');const c0=card(J('todayHTML34()'));
+  run('S.firstEvening=S.firstEvening||{version:1,done:{},startedDay:1};S.firstEvening.enabled=true;S.firstEvening.completed=false;PH="";dispatch("tasksbtn");');const c1=card(J('panel.innerHTML'));run('closePanel();S.firstEvening.enabled=false;');
+  run('start36();');const c2=card(J('todayHTML34()'));run('companion36();');const c3=card(J('todayHTML34()'));run('AI.on=false;');
+  for(const c of [c0,c1,c2,c3]){assert(c.includes('<p class="life-kicker">FOR THE TWO OF YOU</p>'),'the card’s kicker: '+c);assert(!/something to do together/i.test(c),'their words: '+c);}
+  out.kicker='FOR THE TWO OF YOU';return out;});
+ check(31,()=>{const out={};
+  const corner=(x,z,d,sw)=>J(`(()=>{const at=liftAt36(${x},${z},${d},[[0,0]]);if(!at)return {err:'not lifted'};const B=BENCH36,leak0=B.yawLeak,a=benchAxis36(B.pose.yaw),f=B.front?1:-1,w=a[0]*f<0?1:-1,t=1-B.mover,e=[Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f];
+   for(let k=0;k<6;k++){setKeys36(B.mover,combo36(a[0]*f*w,a[1]*f*w));if(${sw})setKeys36(t,combo36(e[0],e[1]));frames36(30);setKeys36(t,null);if(${sw})setKeys36(t,combo36(-e[0],-e[1]));frames36(20);setKeys36(t,null);}
+   const spent=B.assist.lat,p1=bench36Pose(),c1=B.cost.assist;frames36(30);const p1b=bench36Pose(),more=B.cost.assist-c1;
+   noKeys36();frames36(4);const p2=bench36Pose(),c2=B.cost.assist,ends=[benchEnd36(p2,0),benchEnd36(p2,1)];setKeys36(B.mover,combo36(-a[0]*f*w,-a[1]*f*w));frames36(60);noKeys36();frames36(6);const p3=bench36Pose();
+   return {at,spent,still:Math.hypot(p1b.x-p1.x,p1b.z-p1.z),more,p2,moved:Math.hypot(p3.x-p2.x,p3.z-p2.z),yaw:[p2.yaw,p3.yaw],help:B.cost.assist-c2,leak:B.yawLeak-leak0,west:ends[0][0]<ends[1][0]?ends[0]:ends[1]};})()`);
+  out.runs=[];
+  for(const [x,z,d,sw,who] of [[3.35,5.1,210,0,'the mover alone'],[3.25,5.0,205,1,'with the turner swinging']]){const r=corner(x,z,d,sw);assert(!r.err,who+': '+r.err);
+   assert(r.west[0]<2.3&&r.west[1]>5.2,who+': the west end is in the corner by the pillar: '+JSON.stringify(r.west));assert(r.spent>=0.15-1e-9,who+': the walls’ help for the contact is spent: '+r.spent);
+   assert(r.still<0.001&&r.more===0,who+': more of the same push gets no more help: '+JSON.stringify([r.still,r.more]));
+   assert(r.moved>=0.3,who+': a push the other way backs it out of the corner: '+r.moved);assert.equal(r.yaw[1],r.yaw[0],who+': the yaw is exactly as it was');assert(r.help>0,who+': with the walls’ help: '+r.help);assert.equal(r.leak,0,who+': yaw leak');
+   out.runs.push([who,r3(r.p2.x),r3(r.p2.z),deg(r.p2.yaw),r3(r.moved),r.help]);}
+  return out;});
+ check(32,()=>{const out={poses:[]};
+  // the harness's own rays: every mesh the camera-to-holder rays (knee, chest, head) meet, but the players, the bench, sprites, the base's own
+  // fading trees and awnings, see-through meshes, floors (below 0.3 m) and the sky
+  run(`var occHits36=()=>{const B=BENCH36,ch=new Set(players.filter(p=>p&&p.g).map(p=>p.g));for(const k in npcs)if(npcs[k]&&npcs[k].g)ch.add(npcs[k].g);const L=[],bb=new THREE.Box3();
+    scene.traverse(m=>{if(!m.isMesh||m.isSkinnedMesh||!m.geometry||!m.material||FADEABLE.includes(m))return;const o0=m.userData.occ36?m.userData.occ36.orig:m.material;if((Array.isArray(o0)?o0:[o0]).some(t=>t.transparent&&t.opacity<0.99))return;
+     for(let o=m;o;o=o.parent)if(!o.visible||ch.has(o)||String(o.name||'').indexOf('bench36')===0)return;bb.setFromObject(m);if(bb.max.y<0.3||bb.max.x-bb.min.x>60||bb.max.z-bb.min.z>60)return;L.push([m,bb.clone()]);});
+    const ray=new THREE.Raycaster(),hit=new Map(),v=new THREE.Vector3(),d=new THREE.Vector3();
+    for(const c of cams)for(const h of B.holder){const p=h===null?null:players[h];if(!p)continue;for(const y of [0.6,1.2,1.7]){v.set(p.g.position.x,(p.y||0)+y,p.g.position.z);d.copy(v).sub(c.position);const len=d.length();d.normalize();ray.set(c.position,d);ray.far=len-0.3;
+     for(const x of ray.intersectObjects(L.map(q=>q[0]),false))if(!hit.has(x.object))hit.set(x.object,L.find(q=>q[0]===x.object)[1]);}}
+    return [...hit.entries()].map(([m,b])=>({m,box:[b.min.x,b.max.x,b.min.z,b.max.z].map(q=>Math.round(q*100)/100),op:Math.max(...(Array.isArray(m.material)?m.material:[m.material]).map(t=>t.opacity)),pillar:b.min.x>=2.74&&b.max.x<=5.26&&b.min.z>=5.72&&b.max.z<=6.24&&(b.max.x<=3.26||b.min.x>=4.74)}));};
+   var occBits36=()=>{let s='';for(let x=-6;x<=6;x+=0.37)for(let z=-1;z<=9.5;z+=0.41)s+=blocked(x,z,0.1,{noBench:true,noCrate:true})?1:0;return s;};
+   var occNow36=()=>occHits36().map(o=>({box:o.box,op:Math.round(o.op*1000)/1000,pillar:o.pillar}));
+   var occAll36=()=>{const r=[];scene.traverse(m=>{if(m.isMesh&&m.userData.occ36)r.push(m);});return r.length;};`);
+  const bits0=J('(fresh36(),start36(),occBits36())');
+  const poses=[['the west pillar’s corner',null],['through the gate',[3.4,4.9,185]],['corner 1',[-1.0,0.95,215]],['the flat door',[-2.0,4.9,200]],['the veranda doorway',[-4.1,4.85,255]]];
+  for(const scr of [[1280,800,false],[390,844,true]])for(const [n,P] of poses){
+   if(!P){const at=J('liftAt36(3.35,5.1,210,[[0,0]])');assert(at,n+': lifted');run(`{const B=BENCH36,a=benchAxis36(B.pose.yaw),f=B.front?1:-1,w=a[0]*f<0?1:-1;setKeys36(B.mover,combo36(a[0]*f*w,a[1]*f*w));}frames36(300);noKeys36();`);}
+   else assert(J(`!!liftAt36(${P})`),n+': lifted');
+   run(`screen36(${scr});frames36(30);`);const hits=J('occNow36()'),bits=J('occBits36()'),st=J('BENCH36.state');assert.equal(st,'carrying',n+': carried');
+   for(const o of hits)assert(o.op<=0.5,`${scr[0]}x${scr[1]} ${n}: a mesh at ${JSON.stringify(o.box)} hides a holder and is not faded (${o.op})`);
+   if(!P)assert(hits.some(o=>!o.pillar),`${scr[0]}x${scr[1]} ${n}: a wall that is not a gate pillar hides a holder: `+JSON.stringify(hits));
+   assert.equal(bits,bits0,n+': blocked() is unchanged while scenery fades');
+   // down: set down, or put back where a set-down is refused
+   run('{const B=BENCH36;let t=0;while(B.state==="carrying"&&t++<4){press36(B.holder[0]);frames36(12);}}');assert.notEqual(J('BENCH36.state'),'carrying',n+': down');
+   run('frames36(2);');assert.equal(J('occAll36()'),0,n+': every faded mesh has its own material back');assert(J('occNow36()').every(o=>o.op===1),n+': and is opaque again');
+   out.poses.push([`${scr[0]}x${scr[1]}`,n,hits.length,hits.filter(o=>!o.pillar).length]);}
+  run('screen36(1280,800,false);');return out;});
+ check(33,()=>{const out={};
+  run(`var arrowFirst36=(i,max)=>{const B=BENCH36,last=()=>{const h=document.getElementById('half'+i),e=(h.children||[]).filter(x=>/bench36-arrow/.test(x.className||''));return e[e.length-1]||null;};let prev=B.arrowShown[i];
+    for(let k=0;k<max;k++){frames36(1);const s=B.arrowShown[i];if(s&&s!==prev){const e1=last(),first={vis:e1?e1.style.visibility:null,display:e1?e1.style.display:null};frames36(1);const e2=last(),vp=v21Viewport(i),R=benchPromptRect36(i,vp),sz=benchArrowSize36(e2,B.arrowCap[i]),P=B.arrowPos[i];
+      const clear=!!P&&(!R||P[0]+sz.w/2<=R.x1||P[0]-sz.w/2>=R.x2||P[1]+sz.h/2<=R.y1||P[1]-sz.h/2>=R.y2);return {kind:s,k,first,next:{vis:e2?e2.style.visibility:null,display:e2?e2.style.display:null,kind:B.arrowShown[i]},clear};}prev=s;}return {err:'no arrow within '+max+' frames'};};`);
+  out.runs=[];
+  for(const scr of [[844,390,true],[390,844,true],[1280,800,false]]){
+   const cases=[['the mover’s hint',`{const B=BENCH36,a=benchAxis36(B.pose.yaw);setKeys36(B.mover,combo36(-a[1],a[0]));}`,'BENCH36.mover','hint'],['the turner’s hint',`{const B=BENCH36,a=benchAxis36(B.pose.yaw);setKeys36(1-B.mover,combo36(a[0],a[1]));}`,'1-BENCH36.mover','hint']];
+   if(scr[2])cases.unshift(['the edge arrow','','BENCH36.mover','edge']);
+   for(const [n,keysJs,who,kind] of cases){run('fresh36();start36();takeEnds36('+FE+',0);lift36(0,1);noKeys36();frames36(2);');run(`screen36(${scr});${keysJs}`);let r=J(`arrowFirst36(${who},60)`);
+    if(!r.err&&r.kind!==kind)r=J(`arrowFirst36(${who},60)`);run('noKeys36();');const tag=`${scr[0]}x${scr[1]} ${n}`;assert(!r.err,tag+': '+r.err);assert.equal(r.kind,kind,tag+': '+JSON.stringify(r));
+    assert.equal(r.first.display,'',tag+': laid out on its first frame');assert.equal(r.first.vis,'hidden',tag+': hidden on its first frame: '+JSON.stringify(r.first));
+    assert.equal(r.next.kind,kind,tag+': still shown');assert.equal(r.next.vis,'',tag+': shown from the next frame: '+JSON.stringify(r.next));assert(r.clear,tag+': clear of the prompt card');out.runs.push([tag,r.k]);}}
+  run('screen36(1280,800,false);');return out;});
 
  return out;}
 

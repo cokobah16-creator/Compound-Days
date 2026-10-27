@@ -48,3 +48,9 @@ body.bench36-busy #life-guide34{display:none!important}
 .bench36-pick .ticks{margin-top:2px}
 @media (orientation:portrait),(orientation:landscape) and (max-height:520px){.bench36-pick .b36.ag36{margin-top:0}.bench36-pick .sel .nm36{font-size:max(16px,1.15rem);min-width:6.4em}}
 @media (hover:hover) and (pointer:fine){.bench36-pick{bottom:76px}}
+/* round 2b: the bench card keeps its own colours wherever it is shown. In the first-evening journal (the dark panel, whose headings and text
+   are cream) it was cream on pale green; here the card sets its paper, heading, text and kicker itself (all above 5:1 on #E6E9D6) */
+#panel .life-note34.bench36-card{background:#E6E9D6;border-left-color:#9AAA7D;color:#334D43}
+#panel .life-note34.bench36-card h3{color:#2F5143}
+#panel .life-note34.bench36-card p{color:#334D43}
+#panel .life-note34.bench36-card .life-kicker{color:#6C5C39}
