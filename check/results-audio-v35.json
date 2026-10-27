@@ -1,0 +1,72 @@
+{
+  "build": "v36-dac9dba8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "No Web Audio: unlock creates nothing, play refuses, the cue bus does not throw",
+      "passed": true,
+      "info": {
+        "cues": [
+          "cast",
+          "nibble",
+          "bite",
+          "catch",
+          "water"
+        ]
+      }
+    },
+    {
+      "name": "Fake AudioContext: unlock creates and resumes it; five distinct short cues; unknown and silent cues schedule nothing",
+      "passed": true,
+      "info": {
+        "signatures": {
+          "cast": "buffer,filter:bandpass,gain,gain,osc:sine",
+          "nibble": "gain,gain,osc:sine,osc:sine",
+          "bite": "gain,gain,osc:sine,osc:triangle",
+          "catch": "gain,gain,gain,osc:triangle,osc:triangle,osc:triangle",
+          "water": "buffer,filter:lowpass,gain,gain,gain,osc:sine"
+        },
+        "spans": {
+          "cast": 0.42,
+          "nibble": 0.165,
+          "bite": 0.36,
+          "catch": 0.36,
+          "water": 0.47
+        }
+      }
+    },
+    {
+      "name": "Sound toggle: per device, LOCAL_ONLY, in the Menu (also online), off schedules nothing, silent Menu inserts nothing",
+      "passed": true,
+      "info": {
+        "offLabel": "Sound: off",
+        "onLabel": "Sound: on",
+        "localOnly": true,
+        "afterGraphics": true
+      }
+    },
+    {
+      "name": "Twins: at each real cue the visual twin is present (float, nibble twitch, dipped float, catch card, watered pot)",
+      "passed": true,
+      "info": {
+        "cues": [
+          "cast",
+          "nibble",
+          "bite",
+          "catch",
+          "water"
+        ],
+        "biteAfterSeconds": 4
+      }
+    },
+    {
+      "name": "No tick hook: TICK_HOOKS match the build without AUDIO; AUDIO adds exactly one cue subscriber",
+      "passed": true,
+      "info": {
+        "tickHooks": 17,
+        "cueHooks": 2
+      }
+    }
+  ],
+  "method": "Actual runtime modules in Node with shipped Three.js and a recording fake AudioContext; the real cast, bite, reel and water actions with a stubbed wall clock. Nothing is heard here; no browser or phone test."
+}

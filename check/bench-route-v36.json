@@ -1,0 +1,118 @@
+{
+ "what": "v36 bench control plan (tools/bench-route-v36.cjs); yaw in degrees from the centre to the leading end",
+ "inflation": 0.06,
+ "world": "f27b15e:175",
+ "scheme": "guided-lateral",
+ "guide": "5ab70f03",
+ "start": {
+  "x": 4,
+  "z": 8.6,
+  "yaw": 0
+ },
+ "segments": [
+  {
+   "op": "back",
+   "until": {
+    "x": 3.8,
+    "z": 8.6,
+    "yaw": 0
+   }
+  },
+  {
+   "op": "turnL",
+   "until": {
+    "x": 3.8,
+    "z": 8.6,
+    "yaw": 95
+   }
+  },
+  {
+   "op": "fwd",
+   "until": {
+    "x": 3.1899,
+    "z": 1.6266,
+    "yaw": 95
+   }
+  },
+  {
+   "op": "turnL",
+   "until": {
+    "x": 3.1899,
+    "z": 1.6266,
+    "yaw": 170
+   }
+  },
+  {
+   "op": "fwd",
+   "until": {
+    "x": -1.4879,
+    "z": 0.8018,
+    "yaw": 170
+   }
+  },
+  {
+   "op": "turnL",
+   "until": {
+    "x": -1.4879,
+    "z": 0.8018,
+    "yaw": 270
+   }
+  },
+  {
+   "op": "fwd",
+   "until": {
+    "x": -1.4879,
+    "z": 4.5518,
+    "yaw": 270
+   }
+  },
+  {
+   "op": "turnR",
+   "until": {
+    "x": -1.4879,
+    "z": 4.5518,
+    "yaw": 185
+   }
+  },
+  {
+   "op": "fwd",
+   "until": {
+    "x": -2.5837,
+    "z": 4.6477,
+    "yaw": 185
+   }
+  },
+  {
+   "op": "turnR",
+   "until": {
+    "x": -2.5837,
+    "z": 4.6477,
+    "yaw": 165
+   }
+  },
+  {
+   "op": "fwd",
+   "until": {
+    "x": -3.5014,
+    "z": 4.4018,
+    "yaw": 165
+   }
+  },
+  {
+   "op": "turnR",
+   "until": {
+    "x": -3.5014,
+    "z": 4.4018,
+    "yaw": 65
+   }
+  },
+  {
+   "op": "back",
+   "until": {
+    "x": -3.8395,
+    "z": 5.1268,
+    "yaw": 65
+   }
+  }
+ ]
+}

@@ -1,0 +1,125 @@
+{
+  "build": "v36-dac9dba8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. Loads after audio-v35.js with HOMEUSE35 its only new top-level name; no tick hook (the same TICK_HOOKS as the build without it), no light, no texture or asset file, and it writes nothing into the saved state",
+      "passed": true,
+      "info": {
+        "tickHooks": 17,
+        "lights": 6
+      }
+    },
+    {
+      "name": "2. TV console (catalogue pieces): the screen and its soft halo are shown on the lamp's hours, from 18:00 to 06:00, exactly when the lamp is lit, and dark by day; the lit plane sits just in front of the television's body, inside its glass",
+      "passed": true,
+      "info": {
+        "hours": "6 dark, 12 dark, 17.9 dark, 18 lit, 19 lit, 21.5 lit, 23.9 lit, 24.1 lit",
+        "gapMm": 6.25,
+        "screenM": [
+          0.84,
+          0.46
+        ]
+      }
+    },
+    {
+      "name": "3. Until the household sleeps: the real Sleep (the night panel) puts the screen out for the rest of the evening, the morning is dark, the next evening it glows again, and the base's past-midnight sleep puts it out too",
+      "passed": true,
+      "info": {
+        "framesToMidnightSleep": 37
+      }
+    },
+    {
+      "name": "4. Only when placed: no TV console or coffee table, or one in storage, means no glow and no tray in the scene; each hangs on its own piece, so it turns and moves with it, and leaves when the piece is picked up",
+      "passed": true,
+      "info": {
+        "facingTurned": [
+          1,
+          0
+        ]
+      }
+    },
+    {
+      "name": "5. The veranda evening: the tray appears on the coffee table within a frame of the neighbours setting off from the gate, stays through every line and their walk away, and goes within a frame of the last one leaving; it rests on the table top, inside its footprint",
+      "passed": true,
+      "info": {
+        "framesByPhase": {
+          "arriving": 215,
+          "talking": 60,
+          "leaving": 62
+        },
+        "lines": 3,
+        "trayOnTableTopM": 0.326,
+        "trayHeightM": 0.23
+      }
+    },
+    {
+      "name": "6. The housewarming: the tray is there from the real party start through every round and the reveal (the guests stay) until the household sleeps and the morning comes; not while the party is only being planned",
+      "passed": true,
+      "info": {
+        "rounds": 4
+      }
+    },
+    {
+      "name": "7. Nothing per frame beyond a cheap state check: 300 real frames with nothing changing rebuild nothing, change no visibility and create no object or material; the check changes the scene once when 18:00 comes and once when the neighbours arrive",
+      "passed": true,
+      "info": {
+        "objectsVisible": "1810 objects, furniture 76/72 visible",
+        "frames": 300,
+        "attachCalls": 0,
+        "stateChanges": 2
+      }
+    },
+    {
+      "name": "8. Survives reload: Continue at 19:00 with a party on brings back the glow and the tray; after Sleep a reload finds the household up again (the screen glows, as the evening goes on); a reload mid-evening ends the visit and the tray goes with it",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "9. Old saves: a save from before v35 (no life, no born35, ₦55,000) with both pieces placed shows the glow and the tray, and no new field is written",
+      "passed": true,
+      "info": {
+        "fieldsAddedByOtherModules": [
+          "assist",
+          "mkt",
+          "square"
+        ]
+      }
+    },
+    {
+      "name": "10. Online: the visuals follow the shared household document (time, party, pieces) applied with applyState, the shared Sleep replayed from the other device puts the screen out, and with no veranda evening online the tray waits for a party",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "11. Before the catalogue loads: on the grey stand-in console a dark set of the television's size carries the glow, the tray sits on the stand-in table, and when the catalogue television arrives the stand-in set goes",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "12. Without homeuse-v35.js every check above fails (the same checks run in a copy of the game with its script tag removed)",
+      "passed": true,
+      "info": {
+        "failedWithout": 11,
+        "firstFailures": [
+          "1: homeuse-v35.js is loaded after audio-v35.js",
+          "2: the glow hangs on the TV console",
+          "3: glowing at 19:30",
+          "4: Expected values to be strictly equal:",
+          "5: no tray before the neighbours come",
+          "6: not while the party is only being planned",
+          "7: HOMEUSE35 is not defined",
+          "8: the glow is back after Continue",
+          "9: the glow on an old save",
+          "10: Expected values to be strictly equal:",
+          "11: Expected values to be strictly equal:"
+        ]
+      }
+    },
+    {
+      "name": "13. Determinism: two runs give identical reports",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state, frames and actions in Node with the shipped Three.js, the catalogue pieces, the authored hero, the life modules and the v35 modules; clock35, Math.random, Date.now and performance.now stubbed; \"shown\" read from the scene graph; run twice in child processes and compared, and once without homeuse-v35.js. Nothing is rendered here."
+}

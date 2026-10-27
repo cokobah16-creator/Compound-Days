@@ -1,0 +1,34 @@
+/* v35 days: the recap, the faces and the day-3 prompts on the night panel (dark base theme),
+   and the morning card with its faces on Today (light journal theme). Phone first, 390x844. */
+.recap35{margin:14px 0 10px;padding:12px 14px;border-radius:14px;background:#4A3627;border:1px solid #F1E4CC33}
+.recap35 .recap35-kicker{margin:0 0 4px;font-size:12px;font-weight:800;letter-spacing:.09em;color:#F6D485}
+.recap35 p{margin:0;color:#F8EFDD;line-height:1.45}
+.rate35{margin:14px 0 6px}
+.rate35 h3{margin:0 0 8px;font-size:1rem}
+.rate35-faces{display:flex;gap:8px}
+.rate35-face{flex:1;display:flex;align-items:center;justify-content:center;min-height:64px;margin:0;padding:0;border-radius:14px;border:1px solid #F1E4CC55;background:#3A2A1F;color:#F1E4CC;cursor:pointer;font:inherit}
+.rate35-face svg{width:40px;height:40px;pointer-events:none}
+.rate35-face.chosen{background:#E3A72F;color:#2A1F17;border-color:#E3A72F}
+.rate35-face:focus-visible{outline:3px solid #F6D485;outline-offset:2px}
+.prompts35{display:grid;gap:12px;margin:14px 0 6px}
+.prompts35 label{display:block;font-weight:700;font-size:.95rem;color:#F8EFDD}
+.prompts35 input{display:block;width:100%;margin-top:6px;font-size:16px;min-height:44px;border-radius:10px;padding:8px 10px;box-sizing:border-box;border:1px solid #F1E4CC66;background:#FFF8EB;color:#2A1F17;font-family:inherit;font-weight:400}
+.prompts35 p{margin:0}
+.days35-menu{margin:8px 0 0}
+/* the copy panel (feel's fallback when there is no clipboard): the data block's long lines wrap on screen; the copied text is unchanged */
+#panel pre{overflow-wrap:anywhere}
+
+#panel.life-panel34 .morning35 h3{margin:4px 0 2px;color:#2f5143}
+#panel.life-panel34 .morning35 .card.say{background:#fbf8ed;color:#334d43;margin:10px 0}
+#panel.life-panel34 .morning35 .card.say .name{display:block;color:#6c5c39;font-weight:800;font-size:12px;letter-spacing:.06em;text-transform:uppercase;margin-bottom:2px}
+#panel.life-panel34 .morning35>.btn{margin-top:8px}
+#panel.life-panel34 .morning35 .rate35{margin-top:14px;padding-top:12px;border-top:1px solid #ccd1b9}
+#panel.life-panel34 .morning35.yesterday35 .rate35{margin-top:0;padding-top:0;border-top:0}
+#panel.life-panel34 .morning35 .rate35 h3{color:#2f5143}
+#panel.life-panel34 .morning35 .rate35-face{background:#fbf8ed;color:#334d43;border-color:#ccd1b9;min-height:56px}
+#panel.life-panel34 .morning35 .rate35-face.chosen{background:#3f6853;color:#fffae9;border-color:#3f6853}
+#panel.life-panel34 .morning35 .rate35-face:focus-visible{outline-color:#3f6853}
+#panel.life-panel34 .morning35 .prompts35 label{color:#334d43}
+#panel.life-panel34 .morning35 .prompts35 input{background:#fffdf6;border-color:#bfc6a9;color:#26392f}
+#panel.life-panel34 .morning35 .prompts35 .muted{color:#5c6859}
+#panel.life-panel34 .morning35-lead .request34{margin-top:-6px}

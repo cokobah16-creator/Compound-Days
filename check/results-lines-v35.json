@@ -1,0 +1,157 @@
+{
+  "build": "v36-dac9dba8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. The dialogue module is loaded with its public functions",
+      "passed": true,
+      "info": {
+        "functions": [
+          "line35",
+          "useLine35",
+          "lineCtx35",
+          "text35",
+          "itemShort35",
+          "partyLines35"
+        ],
+        "when": 31
+      }
+    },
+    {
+      "name": "2. Tables: at least 24 talk lines each, unique ids, valid min/max and when keys, evening tables end on default, every text key present and the plan strings verbatim",
+      "passed": true,
+      "info": {
+        "talk": {
+          "tunde": 42,
+          "nkechi": 41,
+          "ada": 41
+        },
+        "evening": {
+          "tunde": 4,
+          "nkechi": 4,
+          "ada": 4
+        },
+        "textKeys": 58,
+        "daysRowsCovered": 12
+      }
+    },
+    {
+      "name": "3. Copy rules: no weekday, no ₦ or digits in spoken lines, British spelling, no HTML or undefined, at most 160 characters, {item} only with decorated",
+      "passed": true,
+      "info": {
+        "strings": 209,
+        "itemFills": 60
+      }
+    },
+    {
+      "name": "4. Coverage: on every day 1-12 each neighbour has at least four lines that need no state, so three talks a day never repeat",
+      "passed": true,
+      "info": {
+        "fewestNeutralPerDay": {
+          "tunde": 4,
+          "nkechi": 4,
+          "ada": 4
+        },
+        "itemLines": [
+          [
+            "tu17"
+          ],
+          [
+            "nk18"
+          ],
+          [
+            "ad14"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "5. No repeats: thirty talks on one day give distinct table lines and then the fallback; Nkechi’s base café line never returns; a new day resets",
+      "passed": true,
+      "info": {
+        "tundeDistinct": [
+          "tu09",
+          "tu24",
+          "tu25",
+          "tu26",
+          "tu27"
+        ],
+        "tundeFallbacks": 25,
+        "nkechiDistinct": 5,
+        "day3": "tu09"
+      }
+    },
+    {
+      "name": "5a. Base hint lines: Tunde’s planter line and Nkechi’s recipe line follow the table line once a day; a base gift is always kept; silent replays agree",
+      "passed": true,
+      "info": {
+        "lines35": {
+          "day": 4,
+          "used": {
+            "tunde": [
+              "tu09"
+            ],
+            "nkechi": [],
+            "ada": []
+          },
+          "hint": {
+            "tunde": 4,
+            "nkechi": 3
+          }
+        }
+      }
+    },
+    {
+      "name": "6. Wiring: the talk panel shows a table line with the request card above Later, gifts and their narrative stay, the rng is untouched, and a silent replay picks the same line",
+      "passed": true,
+      "info": {
+        "line": "tu09",
+        "replayed": [
+          "ad09"
+        ]
+      }
+    },
+    {
+      "name": "7. Context: watering, the placed armchair and Nkechi’s peppers pick the matching lines; with the later modules absent every talk still works",
+      "passed": true,
+      "info": {
+        "tunde": "tu06",
+        "adaVeranda": "ad03",
+        "adaIndoors": "ad04",
+        "nkechi": "nk06",
+        "day3Tunde": [
+          "tu05",
+          "tu06"
+        ],
+        "subset": {
+          "said": {
+            "tunde": "tu08",
+            "nkechi": "nk07",
+            "ada": "ad09"
+          }
+        }
+      }
+    },
+    {
+      "name": "8. Party: a new household’s housewarming carries Tunde’s seedling promise and Ada’s armchair until they no longer apply; old households see nothing new",
+      "passed": true,
+      "info": {
+        "inserted": true
+      }
+    },
+    {
+      "name": "9. Evening lines: Ada follows the armchair, then the last thing placed, then her default; Tunde and Nkechi read the crop and the requests; nothing is marked used",
+      "passed": true,
+      "info": {
+        "ada": [
+          "ae01",
+          "ae02",
+          "ae03",
+          "ae04"
+        ],
+        "lampLine": "From out here I can see the lamp. You have an eye, you know. Do not let it go to your head."
+      }
+    }
+  ],
+  "method": "Actual runtime state and actions in Node with the shipped Three.js and the authored hero; old households from a save, new ones through dispatch(aiStart); talks through the real openTalk and silent remote replays through applyRemote; check 7 includes a subset pass that loads the v35 modules only up to lines-v35.js. Nothing rendered here."
+}

@@ -1,0 +1,1135 @@
+{
+  "build": "v36-dac9dba8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. No start on day 2, before 18:00, from 22:00, with nobody home, during a party or online, and an unfinished guided first evening does not hold it back on day 3; nobody home in the window gets one nudge, a marker and a Today card, never a panel; before six at home Today offers to wait until six, and Sleep asks once",
+      "passed": true,
+      "info": {
+        "idle": {
+          "day 2": "idle",
+          "17:30": "idle",
+          "22:00": "idle",
+          "party": "idle",
+          "online": "idle",
+          "nobody home": "idle"
+        },
+        "nudge": "The neighbours are coming by your veranda this evening. Head home.",
+        "guidedDay3": "arriving"
+      }
+    },
+    {
+      "name": "2. Day 3 at 18:30 with the human on the veranda: the guests walk in from the gate to validated street spots, clear of the sightline, kept through reroute and placeNPCs; a blocked street retries at most once a second",
+      "passed": true,
+      "info": {
+        "retryAttemptsIn30Ticks": 1,
+        "spots": {
+          "tunde": [
+            -4.4,
+            7.8
+          ],
+          "nkechi": [
+            -5.15,
+            7.8
+          ],
+          "ada": [
+            -5.9,
+            7.8
+          ]
+        },
+        "westSpots": {
+          "tunde": [
+            -6.8,
+            7.8
+          ],
+          "nkechi": [
+            -7.55,
+            7.8
+          ],
+          "ada": [
+            -8.3,
+            7.8
+          ]
+        }
+      }
+    },
+    {
+      "name": "3. The guests reach their spots well inside 20 s of stubbed time; through the real base frame (whose NPC loop turns idle NPCs to the nearest player) each stays turned from the camera towards the player, within 70 degrees of the camera, the speaker a three-quarter face",
+      "passed": true,
+      "info": {
+        "arrivedAfterSeconds": 7.16,
+        "faces": {
+          "tunde": {
+            "toCamera": 50,
+            "toPlayer": 91,
+            "cameraToPlayer": 141,
+            "speaker": true,
+            "x": [
+              529,
+              702
+            ],
+            "y": [
+              291,
+              679
+            ]
+          },
+          "nkechi": {
+            "toCamera": 50,
+            "toPlayer": 59,
+            "cameraToPlayer": 109,
+            "speaker": false,
+            "x": [
+              390,
+              573
+            ],
+            "y": [
+              257,
+              633
+            ]
+          },
+          "ada": {
+            "toCamera": 65,
+            "toPlayer": 23,
+            "cameraToPlayer": 88,
+            "speaker": false,
+            "x": [
+              263,
+              462
+            ],
+            "y": [
+              226,
+              591
+            ]
+          }
+        }
+      }
+    },
+    {
+      "name": "4. Talking: Tunde, Mama Nkechi, then Ada with the armchair line; Act through the forced hotspot, the Next guard, the 8 s timer, a pause behind panels, the real camera (measured every frame of the first two lines) eased nearer, up to a quarter, only as far as the player and all three guests still fit, never cutting anyone, never moving back out while it eases in, and changing under 1% a frame after its first eased frame; a whole evening at 1280x800 recorded on every frame from the trigger to the hand-back to the normal camera (no change over 2.5% a frame anywhere, none over 1% from the first frame of line 1 to the end of line 3, nobody cut while they talk, no jump at the hand-back); and the companion beside the player from inside the flat or outside it, with the player at the door or along the veranda; a player who walks away ends it undone",
+      "passed": true,
+      "info": {
+        "camFactorFirstLine": 0.75,
+        "cameraDistanceRatio": 0.976,
+        "camera": {
+          "firstEasedFrame": 0,
+          "maxStepPercent": 0.79,
+          "minRatio": 0.976
+        },
+        "wholeEvening1280x800": {
+          "maxStepPercent": {
+            "walk-in": 0,
+            "hold": 0,
+            "lines": 0,
+            "departure": 0,
+            "hand-back": 0
+          },
+          "frames": {
+            "walk-in": 201,
+            "hold": 15,
+            "lines": 181,
+            "departure": 62,
+            "hand-back": 151
+          }
+        },
+        "autoAdvanceSeconds": 8.02,
+        "adaLine": "ae01",
+        "adaWhen": [
+          "chair-veranda"
+        ],
+        "companionAfterDrive": 0.68,
+        "companionCases": {
+          "-6.5/-5.6,3.6": {
+            "d": 1.1,
+            "veranda": true
+          },
+          "-3/-7.5,2.5": {
+            "d": 1.03,
+            "veranda": true
+          },
+          "-4.1/-1.2,3.8": {
+            "d": 0.73,
+            "veranda": true
+          },
+          "-6.5/-1.2,3.8": {
+            "d": 1.12,
+            "veranda": true
+          }
+        }
+      }
+    },
+    {
+      "name": "5. After the third line: saved once with one cue and one memory, the guests walk away west along the street and return to their schedule",
+      "passed": true,
+      "info": {
+        "handedOffAfterSeconds": 2.81
+      }
+    },
+    {
+      "name": "6. A missed evening stays pending and runs the next day; the 20 s timeout settles guests who cannot walk",
+      "passed": true,
+      "info": {
+        "timeoutSeconds": 20.03
+      }
+    },
+    {
+      "name": "7. A new day, going online or a party mid-arrival aborts without marking it done; with Ada visiting she stays on her veranda cell and still speaks third",
+      "passed": true,
+      "info": {
+        "adaCell": [
+          -7.55,
+          6.3
+        ]
+      }
+    },
+    {
+      "name": "8. Framing at 390x844 through the real base frame: with the player on the veranda at columns 0, 2, 3, 4 and 5 (column 1 holds the armchair) and in the room by the door, and walking along the veranda during line 2, during every line all three guests are inside the view, the companion is fully on screen on every frame of the lines on which it stands beside the player (within 2 m), none stands in the player’s sightline, each is within 70 degrees of the camera and the speaker shows a three-quarter face; on every frame of the three lines nobody is cut, the camera distance changes under 1% a frame after its first eased frame, the speaker stays within 50 degrees of the camera and listeners within 65, and no guest turns more than 8 degrees in a frame; the real camera distance recorded on every frame from the evening trigger to the hand-back to the normal camera changes by no more than 2.5% a frame anywhere (walk-in, hold, lines, departure, hand-back), by no more than 1% from the first frame of line 1 to the end of line 3 (the step from the hold into line 1 included), and hands back to the normal camera without a jump",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "spots": {
+            "tunde": [
+              -7.7,
+              7.8
+            ],
+            "nkechi": [
+              -8.45,
+              7.8
+            ],
+            "ada": [
+              -9.2,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  139,
+                  195
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  92,
+                  151
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  46,
+                  107
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  139,
+                  196
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  92,
+                  151
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  46,
+                  108
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  139,
+                  196
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  92,
+                  151
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  47,
+                  108
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.93,
+            "minRatio": 0.996
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0.98,
+              "lines": 0.93,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 260,
+              "hold": 15,
+              "lines": 91,
+              "departure": 28,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 70,
+            "closestMetres": 1.88,
+            "worstEdge": -0.297
+          }
+        },
+        "veranda column 2": {
+          "spots": {
+            "tunde": [
+              -6.05,
+              7.8
+            ],
+            "nkechi": [
+              -6.8,
+              7.8
+            ],
+            "ada": [
+              -7.55,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  144,
+                  204
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  95,
+                  157
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  47,
+                  111
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  144,
+                  204
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  95,
+                  157
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  47,
+                  111
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  144,
+                  204
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  95,
+                  157
+                ]
+              },
+              "ada": {
+                "toCamera": 48,
+                "x": [
+                  47,
+                  111
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.31,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 230,
+              "hold": 15,
+              "lines": 91,
+              "departure": 27,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 90,
+            "closestMetres": 1.13,
+            "worstEdge": -0.252
+          }
+        },
+        "veranda column 3": {
+          "spots": {
+            "tunde": [
+              -5.15,
+              7.8
+            ],
+            "nkechi": [
+              -5.9,
+              7.8
+            ],
+            "ada": [
+              -6.65,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  151,
+                  214
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  115
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  151,
+                  214
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  151,
+                  214
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  99,
+                  164
+                ]
+              },
+              "ada": {
+                "toCamera": 48,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.33,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 214,
+              "hold": 15,
+              "lines": 91,
+              "departure": 27,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 90,
+            "closestMetres": 0.82,
+            "worstEdge": -0.263
+          }
+        },
+        "veranda column 4": {
+          "spots": {
+            "tunde": [
+              -4.25,
+              7.8
+            ],
+            "nkechi": [
+              -5,
+              7.8
+            ],
+            "ada": [
+              -5.75,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  152,
+                  216
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  99,
+                  165
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  152,
+                  216
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  100,
+                  165
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  152,
+                  216
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  100,
+                  165
+                ]
+              },
+              "ada": {
+                "toCamera": 49,
+                "x": [
+                  48,
+                  116
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.34,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 198,
+              "hold": 15,
+              "lines": 91,
+              "departure": 27,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 90,
+            "closestMetres": 0.87,
+            "worstEdge": -0.291
+          }
+        },
+        "veranda column 5": {
+          "spots": {
+            "tunde": [
+              -4.1,
+              7.8
+            ],
+            "nkechi": [
+              -4.85,
+              7.8
+            ],
+            "ada": [
+              -5.6,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  154,
+                  220
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  100,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  155,
+                  219
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  101,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  155,
+                  219
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  101,
+                  167
+                ]
+              },
+              "ada": {
+                "toCamera": 44,
+                "x": [
+                  48,
+                  118
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.35,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 196,
+              "hold": 15,
+              "lines": 91,
+              "departure": 24,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 90,
+            "closestMetres": 1.04,
+            "worstEdge": -0.623
+          }
+        },
+        "room by the door": {
+          "spots": {
+            "tunde": [
+              -4.4,
+              7.8
+            ],
+            "nkechi": [
+              -5.15,
+              7.8
+            ],
+            "ada": [
+              -5.9,
+              7.8
+            ]
+          },
+          "lines": [
+            {
+              "tunde": {
+                "toCamera": 50,
+                "x": [
+                  135,
+                  190
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  90,
+                  147
+                ]
+              },
+              "ada": {
+                "toCamera": 65,
+                "x": [
+                  46,
+                  105
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  135,
+                  190
+                ]
+              },
+              "nkechi": {
+                "toCamera": 50,
+                "x": [
+                  90,
+                  147
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  46,
+                  106
+                ]
+              }
+            },
+            {
+              "tunde": {
+                "toCamera": 65,
+                "x": [
+                  135,
+                  190
+                ]
+              },
+              "nkechi": {
+                "toCamera": 65,
+                "x": [
+                  90,
+                  147
+                ]
+              },
+              "ada": {
+                "toCamera": 50,
+                "x": [
+                  46,
+                  106
+                ]
+              }
+            }
+          ],
+          "camera": {
+            "firstEasedFrame": 1,
+            "maxStepPercent": 0.25,
+            "minRatio": 0.997
+          },
+          "wholeEvening": {
+            "maxStepPercent": {
+              "walk-in": 2.38,
+              "hold": 0,
+              "lines": 0.25,
+              "departure": 2.32,
+              "hand-back": 2.32
+            },
+            "frames": {
+              "walk-in": 201,
+              "hold": 15,
+              "lines": 91,
+              "departure": 23,
+              "hand-back": 151
+            }
+          },
+          "maxTurnPerFrame": 2.8,
+          "companion": {
+            "besideFrames": 90,
+            "closestMetres": 0.74,
+            "worstEdge": -0.296
+          }
+        },
+        "walking along the veranda in line 2": {
+          "talkingFrames": 91,
+          "maxStepPercent": 2.38
+        }
+      }
+    },
+    {
+      "name": "9. Everyone else keeps clear at 390x844 through the real base frame: with walkers on the base street routes heading into the group and the foreground, the keke and a resident walking the street, from the trigger to the end of the talk nobody else comes within 1 m of a guest’s spot or the player, or covers the player or a guest within 2 m of its spot on screen from nearer the camera; once the guests have gone they all move on",
+      "passed": true,
+      "info": {
+        "walkInFrames": 246,
+        "closestMarginBeyondOneMetre": 0.95,
+        "movedAfterwards": [
+          8.81,
+          7.05,
+          9.4,
+          8.22,
+          24.67,
+          9.99
+        ]
+      }
+    },
+    {
+      "name": "10. The evening nudge toast never covers the Today page: it goes as the journal opens (and stays gone), while other toasts over the journal and the nudge with no journal open are untouched",
+      "passed": true,
+      "info": {
+        "nudge": "The neighbours are coming by your veranda this evening. Head home."
+      }
+    },
+    {
+      "name": "11. Departure at 390x844 through the real base frame (veranda columns 0, 2 and 5 and the room by the door): the guests leave west along the street, away from the player, by a way clear of walls and props that never brings them nearer the camera-to-player line; on every frame from Goodnight to 2 s after the hand-back no guest stands between the camera and the player on screen (its screen box over the player’s from nearer the camera; only a guest still within 0.3 m of its spot may keep the corner overlap it had standing there, and that never grows); each goes back to its schedule on the first frame it is off every human view, placed where no view sees it",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "ways": [
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ]
+          ],
+          "cornerOverlapAtSpotFrames": 1,
+          "largestCornerOverlapNdc": 0.005,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 22,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 23,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 29,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
+        },
+        "veranda column 2": {
+          "ways": [
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ]
+          ],
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 16,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 22,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 28,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
+        },
+        "veranda column 5": {
+          "ways": [
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ]
+          ],
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 15,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 20,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 25,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
+        },
+        "room by the door": {
+          "ways": [
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ],
+            [
+              -30,
+              9.2
+            ]
+          ],
+          "cornerOverlapAtSpotFrames": 0,
+          "largestCornerOverlapNdc": 0,
+          "handedBack": {
+            "ada": {
+              "departureFrame": 15,
+              "offView": true,
+              "placed": [
+                3,
+                -3.7
+              ]
+            },
+            "nkechi": {
+              "departureFrame": 20,
+              "offView": true,
+              "placed": [
+                24.6,
+                3
+              ]
+            },
+            "tunde": {
+              "departureFrame": 24,
+              "offView": true,
+              "placed": [
+                -1.5,
+                -3.6
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "name": "12. World labels at 390x844 with the base signs built (veranda columns 0, 2 and 5 and the room by the door): on every frame from the trigger to the hand-back no floating label is drawn over an arriving, talking or leaving guest, the player or the companion unless it is fading out (within 0.3 s of starting to); a label once hidden stays hidden until the guests are handed back; no label vanishes or appears in one frame (each fade takes about 0.3 s); every label is fully shown again within 0.4 s of the hand-back",
+      "passed": true,
+      "info": {
+        "veranda column 0": {
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 274,
+            "talking": 136,
+            "leaving": 28
+          },
+          "shownAgainFramesAfterHandBack": 9
+        },
+        "veranda column 2": {
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 244,
+            "talking": 136,
+            "leaving": 27
+          },
+          "shownAgainFramesAfterHandBack": 9
+        },
+        "veranda column 5": {
+          "signsHidden": 1,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 210,
+            "talking": 136,
+            "leaving": 24
+          },
+          "shownAgainFramesAfterHandBack": 9
+        },
+        "room by the door": {
+          "signsHidden": 2,
+          "framesWithAFadingSignOverTheGroup": 0,
+          "framesByPhase": {
+            "arriving": 215,
+            "talking": 136,
+            "leaving": 23
+          },
+          "shownAgainFramesAfterHandBack": 9
+        }
+      }
+    },
+    {
+      "name": "13. Determinism: two runs give identical reports",
+      "passed": true
+    }
+  ],
+  "method": "Actual runtime state, ticks and actions in Node with the shipped Three.js, the authored hero, the life modules and the v35 modules; clock35, Math.random and Date.now stubbed; run twice in child processes and compared."
+}

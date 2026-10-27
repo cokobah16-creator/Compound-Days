@@ -1,0 +1,2185 @@
+{
+ "build": "v36-dac9dba8",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Foundation: a local pair (two cameras, singleIdx -1) in which each player’s keys move only that player, also both at once; each player’s prompt shows beside their own view near a hotspot",
+   "passed": true,
+   "info": {
+    "walk": [
+     1.23,
+     -1.23
+    ],
+    "prompts": [
+     "E Move Take this end",
+     "⏎ Turn Take this end"
+    ]
+   }
+  },
+  {
+   "name": "2. Inert until started: 3,000 seeded points give the same blocked() result, a 600-frame two-player walk leaves the save, the camera distances and the hotspot labels identical, and the save’s top-level keys, the tick hooks and the LINES35 counts match the build without bench-v36.js; the companion household’s Menu matches too, apart from the one line at its top saying the bench needs two players on one device; no bench mesh exists",
+   "passed": true,
+   "info": {
+    "points": 3000,
+    "frames": 600,
+    "keys": 36,
+    "tickHooks": 17,
+    "lines": "tunde:42,nkechi:41,ada:41",
+    "companion": "two-hands line only"
+   }
+  },
+  {
+   "name": "3. Both must participate: one player alone cannot move it; the mover’s keys only translate it along its axis and the turner’s only turn it about its centre (the turner’s forward keys move nothing); with the turner’s keys zeroed for 120 s the plan never reaches the passage, and with the mover’s zeroed the centre never moves; at four corner poses (inside the gate 40° off, corner 1 half-turned, the flat door 20° off, the veranda doorway 15° off) 120 s of the mover’s keys alone (ratcheting either way, or random) leave the yaw exactly as it was, 120 s of the turner’s keys alone move the centre at most 0.08 m, and BENCH36.yawLeak stays 0; with both players’ random keys at the openings and corners the heading changes by exactly what the Turn player’s swings give, also in frames where the walls help (yawLeak counts any other change)",
+   "passed": true,
+   "info": {
+    "both": {
+     "frames": 6648,
+     "helped": true,
+     "yawLeak": 0
+    },
+    "mover": 0.398,
+    "turner": 9.72,
+    "noTurner": {
+     "x": 3.807,
+     "z": 8.6,
+     "segment": 1
+    },
+    "noMover": {
+     "x": 4,
+     "z": 8.6
+    },
+    "corners": {
+     "runs": 16,
+     "moverYaw": 0,
+     "turnerMoved": 0.08,
+     "yawLeak": 0
+    }
+   }
+  },
+  {
+   "name": "4. Three consecutive deliveries by real keys through the gate, both corners and the doorway: no reset and the state sequence exactly the machine’s; the second with roles swapped before the lift, the third with four set-downs by alternating holders and a mid-route swap that changes the leading end; each under 60 s of game time with at most 3 bumps; Out, Gate and Water placed; the plan is the one made for the running scheme (guided-lateral) and its guidance (the BENCH36.GUIDE hash); the saved item untouched until each new agreement; the fresh start moves the crate; the preflight refuses an armchair over the slot and a piece in the room lane, and Build refuses the lane while a delivery is open",
+   "passed": true,
+   "info": {
+    "scheme": "guided-lateral",
+    "guide": "5ab70f03",
+    "res": [
+     {
+      "dur": 33.967,
+      "bumps": 0,
+      "resets": 0,
+      "settle": "glide",
+      "placed": "out"
+     },
+     {
+      "dur": 33.967,
+      "bumps": 0,
+      "swaps": 1,
+      "resets": 0,
+      "settle": "glide",
+      "placed": "gate"
+     },
+     {
+      "dur": 34.5,
+      "bumps": 0,
+      "setdowns": 4,
+      "swaps": 1,
+      "resets": 0,
+      "settle": "glide",
+      "placed": "water",
+      "downs": [
+       {
+        "seg": 1,
+        "by": 0
+       },
+       {
+        "seg": 3,
+        "by": 1
+       },
+       {
+        "seg": 5,
+        "by": 0
+       },
+       {
+        "seg": 6,
+        "by": 1
+       }
+      ]
+     }
+    ],
+    "crate": [
+     [
+      -1.75,
+      1
+     ],
+     [
+      -3.4,
+      0.9
+     ]
+    ],
+    "refusals": [
+     "Ada’s bench needs the way clear. Move the woven armchair off the west end of the veranda in Home first.",
+     "Ada’s bench needs the way clear. Move the potted plant off the front of the room by the door in Home first."
+    ]
+   }
+  },
+  {
+   "name": "5. Walls are never passed: on every frame of checks 4, 6 and 7 and of a seeded fuzz (6 x 1,000 frames of random keys and Acts for both players from the five checkpoints and the doorway, each loaded where asked, and 300 frames each of the mover’s random keys alone and of both players’ random keys and Acts from 5, 10, 14 and 20 degrees off at the passage mouth, the flat door and the veranda doorway and with a holder 0.05 m from each of their six jambs) an independent exact box test finds the bench clear of every wall, piece of furniture and the crate, and between carried frames within 0.1 mm, with the walls’ sideways help used on some of those frames; the holders stand clear on level ground at their squeezed-in radius, nobody steps to a stand point through a wall, and every frame of the glide, and every moment between its frames, is clear of the walls, the pot and both players",
+   "passed": true,
+   "info": {
+    "tested": true,
+    "glide": true,
+    "sweepUnder01mm": true,
+    "fuzz": [
+     [
+      "grounded",
+      4.8,
+      8.51
+     ],
+     [
+      "ready",
+      3.48,
+      3.72
+     ],
+     [
+      "ready",
+      -0.28,
+      0.82
+     ],
+     [
+      "ready",
+      -1.61,
+      0.33
+     ],
+     [
+      "ready",
+      -3.56,
+      4
+     ],
+     [
+      "grounded",
+      -3.6,
+      4.3
+     ]
+    ],
+    "openings": [
+     [
+      "passage 5",
+      "mover",
+      [
+       "carrying",
+       -1.83,
+       3.75
+      ]
+     ],
+     [
+      "passage 5",
+      "both",
+      [
+       "grounded",
+       -1.69,
+       1.11
+      ]
+     ],
+     [
+      "flat door 5",
+      "mover",
+      [
+       "carrying",
+       -2.88,
+       4.9
+      ]
+     ],
+     [
+      "flat door 5",
+      "both",
+      [
+       "ready",
+       -1.97,
+       4.89
+      ]
+     ],
+     [
+      "veranda doorway 5",
+      "mover",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway 5",
+      "both",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "passage 10",
+      "mover",
+      [
+       "carrying",
+       -1.75,
+       2.23
+      ]
+     ],
+     [
+      "passage 10",
+      "both",
+      [
+       "ready",
+       -1.61,
+       0.72
+      ]
+     ],
+     [
+      "flat door 10",
+      "mover",
+      [
+       "carrying",
+       -3.18,
+       4.9
+      ]
+     ],
+     [
+      "flat door 10",
+      "both",
+      [
+       "ready",
+       -2.15,
+       4.9
+      ]
+     ],
+     [
+      "veranda doorway 10",
+      "mover",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway 10",
+      "both",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "passage 14",
+      "mover",
+      [
+       "carrying",
+       -1.75,
+       2.53
+      ]
+     ],
+     [
+      "passage 14",
+      "both",
+      [
+       "carrying",
+       -1.77,
+       0.29
+      ]
+     ],
+     [
+      "flat door 14",
+      "mover",
+      [
+       "carrying",
+       -2.58,
+       4.9
+      ]
+     ],
+     [
+      "flat door 14",
+      "both",
+      [
+       "grounded",
+       -2,
+       4.9
+      ]
+     ],
+     [
+      "veranda doorway 14",
+      "mover",
+      [
+       "carrying",
+       -4.08,
+       4.23
+      ]
+     ],
+     [
+      "veranda doorway 14",
+      "both",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "passage 20",
+      "mover",
+      [
+       "carrying",
+       -1.52,
+       0.94
+      ]
+     ],
+     [
+      "passage 20",
+      "both",
+      [
+       "ready",
+       -1.7,
+       1
+      ]
+     ],
+     [
+      "flat door 20",
+      "mover",
+      [
+       "carrying",
+       -1.25,
+       4.6
+      ]
+     ],
+     [
+      "flat door 20",
+      "both",
+      [
+       "ready",
+       -2.09,
+       4.93
+      ]
+     ],
+     [
+      "veranda doorway 20",
+      "mover",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway 20",
+      "both",
+      [
+       "carrying",
+       -3.56,
+       4.12
+      ]
+     ],
+     [
+      "passage west jamb",
+      "mover",
+      [
+       "carrying",
+       -1.75,
+       -1.34
+      ]
+     ],
+     [
+      "passage west jamb",
+      "both",
+      [
+       "ready",
+       -1.95,
+       0.89
+      ]
+     ],
+     [
+      "passage east jamb",
+      "mover",
+      [
+       "carrying",
+       -1.75,
+       1.04
+      ]
+     ],
+     [
+      "passage east jamb",
+      "both",
+      [
+       "grounded",
+       -1.48,
+       1.21
+      ]
+     ],
+     [
+      "flat door south jamb",
+      "mover",
+      [
+       "carrying",
+       -4.47,
+       4.9
+      ]
+     ],
+     [
+      "flat door south jamb",
+      "both",
+      [
+       "carrying",
+       -3.53,
+       5.15
+      ]
+     ],
+     [
+      "flat door north jamb",
+      "mover",
+      [
+       "carrying",
+       -1.3,
+       4.9
+      ]
+     ],
+     [
+      "flat door north jamb",
+      "both",
+      [
+       "grounded",
+       -2.42,
+       5.21
+      ]
+     ],
+     [
+      "veranda doorway west jamb",
+      "mover",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway west jamb",
+      "both",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway east jamb",
+      "mover",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ],
+     [
+      "veranda doorway east jamb",
+      "both",
+      [
+       "grounded",
+       -3.6,
+       4.3
+      ]
+     ]
+    ],
+    "helpedSteps": 35,
+    "funnelSteps": 1729
+   }
+  },
+  {
+   "name": "6. Never trapped: every set-down the fuzz makes (the openings’ fuzz included) is one the harness’s own walk finds both players can lift (one at each end, in an order in which the first holder’s body leaves the other their way round), every refusal one it finds they cannot, and nobody but a holder ever stands inside the grounded bench (also after a set-down the frame after the lift); a reset after a stall at corner 2 with both players in the room lands on a liftable checkpoint, never on the old room pose; with no checkpoint liftable the bench goes to the gate with the players; a save made mid-carry with the leading holder on the row reloads liftable or at the gate; a player waiting out on the street (south of z 11) neither makes a grounded bench stuck nor sends it back on a reload, and a set-down by the street gate is not refused for them; an end counts as reachable only from a cell with a clear straight step to it (the step a take makes): set down every 30 frames from the lift through the flat door, every set-down the game accepts is lifted again for real (each player placed at the nearest such cell of their end, as the harness’s walk finds it, and Act pressed), never stranded at corner 2, and the delivery completes; every fuzz set-down, loaded as it was, is lifted for real the same way; a refusal for a holder with no room to step back is true",
+   "passed": true,
+   "info": {
+    "acc": 44,
+    "ref": 0,
+    "room": 0,
+    "liftedForReal": 35,
+    "corner2": {
+     "downs": 31,
+     "refused": 0
+    },
+    "openingRuns": 36,
+    "reset": "room",
+    "reload": "liftable",
+    "street": {
+     "stuck": false,
+     "reload": "kept",
+     "setDown": "grounded"
+    }
+   }
+  },
+  {
+   "name": "7. Set down and swap anywhere: at 12 points along the plan the pair sets the bench down (alternating holders), swaps roles, lifts and carries on, the role lines and chips follow the swap, and the delivery completes",
+   "passed": true,
+   "info": {
+    "points": [
+     1,
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11
+    ],
+    "movers": [
+     1,
+     0,
+     1,
+     0,
+     1,
+     0,
+     1,
+     0,
+     1,
+     0,
+     1,
+     0
+    ],
+    "setdowns": 12,
+    "swaps": 12
+   }
+  },
+  {
+   "name": "8. Gentle stop at dt 1/60 and 1/30: pushed into a rail for 2 s, the bench moves at most 1 mm after first contact and then not at all, the holders’ walking flag does not flicker, at most one bump per 0.4 s, and the mesh recoil stays within 6 cm and returns to the pose; what meets the rail is the leading holder’s body at its squeezed-in 0.22 m (not a walking 0.33 m), so the dust rises beside that holder and both prompts say who is up against what",
+   "passed": true,
+   "info": {
+    "30": {
+     "contactFrame": 29,
+     "contactX": 4.78,
+     "moved": 0,
+     "bumps": 1,
+     "recoil": 0.05,
+     "cue": [
+      "E Move Set the bench down You’re up against the wall.",
+      "⏎ Turn Set the bench down Efe is up against the wall."
+     ]
+    },
+    "60": {
+     "contactFrame": 59,
+     "contactX": 4.78,
+     "moved": 0,
+     "bumps": 1,
+     "recoil": 0.05,
+     "cue": [
+      "E Move Set the bench down You’re up against the wall.",
+      "⏎ Turn Set the bench down Efe is up against the wall."
+     ]
+    }
+   }
+  },
+  {
+   "name": "9. Stuck and reset: held accepted keys against the vestibule wall at corner 2 (the porch turn after the passage, plan segment 7) make it stuck in about 2.5 s and the hint shows in the holders’ prompts; a key held outside the cone for 5 s does not (and its arrow hint shows after 0.6 s for the mover, 0.35 s for the turner); three swings refused within 4 s put “Your end is on the wall. Try the other way, or ask … to back up a little.” in the turner’s prompt and “… needs room. Back up a little.” in the mover’s; a set-down ends the stall (no hint, and a player at an end gets “Take this end”, never the reset); a grounded bench nobody can lift (the crate pushed onto an end) offers “Reset the bench” beside it, and Act puts it on a liftable checkpoint with the crate moved clear; the Menu reset works with the bench in the passage and sits at the top of the Menu; while stuck the player cards keep “Bench · Move” and “Bench · Turn”; a swing held against the wall for 1.5 s also brings the turner’s line; at the four corner poses of check 3 the turner’s hint points the way that swings the leading end towards the next corner (within 3 degrees), beside the turner’s end at the desk and clear of the prompt card on a phone; wedged in the corner just inside the street gate a set-down is refused because the holder there truly has no room to step back (and the toast says so), and once it is stuck the holders are offered “Put it back” with the line “Too tight to set down here…”, and Act puts it on a liftable checkpoint; the gate pillar that hides a holder fades and is itself again once the bench is down",
+   "passed": true,
+   "info": {
+    "corner2": {
+     "segment": 7,
+     "at": [
+      -1.661,
+      4.731,
+      272.78
+     ]
+    },
+    "stuckAfter": 3.033,
+    "turnerArrowAt": 0.4,
+    "reset": "before the passage",
+    "turnAid": [
+     "⏎ Turn Set the bench down Your end is on the wall. Try the other way, or ask Efe to back up a little.",
+     "E Move Set the bench down Ola needs room. Back up a little."
+    ],
+    "menuReset": "before the passage",
+    "turnHint": [
+     [
+      "inside the gate 40° off",
+      1280,
+      0.177,
+      0
+     ],
+     [
+      "inside the gate 40° off",
+      390,
+      0.131,
+      8
+     ],
+     [
+      "corner 1 half-turned",
+      1280,
+      0.408,
+      1
+     ],
+     [
+      "corner 1 half-turned",
+      390,
+      0.451,
+      8
+     ],
+     [
+      "flat door 20° off",
+      1280,
+      0.399,
+      0
+     ],
+     [
+      "flat door 20° off",
+      390,
+      0.539,
+      8
+     ],
+     [
+      "veranda doorway 15° off",
+      1280,
+      0.259,
+      0
+     ],
+     [
+      "veranda doorway 15° off",
+      390,
+      0.179,
+      32
+     ]
+    ],
+    "putBack": {
+     "at": [
+      3.066,
+      5.06,
+      200
+     ],
+     "to": "inside the gate"
+    },
+    "noRoom": "Not here: Ola has no room to step back. Carry it on a little first.",
+    "pillar": 0.22
+   }
+  },
+  {
+   "name": "10. Controls feel: a 100 ms tap moves at most 3 cm or turns at most 1.5 degrees, a release from full speed coasts at most 5 cm or 3 degrees, forward and back speeds are equal, one held key completes a 95-degree turn, and a Menu opened and closed mid-carry leaves the bench at rest",
+   "passed": true,
+   "info": {
+    "tap": 2,
+    "tapTurn": 1,
+    "coast": 1.778,
+    "speeds": [
+     1.2,
+     1.2
+    ],
+    "heldTurn": 95,
+    "menu": "rest"
+   }
+  },
+  {
+   "name": "11. Placement: Out, Gate and Water pass the arrangement rule with the default, chairs-at-(5,4) and armchair-at-(5,4) layouts and inside the first chooser (reach start free, a reach run each time); a candidate over the pot keep fails; a player in the way is moved clear before the bench goes; the ghost stands at the pose; one agreement does not commit and a change clears both; both agree gives the item and the day log line; with an armchair, chairs or a plant beside the doorway (cell 5,4) the bench still glides to each arrangement (in two legs), every frame and every move between frames clear",
+   "passed": true,
+   "info": {
+    "default": [
+     true,
+     true,
+     true
+    ],
+    "chairs": [
+     true,
+     true,
+     true
+    ],
+    "armchair": [
+     true,
+     true,
+     true
+    ],
+    "chooser": {
+     "doorwayCoversStart": true,
+     "inside": [
+      true,
+      true,
+      true
+     ]
+    },
+    "kind": true,
+    "legs": {
+     "armchair out": 2,
+     "armchair gate": 2,
+     "armchair water": 2,
+     "chairs water": 2,
+     "plant gate": 2
+    }
+   }
+  },
+  {
+   "name": "12. Save and reload: a placed bench, a bench in the chooser and a bench saved mid-carry come back as they were (grounded and liftable for the carry); an old save gets nothing; a placed state with no item heals; online the shared document keeps only {v, state, choice}; ?bench=fresh applies once; Build cannot store or pick up the bench and shows neither button; browsing in a fresh delivery’s chooser never changes the saved arrangement, so “Leave the bench where it was” leaves the save, the shared document and the next run on the placed one; in playtest mode the next run starts from the job each player did not start the last one with, and a run that is lifted and then left where it was puts back the first mover and the mover it started from, so the run after it is pre-swapped from the completed one; a chooser save with an unknown browsed arrangement, in an again run with an unknown saved choice, opens the chooser on Out (and so does lifting it there again)",
+   "passed": true,
+   "info": {
+    "unknownKeys": "out",
+    "placed": [
+     -7.05,
+     6.4,
+     -18
+    ],
+    "carry": "grounded",
+    "strip": {
+     "v": 1,
+     "state": "placed",
+     "choice": "gate"
+    },
+    "browse": "kept",
+    "preSwap": "from the first mover",
+    "cancelled": "no trace"
+   }
+  },
+  {
+   "name": "13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close",
+   "passed": true,
+   "info": {
+    "hips": 0.61,
+    "feet": 0.15,
+    "apart": 0.72
+   }
+  },
+  {
+   "name": "14. Split views keep prompts and visibility: at 1280x800 and 1280x720 at the five checkpoints of a delivery, in both views the bench, both holders and the next-corner point are inside the usable area, the corner point is kept, the smaller holder is at least 70 px tall and the prompt carries the right Move or Turn chip; the camera distance changes by at most 2.5% a frame; the ghost is in both views in the chooser; at 390x844 and 844x390 the corner point is dropped for the arrow, which points where that view draws the next corner (within 3 degrees) from the edge of its framed area, never over the prompt card, and the heights are recorded",
+   "passed": true,
+   "info": {
+    "desk": [
+     {
+      "cp": "street",
+      "px": [
+       194,
+       219,
+       169,
+       197
+      ]
+     },
+     {
+      "cp": "inside the gate",
+      "px": [
+       204,
+       219,
+       160,
+       191
+      ]
+     },
+     {
+      "cp": "courtyard",
+      "px": [
+       167,
+       229,
+       165,
+       225
+      ]
+     },
+     {
+      "cp": "before the passage",
+      "px": [
+       205,
+       262,
+       202,
+       236
+      ]
+     },
+     {
+      "cp": "room",
+      "px": [
+       246,
+       261,
+       236,
+       234
+      ]
+     }
+    ],
+    "phone": [
+     {
+      "cp": "street",
+      "px": [
+       122,
+       81,
+       86,
+       86
+      ]
+     },
+     {
+      "cp": "inside the gate",
+      "px": [
+       97,
+       65,
+       69,
+       69
+      ]
+     },
+     {
+      "cp": "courtyard",
+      "px": [
+       113,
+       75,
+       80,
+       80
+      ]
+     },
+     {
+      "cp": "before the passage",
+      "px": [
+       113,
+       75,
+       80,
+       80
+      ]
+     },
+     {
+      "cp": "room",
+      "px": [
+       108,
+       72,
+       76,
+       76
+      ]
+     }
+    ],
+    "edgeArrows": 20,
+    "camStep": true,
+    "phoneDeliveries": [
+     [
+      "390x844",
+      406
+     ],
+     [
+      "844x390",
+      406
+     ]
+    ]
+   }
+  },
+  {
+   "name": "15. Modes: a holder’s pad disconnecting sets it down; online it is set down, paused and absent from blocked() and the scene, an open fresh delivery is cancelled, and back on one device a player who stood where it lay is moved clear (it stays put); a pair sitting on it stand up when the household goes online; a companion household sees no offer but the two-hands line from day 2 without any flag (and nothing spawns), an online one the one-device line; a first delivery can be left for now (gone, the offer back); the evening waits while the bench is in hands, starts with it lying on the ground or placed, its pending() untouched; Ada thanks them once after placement; LINES35 is untouched",
+   "passed": true,
+   "info": {
+    "evening": "waits while carried",
+    "adb36": true,
+    "lines": "tunde:42,nkechi:41,ada:41"
+   }
+  },
+  {
+   "name": "16. Hotspots: with each arrangement placed a player at the pepper pot’s own point gets the pot; a player at (-5.95, 6.4) gets “Sit on the bench together” or “Wait for …”; both players pressing Act at the same end on the same frame give one holder and the toast; a player whose step to the stand point would cut through the doorway jamb is asked to come round, and takes the end once straight on",
+   "passed": true,
+   "info": {
+    "out": [
+     "Tend the pepper pot",
+     "Wait for Ola"
+    ],
+    "gate": [
+     "Tend the pepper pot",
+     "Wait for Ola"
+    ],
+    "water": [
+     "Tend the pepper pot",
+     "Wait for Ola"
+    ],
+    "same": "Efe has that end. Take the other one.",
+    "round": "Come round to this end"
+   }
+  },
+  {
+   "name": "17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests (also on the frames the walls help, whose peak is recorded), a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses; weighed in box tests (a blocked() call 3, one answered from the reach run’s index 1/4, a walk-grid cell 1/64), no frame from the lift to the bench in its place weighs more than 1,200 (about 6 ms), and the frame the chooser opens in runs no arrangement check",
+   "passed": true,
+   "info": {
+    "frames": 3266,
+    "subMax": 2,
+    "blockedMax": 16,
+    "boxMax": 8,
+    "helped": {
+     "frames": 141,
+     "blockedMax": 6,
+     "boxMax": 4
+    },
+    "idle": 0,
+    "frameMax": {
+     "nodes": 685,
+     "arr": 1,
+     "bfs": 1,
+     "cells": 3027
+    },
+    "workMax": 685,
+    "chooserWorkMax": 685,
+    "indexSame": [
+     157878,
+     0
+    ]
+   }
+  },
+  {
+   "name": "18. Glyph and page: Ada’s note says one walks it and one turns it, the lift toast names who walks it and who turns it, and the first lift’s hints say how; after E and Enter presses the prompts show E and ⏎, not the pad’s A; while the bench is held the area captions are hidden in both views (and the same ones come back once it is down) and the page is marked busy (the wayfinding pill and, on small screens, the Pantry card step aside), after the first two lifts the carry prompt is marked compact, the chooser marks the page for its top strip, and a see-through outline of the bench shows only while it is held",
+   "passed": true,
+   "info": {
+    "glyphs": [
+     "E",
+     "⏎"
+    ],
+    "classes": [
+     "",
+     "bench36-busy",
+     "bench36-busy bench36-compact",
+     "",
+     "bench36-busy bench36-choose"
+    ],
+    "toast": "Lifted. Efe walks it, Ola turns it.",
+    "captions": {
+     "before": 23,
+     "held": 0
+    }
+   }
+  },
+  {
+   "name": "19. Walls guide, never turn: the passage, the flat door and the veranda doorway measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames",
+   "passed": true,
+   "info": {
+    "openings": [
+     [
+      "passage",
+      -2.35,
+      -1.15,
+      -1.75
+     ],
+     [
+      "flat door",
+      4.3,
+      5.5,
+      4.9
+     ],
+     [
+      "veranda doorway",
+      -4.6,
+      -3.6,
+      -4.1
+     ]
+    ],
+    "movedJamb": "bench36: the passage measures -1.79 m, not -1.75 m; its funnel is off",
+    "funnel": [
+     [
+      "passage",
+      5,
+      0.638,
+      -0.106,
+      0.05,
+      0
+     ],
+     [
+      "passage",
+      10,
+      0.63,
+      -0.159,
+      0.05,
+      0
+     ],
+     [
+      "passage",
+      14,
+      0.623,
+      -0.187,
+      0.05,
+      0.014
+     ],
+     [
+      "passage",
+      20,
+      0.332,
+      0,
+      0.1,
+      0.014
+     ],
+     [
+      "flat door",
+      5,
+      0.638,
+      -0.106,
+      0.05,
+      0
+     ],
+     [
+      "flat door",
+      10,
+      0.638,
+      -0.161,
+      0.05,
+      0
+     ],
+     [
+      "flat door",
+      14,
+      0.63,
+      -0.189,
+      0.05,
+      0.013
+     ],
+     [
+      "flat door",
+      20,
+      0.332,
+      0,
+      0.1,
+      0.014
+     ],
+     [
+      "veranda doorway",
+      5,
+      0.316,
+      -0.078,
+      0.05,
+      0
+     ],
+     [
+      "veranda doorway",
+      10,
+      0.337,
+      -0.101,
+      0.05,
+      0.007
+     ],
+     [
+      "veranda doorway",
+      14,
+      0.337,
+      -0.101,
+      0.05,
+      0.03
+     ],
+     [
+      "veranda doorway",
+      20,
+      0.209,
+      0,
+      0.1,
+      0.028
+     ]
+    ],
+    "cap": {
+     "first": 0.15,
+     "afterBack": 0.15,
+     "afterSetDown": 0.15
+    },
+    "post": [
+     -2.173,
+     -2.173,
+     -2.189,
+     -2.189,
+     -2.189,
+     -2.157,
+     -2.157,
+     -2.173,
+     -2.173,
+     -2.173
+    ]
+   }
+  },
+  {
+   "name": "20. Solo: one player alone for 120 s (the mover ratcheting either way or pressing random keys, or the turner pressing random keys) from ten poses (by the gate 25 and 45 degrees off, inside the gate 40 off, corner 1 half-turned, the passage mouth 30 and 15 off, the flat door 20 off, the veranda doorway 15 off, the room 25 and 45 degrees off the doorway’s axis) never changes the yaw by the mover’s keys, never moves the centre more than 0.08 m by the turner’s, never passes more than one opening and only along a straight, and reaches the chooser only in the two straight pushes from 15 degrees off at the veranda doorway and the two from 25 degrees off in the room (the shipped plan’s own last move; the build before the guided walls delivers these too), never from 45 degrees off (the delivery zone wants the bench within 30 degrees of the doorway’s axis); the walls’ help is used in these runs",
+   "passed": true,
+   "info": {
+    "runs": [
+     [
+      "by the gate 25° off",
+      "ratchet+",
+      [
+       3.9,
+       7.1,
+       120
+      ],
+      8.6155,
+      "street",
+      [
+       9.88,
+       13.3,
+       120
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 25° off",
+      "ratchet-",
+      [
+       3.9,
+       7.1,
+       120
+      ],
+      11.9355,
+      "street > courtyard at 120°",
+      [
+       -1.55,
+       -3.43,
+       120
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 25° off",
+      "mover-random",
+      [
+       3.9,
+       7.1,
+       120
+      ],
+      5.3924,
+      "street > courtyard at 120°",
+      [
+       3.77,
+       6.15,
+       120
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 25° off",
+      "turner-random",
+      [
+       3.9,
+       7.1,
+       120
+      ],
+      0.0598,
+      "street",
+      [
+       3.94,
+       7.15,
+       -250.3
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 45° off",
+      "ratchet+",
+      [
+       3.9,
+       7.1,
+       140
+      ],
+      10.1629,
+      "street",
+      [
+       10.98,
+       14.19,
+       140
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 45° off",
+      "ratchet-",
+      [
+       3.9,
+       7.1,
+       140
+      ],
+      5.3443,
+      "street",
+      [
+       -1.44,
+       6.9,
+       140
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 45° off",
+      "mover-random",
+      [
+       3.9,
+       7.1,
+       140
+      ],
+      2.5504,
+      "street",
+      [
+       3.9,
+       9.04,
+       140
+      ],
+      "carrying"
+     ],
+     [
+      "by the gate 45° off",
+      "turner-random",
+      [
+       3.9,
+       7.1,
+       140
+      ],
+      0.0597,
+      "street",
+      [
+       3.94,
+       7.15,
+       670.8
+      ],
+      "carrying"
+     ],
+     [
+      "inside the gate 40° off",
+      "ratchet+",
+      [
+       3.6,
+       5,
+       135
+      ],
+      12.0275,
+      "courtyard > street at 135°",
+      [
+       11.09,
+       14.31,
+       135
+      ],
+      "carrying"
+     ],
+     [
+      "inside the gate 40° off",
+      "ratchet-",
+      [
+       3.6,
+       5,
+       135
+      ],
+      9.2908,
+      "courtyard",
+      [
+       -2.19,
+       -1.8,
+       135
+      ],
+      "carrying"
+     ],
+     [
+      "inside the gate 40° off",
+      "mover-random",
+      [
+       3.6,
+       5,
+       135
+      ],
+      3.5211,
+      "courtyard",
+      [
+       2.23,
+       3.53,
+       135
+      ],
+      "carrying"
+     ],
+     [
+      "inside the gate 40° off",
+      "turner-random",
+      [
+       3.6,
+       5,
+       135
+      ],
+      0.08,
+      "courtyard",
+      [
+       3.6,
+       4.92,
+       160.8
+      ],
+      "carrying"
+     ],
+     [
+      "corner 1 half-turned",
+      "ratchet+",
+      [
+       -1,
+       0.95,
+       215
+      ],
+      3.8962,
+      "courtyard",
+      [
+       2.27,
+       -1.15,
+       215
+      ],
+      "carrying"
+     ],
+     [
+      "corner 1 half-turned",
+      "ratchet-",
+      [
+       -1,
+       0.95,
+       215
+      ],
+      0.5009,
+      "courtyard",
+      [
+       -1.13,
+       1.08,
+       215
+      ],
+      "carrying"
+     ],
+     [
+      "corner 1 half-turned",
+      "mover-random",
+      [
+       -1,
+       0.95,
+       215
+      ],
+      2.8753,
+      "courtyard",
+      [
+       -0.45,
+       0.54,
+       215
+      ],
+      "carrying"
+     ],
+     [
+      "corner 1 half-turned",
+      "turner-random",
+      [
+       -1,
+       0.95,
+       215
+      ],
+      0.08,
+      "courtyard",
+      [
+       -0.92,
+       0.95,
+       217.3
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 30° off",
+      "ratchet+",
+      [
+       -1.65,
+       1,
+       240
+      ],
+      5.6603,
+      "courtyard",
+      [
+       0.58,
+       -3.92,
+       240
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 30° off",
+      "ratchet-",
+      [
+       -1.65,
+       1,
+       240
+      ],
+      0.8922,
+      "courtyard > passage at 240°",
+      [
+       -1.67,
+       1.87,
+       240
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 30° off",
+      "mover-random",
+      [
+       -1.65,
+       1,
+       240
+      ],
+      2.1562,
+      "courtyard > passage at 240°",
+      [
+       -1.34,
+       1.22,
+       240
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 30° off",
+      "turner-random",
+      [
+       -1.65,
+       1,
+       240
+      ],
+      0.0798,
+      "courtyard",
+      [
+       -1.57,
+       0.99,
+       253.8
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 15° off",
+      "ratchet+",
+      [
+       -1.65,
+       1,
+       255
+      ],
+      5.4094,
+      "courtyard",
+      [
+       -0.36,
+       -3.97,
+       255
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 15° off",
+      "ratchet-",
+      [
+       -1.65,
+       1,
+       255
+      ],
+      3.4405,
+      "courtyard > passage at 255°",
+      [
+       -2.1,
+       4.4,
+       255
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 15° off",
+      "mover-random",
+      [
+       -1.65,
+       1,
+       255
+      ],
+      2.6253,
+      "courtyard > passage at 255°",
+      [
+       -1.25,
+       -1.48,
+       255
+      ],
+      "carrying"
+     ],
+     [
+      "passage mouth 15° off",
+      "turner-random",
+      [
+       -1.65,
+       1,
+       255
+      ],
+      0.0798,
+      "courtyard",
+      [
+       -1.57,
+       0.99,
+       282.7
+      ],
+      "carrying"
+     ],
+     [
+      "flat door 20° off",
+      "ratchet+",
+      [
+       -2,
+       4.9,
+       200
+      ],
+      1.1444,
+      "passage",
+      [
+       -1.19,
+       4.23,
+       200
+      ],
+      "carrying"
+     ],
+     [
+      "flat door 20° off",
+      "ratchet-",
+      [
+       -2,
+       4.9,
+       200
+      ],
+      1.5822,
+      "passage > room at 200°",
+      [
+       -3.53,
+       5.29,
+       200
+      ],
+      "carrying"
+     ],
+     [
+      "flat door 20° off",
+      "mover-random",
+      [
+       -2,
+       4.9,
+       200
+      ],
+      1.2829,
+      "passage > room at 200°",
+      [
+       -1.44,
+       4.31,
+       200
+      ],
+      "carrying"
+     ],
+     [
+      "flat door 20° off",
+      "turner-random",
+      [
+       -2,
+       4.9,
+       200
+      ],
+      0.0799,
+      "passage",
+      [
+       -2.06,
+       4.95,
+       205.5
+      ],
+      "carrying"
+     ],
+     [
+      "veranda doorway 15° off",
+      "ratchet+",
+      [
+       -3.9,
+       4.85,
+       255
+      ],
+      0.9653,
+      "room",
+      [
+       -3.83,
+       3.97,
+       255
+      ],
+      "carrying"
+     ],
+     [
+      "veranda doorway 15° off",
+      "ratchet-",
+      [
+       -3.9,
+       4.85,
+       255
+      ],
+      0.2276,
+      "room",
+      [
+       -4.01,
+       5.05,
+       255
+      ],
+      "chooser"
+     ],
+     [
+      "veranda doorway 15° off",
+      "mover-random",
+      [
+       -3.9,
+       4.85,
+       255
+      ],
+      0.9621,
+      "room",
+      [
+       -4.1,
+       5.04,
+       255
+      ],
+      "chooser"
+     ],
+     [
+      "veranda doorway 15° off",
+      "turner-random",
+      [
+       -3.9,
+       4.85,
+       255
+      ],
+      0.0798,
+      "room",
+      [
+       -3.82,
+       4.84,
+       248.7
+      ],
+      "carrying"
+     ],
+     [
+      "room 25° off the doorway",
+      "ratchet+",
+      [
+       -3.7,
+       4.75,
+       65
+      ],
+      0.372,
+      "room",
+      [
+       -3.86,
+       5.09,
+       65
+      ],
+      "chooser"
+     ],
+     [
+      "room 25° off the doorway",
+      "ratchet-",
+      [
+       -3.7,
+       4.75,
+       65
+      ],
+      1.0385,
+      "room",
+      [
+       -3.24,
+       3.89,
+       65
+      ],
+      "carrying"
+     ],
+     [
+      "room 25° off the doorway",
+      "mover-random",
+      [
+       -3.7,
+       4.75,
+       65
+      ],
+      1.0084,
+      "room",
+      [
+       -3.86,
+       5.09,
+       65
+      ],
+      "chooser"
+     ],
+     [
+      "room 25° off the doorway",
+      "turner-random",
+      [
+       -3.7,
+       4.75,
+       65
+      ],
+      0.06,
+      "room",
+      [
+       -3.75,
+       4.74,
+       70.4
+      ],
+      "carrying"
+     ],
+     [
+      "room 45° off the doorway",
+      "ratchet+",
+      [
+       -3.7,
+       4.75,
+       45
+      ],
+      0.6106,
+      "room",
+      [
+       -3.52,
+       5.13,
+       45
+      ],
+      "carrying"
+     ],
+     [
+      "room 45° off the doorway",
+      "ratchet-",
+      [
+       -3.7,
+       4.75,
+       45
+      ],
+      1.119,
+      "room",
+      [
+       -3.49,
+       3.69,
+       45
+      ],
+      "carrying"
+     ],
+     [
+      "room 45° off the doorway",
+      "mover-random",
+      [
+       -3.7,
+       4.75,
+       45
+      ],
+      1.4644,
+      "room",
+      [
+       -4.12,
+       3.77,
+       45
+      ],
+      "carrying"
+     ],
+     [
+      "room 45° off the doorway",
+      "turner-random",
+      [
+       -3.7,
+       4.75,
+       45
+      ],
+      0.08,
+      "room",
+      [
+       -3.7,
+       4.67,
+       1.4
+      ],
+      "carrying"
+     ]
+    ],
+    "lone": [
+     "veranda doorway 15° off · ratchet-",
+     "veranda doorway 15° off · mover-random",
+     "room 25° off the doorway · ratchet+",
+     "room 25° off the doorway · mover-random"
+    ],
+    "helped": true
+   }
+  },
+  {
+   "name": "21. Key repeat: an OS key repeat on E or Enter is never a fresh Act anywhere in the bench (the page’s own keydown listeners, fired by hand): a held E after taking an end never swaps roles, held E and Enter while carrying never set it down (one fresh press still does), a held E in the chooser never takes the agreement back, a held E on the bench never stands them up; with no bench about, a repeat still sets the latch as before",
+   "passed": true,
+   "info": {
+    "offRepeat": true,
+    "repeatsIgnored": 100
+   }
+  },
+  {
+   "name": "22. Focus loss: a window blur mid-push (a key held and a stick leaning) and the page hidden mid-swing let go of every key, both sticks and the Act latches; the carried bench stops dead where it is, still held, and does not move in the next 60 frames; in the chooser a held arrow stops stepping",
+   "passed": true,
+   "info": {
+    "blur": {
+     "moved": 0,
+     "vel": [
+      0,
+      0
+     ]
+    },
+    "hidden": "still",
+    "chooser": "gate"
+   }
+  },
+  {
+   "name": "23. The clock pauses only while the bench is busy: 300 frames carried along the plan, 300 frames in the chooser and every frame of the glide move the clock by 0 h (so a carry begun at 24.19 h meets no “Past midnight” card), while 300 frames with the bench lying untouched, with one player holding an end, and sitting on it move it by the normal 1/6 h",
+   "passed": true,
+   "info": {
+    "carried": 0,
+    "chooserAndGlide": 0,
+    "lying": 0.167,
+    "oneHolds": 0.167,
+    "seated": 0.167,
+    "late": "no card"
+   }
+  },
+  {
+   "name": "24. The directions pill: shown before, it is out of sight with one end taken, while carried, in the chooser and while sitting, and comes back exactly as it was after a set-down, after the chooser and after standing up",
+   "passed": true,
+   "info": {
+    "before": [
+     "flex",
+     ""
+    ],
+    "held": "hidden",
+    "after": [
+     "flex",
+     ""
+    ]
+   }
+  },
+  {
+   "name": "25. Something to do together: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why; while the first-evening guide is on, Tasks opens its journal and the same card is in it, under its heading",
+   "passed": true,
+   "info": {
+    "cards": [
+     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands Ada left her bench at your gate. Carry it in together: one walks it, one turns it. We’ll fetch it",
+     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands It is waiting at your gate. Take an end each. Find the bench",
+     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands One of you walks it and one turns it. Your companion can’t take an end, so this one is for two players on this device. Play this with two players on this device",
+     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands Carry Ada’s bench when you are both on one device."
+    ]
+   }
+  },
+  {
+   "name": "26. The chooser by touch: each view’s strip has ◀ and ▶ and its own player’s “agrees” button (tapped through the strip’s own handler), a tap browses and clears both agreements, the agreed state shows on the button, two taps commit; the ghost is in the role yellow when free and red when not, its body itself in that colour (not pale cream), with a seat-height outline, a broad 5 cm outline and a large seat arrow (0.44 m) at the arrangement and faint outlines at the other two, all seen through the parapet; the arrangement’s name is at least 1.4 rem at the desk and 16 px on phones; the buttons take taps and are at least 44 px (the stylesheet)",
+   "passed": true,
+   "info": {
+    "ghost": {
+     "free": "#F2B33D",
+     "notFree": "#E0704F",
+     "body": "role yellow",
+     "frame": 0.05,
+     "arrow": [
+      0.44,
+      0.4
+     ],
+     "name": [
+      1.45,
+      16
+     ]
+    },
+    "taps": "browse, agree, not yet, commit"
+   }
+  },
+  {
+   "name": "27. Pause and find: “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes",
+   "passed": true,
+   "info": {
+    "pause": {
+     "setdowns": 0
+    },
+    "find": "marked, followed a reset, cleared on taking an end",
+    "chooser": "paused in the doorway, lifted back into the chooser"
+   }
+  },
+  {
+   "name": "28. A companion household with two players: its Menu and Today offer “Play this with two players on this device”, which switches to two-player controls (AI.on and S.ai false, both views) and starts the delivery; a reload mid-switch stays two-player with “Back to my companion”; a pause restores the companion exactly (AI.on, S.ai, AI.i, its position, the views, the save’s keys); a second switch through to placing, sitting and standing up restores it again, and so does leaving an again run; with the companion back and away, a player at the bench is not told to wait for it; online there is no switch",
+   "passed": true,
+   "info": {
+    "companionAway": "Tend the pepper pot",
+    "restored": [
+     "pause",
+     "stand up",
+     "again left"
+    ],
+    "reload": "two players, way back"
+   }
+  },
+  {
+   "name": "29. A holder never pins the other player in (the doorway trap the guided prototype’s seed 7 found): with the bench set down in the room and its end in the veranda doorway’s mouth, a player in the room is asked to leave that end to the partner standing in the doorway (“Ola needs this end”, and Act says why), takes the far end instead, and the partner comes round and they lift; a holder who stands in the partner’s only way round is asked to let go (“Let go · Ola can’t get round”, the partner sees “Ask Efe to let go”), lets go by Act or by himself after 2.5 s, and steps back on his own side of the jamb; a set-down there puts each holder on their own side of any wall, and the harness’s walk, with the first holder’s body in the way, finds an order in which they can lift",
+   "passed": true,
+   "info": {
+    "trap": {
+     "efe": "Ola needs this end",
+     "ola": "Come round to this end"
+    },
+    "pinned": {
+     "prompt": [
+      "Let go · Ola can’t get round",
+      "Ask Efe to let go"
+     ],
+     "letGo": "Act, or by himself after 2.5 s"
+    },
+    "setDown": {
+     "ola": [
+      -4.126,
+      5.38
+     ],
+     "efe": [
+      -2.975,
+      3.454
+     ]
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 bench36Valid always true",
+   "check": 5,
+   "result": "red"
+  },
+  {
+   "name": "M2 the mover’s input also turns the bench",
+   "check": 3,
+   "result": "red"
+  },
+  {
+   "name": "M3 bench36Liftable always true",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M4 the save wrapper passes straight through",
+   "check": 12,
+   "result": "red"
+  },
+  {
+   "name": "M5 the camera wrapper passes straight through",
+   "check": 14,
+   "result": "red"
+  },
+  {
+   "name": "M6a sitStop is never held back",
+   "check": 13,
+   "result": "red"
+  },
+  {
+   "name": "M6b sitStop is held back whenever seated",
+   "check": 13,
+   "result": "red"
+  },
+  {
+   "name": "M7a no direction latch",
+   "check": 10,
+   "result": "red"
+  },
+  {
+   "name": "M7b the old exponential easing (rate 8)",
+   "check": 10,
+   "result": "red"
+  },
+  {
+   "name": "M8 arrangement checks not isolated",
+   "check": 11,
+   "result": "red"
+  },
+  {
+   "name": "M9 the hotspot hook also answers for a placed bench",
+   "check": 16,
+   "result": "red"
+  },
+  {
+   "name": "M10 the walk grid stops at x 6.0 and z 11.0 again, and nobody outside it reaches anything",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M11 the step to the stand point outlives a set-down",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M12 holders are tested at the walking radius",
+   "check": 8,
+   "result": "red"
+  },
+  {
+   "name": "M13 a set-down keeps the stall",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M14 the glide’s shortcuts are not tested",
+   "check": 11,
+   "result": "red"
+  },
+  {
+   "name": "M15 the funnel turns the bench again",
+   "check": 19,
+   "result": "red"
+  },
+  {
+   "name": "M16 no cap on the sideways help a contact",
+   "check": 19,
+   "result": "red"
+  },
+  {
+   "name": "M17 a correction is tested at its end only",
+   "check": 19,
+   "result": "red"
+  },
+  {
+   "name": "M18 no cap on the centre’s step for a refused swing",
+   "check": 3,
+   "result": "red"
+  },
+  {
+   "name": "M19 the sideways help may also turn the bench half a degree",
+   "check": 3,
+   "result": "red"
+  },
+  {
+   "name": "M20 a held Act key repeats again",
+   "check": 21,
+   "result": "red"
+  },
+  {
+   "name": "M21 a blur lets go of the keys but not the carry’s speed",
+   "check": 22,
+   "result": "red"
+  },
+  {
+   "name": "M22 the clock stops whenever a delivery is open",
+   "check": 23,
+   "result": "red"
+  },
+  {
+   "name": "M23 the clock also stops while they sit",
+   "check": 23,
+   "result": "red"
+  },
+  {
+   "name": "M24 the pill is never brought back",
+   "check": 24,
+   "result": "red"
+  },
+  {
+   "name": "M25 the agree button does not show the agreement",
+   "check": 26,
+   "result": "red"
+  },
+  {
+   "name": "M26 a ghost that is not free keeps the free colour",
+   "check": 26,
+   "result": "red"
+  },
+  {
+   "name": "M27 the Find marker outlives the grab",
+   "check": 27,
+   "result": "red"
+  },
+  {
+   "name": "M28 the companion comes back where the pair left it",
+   "check": 28,
+   "result": "red"
+  },
+  {
+   "name": "M29 the switch is not saved, so a reload loses the way back",
+   "check": 28,
+   "result": "red"
+  },
+  {
+   "name": "M30 a player may take the end the partner needs to get round",
+   "check": 29,
+   "result": "red"
+  },
+  {
+   "name": "M31 a holder who pins the partner never lets go by himself",
+   "check": 29,
+   "result": "red"
+  },
+  {
+   "name": "M32 a holder’s body is not in the way",
+   "check": 29,
+   "result": "red"
+  },
+  {
+   "name": "M33 a holder steps back to the first free point, even beyond the jamb",
+   "check": 29,
+   "result": "red"
+  },
+  {
+   "name": "M34 “Cook” hides “Take this end” again",
+   "check": 29,
+   "result": "red"
+  },
+  {
+   "name": "M35 a cancelled run keeps its first mover",
+   "check": 12,
+   "result": "red"
+  },
+  {
+   "name": "M36 the reach run walks the whole obstacle list again",
+   "check": 17,
+   "result": "red"
+  },
+  {
+   "name": "M37 the chooser checks the selected arrangement in the delivery frame again",
+   "check": 17,
+   "result": "red"
+  },
+  {
+   "name": "M38 the ghost’s body is pale again",
+   "check": 26,
+   "result": "red"
+  },
+  {
+   "name": "M39 an end counts as reachable without a clear straight step to it",
+   "check": 6,
+   "result": "red"
+  },
+  {
+   "name": "M40 the delivery zone ignores the heading",
+   "check": 20,
+   "result": "red"
+  },
+  {
+   "name": "M41 the sideways help turns the bench half a degree while Turn swings",
+   "check": 3,
+   "result": "red"
+  },
+  {
+   "name": "M42 the funnel turns the bench while Turn swings",
+   "check": 3,
+   "result": "red"
+  },
+  {
+   "name": "M43 the turner’s hint always points the same way round",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M44 a stuck bench that cannot be set down is never put back by Act",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M45 a swing held against the wall never brings the turn aid",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M46 the gate pillars never fade",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M47 the stuck line replaces the role on the player card again",
+   "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M48 the arrows ignore the prompt card",
+   "check": 14,
+   "result": "red"
+  },
+  {
+   "name": "M49 a saved arrangement key is taken unchecked",
+   "check": 12,
+   "result": "red"
+  },
+  {
+   "name": "M50 Find leaves no destination behind",
+   "check": 27,
+   "result": "red"
+  },
+  {
+   "name": "M51 the first-evening journal has no bench card",
+   "check": 25,
+   "result": "red"
+  },
+  {
+   "name": "M52 a player waits for the companion at the bench",
+   "check": 28,
+   "result": "red"
+  },
+  {
+   "name": "M53 a holder with no room is reported as boxed in",
+   "check": 9,
+   "result": "red"
+  }
+ ],
+ "determinism": "identical"
+}

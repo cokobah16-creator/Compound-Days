@@ -1,0 +1,211 @@
+{
+  "build": "v36-dac9dba8",
+  "passed": true,
+  "checks": [
+    {
+      "name": "1. Core: clock35 follows CLOCK35.fn, cue35 reaches its hooks and is silent on replays",
+      "passed": true
+    },
+    {
+      "name": "2. Purse: new households start with ₦6,000 (companion, two players), old saves keep their money",
+      "passed": true,
+      "info": {
+        "purse": 6000
+      }
+    },
+    {
+      "name": "3. Seedling: none on day 1 for a new household; it arrives on day 2 (without the later modules), lazily on plant or load; old households plant on day 1",
+      "passed": true,
+      "info": {
+        "gardenChildren": [
+          11,
+          15
+        ]
+      }
+    },
+    {
+      "name": "4. Crop: a watered day adds a stage overnight; watering at stage 2 ripens at once; harvest gives three peppers and resets the pot; the pot marker clears when nothing more is due; stage 2 has flowers; the harvest has its own card",
+      "passed": true,
+      "info": {
+        "waterCues": [
+          "water:1",
+          "water:3"
+        ]
+      }
+    },
+    {
+      "name": "5. Wall-clock bite: 2.2–4.4 s of real time at 5 fps; nibble before bite; dt-only loops still bite; none behind the Menu; one catch cue",
+      "passed": true,
+      "info": {
+        "biteSeconds": 3.4,
+        "callsAt5fps": 17,
+        "dtOnlyCalls": 41
+      }
+    },
+    {
+      "name": "6. Act: presses Cast, Reel in, Keep or Cast again on the fishing panels only, 300 ms after a panel change, never in a text field or on any other panel",
+      "passed": true,
+      "info": {
+        "fishing": {
+          "ready": "lifeCast",
+          "waiting": null,
+          "bite": "lifeReel",
+          "catch": "lifeCatch:keep"
+        },
+        "oneButtonLoop": [
+          "lifeCast",
+          "lifeReel",
+          "lifeCatch",
+          "lifeFish",
+          "-"
+        ],
+        "refused": [
+          "newconfirm",
+          "sleep",
+          "night",
+          "midnight",
+          "today",
+          "menu",
+          "talk"
+        ]
+      }
+    },
+    {
+      "name": "7. Outdoor seats: armchair and chairs at veranda columns 1, 2 and 6; the walkway, the room cell inside the door and the path to the pot stay clear; the veranda and the pot are reached on foot from inside the flat",
+      "passed": true,
+      "info": {
+        "potReach": 0.05,
+        "verandaCellsReachedFromInside": "001110",
+        "decoratableVerandaColumns": [
+          1,
+          2,
+          6
+        ]
+      }
+    },
+    {
+      "name": "8. Paint: the six flat walls and the floor are tagged; buy at Finds (each card’s swatch is its paint’s colour, Adire indigo a soft indigo limewash #6D8AB8), paint at home, undo, reload and a courtyard style keep it; env keeps its own materials",
+      "passed": true,
+      "info": {
+        "wallHex": "#6D8AB8",
+        "prices": [
+          2500,
+          2000,
+          1500,
+          2500,
+          2000
+        ]
+      }
+    },
+    {
+      "name": "9. Copy: no “two watered nights”; plan details start “Tomorrow morning,” without a lesson price; Tunde’s card, the note and the almanac follow the rules",
+      "passed": true,
+      "info": {
+        "tunde": [
+          "Your veranda pot is empty for now. Tomorrow morning I will leave you a seedling. Then we see.",
+          "I left a seedling by your pot. Plant it, give it water. Tomorrow we see."
+        ]
+      }
+    },
+    {
+      "name": "10. Finds never asks for agreement; in a companion household the companion approves in the toast",
+      "passed": true,
+      "info": {
+        "toast": "Potted plant is in Build storage. Ola: “Ehen! That is the one.”",
+        "paint": "Ochre limewash is yours. Change the walls and floor from Home. Ola: “That one is correct. The flat will thank us.”"
+      }
+    },
+    {
+      "name": "11. Companion shop floor: during the guided shop stage a new household’s companion buys any jollof item it can afford",
+      "passed": true,
+      "info": {
+        "item": "tomato",
+        "price": 1450
+      }
+    },
+    {
+      "name": "12. Weekdays: none in item blurbs, the square, occasions, courtyard styles, the copy table, the journal, the noticeboard, Nkechi’s café line or the film-night toast",
+      "passed": true,
+      "info": {
+        "scanned": "blurbs, square, occasions, presets, copy table, five journal tabs, noticeboard, toast, memory, talk",
+        "cafe": "jollof every evening"
+      }
+    },
+    {
+      "name": "13. Veranda reach: the armchair, the chairs or a planter beside the pot (column 2, column 1 left free behind it) is allowed from the Home page and from Build; the pot and the walkway stay reachable; another piece can be chosen straight after",
+      "passed": true,
+      "info": {
+        "allowedBesideThePot": [
+          "armchair",
+          "chairs",
+          "planter"
+        ],
+        "fromBuild": "planter@2"
+      }
+    },
+    {
+      "name": "14. Veranda reach: a layout that would shut the pot off is refused with one line, from the Home page, from Build and on a move, and nothing changes; a turn that would shut it is refused; online, a refused placement or turn is never sent to the other device, while an allowed one is; a replayed action from the other device is not second-guessed",
+      "passed": true,
+      "info": {
+        "refused": [
+          "armchair",
+          "chairs",
+          "planter"
+        ],
+        "line": "That would block the way along the veranda."
+      }
+    },
+    {
+      "name": "15. Veranda reach: an old playtester save with the armchair beside the pot loads unchanged and can be decorated; a save whose pot is already shut off (stubbed) loads as saved and still takes harmless pieces",
+      "passed": true,
+      "info": {
+        "items": 8,
+        "veranda": [
+          "armchair@1",
+          "chairs@0",
+          "planter@5"
+        ]
+      }
+    },
+    {
+      "name": "16. Veranda reach costs nothing per frame: 90 real frames with a piece carried beside the pot and the Home grid drawn run no search; only putting it down does",
+      "passed": true,
+      "info": {
+        "framesChecked": 90,
+        "searchesInFrames": 0,
+        "searchesOnPlacement": 1
+      }
+    },
+    {
+      "name": "17. Adire indigo: a soft indigo limewash, ΔE2000 15 or more from every top colour the wardrobe gives a player (the colours the game computes), and the Finds swatch and Home chip match it",
+      "passed": true,
+      "info": {
+        "hex": "#6D8AB8",
+        "lch": [
+          57,
+          27.4,
+          273.6
+        ],
+        "tops": 14,
+        "nearest": [
+          [
+            "#3B5BA9",
+            17.4,
+            "tee/1"
+          ],
+          [
+            "#A9C7EC",
+            17.8,
+            "office/2"
+          ],
+          [
+            "#1F6F7A",
+            22.4,
+            "kaftan/2"
+          ]
+        ]
+      }
+    }
+  ],
+  "method": "Actual runtime state and actions in Node with the shipped Three.js and the authored hero; companion households made through dispatch(aiStart); the wall clock stubbed through CLOCK35; checks 3 and 12 include a subset pass that loads the v35 modules only up to tune-v35.js; check 16 drives the real base frame (index.html tick, nothing drawn). Nothing rendered here; layout and the indigo were looked at separately in headless Chromium."
+}

@@ -187,7 +187,7 @@ let build=null;const checks=[];
  pass('Seated avatars rest hips and feet at the retuned v21 heights in all four sofa orientations with soles on the floor and the trouser sink within the documented limit, and saves keep standing positions',{hipAboveCushion:SEAT_HIP,footAboveFloor:SEAT_FOOT,soleTolerance:SOLE_TOL,thighBandSinkLimit:SEAT_SINK_LIMIT,cases:seated.length,maxThighBandSink:+Math.max(...seated.flatMap(c=>c.thighBandBelowCushion)).toFixed(3),seated});
 
  // 9. Build stamp in the Menu.
- build=run('BUILD_ID');assert(/^v33a-[0-9a-f]{8}$/.test(build),build);
+ build=run('BUILD_ID');const stampPrefix=fs.readFileSync(path.join(__dirname,'..','tools','stamp-build.py'),'utf8').match(/build='([^']+)'/)[1];assert(new RegExp('^'+stampPrefix+'[0-9a-f]{8}$').test(build),build+' does not carry the stamp prefix '+stampPrefix); // the prefix comes from tools/stamp-build.py, so this check follows the authored line's stamp instead of hard-coding it
  run('openMenu()');assert(run('panel.innerHTML').includes('Build '+build));
  pass('Menu shows the build id and the id carries the authored-character prefix',{build});
 
