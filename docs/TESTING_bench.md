@@ -15,6 +15,17 @@ What is being tested: can two people carry Ada's bench from the street gate to t
 - The Today page has a card, "Ada's bench needs two pairs of hands". The Menu has **Pause delivery and explore** and **Find the bench** beside **Bench stuck? Put it back**.
 - In the chooser each half of the screen has ◀ and ▶ buttons and that player's own "… agrees" button (it shows a tick), as well as the keys. The ghost of the chosen arrangement is yellow when it fits (red when it does not), with an outline and an arrow showing which way the seat faces.
 
+Round 3 (the review fixes in this build):
+
+- A set-down is accepted only where both players can really take an end, so nobody is left shut in the flat at corner 2.
+- The chooser opens only when the bench is lined up within 30° of the veranda doorway.
+- A refused set-down says why: "Not here: … has no room to step back. Carry it on a little first." or "Not here, it would box … in. Move a little first."
+- When the bench is stuck where it cannot be set down, the prompts say "Too tight to set down here. Back up a little." After one refused set-down there, the holders' prompt becomes **Put it back** and Act puts the bench back where both can lift it. This is an in-game reset: record it, it is not an intervention.
+- The turner's faint arrow now points the way that turns the bench towards the next corner, beside the turner's end. On phones the arrows keep clear of the prompt card.
+- Holding a swing against the wall for 1.5 s also brings "Try the other way".
+- The gate pillars fade when one hides a holder. While stuck, the player cards keep "Bench · Move" and "Bench · Turn".
+- While the first-evening guide is on, Tasks opens its journal, which now has the bench card too.
+
 **Do not explain any of this to the players.**
 
 ## Before the players arrive (about 10 minutes)
@@ -66,7 +77,7 @@ If the second carry has not reached the doorway by minute 20, let it run to minu
 
 **Watch for these, and note each on the sheet with its clock time:**
 
-- **Just inside the street gate:** is the bench turned the wrong way, with its front against the compound wall? This is where the computer model of two players stalls most often.
+- **Just inside the street gate:** is the bench turned the wrong way, with its front against the compound wall? This is where the computer model of two players stalls most often. Its slowest run still stalls there (see "Known risk" below). If the pair gets **Put it back** there, note whether they read it and use it.
 - **The corner-2 jambs** at the flat door, both the north one and the south one.
 - **The veranda doorway's east jamb.**
 - **Does the Turn player know which key is "sideways"** once the bench has turned? Look for keys pressed at random, or "which one?".
@@ -131,7 +142,7 @@ How to read it:
 - **Bumps**: every knock against a wall or a piece of furniture (at most one every 0.4 seconds while pushing into the same wall). A handful is normal at the two corners and the doorway. Dozens mean they were pushing blind; check your sheet for where.
 - **Set-downs**: how often a holder put it down on purpose. Letting go by walking off and the automatic set-down in the doorway are not counted. Many set-downs with no swaps can mean they were resting or regrouping; compare with your callouts.
 - **Swaps**: role swaps they chose while the bench was on the ground. The pre-swap at "Carry Ada's bench again" is not counted.
-- **Resets**: times the bench was put back at a checkpoint. Record them; they do not fail the session. A set-down ends a stall, so the in-game **Reset the bench** prompt only appears when the bench is on the ground and neither player can reach an end.
+- **Resets**: times the bench was put back at a checkpoint. Record them; they do not fail the session. A set-down ends a stall, so the in-game **Reset the bench** prompt only appears when the bench is on the ground and neither player can reach an end. **Put it back** (a holder's Act after a refused set-down while stuck) is counted here too.
 
 The day log (Menu → **Copy timeline and days**) also shows a `place bench:veranda` event at each agreement, with the time into that day's play.
 
@@ -162,6 +173,10 @@ If any one is missed, the session does not pass. Note which one, and the moment 
 - each player can name their role (Move or Turn) by the first corner.
 
 If a stall still happens, write down where, and whether the turner's key looked like the problem.
+
+## Known risk before this session
+
+The computer model of two players (36 held-out pairs) is the gate before people play. Its target is a slowest run of at most 120 s, and that target is still missed: 36 of 36 pairs deliver, one run has a 20-second stall and the median is 48.6 s, but the slowest run takes 151.0 s. That pair wedges the bench just inside the street gate, turned the wrong way with its rear end in the corner by the west pillar. The game refuses its set-downs there, correctly: the holder in the corner has no room to step back. The model reads only the set-down prompt, so it never presses **Put it back**, and it gets out only by backing up. Watch that spot, and note how long a real pair stays there and how they get out.
 
 ## After the session
 

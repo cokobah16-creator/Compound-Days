@@ -57,6 +57,8 @@ function benchBusy36(){const s=BENCH36.state;return !BENCH36.paused&&(s==='ready
 function benchOpen36(){const s=BENCH36.state;return s==='grounded'||s==='ready'||s==='carrying'||s==='choosing'||s==='settling';}
 function benchSave36(){return S&&S.life&&S.life.bench36?S.life.bench36:null;}
 function benchItem36(){return S&&S.home&&S.home.items?S.home.items.find(it=>it.type==='bench'):null;}
+// one of the three arrangements, or null (round 3, L1: an unknown saved key never reaches the chooser)
+function benchKey36(k){return typeof k==='string'&&Object.prototype.hasOwnProperty.call(BENCH36.POSES,k)?k:null;}
 function benchPoseOf36(key){const P=BENCH36.POSES[key]||BENCH36.POSES.out;return {x:P.x,z:P.z,yaw:P.yaw*D2R36};}
 function benchAxis36(yaw){return [Math.cos(yaw),-Math.sin(yaw)];}
 function benchEnd36(pose,e,d){const a=benchAxis36(pose.yaw),s=(e?1:-1)*(d===undefined?BENCH36.STAND:d);return [pose.x+a[0]*s,pose.z+a[1]*s];}
@@ -149,9 +151,20 @@ function benchBFS36(w,x,z,stop,par){const G=BENCH_GRID36,N=G.nx*G.nz,seen=new Ui
   if(i>0){const m=n-G.nz;if(!seen[m]&&!w[m]){seen[m]=1;q[t++]=m;if(par)par[m]=n;}}if(i<G.nx-1){const m=n+G.nz;if(!seen[m]&&!w[m]){seen[m]=1;q[t++]=m;if(par)par[m]=n;}}
   if(j>0){const m=n-1;if(!seen[m]&&!w[m]){seen[m]=1;q[t++]=m;if(par)par[m]=n;}}if(j<G.nz-1){const m=n+1;if(!seen[m]&&!w[m]){seen[m]=1;q[t++]=m;if(par)par[m]=n;}}}
  BENCH36.cost.cells+=h;return seen;}
-// which of the given points a player’s walk reaches a free cell within rad of; stops once all are reached
-function benchReachPts36(w,p,pts,rad){const G=BENCH_GRID36,f=pts.map(()=>false),r2=rad*rad;let left=pts.length;
- benchBFS36(w,p[0],p[1],(i,j)=>{const x=G.x0+i*G.s,z=G.z0+j*G.s;for(let e=0;e<pts.length;e++){if(f[e])continue;const dx=x-pts[e][0],dz=z-pts[e][1];if(dx*dx+dz*dz<=r2){f[e]=true;left--;}}return left===0;});return f;}
+// which of the given stand points a player’s walk reaches: a free cell within rad of it from which the straight step to it is clear (the step
+// benchTake36 and benchLift36 make; round 3, H1: a cell behind a jamb no longer counts); stops once all are reached
+function benchReachPts36(w,p,pts,rad){const G=BENCH_GRID36,f=pts.map(()=>false),r2=rad*rad,st=pts.map(q=>benchStepMemo36(q));let left=pts.length;
+ benchBFS36(w,p[0],p[1],(i,j)=>{const x=G.x0+i*G.s,z=G.z0+j*G.s;for(let e=0;e<pts.length;e++){if(f[e])continue;const dx=x-pts[e][0],dz=z-pts[e][1];if(dx*dx+dz*dz<=r2&&benchStepAt36(st[e],i*G.nz+j,x,z)){f[e]=true;left--;}}return left===0;});return f;}
+// the straight step from a cell to stand point E, kept per cell for each stand point (and world): exact against the boxes blocked() tests, each
+// grown by HR as hitAABB grows it (with 1e-9 to spare), so it is clear only where every one of benchSlideClear36's samples is clear too
+function benchStepMemo36(E){const B=BENCH36,sig=B.grid?B.grid.sig:'',k=E[0]+','+E[1]+'|'+sig,c=B.stepMemo||(B.stepMemo=new Map());let m=c.get(k);
+ if(!m){m={E,list:benchBoxes36(E[0],E[1],B.TAKE+B.HR+0.1,{}),cell:new Map()};if(c.size>=12)c.delete(c.keys().next().value);c.set(k,m);}return m;}
+function benchStepAt36(m,n,x,z){let v=m.cell.get(n);if(v!==undefined)return v;const r=BENCH36.HR+1e-9,ex=m.E[0],ez=m.E[1],dx=ex-x,dz=ez-z;v=true;
+ for(const o of m.list){let t0=0,t1=1;
+  if(Math.abs(dx)<1e-12){if(!(x>o.x1-r&&x<o.x2+r))continue;}else{let a=(o.x1-r-x)/dx,b=(o.x2+r-x)/dx;if(a>b){const t=a;a=b;b=t;}if(a>t0)t0=a;if(b<t1)t1=b;}
+  if(Math.abs(dz)<1e-12){if(!(z>o.z1-r&&z<o.z2+r))continue;}else{let a=(o.z1-r-z)/dz,b=(o.z2+r-z)/dz;if(a>b){const t=a;a=b;b=t;}if(a>t0)t0=a;if(b<t1)t1=b;}
+  if(t0<t1){v=false;break;}}
+ m.cell.set(n,v);return v;}
 // both stand-point discs free, and the two players matched to the two ends, each reaching a free cell within TAKE of their own end; and
 // (11.3) an order in which they can take them: whoever takes an end first stands at it, and their body (a disc of HR+PR) must not shut the
 // other out of the way round to the other end
@@ -264,13 +277,22 @@ function benchPlace36(i,x,z,face){const p=players[i];if(!p)return;p.g.position.x
 function benchTrapName36(pose,pos){const w=benchGridWith36(benchBox36(pose,0)),ends=[benchEnd36(pose,0),benchEnd36(pose,1)];
  for(const i of [0,1]){const r=benchReachPts36(w,pos[i],ends,BENCH36.TAKE);if(!r[0]&&!r[1])return benchPlayerName36(i);}return benchPlayerName36(1);}
 // set-down, let-go and the automatic set-down: nudge the holders, check the pose is liftable, else nudge the bench (a short glide) or refuse
-function benchSafeDown36(by,why){const B=BENCH36,pose=bench36Pose();
- let pos=benchNudged36(pose);if(pos&&bench36Liftable(pose,pos)){benchFinishDown36(pose,pos,why);return true;}
+function benchSafeDown36(by,why){const B=BENCH36,pose=bench36Pose(),P=benchDownPlan36(pose);
+ if(P.kind==='down'){benchFinishDown36(pose,P.pos,why);return true;}
+ if(P.kind==='glide'){B.glide={from:pose,to:P.to,t:0,dur:0.2,pos:P.pos,why};benchToast36('Bit further… there.');return true;}
+ if(why!=='system')benchToast36(benchRefuseText36(pose,P));if(why==='act')B.refused36={key:benchPoseKey36(pose),t:B.t};return false;}
+// what a set-down here would do (nothing is changed): {kind:'down', pos}, {kind:'glide', to, pos} (a short glide to a liftable pose nearby),
+// or {kind:'no', pos} (pos null when a holder has no free spot to step back to)
+function benchDownPlan36(pose){const pos=benchNudged36(pose);if(pos&&bench36Liftable(pose,pos))return {kind:'down',pos};
  const a=benchAxis36(pose.yaw),cands=[];for(let k=1;k<=6;k++)for(const sg of [1,-1])cands.push({x:pose.x+a[0]*0.05*k*sg,z:pose.z+a[1]*0.05*k*sg,yaw:pose.yaw});
  for(let k=1;k<=3;k++)for(const sg of [1,-1])cands.push({x:pose.x,z:pose.z,yaw:pose.yaw+sg*5*k*D2R36});
- for(const c of cands){if(!bench36Valid(c)||!benchLineValid36(pose,c))continue;const q=benchNudged36(c);if(!q||!bench36Liftable(c,q))continue;
-  B.glide={from:pose,to:c,t:0,dur:0.2,pos:q,why};benchToast36('Bit further… there.');return true;}
- if(why!=='system')benchToast36(`Not here, it would box ${benchTrapName36(pose,pos||[benchPos36(0),benchPos36(1)])} in. Move a little first.`);return false;}
+ for(const c of cands){if(!bench36Valid(c)||!benchLineValid36(pose,c))continue;const q=benchNudged36(c);if(!q||!bench36Liftable(c,q))continue;return {kind:'glide',to:c,pos:q};}
+ return {kind:'no',pos};}
+// round 3 (M1): a refusal says what is wrong: a holder with no room to step back, or a player who could not get round to an end
+function benchRefuseText36(pose,P){if(!P.pos){const B=BENCH36,box=benchBox36(pose,0);let who=B.holder[1]!==null?B.holder[1]:0;
+  for(const e of [0,1]){const i=B.holder[e];if(i===null||i===undefined)continue;const [sx,sz]=benchEnd36(pose,e),[x,z]=benchEnd36(pose,e,B.HX+PR+0.01);if(!(benchFreeSpot36(x,z,box)&&benchSlideClear36([x,z],[sx,sz]))&&!benchNudgeSpot36(sx,sz,box)){who=i;break;}}
+  return `Not here: ${benchPlayerName36(who)} has no room to step back. Carry it on a little first.`;}
+ return `Not here, it would box ${benchTrapName36(pose,P.pos)} in. Move a little first.`;}
 function benchLineValid36(a,b){const n=Math.max(1,Math.ceil(Math.max(Math.hypot(b.x-a.x,b.z-a.z)/0.01,Math.abs(benchWrapA36(b.yaw-a.yaw))/D2R36)));
  for(let k=1;k<=n;k++){const t=k/n;if(!bench36Valid({x:a.x+(b.x-a.x)*t,z:a.z+(b.z-a.z)*t,yaw:a.yaw+benchWrapA36(b.yaw-a.yaw)*t}))return false;}return true;}
 function benchFinishDown36(pose,pos,why){const B=BENCH36;B.pose={x:pose.x,z:pose.z,yaw:pose.yaw};B.snap=null;
@@ -280,8 +302,12 @@ function benchFinishDown36(pose,pos,why){const B=BENCH36;B.pose={x:pose.x,z:pose
 // a set-down, a let-go, a lift or a reset starts afresh: the stall that made it stuck is over (the liftable check may set it again)
 function benchUnstick36(){const B=BENCH36;B.stuck=false;B.stuckT=0;B.stuckAcc=0;B.liftKey='';}
 
-// 2.1 the delivery zone: one holder on the row, the other in the room, either way round; the centre in the doorway
-function benchInZone36(pose,pos){if(!(pose.x>-4.6&&pose.x<-3.6))return false;return (pos[0][1]>5.9&&pos[1][1]<5.55)||(pos[1][1]>5.9&&pos[0][1]<5.55);}
+// 2.1 the delivery zone: one holder on the row, the other in the room, either way round; the centre in the doorway, and (round 3, H2) the
+// bench within ZONEA of the doorway's axis either way round. The shipped plan comes in 25 degrees off (its last move is Move's alone, as a
+// pair's is); a bench 45 degrees off, which the walls' sideways help could push into the zone, needs the Turn player's swing first.
+BENCH36.ZONEA=30*Math.PI/180;
+function benchZoneYaw36(yaw){let d=benchWrapA36(Math.PI/2-yaw);if(d>Math.PI/2)d-=Math.PI;if(d<-Math.PI/2)d+=Math.PI;return Math.abs(d)<=BENCH36.ZONEA+1e-9;}
+function benchInZone36(pose,pos){if(!(pose.x>-4.6&&pose.x<-3.6)||!benchZoneYaw36(pose.yaw))return false;return (pos[0][1]>5.9&&pos[1][1]<5.55)||(pos[1][1]>5.9&&pos[0][1]<5.55);}
 // a grounded bench that nobody can lift is stuck (rechecked each second, but only when the bench, a player's grid cell or the world changed)
 function benchCheckStuck36(){const B=BENCH36;if(B.state!=='grounded')return;B.liftCheckT=B.t;const pos=[benchPos36(0),benchPos36(1)],G=BENCH_GRID36;
  const key=[B.pose.x,B.pose.z,B.pose.yaw].join(',')+'|'+pos.map(q=>Math.round(q[0]/G.s)+','+Math.round(q[1]/G.s)).join(';')+'|'+(B.grid?B.grid.sig:'');
@@ -438,26 +464,26 @@ function benchCarryStep36(dt){const B=BENCH36,G=B.GUIDE,m=B.mover,t=1-m,a0=bench
  let sT=Lm?Lm.sign*Math.min(1,Math.hypot(um[0],um[1]))*B.V*cap:0,wT=Lt?Lt.sign*Math.min(1,Math.hypot(ut[0],ut[1]))*B.WMAX*cap:0;
  if(B.wall.s&&Math.sign(sT)===B.wall.s)sT=0;if(B.wall.w&&Math.sign(wT)===B.wall.w)wT=0;
  B.vel.s=benchApproach36(B.vel.s,sT,B.V/B.RAMP,B.V/B.STOP,dt);B.vel.w=benchApproach36(B.vel.w,wT,B.WMAX/B.RAMP,B.WMAX/B.STOP,dt);
- const before=bench36Pose();let wUsed=false;
+ const before=bench36Pose();let wUsed=false,wSum=0;   // wSum: the heading the Turn player's swing gave this frame, exactly
  if(B.vel.s||B.vel.w){const n=Math.max(1,Math.ceil(Math.max(Math.abs(B.vel.s)*dt/0.04,Math.abs(B.vel.w)*dt/(3*D2R36))));const h=dt/n;
   for(let k=0;k<n;k++){B.cost.substeps++;const v0=B.cost.valid,s0=B.pose,ds=B.vel.s*h,dw=B.vel.w*h;if(!ds&&!dw)break;let q=null,usedS=false,usedW=false,helped=false;
-   if(ds&&dw){q=benchOK36(B.pose,ds,dw);if(q){usedS=usedW=true;}}
+   if(ds&&dw){q=benchOK36(B.pose,ds,dw);if(q){usedS=usedW=true;wSum+=dw;}}
    let whyS=null,whyW=null;
    if(!q&&ds){B.lastWhy=null;q=benchOK36(B.pose,ds,0);if(q)usedS=true;else whyS=B.lastWhy;}
-   if(!q&&dw){B.lastWhy=null;q=benchOK36(B.pose,0,dw);if(q)usedW=true;else whyW=B.lastWhy;}
+   if(!q&&dw){B.lastWhy=null;q=benchOK36(B.pose,0,dw);if(q){usedW=true;wSum+=dw;}else whyW=B.lastWhy;}
    if(q){const dx=q.x-B.pose.x,dz=q.z-B.pose.z;B.wallAcc.w+=Math.hypot(dx,dz);B.wallAcc.s+=Math.abs(q.yaw-B.pose.yaw);B.pose=q;}
    // the walls guide: a refused component gets the smallest sideways correction that frees it (within this contact's allowance)
    if(G.on&&ds&&!usedS){if(usedW||!whyS){B.lastWhy=null;bench36Valid(benchPropose36(B.pose,ds,0));}else B.lastWhy=whyS;const g=benchAssistSlide36(B.pose,ds,v0,s0);
     if(g){B.wallAcc.w+=Math.hypot(g.x-B.pose.x,g.z-B.pose.z);B.pose=g;usedS=true;helped=true;}}
    if(G.on&&G.SWING&&dw&&!usedW){if(helped||!whyW){B.lastWhy=null;bench36Valid(benchPropose36(B.pose,0,dw));}else B.lastWhy=whyW;const g=benchAssistSwing36(B.pose,dw,v0);
-    if(g){B.wallAcc.w+=Math.hypot(g.x-B.pose.x,g.z-B.pose.z);B.wallAcc.s+=Math.abs(g.yaw-B.pose.yaw);B.pose=g;usedW=true;helped=true;}}
+    if(g){B.wallAcc.w+=Math.hypot(g.x-B.pose.x,g.z-B.pose.z);B.wallAcc.s+=Math.abs(g.yaw-B.pose.yaw);B.pose=g;usedW=true;helped=true;wSum+=dw;}}
    if(helped)B.cost.assist++;
    // gentle stop: a component nothing frees is bisected to contact, stopped and latched against that wall
    // (one bisection a sub-step, five endpoint tests: the per-sub-step budget of 24 blocked() calls and 12 box tests)
    let bis=false;
    if(ds&&!usedS){bis=true;let lo=0,hi=1;for(let it=0;it<5;it++){const mid=(lo+hi)/2;if(bench36Valid(benchPropose36(B.pose,ds*mid,0)))lo=mid;else hi=mid;}if(lo>0)B.pose=benchPropose36(B.pose,ds*lo,0);
     B.vel.s=0;B.wall.s=Math.sign(ds);B.wallAcc.s=0;const end=benchEnd36(B.pose,ds*f>0?1:0,B.HX);benchBumpCue36(a[0]*Math.sign(ds),a[1]*Math.sign(ds),end[0],end[1],B.lastWhy);}
-   if(dw&&!usedW){const fresh=B.wall.w!==Math.sign(dw);if(!bis){let lo=0,hi=1;for(let it=0;it<5;it++){const mid=(lo+hi)/2;if(bench36Valid(benchPropose36(B.pose,0,dw*mid)))lo=mid;else hi=mid;}if(lo>0){B.pose=benchPropose36(B.pose,0,dw*lo);wUsed=true;}}
+   if(dw&&!usedW){const fresh=B.wall.w!==Math.sign(dw);if(!bis){let lo=0,hi=1;for(let it=0;it<5;it++){const mid=(lo+hi)/2;if(bench36Valid(benchPropose36(B.pose,0,dw*mid)))lo=mid;else hi=mid;}if(lo>0){B.pose=benchPropose36(B.pose,0,dw*lo);wUsed=true;wSum+=dw*lo;}}
     B.vel.w=0;B.wall.w=Math.sign(dw);B.wallAcc.w=0;const re=benchEnd36(B.pose,B.front?0:1,B.HX);benchBumpCue36(e[0]*Math.sign(dw),e[1]*Math.sign(dw),re[0],re[1],B.lastWhy);if(fresh)benchTurnRefused36();}
    if(usedW)wUsed=true;
    // the funnel, while the bench is pushed along its length through an opening
@@ -465,17 +491,27 @@ function benchCarryStep36(dt){const B=BENCH36,G=B.GUIDE,m=B.mover,t=1-m,a0=bench
    // the allowance refills after unassisted travel along the bench
    if(G.on&&!helped&&usedS){const A=B.assist;A.free+=Math.abs(ds);if(A.free>=G.FREE&&(A.lat||A.sw)){A.lat=0;A.sw=0;}}
    if(!B.vel.s&&!B.vel.w)break;}}
- // only Turn turns: with no swing taken this frame the heading is exactly what it was
- if(!wUsed&&B.pose.yaw!==before.yaw)B.yawLeak++;
+ // only Turn turns: the heading changed by exactly what the Turn player's swing gave this frame (round 3, M2: also in a frame with a swing)
+ if(Math.abs((B.pose.yaw-before.yaw)-wSum)>1e-12||(!wUsed&&B.pose.yaw!==before.yaw))B.yawLeak++;
  if(B.wall.s&&B.wallAcc.s>=2*D2R36)B.wall.s=0;if(B.wall.w&&B.wallAcc.w>=0.02)B.wall.w=0;
  const moved=Math.hypot(B.pose.x-before.x,B.pose.z-before.z),turned=Math.abs(B.pose.yaw-before.yaw);B.movedPrev=moved>0.0005||turned>0.05*D2R36;
  if(B.turnAid){if(wUsed)B.turnAid.acc+=turned;if(B.turnAid.acc>=3*D2R36||!benchTurnAidOn36()){B.turnAid=null;benchHUD36();}}
  // stuck: accepted input that a wall then refused, held
  const pushW=(B.wall.s&&Lm&&Lm.sign===B.wall.s)||(B.wall.w&&Lt&&Lt.sign===B.wall.w);
+ // (round 3, RP-3) Turn aid 2 also comes for a swing held against the wall for 1.5 s, not only for three fresh refusals
+ if(B.wall.w&&Lt&&Lt.sign===B.wall.w){B.wHeld36=(B.wHeld36||0)+dt;if(B.wHeld36>=1.5){B.wHeld36=0;B.wRef=[];B.turnAid={t:B.t,acc:0};benchHUD36();}}else B.wHeld36=0;
  if(pushW)B.stuckT+=dt;else B.stuckT=Math.max(0,B.stuckT-dt/2);
  if(B.stuckT>=2.5&&!B.stuck){B.stuck=true;B.stuckAcc=0;benchHUD36();}
  if(B.stuck){B.stuckAcc+=moved+turned*(1/(30*D2R36));if(B.stuckAcc>=1){B.stuck=false;B.stuckT=0;benchHUD36();}}
+ if(B.stuck)benchDownCheck36();else B.downChk=null;
  benchHolders36();}
+// round 3 (RP-2): while it is stuck, would a set-down here be accepted? (the dry run of the set-down, when the stall starts and then at most once a
+// second while the pose changes). When it would not, the stuck line no longer suggests setting it down; and once a set-down here has been refused,
+// the holders' Act puts the bench back (to the furthest place both can lift it from) until the bench moves on.
+function benchDownCheck36(){const B=BENCH36,p=B.pose,key=Math.round(p.x*100)+','+Math.round(p.z*100)+','+Math.round(p.yaw/D2R36*2)+'|'+(B.grid?B.grid.sig:'');const c=B.downChk;
+ if(c&&(c.key===key||B.t-c.t<1))return c;const r=benchDownPlan36(bench36Pose());B.downChk={key,t:B.t,ok:r.kind!=='no'};benchHUD36();return B.downChk;}
+function benchPoseKey36(p){return Math.round(p.x*50)+','+Math.round(p.z*50)+','+Math.round(p.yaw/D2R36);}
+function benchPutBack36(){const B=BENCH36,r=B.refused36;return B.state==='carrying'&&B.stuck&&!B.glide&&!!B.downChk&&!B.downChk.ok&&!!r&&r.key===benchPoseKey36(B.pose)&&B.t-r.t<8;}
 function benchHolders36(){const B=BENCH36;for(const e of [0,1]){const i=B.holder[e];if(i===null)continue;const p=players[i];if(!p)continue;const [x,z]=benchEnd36(B.pose,e);
  if(B.snap&&B.snap.i===i&&B.snap.t<0.15)continue;p.g.position.x=x;p.g.position.z=z;p.prev=[x,z];p.g.rotation.y=Math.atan2(B.pose.x-x,B.pose.z-z);}}
 
@@ -502,13 +538,13 @@ function bench36Step(dt){const B=BENCH36,s=B.state;if(s!=='ready'&&s!=='carrying
  else if(s==='choosing')benchChooseStep36(dt);
  else if(s==='settling')benchSettleStep36(dt);
  benchDrawMesh36();}
-function benchZoneNow36(){const B=BENCH36,p0=benchPos36(B.holder[0]),p1=benchPos36(B.holder[1]);if(!(B.pose.x>-4.6&&B.pose.x<-3.6))return false;return (p0[1]>5.9&&p1[1]<5.55)||(p1[1]>5.9&&p0[1]<5.55);}
+function benchZoneNow36(){const B=BENCH36,p0=benchPos36(B.holder[0]),p1=benchPos36(B.holder[1]);if(!(B.pose.x>-4.6&&B.pose.x<-3.6)||!benchZoneYaw36(B.pose.yaw))return false;return (p0[1]>5.9&&p1[1]<5.55)||(p1[1]>5.9&&p0[1]<5.55);}
 function benchLetGo36(i){const B=BENCH36;const pos=benchNudged36(B.pose);if(!pos||!bench36Liftable(B.pose,pos)){benchToast36(`Not here, it would box ${benchTrapName36(B.pose,pos||[benchPos36(0),benchPos36(1)])} in. Move a little first.`);return false;}
  B.snap=null;benchPlace36(i,pos[i][0],pos[i][1]);B.holder=[null,null];benchUnstick36();benchSetState36('grounded');return true;}
 // 2.1: reaching the delivery zone sets the bench down in the doorway and opens the chooser
 function benchAutoDown36(){const B=BENCH36;B.snap=null;const q=benchNudged36(B.pose);if(q)for(const i of [0,1])if(benchHolderOf36(i)>=0)benchPlace36(i,q[i][0],q[i][1],[B.pose.x,B.pose.z]);const pos=[benchPos36(0),benchPos36(1)];B.holder=[null,null];benchResetMotion36();B.liftDir=-1;benchDeliver36(pos);}
 function bench36Deliver(){if(BENCH36.state!=='carrying'&&BENCH36.state!=='grounded')return false;benchAutoDown36();return true;}
-function benchDeliver36(pos){const B=BENCH36;B.delivered=true;B.holder=[null,null];B.jobs={};B.fields={};const L=benchSave36();B.choice=L&&L.again&&L.choice?L.choice:'out';B.agree=[false,false];
+function benchDeliver36(pos){const B=BENCH36;B.delivered=true;B.holder=[null,null];B.jobs={};B.fields={};const L=benchSave36();B.choice=L&&L.again&&benchKey36(L.choice)||'out';B.agree=[false,false];
  benchSetState36('choosing');B.okCache=null;benchChooserOpen36();}
 function benchProgress36(){const B=BENCH36;for(let k=B.CHECK.length-1;k>B.progress-1&&k>=0;k--){const c=B.CHECK[k];if(Math.hypot(B.pose.x-c.x,B.pose.z-c.z)<=1.0){B.progress=Math.max(B.progress,k);break;}}}
 function benchCornerFor36(){const B=BENCH36;let best=0,bd=1e9;for(let k=0;k<B.ROUTE.length;k++){const w=B.ROUTE[k],d=Math.hypot(B.pose.x-w.x,B.pose.z-w.z);if(d<bd){bd=d;best=k;}}
@@ -558,7 +594,7 @@ function benchSpawn36(again){const B=BENCH36;B.notePending=false;let L=benchSave
  if(again){L.keep36={mover:L.mover||0};if(L.firstMover!==undefined)L.keep36.first=L.firstMover;   // 11.4: what a cancel puts back
   L.again=true;if(L.playtest)L.mover=1-(L.firstMover!==undefined?L.firstMover:L.lastMover!==undefined?L.lastMover:(L.mover||0));}
  delete L.firstMover;
- B.mover=L.mover||0;B.choice=L.choice||'out';B.stats={dur:0,bumps:0,setdowns:0,swaps:0,resets:0,lifted:false};B.progress=0;B.delivered=false;B.paused=false;
+ B.mover=L.mover||0;B.choice=benchKey36(L.choice)||'out';B.stats={dur:0,bumps:0,setdowns:0,swaps:0,resets:0,lifted:false};B.progress=0;B.delivered=false;B.paused=false;
  B.holder=[null,null];benchResetMotion36();B.stuck=false;B.stuckT=0;B.y=0;B.liftT=0;B.liftDir=0;B.glide=null;B.settle=null;
  benchCrateCheck36();B.pose=benchSpawnSpot36();benchGridBuild36();benchBuildMesh36();B.corner=benchCornerFor36();benchSetState36('grounded');
  if(again)rebuildFurniture();benchCheckStuck36();benchPlanArrays36();save();benchToast36('Grab an end each.');return true;}   // 11.6 the glide planner's arrays are made here, not in the chooser
@@ -607,7 +643,7 @@ function benchHideGhost36(){const g=BENCH36.mesh.ghost;if(g)g.visible=false;if(B
 function benchKeyHint36(i){const m=typeof lastInput!=='undefined'?lastInput[i]:'key';if(m==='pad')return 'stick · A';if(m==='touch')return 'stick · Act';return i?'← / → choose · ⏎ agree':'A / D choose · E agree';}
 function benchStrip36(i){if(typeof document==='undefined')return null;const half=document.getElementById('half'+i);if(!half||!half.querySelector)return null;let el=half.querySelector('.bench36-pick');
  if(!el&&document.createElement){el=document.createElement('div');el.className='bench36-pick';if(el.addEventListener)el.addEventListener('pointerdown',benchStripTap36);const pr=document.getElementById('pr'+i);if(pr&&pr.parentNode===half&&half.insertBefore)half.insertBefore(el,pr);else half.appendChild(el);}return el;}
-function benchChooserRender36(){const B=BENCH36;const all=B.ORDER.every(k=>B.okCache&&B.okCache[k]===false);benchGhostLook36();
+function benchChooserRender36(){const B=BENCH36;if(!benchKey36(B.choice))B.choice='out';const all=B.ORDER.every(k=>B.okCache&&B.okCache[k]===false);benchGhostLook36();
  for(const i of [0,1]){const el=benchStrip36(i);if(!el)continue;const P=B.POSES[B.choice],ok=!(B.okCache&&B.okCache[B.choice]===false);   // not yet checked (one frame) reads as free
   // tappable as well as keyed: the previous and next arrangement in each view, and each player's own "agrees" in their own view (44 px or more)
   const tb=(act,d,label,cls,aria)=>`<button type="button" tabindex="-1" class="b36 ${cls}" data-act="${act}"${Object.keys(d).map(k=>` data-${k}="${d[k]}"`).join('')}${aria}>${label}</button>`;
@@ -860,13 +896,15 @@ for(const n of ['nextday','sleep','newgame','newconfirm']){const prev=ACTIONS[n]
 /* ---------- 2.1 Hotspots and Act ---------- */
 function bench36Hot(i,list,d){const B=BENCH36,s=B.state;if(s==='off')return null;const p=players[i];if(!p)return null;
  if(s==='placed'){const it=benchItem36();const L=benchSave36();if(!it||(L&&L.again))return null;if(typeof sofa!=='undefined'&&sofa&&sofa.carrying)return null;const pose=benchPoseOf36(it.pose36),dd=benchBoxDist36(pose,p.g.position.x,p.g.position.z);
-  if(dd<=1.0&&list){const o=players[1-i],near=o&&Math.hypot(o.g.position.x-pose.x,o.g.position.z-pose.z)<=2.4;list.push({id:'bench36Sit',label:near?'Sit on the bench together':`Wait for ${benchPlayerName36(1-i)}`,dist:dd-0.45});}return null;}   // a player standing at the bench's end gets the seat (not only one pressed against it), one at the pepper pot's own point the pot (whose entry takes a 0.2 m lead)
+  if(dd<=1.0&&list){const o=players[1-i],near=o&&Math.hypot(o.g.position.x-pose.x,o.g.position.z-pose.z)<=2.4;
+   // (round 3, RP-9) a companion or online partner is not waited for: nobody is coming because a prompt says so
+   if(near||!((typeof AI!=='undefined'&&AI.on)||(typeof NET!=='undefined'&&NET.on)))list.push({id:'bench36Sit',label:near?'Sit on the bench together':`Wait for ${benchPlayerName36(1-i)}`,dist:dd-0.45});}return null;}   // a player standing at the bench's end gets the seat (not only one pressed against it), one at the pepper pot's own point the pot (whose entry takes a 0.2 m lead)
  if(s==='seated')return p.g.sitting?{id:'bench36Stand',label:'Stand up',dist:0}:null;
  if(B.paused)return null;
  if(s==='choosing')return {id:'bench36Agree',label:B.agree[i]?'Not yet':(B.okCache&&B.okCache[B.choice]===false?'Not free':'Agree'),dist:0};
  if(s==='settling')return null;
  const h=benchHolderOf36(i);
- if(s==='carrying'&&h>=0)return {id:'bench36SetDown',label:'Set the bench down',dist:0};
+ if(s==='carrying'&&h>=0)return benchPutBack36()?{id:'bench36PutBack',label:'Put it back',dist:0}:{id:'bench36SetDown',label:'Set the bench down',dist:0};
  if(s==='ready'&&h>=0)return benchPinned36()?{id:'bench36LetGo',label:`Let go · ${benchPlayerName36(1-i)} can’t get round`,dist:0}:{id:'bench36Swap',label:'Swap roles · walk off to let go',dist:0};
  if(!list)return null;
  if((s==='grounded'||s==='ready')&&!p.g.sitting){for(const e of [0,1]){const [x,z]=benchEnd36(B.pose,e),dd=Math.hypot(p.g.position.x-x,p.g.position.z-z);if(dd>B.TAKE)continue;
@@ -893,6 +931,7 @@ ACT_HOOKS.push(function(i,kind){if(kind.slice(0,7)!=='bench36')return false;cons
  if(kind==='bench36Keep'){benchToast36(`${benchPlayerName36(1-i)} needs this end to get round. Take the other one.`);return true;}
  if(kind==='bench36Pinned'){return true;}
  const h=benchHolderOf36(i);
+ if(kind==='bench36PutBack'||(s==='carrying'&&h>=0&&benchPutBack36())){if(s==='carrying'&&h>=0&&benchPutBack36()){B.snap=null;B.glide=null;B.holder=[null,null];benchResetMotion36();B.y=0;B.liftT=0;B.liftDir=0;benchSetState36('grounded');bench36Reset();}else if(s==='carrying'&&h>=0)benchSafeDown36(i,'act');return true;}
  if(kind==='bench36LetGo'){if(s==='ready'&&h>=0)benchLetGo36(i);return true;}
  if(s==='carrying'&&h>=0){benchSafeDown36(i,'act');return true;}
  if(s==='ready'&&h>=0){benchSwap36();return true;}
@@ -918,7 +957,7 @@ function benchSubLine36(i,rl,h){const B=BENCH36,m=B.bumpMsg;if(h<0)return '';
  // Turn aid 2: the turner's swing refused three times within 4 s
  if(B.state==='carrying'&&benchTurnAidOn36()){const mv=benchPlayerName36(B.mover),tn=benchPlayerName36(1-B.mover);return i===B.mover?`${tn} needs room. Back up a little.`:`Your end is on the wall. Try the other way, or ask ${mv} to back up a little.`;}
  if(B.state==='carrying'&&m&&B.t-m.t<1.6){const th='the '+m.thing;if(m.who===i)return `You’re up against ${th}.`;if(m.who>=0)return `${benchPlayerName36(m.who)} is up against ${th}.`;return `The bench is against ${th}.`;}
- if(B.state==='carrying'&&B.stuck)return 'Stuck? Back up a little, or set it down and swap roles.';
+ if(B.state==='carrying'&&B.stuck)return benchPutBack36()?'Too tight to set down here. Back up a little, or press Act to put it back.':B.downChk&&!B.downChk.ok?'Too tight to set down here. Back up a little.':'Stuck? Back up a little, or set it down and swap roles.';
  if(B.state==='ready')return `Waiting for ${benchPlayerName36(1-i)}`;
  if(B.state==='carrying'&&B.hintUntil&&B.t<B.hintUntil)return rl==='move'?'Push it along: towards your end or away from it.':'Push your end left or right to turn it.';
  return '';}
@@ -938,7 +977,7 @@ const prevHUD36=updateHUD;updateHUD=function(){const r=prevHUD36.apply(this,argu
   if(rl&&hs&&pr){const sub=benchSubLine36(i,rl,h),m=B.bumpMsg,bumped=h>=0&&B.state==='carrying'&&m&&B.t-m.t<0.8&&(m.who===i||m.who<0);
    pr.className='pr on p'+i;pr.innerHTML=`<span class="k">${glyph(i)}</span><span class="role36 ${rl}${bumped?' bump36':''}">${rl==='move'?'Move':'Turn'}</span><span class="lb36"><span class="t36">${esc(hs.label)}</span>${sub?`<span class="hint36">${esc(sub)}</span>`:''}</span>`;}
   if(role){if(B.state==='carrying'&&h>=0)role.textContent=`Bench · ${rl==='move'?'Move':'Turn'}`;else if(B.state==='ready'&&h>=0)role.textContent=`Bench · ${rl==='move'?'Move':'Turn'} · waiting for ${benchPlayerName36(1-i)}`;
-   if(B.stuck&&h>=0&&B.state==='carrying')role.textContent='Stuck? Back up a little, or set it down and swap roles.';}}
+   }}   // (round 3, RP-11: the card keeps "Bench · Move/Turn" while stuck; the stuck advice is the prompt's own line)
  return r;};
 // wrap: an E or Enter press no longer turns the prompt's key into the pad's "A" (only a moved stick or a pressed pad button does)
 const prevPad36=padVec;padVec=function(i){const before=lastInput[i];const v=prevPad36.apply(this,arguments);
@@ -993,17 +1032,61 @@ function benchEdgePos36(i,ang){const vp=v21Viewport(i),x0=vp.w*0.12,x1=vp.w*0.88
 function benchArrows36(){const B=BENCH36;if(typeof document==='undefined')return;B.arrowAng=B.arrowAng||[null,null];
  for(const i of [0,1]){let show=false,ang=0,cap='',cls='',pos=null;
   if(!B.paused&&B.state==='carrying'&&benchHolderOf36(i)>=0){const role=i===B.mover?0:1;
-   if(B.outT[role]>=(role?0.35:0.6)){const f=B.front?1:-1,a=benchAxis36(B.pose.yaw);const d=role===0?[a[0]*f,a[1]*f]:[Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f];ang=benchScreenAng36(i,B.pose.x,B.pose.z,d[0],d[1]);cap=role===0?'push along the bench':'push your end sideways';cls='hint';show=true;}
+   // the out-of-cone hint, beside the player's own end: Move's along the bench (the way it leads), Turn's sideways the way that swings the
+   // leading end towards the next corner (round 3, RP-1: no longer always the same way round)
+   if(B.outT[role]>=(role?0.35:0.6)){const f=B.front?1:-1,a=benchAxis36(B.pose.yaw);let d;if(role===0)d=[a[0]*f,a[1]*f];else{const sg=benchTurnSign36();d=[Math.sin(B.pose.yaw)*f*sg,Math.cos(B.pose.yaw)*f*sg];}
+    ang=benchScreenAng36(i,B.pose.x,B.pose.z,d[0],d[1]);cap=role===0?'push along the bench':'push your end sideways';cls='hint';show=true;const end=benchEnd36(B.pose,role===0?B.front:1-B.front,B.STAND);pos=benchScreenPt36(i,end[0],B.y+0.9,end[1]);}
    else{const info=B.camInfo&&B.camInfo[i],W=B.ROUTE[B.corner];if(info&&info.arrow&&W){ang=benchScreenAng36(i,B.pose.x,B.pose.z,W.x-B.pose.x,W.z-B.pose.z,true);cap=W.n;cls='edge';pos=benchEdgePos36(i,ang);show=true;}}}
-  BENCH36.arrowShown[i]=show?cls:'';B.arrowAng[i]=show?Math.round(ang*180/Math.PI*10)/10:null;B.arrowPos=B.arrowPos||[null,null];B.arrowPos[i]=pos?[Math.round(pos[0]),Math.round(pos[1])]:null;const el=benchArrowEl36(i,show);if(!el)continue;
-  el.style.display=show?'':'none';if(show){el.className='bench36-arrow '+cls;el.style.left=pos?pos[0].toFixed(0)+'px':'';el.style.top=pos?pos[1].toFixed(0)+'px':'';
-   const g=el.querySelector&&el.querySelector('.g'),c=el.querySelector&&el.querySelector('.c');if(g)g.style.transform=`rotate(${(ang*180/Math.PI).toFixed(1)}deg)`;if(c)c.textContent=cap;}}}
+  const el=benchArrowEl36(i,show);
+  if(show&&el){el.style.display='';el.className='bench36-arrow '+cls;const c=el.querySelector&&el.querySelector('.c');if(c&&c.textContent!==cap)c.textContent=cap;}
+  if(show&&pos)pos=benchClearPos36(i,pos,benchArrowSize36(el,cap));   // (round 3, M3 and RP-4) never over the prompt card
+  BENCH36.arrowShown[i]=show?cls:'';B.arrowAng[i]=show?Math.round(ang*180/Math.PI*10)/10:null;B.arrowPos=B.arrowPos||[null,null];B.arrowPos[i]=pos?[Math.round(pos[0]),Math.round(pos[1])]:null;B.arrowCap=B.arrowCap||['',''];B.arrowCap[i]=show?cap:'';if(!el)continue;
+  el.style.display=show?'':'none';if(show){el.style.left=pos?pos[0].toFixed(0)+'px':'';el.style.top=pos?pos[1].toFixed(0)+'px':'';
+   const g=el.querySelector&&el.querySelector('.g');if(g)g.style.transform=`rotate(${(ang*180/Math.PI).toFixed(1)}deg)`;}}}
+// the turn (+1: yaw grows) that swings the leading end (the one nearer the next corner's side) towards the next corner
+function benchTurnSign36(){const B=BENCH36,W=B.ROUTE[B.corner]||B.ROUTE[B.ROUTE.length-1],f=B.front?1:-1,a=benchAxis36(B.pose.yaw),e=[Math.sin(B.pose.yaw)*f,Math.cos(B.pose.yaw)*f],v=[W.x-B.pose.x,W.z-B.pose.z];
+ const lead=(a[0]*f*v[0]+a[1]*f*v[1])>=0?-1:1,s=lead*(e[0]*v[0]+e[1]*v[1]);return s<0?-1:1;}   // the front end moves along -e as yaw grows, the rear end along +e
+// a world point in view i's pixels (through its own camera)
+function benchScreenPt36(i,x,y,z){const vp=v21Viewport(i),c=cams&&cams[i];if(!c||typeof c.updateMatrixWorld!=='function')return [vp.w/2,vp.h*0.46];c.updateMatrixWorld();const v=new THREE.Vector3(x,y,z).project(c);return [(v.x+1)/2*vp.w,(1-v.y)/2*vp.h];}
+// the prompt card of view i in the view's pixels: the page's own box when it has one (none while it is hidden); without a layout (Node) the box
+// the stylesheets give it (right 12 px; bottom 14 px, 160 px over the thumbs, 100 px on a short landscape phone; at most 60%, 58% or 38% wide)
+function benchPromptRect36(i,vp){try{const pr=document.getElementById('pr'+i),half=document.getElementById('half'+i);
+  if(pr&&half&&typeof pr.getBoundingClientRect==='function'&&typeof half.getBoundingClientRect==='function'){const a=pr.getBoundingClientRect(),h=half.getBoundingClientRect();if(a&&h&&typeof a.right==='number'&&typeof a.bottom==='number'&&typeof h.left==='number'){if(!(a.width>0&&a.height>0))return null;return {x1:a.left-h.left,y1:a.top-h.top,x2:a.right-h.left,y2:a.bottom-h.top};}}}catch(e){}
+ const touch=navigator.maxTouchPoints>0,portrait=innerHeight>innerWidth,short=touch&&!portrait&&innerHeight<=520,w=vp.w*(portrait?0.38:innerWidth<=820?0.58:0.60);
+ const bottom=short?100:touch?(portrait&&i===0?14:160):14,hgt=portrait?130:short?80:90;return {x1:vp.w-12-w,y1:vp.h-bottom-hgt,x2:vp.w-12,y2:vp.h-bottom};}
+function benchArrowSize36(el,cap){const B=BENCH36,c=B.arrowSz36||(B.arrowSz36={});if(c[cap])return c[cap];let sz=null;
+ try{if(el&&typeof el.getBoundingClientRect==='function'){const r=el.getBoundingClientRect();if(r&&typeof r.right==='number'&&r.width>0&&r.height>0)sz={w:r.width,h:r.height};}}catch(e){}
+ if(!sz)return {w:170,h:70};return (c[cap]=sz);}
+// the nearest point to pt, inside the area the camera frames, at which the arrow's box keeps 4 px clear of the prompt card
+function benchClearPos36(i,pt,sz){const vp=v21Viewport(i),x0=vp.w*0.12,x1=vp.w*0.88,y0=vp.top+24,y1=Math.max(y0+20,vp.h-vp.bottom-24),R=benchPromptRect36(i,vp),hw=sz.w/2+4,hh=sz.h/2+4;
+ const cl=(v,a,b)=>Math.max(a,Math.min(b,v)),ok=(x,y)=>!R||x+hw<=R.x1||x-hw>=R.x2||y+hh<=R.y1||y-hh>=R.y2;const x=cl(pt[0],x0,x1),y=cl(pt[1],y0,y1);if(ok(x,y))return [x,y];
+ for(let d=8;d<=vp.w+vp.h;d+=8)for(let k=0;k<16;k++){const a=k/16*Math.PI*2,cx=cl(x+Math.cos(a)*d,x0,x1),cy=cl(y+Math.sin(a)*d,y0,y1);if(ok(cx,cy))return [cx,cy];}
+ return [x,y];}
 // while the bench is lifted the area captions (the place-name signs, "The Waterfront" and the rest) step out of both views; the ones hidden
 // come back as they were once it is down (only signs that were showing are hidden, and only those are shown again)
 function benchCaptions36(){const B=BENCH36;if(typeof FADEABLE==='undefined')return;const on=!B.paused&&B.state==='carrying';
  if(on){B.capHid=B.capHid||[];for(const m of FADEABLE)if(m&&m.isSprite&&m.visible){m.visible=false;B.capHid.push(m);}}
  else if(B.capHid&&B.capHid.length){for(const m of B.capHid)m.visible=true;B.capHid=[];}}
-const prevCams36=updateCameras;updateCameras=function(dt){const r=prevCams36.apply(this,arguments);const B=BENCH36;if(B.state==='carrying'||B.state==='ready')benchArrows36();else if(B._arrowsOn)benchArrows36();B._arrowsOn=B.state==='carrying'||B.state==='ready';benchCaptions36();benchPill36();return r;};
+const prevCams36=updateCameras;updateCameras=function(dt){const r=prevCams36.apply(this,arguments);const B=BENCH36;if(B.state==='carrying'||B.state==='ready')benchArrows36();else if(B._arrowsOn)benchArrows36();B._arrowsOn=B.state==='carrying'||B.state==='ready';benchCaptions36();benchPill36();benchOccluders36(dt);return r;};
+// (round 3, RP-5) the street gate's two pillars fade, as the base fades trees and awnings, while one of them stands between either camera and
+// either holder of the bench (knee, chest or head): the holder at the far end never vanishes behind a pillar, from their partner's view or their own. The pillars are
+// found once by their place (the two walk boxes of the gate, 2.3 m tall, and their caps); a faded pillar gets its own copy of its material,
+// and its own material back once the bench is down.
+BENCH36.OCC={boxes:[[2.8,3.2,5.78,6.18],[4.8,5.2,5.78,6.18]],to:0.22};
+function benchOccList36(){const B=BENCH36;if(B.occ36&&B.occ36.every(m=>{let o=m;while(o.parent)o=o.parent;return o===scene;}))return B.occ36;   // found again after the scene is rebuilt
+ const out=[];if(typeof scene==='undefined'||!scene||!scene.traverse)return out;const bb=new THREE.Box3();
+ scene.traverse(m=>{if(!m.isMesh||!m.geometry||m.isSkinnedMesh)return;bb.setFromObject(m);if(bb.max.y<1.5)return;B.OCC.boxes.forEach(([x1,x2,z1,z2],k)=>{if(bb.min.x>=x1-0.06&&bb.max.x<=x2+0.06&&bb.min.z>=z1-0.06&&bb.max.z<=z2+0.06&&!out.includes(m)){m.userData.occBox36=k;out.push(m);}});});
+ return (B.occ36=out);}
+function benchOccluders36(dt){const B=BENCH36,on=!B.paused&&(B.state==='ready'||B.state==='carrying');if(!on&&!B.occOn36)return;const list=benchOccList36();if(!list.length)return;
+ const want=new Set();if(on&&typeof cams!=='undefined'){const ray=B.occRay36||(B.occRay36=new THREE.Raycaster()),dir=new THREE.Vector3(),head=new THREE.Vector3();
+  for(let i=0;i<2;i++){const c=cams[i];if(!c)continue;for(const h of B.holder){const p=h===null?null:players[h];if(!p)continue;for(const hy of [0.6,1.2,1.7]){head.set(p.g.position.x,(p.y||0)+hy,p.g.position.z);dir.copy(head).sub(c.position);const len=dir.length();if(!(len>0.5))continue;dir.normalize();
+   ray.set(c.position,dir);ray.far=len-0.3;for(const hit of ray.intersectObjects(list,false))want.add(hit.object);}}}
+  for(const m of list)if(!want.has(m)&&list.some(o=>want.has(o)&&o.userData.occBox36===m.userData.occBox36))want.add(m);}   // a pillar fades with its cap
+ const k=Math.min(1,(+dt||0)*6);let any=false;
+ for(const m of list){const u=m.userData;if(want.has(m)&&!u.occ36){u.occ36={orig:m.material};m.material=m.material.clone();m.material.transparent=true;}if(!u.occ36)continue;
+  if(m.material!==u.occ36.orig&&m.material.opacity!==undefined){const t=want.has(m)?B.OCC.to:1;m.material.opacity+=(t-m.material.opacity)*k;if(Math.abs(m.material.opacity-t)<0.01)m.material.opacity=t;m.material.depthWrite=m.material.opacity>0.6;}
+  if(!want.has(m)&&(!on||m.material.opacity>=1)){if(m.material!==u.occ36.orig){m.material.dispose&&m.material.dispose();m.material=u.occ36.orig;}delete u.occ36;}else any=true;}
+ B.occOn36=any;}
 
 /* ---------- 6.2 The item ---------- */
 ITEMS.bench={name:'Wooden bench',w:2,h:1,price:0,tags:['lively','intimate'],balcony:true,outdoor:true,blurb:'From Ada’s workshop. Long enough for everybody, short enough to argue on.'};
@@ -1036,15 +1119,15 @@ function benchSync36(){const B=BENCH36,L=benchSave36();if(!L||B.state==='off')re
 // wrap: the bench's runtime pose and state go into S.life.bench36 on every save (ready and carrying are written as grounded at the pose)
 const prevSave36=save;save=function(){try{benchSync36();}catch(e){}return prevSave36.apply(this,arguments);};
 function benchTeardown36(){const B=BENCH36;benchDropMesh36();benchChooserClose36();benchArrows36(null);B.state='off';B.holder=[null,null];benchResetMotion36();B.paused=false;B.glide=null;B.settle=null;B.seatTarget=null;B.seatDay=null;
- B.stuck=false;B.stuckT=0;B.override=null;B.notePending=false;B.okCache=null;B.jobs=null;B.liftKey='';B.xray=null;B.bumpMsg=null;B.cam=[null,null];B.camInfo=null;B.grid=null;B._gb=null;B.delivered=false;B.snap=null;B.y=0;B.liftT=0;B.liftDir=0;B.repKeep=null;benchFindClear36();benchPill36();benchBusyClass36();}
+ B.stuck=false;B.stuckT=0;B.override=null;B.notePending=false;B.okCache=null;B.jobs=null;B.liftKey='';B.xray=null;B.bumpMsg=null;B.cam=[null,null];B.camInfo=null;B.grid=null;B._gb=null;B.delivered=false;B.snap=null;B.y=0;B.liftT=0;B.liftDir=0;B.repKeep=null;benchFindClear36(true);benchPill36();benchBusyClass36();}
 function benchLoad36(){const B=BENCH36;if(!S||!S.p)return;const L=benchSave36(),it=benchItem36();
  if(!L&&!it)return;
  if(L&&L.state==='off'&&!it)return;                                            // left with Ada for now: nothing in the world until the Menu offer is used
- if(L&&L.state==='placed'&&!it){S.home.items.push({id:'i'+(++S.home.seq),type:'bench',x:0,y:FLAT.rows,rot:0,pose36:L.choice||'out'});}
+ if(L&&L.state==='placed'&&!it){S.home.items.push({id:'i'+(++S.home.seq),type:'bench',x:0,y:FLAT.rows,rot:0,pose36:benchKey36(L.choice)||'out'});}
  if(L&&it&&!L.state)L.state='placed';
  if(it&&!B.POSES[it.pose36])it.pose36='out';
  if(!L||L.state==='placed'){B.state='placed';if(typeof NET==='undefined'||!NET.on){benchFlagFresh36();}rebuildFurniture();return;}
- B.mover=L.mover||0;B.choice=(L.state==='choosing'&&L.pick)||L.choice||'out';B.stats={dur:0,bumps:0,setdowns:0,swaps:0,resets:0,lifted:false};B.progress=0;
+ B.mover=L.mover||0;B.choice=(L.state==='choosing'&&benchKey36(L.pick))||benchKey36(L.choice)||'out';B.stats={dur:0,bumps:0,setdowns:0,swaps:0,resets:0,lifted:false};B.progress=0;
  B.pose={x:(L.pos||[B.START.x,B.START.z])[0],z:(L.pos||[B.START.x,B.START.z])[1],yaw:+L.yaw||0};
  if(!benchLocal36()){B.state=L.state==='choosing'?'choosing':'grounded';B.paused=true;if(typeof NET!=='undefined'&&NET.on&&L.again){L.again=false;benchUnkeep36(L);L.state='placed';B.state='placed';B.paused=false;}rebuildFurniture();return;}
  benchGridBuild36();
@@ -1144,11 +1227,16 @@ const prevClock36=advanceClock33;advanceClock33=function(h){if(benchClockHeld36(
 
 // 10.4 The wayfinding pill steps out of sight while the bench is in hands, in the chooser, gliding or sat on, and comes back exactly as it was
 // (its own tick keeps writing its text and display underneath; only visibility is held)
-function benchPill36(){const el=typeof lifeGuideEl34!=='undefined'?lifeGuideEl34:null;if(!el||!el.style)return;const B=BENCH36,s=B.state;
+function benchPill36(){const el=typeof lifeGuideEl34!=='undefined'?lifeGuideEl34:null;if(!el||!el.style)return;const B=BENCH36,s=B.state;benchPillText36(el);
  const hide=!B.paused&&(s==='ready'||s==='carrying'||s==='choosing'||s==='settling'||s==='seated');
  if(hide&&!B.pillHid){const a=el.getAttribute?el.getAttribute('aria-hidden'):null;B.pillHid={v:typeof el.style.visibility==='string'?el.style.visibility:'',a};el.style.visibility='hidden';if(el.setAttribute)el.setAttribute('aria-hidden','true');}
  else if(!hide&&B.pillHid){const k=B.pillHid;B.pillHid=null;el.style.visibility=k.v;if(k.a===null||k.a===undefined){if(el.removeAttribute)el.removeAttribute('aria-hidden');}else if(el.setAttribute)el.setAttribute('aria-hidden',k.a);}}
 
+// (round 3, RP-10) marked with Find, the bench is reached at an end, not 2 m from its centre: until a player is within TAKE of an end the pill
+// says to walk to one (the pill's own ticks write "You’re here. Use Act." within 2 m of the marker; this runs after them, in the camera step)
+function benchPillText36(el){const B=BENCH36,w=typeof LIFE34!=='undefined'?LIFE34.waypoint:null;if(!w||!w.bench36||B.state!=='grounded'||!el.querySelector)return;const span=el.querySelector('span');if(!span)return;
+ const h=span.innerHTML;if(typeof h!=='string'||h.indexOf('You’re here. Use Act.')<0)return;const ends=[benchEnd36(B.pose,0),benchEnd36(B.pose,1)];
+ if(players.some(p=>p&&!(typeof AI!=='undefined'&&AI.on&&p.i===AI.i)&&ends.some(e=>Math.hypot(p.g.position.x-e[0],p.g.position.z-e[1])<=B.TAKE)))return;span.innerHTML=h.replace('You’re here. Use Act.','Walk to an end and take it.');}
 // 10.5 Something to do together: a card at the top of the Today page (Tasks) while the bench waits for the pair (the Menu's top lines are in benchMenuHTML36)
 function benchTodayCard36(){if(!S||!S.p)return '';const B=BENCH36,L=benchSave36(),it=benchItem36(),placed=!!(L&&L.state==='placed')||(!L&&!!it);
  const due=!placed&&!!(S.sofa&&S.sofa.state==='placed')&&(S.day>=2||!!B.flags);let text='',b='';
@@ -1164,6 +1252,11 @@ if(typeof todayHTML34==='function'){const prevToday36=todayHTML34;todayHTML34=fu
  const hp=h.indexOf('<div class="hero-plant34">'),he=hp<0?-1:h.indexOf('</div></div>',hp);if(he>=0)return h.slice(0,he+12)+c+h.slice(he+12);
  const at=h.indexOf('<div class="life-chips34">');return at<0?h:h.slice(0,at)+c+h.slice(at);};}
 
+// (round 3, RP-7) while the first-evening guide is on, Tasks opens its journal, not the Today page: the bench card goes in the journal too, under
+// its heading, whenever the Today page would show it
+{const prevPanel36=openPanel;openPanel=function(html){if(typeof html==='string'&&html.indexOf('<div class="evening33">')===0){const c=benchTodayCard36();
+  if(c){const at=html.indexOf('<div class="evening-progress"');html=at>0?html.slice(0,at)+c+html.slice(at):html.replace('<div class="evening33">','<div class="evening33">'+c);}}
+ return prevPanel36.apply(this,[html].concat([].slice.call(arguments,1)));};}
 // 10.6 The chooser by touch: ◀ and ▶ and each player's "agrees" are buttons (the strip's own pointerdown, so a re-render between press and
 // release never loses a tap); the ghost is drawn in the role yellow when the arrangement is free (red when not), with an outline at seat
 // height and an arrow the way the seat faces, both seen through the parapet, and the other two arrangements as faint outlines
@@ -1198,9 +1291,10 @@ function benchPauseDelivery36(){const B=BENCH36,s=B.state;if(B.paused)return fal
   if(bench36RoomDown()){benchPaused36();return true;}return false;}
  return false;}
 function benchPaused36(){const L=benchSave36();benchToast36('The bench is down. Walk back and take an end each when you’re ready.');save();if(L&&L.duo)benchSolo36();}
-function benchFind36(){const B=BENCH36;if(B.state!=='grounded'||B.paused||typeof LIFE34==='undefined')return false;LIFE34.waypoint={x:B.pose.x,z:B.pose.z,name:'Ada’s bench',bench36:true};B.finding=true;
+function benchFind36(){const B=BENCH36;if(B.state!=='grounded'||B.paused||typeof LIFE34==='undefined')return false;const w0=LIFE34.waypoint;if(!(w0&&w0.bench36))B.findPrev36=w0||null;   // round 3 (L2): the player's own destination comes back afterwards
+ LIFE34.waypoint={x:B.pose.x,z:B.pose.z,name:'Ada’s bench',bench36:true};B.finding=true;
  if(typeof refreshMarker34==='function')refreshMarker34();benchToast36('Ada’s bench is marked. Follow the distance on screen.');return true;}
-function benchFindClear36(){const B=BENCH36;if(!B.finding)return;B.finding=false;if(typeof LIFE34==='undefined')return;const w=LIFE34.waypoint;if(w&&w.bench36){LIFE34.waypoint=null;if(typeof refreshMarker34==='function')refreshMarker34();}}
+function benchFindClear36(drop){const B=BENCH36;if(!B.finding)return;B.finding=false;const prev=B.findPrev36||null;B.findPrev36=null;if(typeof LIFE34==='undefined')return;const w=LIFE34.waypoint;if(w&&w.bench36){LIFE34.waypoint=drop?null:prev;if(typeof refreshMarker34==='function')refreshMarker34();}}
 // a reset moves the bench: the marker follows it
 {const prevReset36=bench36Reset;bench36Reset=function(){const r=prevReset36.apply(this,arguments);const B=BENCH36;if(r&&B.finding&&typeof LIFE34!=='undefined'&&LIFE34.waypoint&&LIFE34.waypoint.bench36){LIFE34.waypoint={x:B.pose.x,z:B.pose.z,name:'Ada’s bench',bench36:true};if(typeof refreshMarker34==='function')refreshMarker34();}return r;};}
 

@@ -32,3 +32,14 @@ Round 2 ships as build **v36-51c2a9ad**. Apart from the eight ideas above, every
 
 - **The carry ("guided lateral").** Our own carry-scheme study compared three prototypes against the shipped carry with a two-player model and by hand. It chose the guided prototype in a lateral-only form: walls and doorways move the bench sideways a few centimetres, never turn it. It landed as `BENCH36.GUIDE`, `benchAssistSlide36`, `benchAssistSwing36`, `benchFunnel36`, `benchTryG36` and `benchOpenCheck36` (section 3.5 of `dist/src/bench-v36.js`), with the Turn aids, the new prompts and the hidden area captions. Harness checks 3, 4, 5, 6, 9, 17, 18, 19 and 20 (mutants M15–M19).
 - **The verifier's leftovers.** These came from our own review of build v36-934cd8fe: check 9 at corner 2, the README harness paragraph, the chooser frame counted in box tests, the first mover put back when a run is cancelled, the clearer ghost, and the holder who pinned the other player in the veranda doorway. They landed in section 11 of the module and in checks 9, 12, 17, 26 and 29 (mutants M30–M38).
+
+## Round 3: review fixes (our own work, nothing borrowed)
+
+Round 3 ships as build **v36-dac9dba8**. It fixes what two reviews of build v36-51c2a9ad found (a definition-of-done review with its own probes, and a play review with a modelled new pair in headless Chromium). Nothing in it comes from build v36-70429384.
+
+- **A set-down is liftable only where each end can really be taken.** `benchReachPts36` now counts a cell near an end only when the straight step from it to the stand point is clear (`benchStepMemo36`, `benchStepAt36`: exact against the boxes `blocked()` tests, kept per cell). This covers the liftable rule, the order rule, the "needs this end" rule and the pinned rule. Check 6 (mutant M39).
+- **The delivery zone wants the bench lined up.** `benchZoneYaw36` and `BENCH36.ZONEA` (30°). Check 20 (M40).
+- **"Only Turn turns", counted exactly.** `benchCarryStep36` adds up the heading the Turn player's swing gave each frame and counts any other change. Check 3 (M41, M42).
+- **A wedged pair can get out without the Menu.** `benchDownPlan36` (the set-down's dry run), `benchRefuseText36`, `benchDownCheck36` and `benchPutBack36`. Check 9 (M44, M53).
+- **The turner's arrow.** `benchTurnSign36` and `benchScreenPt36`. The arrows keep clear of the prompt card through `benchPromptRect36`, `benchArrowSize36` and `benchClearPos36`. Checks 9 and 14 (M43, M48).
+- **Smaller fixes.** The turn aid for a held swing (M45), the gate pillars fading (`benchOccList36`, `benchOccluders36`, M46), the player card keeping the role while stuck (M47), saved arrangement keys checked (`benchKey36`, M49), Find putting the player's destination back and its pill wording (`benchPillText36`, M50), the bench card in the first-evening journal (M51), and no "Wait for" a companion (M52). Checks 9, 12, 25, 27 and 28.
