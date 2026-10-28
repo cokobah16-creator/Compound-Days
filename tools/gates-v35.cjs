@@ -9,7 +9,7 @@
 'use strict';
 const fs=require('fs'),path=require('path');
 
-const KINDS=['wake','morning','at-rocks','cast','bite','catch','plant','water','harvest','buy','sell','place','paint','request','shell','evening','sleep','resume'];
+const KINDS=['wake','morning','at-rocks','cast','bite','catch','plant','water','harvest','buy','sell','place','paint','request','shell','evening','sleep','resume','ball','match','goal','fulltime'];
 const H48=48*3600*1000,MIN20=20*60000,MIN35=35*60000,CATCH_S=120,BACK_S=120;
 const NON_ANSWERS=new Set(['','-','--','?','??','.','...','no','nope','none','nil','nothing','nothing really','not really','nothing much','n/a','na','idk','i dont know','i don\'t know','dunno','not sure','unsure','no idea','anything','everything','something','stuff','things','more stuff','ok','okay','yes','fine','good','nice','x','asdf','test']);
 

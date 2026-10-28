@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v36-dac9dba8 (authored character, your day in Palm Court, a bench for evening gist)
+Build: v37-683ed1f2 (authored character, your day in Palm Court, a bench for evening gist, monkey post)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
@@ -16,24 +16,32 @@ Choose a companion or two players sharing one screen. New households begin the
 first-evening guide. Existing households can opt in through Tasks.
 WASD + E for Player 1; arrow keys + Enter for Player 2; touch controls on phones.
 
+PLAYTESTS
+- Ada's bench: docs/TESTING_bench.md (open http://localhost:8000/?bench=playtest).
+- Street football: docs/TESTING_football.md (open http://localhost:8000/?football=playtest).
+- The Nigerian reader's sheet for the football copy: docs/READER_football.md.
+
 CONTENTS
 - dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
 - dist/assets/characters/efe.gltf.json: the authored character; dist/assets/wardrobe/: its 16 pieces.
 - tools/: wardrobe, hair and material authoring tools, the build stamp and the manifest tool.
-- check/: the Node verification harness, verify-authored.cjs, verify-v33.cjs and their results.
+- check/: the Node verification harness: sixteen harnesses (verify-*.cjs) and their results
+  (results-*.json); README.md, section Verification, lists them and what a passing run prints.
+- docs/: the playtest guides (TESTING_bench.md, TESTING_football.md, TESTING_v35.md), the
+  Nigerian reader's sheet (READER_football.md), PROVENANCE.md and earlier plans.
 - README.md: features, what this build keeps and removes, run and verification instructions.
 - CHARACTER.md: the character and wardrobe binding contract and how to deliver a new base mesh.
 - CONTRIBUTING.md: repository layout, imports and the build stamp.
 - PACKAGE_MANIFEST.json: build id and SHA-256 hashes of packaged files.
 
 Saves belong to the browser and origin where you play. The live Site's save does
-not automatically move to localhost. Saves from builds v26-v33 load; their retired
+not automatically move to localhost. Saves from builds v26-v37 load; their retired
 outfit and hair choices are mapped to the authored wardrobe. Companion and
 same-screen play are supported; cross-device online play is not provided by this
 static build.
 
-The authored-character checks and the v33 logic checks passed in the Node harness
-(node check/verify-authored.cjs, node check/verify-v33.cjs). Browser visual QA and
-real-phone performance remain unverified.
+All sixteen Node harnesses pass, including the bench (verify-bench-v36.cjs) and
+street football (verify-football-v37.cjs); see README.md, Verification. Headless
+browser captures were taken; real-phone performance remains unverified.
 
-Source commit: unreleased (branch claude/authored-character; base v33-8df2a65a)
+Source: branch claude/authored-character (build v37-683ed1f2, with the v37 review fixes and the children made younger-looking).

@@ -1,0 +1,1281 @@
+{
+ "build": "v37-683ed1f2",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Ball: no wireframe anywhere under the ball; a 0.22 m sphere of at least 16 x 12 segments carrying the panel texture (tagged \"panels\"), its dark share 0.18-0.32; the blob shadow follows within 1 mm while it rolls; it rests at y 0.22; an old save gets the same ball after enterWorld",
+   "passed": true,
+   "info": {
+    "radius": 0.22,
+    "segments": [
+     16,
+     12
+    ],
+    "dark": 0.303,
+    "shadowWorst": 0,
+    "oldSave": "panels at (0, 13.5)"
+   }
+  },
+  {
+   "name": "2. Kick (local pair, day 3, 10:00, the open street, facing east): a tap 5.0 m/s and 3.6-4.1 m within 2 degrees; holds of 0.40 s and 0.70 s give 7.5 and 11.0 m/s (9.7-10.7 m); a 2 s hold auto-releases at 0.95 s; with OS auto-repeat presses every 33 ms from 0.40 s a 0.70 s hold still gives one 11.0 m/s kick; P2 on Enter the same; the trap keeps the ball 0.55-0.7 m ahead at no more than 0.56 x walking speed; a release with the ball 1.7 m away kicks nothing; passes reach a standing receiver 25 degrees off and a receiver running across at 3.4 m/s (who takes it); a 0.30 s press with a teammate in the cone is a pass; a 0.20 s touch press is a 5 m/s kick; with the Kick prompt showing, a press after the ball rolled to 1.1 m still kicks",
+   "passed": true,
+   "info": {
+    "tap": [
+     5,
+     3.765
+    ],
+    "h40": 7.539,
+    "h70": [
+     11,
+     10.218
+    ],
+    "auto": 0.967,
+    "repeat": 11,
+    "p2": [
+     5,
+     11
+    ],
+    "trap": [
+     0.656,
+     0.682,
+     1.87
+    ],
+    "standing": [
+     0.55,
+     2.48
+    ],
+    "running": [
+     0.434,
+     true,
+     [
+      0.427,
+      0.904
+     ]
+    ],
+    "longTap": [
+     7.787,
+     0.55
+    ],
+    "touch": 5
+   }
+  },
+  {
+   "name": "3. Dribble and contact: a keyboard zig-zag keeps the ball (gap at most 1.1 m, mean 0.9), a straight run mean 0.85; a player standing 0.60 m away does not move it; up the stair foot the ball stays at the first step and nobody owns it once the player is up; two players chasing on the same side never shove it past 4 m/s nor flip it back and forth; a challenge pops it at 3.0 m/s and nobody owns it for 0.6 s; two releases on one frame make one kick, by the nearer player",
+   "passed": true,
+   "info": {
+    "zigzag": [
+     0.724,
+     0.698
+    ],
+    "straight": 0.728,
+    "standing": 0,
+    "stairs": {
+     "up": true,
+     "climbed": 0
+    },
+    "chase": {
+     "vmax": 3.4,
+     "changes": 1,
+     "pops": 1,
+     "flips": 0
+    },
+    "challenge": {
+     "pop": 3,
+     "free": 0.6
+    },
+    "both": "p0",
+    "headOn": {
+     "owners": [
+      "p0"
+     ],
+     "challenges": 0
+    }
+   }
+  },
+  {
+   "name": "4. Physics: a 5 m/s tap stops within 2.3 s within 5% of the closed form; a square-on bounce off the vestibule wall keeps 0.55 of the normal speed; six 11 m/s shots at the flat-front wall, a stair rail and the palm never put the centre inside a collider, never end beyond it and bounce at contact (also through a 0.15 s frame hitch); a ball rolled at the stair foot never climbs and bounces; a crate pushed onto the ball frees it within 1.0 s and 1.5 m; a shot west from x -29 stops by x -30.5 and never comes back",
+   "passed": true,
+   "info": {
+    "tap": [
+     3.765,
+     3.735,
+     2
+    ],
+    "bounce": [
+     0.55,
+     0.526
+    ],
+    "shots": [
+     [
+      "flat wall",
+      0.061
+     ],
+     [
+      "flat wall 2",
+      0.061
+     ],
+     [
+      "stair rail",
+      0.072
+     ],
+     [
+      "stair rail 2",
+      0.072
+     ],
+     [
+      "palm east face",
+      0.046
+     ],
+     [
+      "palm west face",
+      0.062
+     ]
+    ],
+    "hitch": 7.968,
+    "stairFoot": {
+     "speed": 6.001,
+     "bounced": true
+    },
+    "buried": [
+     0.26666666666666666,
+     0.6
+    ],
+    "west": -30.45
+   }
+  },
+  {
+   "name": "5. Hotspots and the square: at the photo spot the nearer of the photo and the ball wins; at the pepper pot with the bench placed the pot wins; in a match a human beside Kemi and the ball gets the kick; a bench holder and a day-1 sofa carrier never get \"Kick\"; the square’s white goal counts nothing before discovery, then one goal, a toast, the count and the log line, and not a second goal within 2 s",
+   "passed": true,
+   "info": {
+    "photo": [
+     "Sit, watch the water, take a photo",
+     "Kick · hold to shoot"
+    ],
+    "pot": "Tend the pepper pot",
+    "carriers": [
+     "Swap roles · walk off to let go",
+     "Set the sofa down"
+    ],
+    "square": {
+     "count": 1,
+     "kicks": [
+      "p0",
+      "p1"
+     ]
+    },
+    "suya": "kicked, not bought"
+   }
+  },
+  {
+   "name": "6. Pitch and traffic (day 3, 15:35, a local pair, started by real keys): each cairn appears only once its child is within 0.6 m, all four by 4.0 s at the posts (1 mm) and 0.48 m tall; Emeka’s slippers lie outside the east goal; six line decals; ZONE is clear of blocked() at r 0.33; walkers moved at set-out were out of every view, none is inside KEEP from 11 s after set-out to the clearing, and kick-off waited at most 11 s; the keke enters KEEP only during its one \"Motor!\" (shouted first), the ball held out of its lane and no AI in it, \"Oya!\" as it passes x -15.4 going east, and otherwise turns at x -14.6; 3 s after the end only the ball, its shadow and the children remain tagged",
+   "passed": true,
+   "info": {
+    "handoffs": [
+     {
+      "from": [
+       -25.527,
+       9.6
+      ],
+      "seen": true
+     },
+     {
+      "from": [
+       -18.2,
+       8
+      ],
+      "seen": false
+     }
+    ],
+    "setout": {
+     "cairns": [
+      2.234,
+      3.434,
+      2.267,
+      3.567
+     ],
+     "waited": 7.835,
+     "zonePoints": 8631
+    },
+    "match": {
+     "motor": [
+      64.014,
+      7.535
+     ],
+     "turns": 4,
+     "score": [
+      2,
+      3
+     ],
+     "end": 118.892
+    }
+   }
+  },
+  {
+   "name": "7. Match (a local pair, Saturday day 8 from 10:00, five matches back to back, seeds 1-5, two human bots against Kemi and Emeka): each ends first to 3 or by the cap; every goal is a crossing between the posts on the ball's path and every crossing is a goal; every out restarts 0.6 m inside, 2 m from the goal lines, for the team that did not touch last; 2.5 s celebrations; the summary in both halves; the log and the counters; one photo (the first win) and one image-free memory; pooled over twenty matches on days 8, 15, 22 and 29 the humans win 11-17, the children score in 12 or more, the children challenge 20 or more times and the median play is 35 s or more; a kick-off keep-off holds until the first kick or 4 s; no child dribbles into its own goal; no child challenge within 1 s of a human gaining the ball, one child's challenges 3 s apart, children within their speeds and ZONE; children's shots on target 35-75%; showing off widens their aim by 6 degrees or more; no post line just before a goal and no line repeated before its category is used up; twins with sound off and nothing on the bus, the bus with sound on, no AudioContext made, recipes unchanged; walkers and the keke off the pitch on the trace; a 60 s keep-ball by a human is under 70% with a child challenge; a press 0.9 m from a child's ball never takes it; an own goal by keys is not celebrated by its scorer, toasts \"Own goal!\", has no \"Gooool!\" and puts GOAL! at the top of both halves; a ball off Mr Bassey leaves the last touch with the kicker; a tight-angle shot clears the near stone and a tap from behind the goal line is no shot; a quick rematch never pops Mr Bassey; (merger) no human carries the ball over our own line in the pooled twenty matches, and walking back at the goal line pushes it",
+   "passed": true,
+   "info": {
+    "matches": [
+     {
+      "score": [
+       3,
+       2
+      ],
+      "result": "won",
+      "last": false,
+      "play": 50.211,
+      "goals": [
+       "b:kemi",
+       "a:p0",
+       "b:kemi",
+       "a:p0",
+       "a:p1"
+      ],
+      "outs": 0,
+      "challenges": 1,
+      "motor": true,
+      "lines": 8,
+      "digest": "74d44d86"
+     },
+     {
+      "score": [
+       3,
+       2
+      ],
+      "result": "won",
+      "last": false,
+      "play": 49.344,
+      "goals": [
+       "b:kemi",
+       "a:p0",
+       "b:emeka",
+       "a:p0",
+       "a:p1"
+      ],
+      "outs": 2,
+      "challenges": 2,
+      "motor": true,
+      "lines": 7,
+      "digest": "90d5dbe3"
+     },
+     {
+      "score": [
+       3,
+       1
+      ],
+      "result": "won",
+      "last": false,
+      "play": 25.505,
+      "goals": [
+       "b:emeka",
+       "a:p0",
+       "a:p1",
+       "a:p1"
+      ],
+      "outs": 1,
+      "challenges": 0,
+      "motor": false,
+      "lines": 6,
+      "digest": "7f6fd597"
+     },
+     {
+      "score": [
+       3,
+       2
+      ],
+      "result": "won",
+      "last": false,
+      "play": 46.477,
+      "goals": [
+       "a:p0",
+       "b:emeka",
+       "b:emeka",
+       "a:p0",
+       "a:p0"
+      ],
+      "outs": 6,
+      "challenges": 1,
+      "motor": false,
+      "lines": 8,
+      "digest": "beca1b9d"
+     },
+     {
+      "score": [
+       2,
+       3
+      ],
+      "result": "lost",
+      "last": false,
+      "play": 85.885,
+      "goals": [
+       "b:kemi",
+       "a:p0",
+       "b:emeka",
+       "a:p1",
+       "b:emeka"
+      ],
+      "outs": 10,
+      "challenges": 2,
+      "motor": true,
+      "lines": 9,
+      "digest": "4e63cd97"
+     }
+    ],
+    "album": [
+     "Mr. Bassey took a picture: our first win at monkey post, Us 3, Kemi and Emeka 2.",
+     "Monkey post at the end of the street: Us 3, Kemi and Emeka 2."
+    ],
+    "twins": {
+     "kick": 55,
+     "post": 11,
+     "goal": 24,
+     "soundOnConnections": 2
+    },
+    "kidShots": {
+     "onTarget": 60,
+     "shots": 94,
+     "extraMatches": 20,
+     "idleMatches": 6
+    },
+    "balance": {
+     "day8": {
+      "wins": 4,
+      "aiScored": 5
+     },
+     "pooled": {
+      "matches": 20,
+      "wins": 15,
+      "childrenScored": 19,
+      "childChallenges": 29,
+      "medianPlay": 49.8,
+      "play": [
+       25.5,
+       140.6
+      ],
+      "humanOwnGoals": 0,
+      "carriedIn": 0
+     }
+    },
+    "showOff": {
+     "shots": 7,
+     "mean": 16.2,
+     "normal": 10.1
+    },
+    "lines": 38,
+    "keepBall": [
+     [
+      1,
+      0.354,
+      2
+     ],
+     [
+      2,
+      0.497,
+      5
+     ],
+     [
+      3,
+      0.475,
+      7
+     ]
+    ],
+    "trap": [
+     [
+      "kemi",
+      "kemi,kemi,kemi,kemi,kemi,kemi"
+     ],
+     [
+      "kemi",
+      "kemi,kemi,kemi,kemi,kemi,kemi"
+     ],
+     [
+      "kemi",
+      "kemi,kemi,kemi,kemi,kemi,kemi"
+     ]
+    ],
+    "ownGoal": {
+     "celebrated": "done",
+     "banner": true,
+     "touches": "kick"
+    },
+    "bassey": {
+     "lastTouch": "p0"
+    },
+    "nearPost": [
+     "shot",
+     0,
+     1
+    ],
+    "behindLine": "kick",
+    "rematchBassey": {
+     "inView": true,
+     "maxStep": 0.043
+    }
+   }
+  },
+  {
+   "name": "8. Window and clock: the children appear 15:30 on a school day, 15:00 on a Sunday, 10:00 on a Saturday, never on day 1 unflagged nor online, and go when everyone is 18 m off for 5 s; they are scaled 0.780 and 0.749 and stand 1.45 and 1.39 m (within 1.5 cm) with child proportions after the mixer every frame (the head bone (1.21, 1.16, 1.19), the thighs 0.91 long and 0.819 wide, the feet (1.156, 1.04, 1.04), the shoulder joints at x 0.056 and the arm joints at 0.116, the shoulders 1.136 and the arms 0.90 wide, the chest 0.88 and the neck 1.136, the hips re-seated by the leg ratio 0.917 on every mixer update), the lowest skin point within 5 cm of the ground on every frame (at most two more mixers), Emeka’s feet his skin colour; their plastic ball is touched 8 times in 10 s; your ball rolled near one is passed back to the nearest human within 1.5 s; 30 s of play move the clock 10 minutes and 30 s idle 30; the call at 18:20 banners both halves, the next goal ends it \":last\", Emeka runs east 5 m and fades, and no rematch that day; the cap at 300 s of play has Kemi’s line and no call, then 60 s without a goal ends it unfinished; the late lines follow tomorrow; a reload after the call keeps them home; the walk clip runs 1.25 times faster in a match above 3 m/s; (merger) ?football=playtest brings the children from 06:00, and a reload in the same tab keeps those hours",
+   "passed": true,
+   "info": {
+    "flags": {
+     "applied": [
+      true,
+      true,
+      false,
+      "1",
+      "playtest"
+     ],
+     "reloaded": [
+      true,
+      true,
+      true,
+      true
+     ],
+     "newTab": "Sunday hours"
+    },
+    "models": {
+     "scales": [
+      0.78,
+      0.749
+     ],
+     "heights": [
+      1.449,
+      1.39
+     ],
+     "lowest": [
+      -0.021,
+      -0.001
+     ],
+     "mixers": 2,
+     "feet": 2,
+     "touches": 17
+    },
+    "passBack": 0.8,
+    "clock": [
+     10,
+     30
+    ],
+    "call": {
+     "seed": 1,
+     "kickoff": 17.998,
+     "at": 18.333,
+     "result": "lost:0-1:last",
+     "emeka": 5.916
+    },
+    "cap": {
+     "seed": 1,
+     "cap": 300.031,
+     "unfinished": 360.044
+    },
+    "walk": 1.25,
+    "late": {
+     "Monday": "It’s late. Tomorrow after school.",
+     "Friday": "It’s late. Tomorrow morning!",
+     "Saturday": "It’s late. Tomorrow after church.",
+     "Sunday": "It’s late. Tomorrow after school.",
+     "playtest": "It’s late. Tomorrow morning!"
+    }
+   }
+  },
+  {
+   "name": "9. Companion (Saturday day 8, P1 idle on the pitch): aiGoal returns stop 0.05 in a match; over 180 s of play the companion has the ball 5 or more times and shoots, and the children score; P1 pressing Act away from the ball while the companion has it gets a pass within 1.2 s that comes within 0.8 m; the companion stays within 0.2 m of ZONE; (merger) from the courtyard or the roof terrace at set-out the companion is on the pitch at the kick-off and plays the ball",
+   "passed": true,
+   "info": {
+    "stop": 0.05,
+    "away": [
+     {
+      "from": "courtyard",
+      "kickoffAfter": 3.568,
+      "handoffs": 1,
+      "firstTouch": 0.333
+     },
+     {
+      "from": "roof",
+      "kickoffAfter": 3.567,
+      "handoffs": 1,
+      "firstTouch": 0.334
+     }
+    ],
+    "play": 230,
+    "matches": 3,
+    "owns": 63,
+    "shots": 10,
+    "kidGoals": 7,
+    "called": {
+     "pass": [
+      "pass",
+      true,
+      0.6,
+      "p0"
+     ],
+     "near": 0.569,
+     "tries": 1
+    },
+    "zoneOut": 0
+   }
+  },
+  {
+   "name": "10. Views and HUD: match 1 of check 7 at 1280x800 and again at 844x390 is the same match; with a player within 7 m of the ball (not faded out) it is in view 95% (85% on the phone) of match frames; whenever it is not, the ball arrow shows within 15 degrees, and the goal arrow whenever the goal is off-view; the person stays at 70 px (50 on the phone) whenever the ball point is kept; the camera distance changes 3% a frame at most; compact chips opposite the player cards, the body class during the match, the role line hidden on small screens, the hints worded per key (E, Enter) and, on the phone halves, a short line naming Act (portrait recorded, not gated); (merger) the person floor holds whenever the scorer point is kept too; (fixer, v37 review) the two arrows never within 40 px of each other nor 60 px of the player, and the first-match hints come one card at a time after the kick-off (on a portrait phone the landscape line first, alone)",
+   "passed": true,
+   "info": {
+    "desk": {
+     "view0": {
+      "near": 1601,
+      "share": 0.993,
+      "deadBall": [
+       532,
+       532
+      ],
+      "offView": 12,
+      "arrowBad": 0,
+      "goalOff": 411,
+      "goalBad": 0,
+      "kept": 1785,
+      "floorBad": 0,
+      "scorerKept": 250,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 72.2,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "view1": {
+      "near": 1548,
+      "share": 0.99,
+      "deadBall": [
+       479,
+       479
+      ],
+      "offView": 27,
+      "arrowBad": 0,
+      "goalOff": 419,
+      "goalBad": 0,
+      "kept": 1784,
+      "floorBad": 0,
+      "scorerKept": 327,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 73.4,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "maxDistChange": 0.029
+    },
+    "phone": {
+     "view0": {
+      "near": 1601,
+      "share": 0.966,
+      "deadBall": [
+       500,
+       532
+      ],
+      "offView": 112,
+      "arrowBad": 0,
+      "goalOff": 988,
+      "goalBad": 0,
+      "kept": 1785,
+      "floorBad": 0,
+      "scorerKept": 229,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "view1": {
+      "near": 1548,
+      "share": 0.963,
+      "deadBall": [
+       457,
+       479
+      ],
+      "offView": 142,
+      "arrowBad": 0,
+      "goalOff": 1023,
+      "goalBad": 0,
+      "kept": 1784,
+      "floorBad": 0,
+      "scorerKept": 267,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "maxDistChange": 0.029
+    },
+    "phonePromptPx": [
+     13,
+     13
+    ],
+    "portrait": {
+     "view0": {
+      "near": 1435,
+      "share": 0.978,
+      "deadBall": [
+       366,
+       366
+      ],
+      "offView": 32,
+      "arrowBad": 0,
+      "goalOff": 843,
+      "goalBad": 0,
+      "kept": 1614,
+      "floorBad": 0,
+      "scorerKept": 243,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 51.2,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "view1": {
+      "near": 1425,
+      "share": 0.971,
+      "deadBall": [
+       338,
+       356
+      ],
+      "offView": 123,
+      "arrowBad": 0,
+      "goalOff": 1036,
+      "goalBad": 0,
+      "kept": 1613,
+      "floorBad": 0,
+      "scorerKept": 266,
+      "scorerFloorBad": 0,
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
+     },
+     "maxDistChange": 0.029
+    },
+    "hints": "one at a time, after the kick-off",
+    "digest": "74d44d86"
+   }
+  },
+  {
+   "name": "11. Save and modes: nothing is saved until discovery; the first kick saves the field and S.ball where it rests, and a reload puts it there; a match is never saved; a v36 save loads with nothing added; the shared state has no football record; the Menu reset brings the ball home and a buried ball on load escapes; online there are no children, no match and the Menu line, and a guest has no kick and does not move the ball; the evening waits for a match; a day change stops it; a panel cancels a charge; the bench offer and carrying it again are refused in a match; the bench still moves with the module loaded; the gates tool reads the four new kinds; (merger) a whole bench delivery on the current route plan with football loaded, placed and sat on; a match while the bench waits at the gate; the companion switch refused in a match; (fixer, v37 review) lifting the bench in a waiting match stops it and keeps the bench's Move/Turn prompt and roles, no ball arrow through a carry after discovery, a resting ball leaves the carried bench, \"Leave the bench for now\" in a match gives the companion back afterwards, no bench button in a match's Menu or Today, no \"Head home\" nudge during a match, the keke held under a panel, \"Start over?\" and Sleep's question keep the match, a hidden page cancels a charge, the bench's page offers to sit until the children come out, the props fade and the pill steps aside by the children waiting to play",
+   "passed": true,
+   "info": {
+    "saved": [
+     0.385,
+     11
+    ],
+    "midMatch": [
+     "off",
+     false,
+     0
+    ],
+    "buried": [
+     -5.185,
+     6.773
+    ],
+    "evening": "waited, then started",
+    "dayChange": [
+     "stopped:0-0"
+    ],
+    "bench": {
+     "segments": 12,
+     "frames": 946,
+     "placed": "out",
+     "seated": true,
+     "clockHeld": true
+    },
+    "benchAtGate": {
+     "state": "grounded",
+     "clockInPlay": 0.3333
+    },
+    "companionSwitch": {
+     "duoRefused": true,
+     "soloRefused": true,
+     "afterMatch": "companion back",
+     "standUpInMatch": "deferred to the end"
+    },
+    "benchLift": {
+     "match": "idle",
+     "stop": "bench",
+     "roles": [
+      "Bench · Move",
+      "Bench · Turn"
+     ]
+    },
+    "carryArrows": {
+     "frames": 300,
+     "ballArrow": 0
+    },
+    "carriedBench": "ball pushed out",
+    "benchButtons": "held back in a match",
+    "leaveInMatch": "companion back after the match",
+    "eveningNudge": "after the match",
+    "kekeUnderPanel": "held",
+    "askFirst": "match kept",
+    "hiddenPage": "no kick",
+    "benchWait": "until 3:30 pm",
+    "invitation": {
+     "fade": "on",
+     "pill": "hidden"
+    },
+    "gates": {
+     "warnings": 0,
+     "grades": [
+      "FAIL",
+      "NOT YET",
+      "NOT YET",
+      "NOT YET",
+      "NOT YET",
+      "NOT YET",
+      "NOT YET"
+     ]
+    }
+   }
+  },
+  {
+   "name": "12. Inert, loop, cost: before discovery the blocked() sample, a 600-frame walk (the save, camera distances, prompts), the hooks, recipes, line tables, save keys, Menu and Today are the same as without the module (compared by the runner), the world signature is f27b15e:175 and the ball is the panelled ball; after discovery the morning line, the waypoint once and never over another, Mama Nkechi +1 that day, Today's result, Tunde's line once, the waypoint toast once even under another waypoint; with OWNER.children false no child is named; no wall clock or Math.random call in the module; inside the step at most 16 blocked() and levelAt() a rolling frame, one per 60 frames at rest, 20 blocked() a match frame; (merger) the waypoint toast waits 2.6 s after the first-kick toast; (fixer) Ada's bench thank-you comes before her football line; the morning line in its own card and gone once played; Mama Nkechi's evening line",
+   "passed": true,
+   "info": {
+    "before": {
+     "walkFrames": 600,
+     "blockedPoints": 3000,
+     "boxesNow": "c5bb00c9:175",
+     "digest": "a334ad9",
+     "sameAsWithout": true,
+     "worldSignature": "f27b15e:175"
+    },
+    "eveningLine": "fb37-nkechi-evening",
+    "after": {
+     "morning": true,
+     "waypoint": "once",
+     "nkechi": 1,
+     "today": "Monkey post today: won 3–2.",
+     "tunde": "fb37-tunde-won",
+     "ada": [
+      "adb36",
+      "fb37-ada-won"
+     ],
+     "adaEvening": "ade36"
+    },
+    "toastQueue": {
+     "after": 2.6
+    },
+    "noChildren": true,
+    "cost": {
+     "rest": [
+      2,
+      120
+     ],
+     "rolling": [
+      8,
+      8
+     ],
+     "match": [
+      10,
+      1449
+     ]
+    }
+   }
+  },
+  {
+   "name": "13. (v37 merge) Own goals by real keys: the browser checker's real-key match bot (KB37, which carried 3 of 22 goals into our own goal by dribbling as it walked back) plays ten matches on two Saturdays (seeds 101-105 and 201-205) and no human puts the ball into our own goal; P1 walking back with keys into a resting ball 0.7 m and 1.2 m from our line never knocks it in; a kick into our own goal still counts as an own goal",
+   "passed": true,
+   "info": {
+    "matches": [
+     {
+      "day": 8,
+      "score": [
+       2,
+       3
+      ],
+      "goals": "a:p1 b:kemi b:kemi a:p1 b:emeka",
+      "ownerNearOurLine": 129
+     },
+     {
+      "day": 8,
+      "score": [
+       1,
+       3
+      ],
+      "goals": "a:p1 b:kemi b:kemi b:emeka",
+      "ownerNearOurLine": 23
+     },
+     {
+      "day": 8,
+      "score": [
+       2,
+       3
+      ],
+      "goals": "b:kemi a:p1 b:kemi a:p0 b:kemi",
+      "ownerNearOurLine": 259
+     },
+     {
+      "day": 8,
+      "score": [
+       2,
+       3
+      ],
+      "goals": "b:kemi a:p1 b:kemi a:p1 b:emeka",
+      "ownerNearOurLine": 57
+     },
+     {
+      "day": 8,
+      "score": [
+       2,
+       3
+      ],
+      "goals": "a:p0 b:kemi a:p1 b:kemi b:emeka",
+      "ownerNearOurLine": 114
+     },
+     {
+      "day": 15,
+      "score": [
+       3,
+       2
+      ],
+      "goals": "b:emeka a:p1 a:p0 b:kemi a:p1",
+      "ownerNearOurLine": 73
+     },
+     {
+      "day": 15,
+      "score": [
+       1,
+       3
+      ],
+      "goals": "b:kemi a:p0 b:kemi b:kemi",
+      "ownerNearOurLine": 14
+     },
+     {
+      "day": 15,
+      "score": [
+       1,
+       3
+      ],
+      "goals": "b:kemi a:p1 b:emeka b:emeka",
+      "ownerNearOurLine": 53
+     },
+     {
+      "day": 15,
+      "score": [
+       1,
+       3
+      ],
+      "goals": "b:emeka a:p0 b:kemi b:kemi",
+      "ownerNearOurLine": 103
+     },
+     {
+      "day": 15,
+      "score": [
+       1,
+       3
+      ],
+      "goals": "b:kemi b:kemi a:p1 b:kemi",
+      "ownerNearOurLine": 190
+     }
+    ],
+    "goals": 45,
+    "humanOwnGoals": 0,
+    "walkIn": [
+     {
+      "from": 0.68,
+      "touches": "body",
+      "goals": ""
+     },
+     {
+      "from": 1.2,
+      "touches": "body",
+      "goals": ""
+     }
+    ],
+    "kickIn": "p0:og"
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 SUB = 99 (no sub-steps)",
+   "check": 4,
+   "result": "red",
+   "first": "flat wall: bounced 0.20799999999999993 m short of contact"
+  },
+  {
+   "name": "M2 the wrapper calls the earlier chain with the ball still set",
+   "check": 3,
+   "result": "red",
+   "first": "zig-zag mean gap 0.9358837155178836"
+  },
+  {
+   "name": "M3 the wrapper never calls the earlier chain",
+   "check": 11,
+   "result": "red",
+   "first": "the bench reached the doorway: {\"r\":\"go\",\"f\":7200,\"k\":0}"
+  },
+  {
+   "name": "M4 the press repeat guard removed",
+   "check": 2,
+   "result": "red",
+   "first": "auto-repeat: 5"
+  },
+  {
+   "name": "M5 PASS_ITER = 1",
+   "check": 2,
+   "result": "red",
+   "first": "meets the running receiver: 1.9894593174861177"
+  },
+  {
+   "name": "M6 the set-out hand-off and the keep-out off (with M6b (with M6) the keep-out turn-back off)",
+   "check": 6,
+   "result": "red",
+   "first": "one walker handed off out of view"
+  },
+  {
+   "name": "M7 the companion's stop:0.05 removed",
+   "check": 9,
+   "result": "red",
+   "first": "aiGoal in a match returns stop 0.05: {\"x\":-23.75,\"z\":9.8}"
+  },
+  {
+   "name": "M8 S.life.football37 created at load",
+   "check": 12,
+   "result": "red",
+   "first": "no football record before discovery"
+  },
+  {
+   "name": "M9 a press traps an opponent's ball again (DOD F2) (with M9b (with M9) a press starts beside an opponent's ball)",
+   "check": 7,
+   "result": "red",
+   "first": "showing off 14.3 against 8.9"
+  },
+  {
+   "name": "M11 an own goal is celebrated by its scorer (DOD F3)",
+   "check": 7,
+   "result": "red",
+   "first": "P1 celebrated its own goal: [true,0.18]"
+  },
+  {
+   "name": "M12 carrying the bench again is not refused in a match (DOD F4)",
+   "check": 11,
+   "result": "red",
+   "first": "carrying the bench again does not start in a match"
+  },
+  {
+   "name": "M13 Mr Bassey always enters from an entry point (DOD F6)",
+   "check": 7,
+   "result": "red",
+   "first": "Mr Bassey jumped 10.846 m in a frame in view"
+  },
+  {
+   "name": "M14 a soft body takes the last touch (DOD F7)",
+   "check": 7,
+   "result": "red",
+   "first": "a touch credited to Mr Bassey"
+  },
+  {
+   "name": "M15 the walk speed-up after the mixer (DOD F8)",
+   "check": 8,
+   "result": "red",
+   "first": "the walk in a match runs at 1 of free play"
+  },
+  {
+   "name": "M16 the call is forgotten on a reload (DOD F10)",
+   "check": 8,
+   "result": "red",
+   "first": "no children again that day, after a reload too"
+  },
+  {
+   "name": "M17 the shot cone from behind the goal line (play F4) (with M17b (with M17) the aim not moved off the near stone)",
+   "check": 7,
+   "result": "red",
+   "first": "post hits 2"
+  },
+  {
+   "name": "M18 any touch ends the kick-off keep-off (play F3)",
+   "check": 7,
+   "result": "red",
+   "first": "the kick-off keep-off ended at +0.067 s, before the first kick"
+  },
+  {
+   "name": "M19 the press refuses a ball past 1.0 m (play F10)",
+   "check": 2,
+   "result": "red",
+   "first": "a press with the ball 1.1 m away kicks"
+  },
+  {
+   "name": "M20 no pointer while another waypoint holds the marker (play F9)",
+   "check": 12,
+   "result": "red",
+   "first": "but the toast still points to the children once"
+  },
+  {
+   "name": "M21 a phone half names the key (M3, C11)",
+   "check": 10,
+   "result": "red",
+   "first": "the short hint on the phone halves names Act, never a key"
+  },
+  {
+   "name": "M22 no GOAL! banner in the halves (M2)",
+   "check": 7,
+   "result": "red",
+   "first": "\"GOAL!\" at the top of both halves"
+  },
+  {
+   "name": "M23 a planned AI kick takes someone else's ball (DOD F1)",
+   "check": 7,
+   "result": "red",
+   "first": "match 1: kemi's planned shot took p0's ball at 24.639"
+  },
+  {
+   "name": "M24 the own-goal guard off: the dribble carries the ball into our own goal again (merger) (with M24b (with M24) and the trap)",
+   "check": 7,
+   "result": "red",
+   "first": "a human carried the ball over our own line: [{\"t\":507.508,\"ev\":\"goal\",\"team\":\"b\",\"who\":\"p0\",\"own\":true,\"how\":\"line\",\"score\":[1,3],\"decided\":true,\"at\":[-28.8,9.566],\"last\":false},{\"t\":507.208,\"ev\":\"touch\",\"who\":\"p0\",\"how\":\"dribble\"}]"
+  },
+  {
+   "name": "M25 the waypoint toast not queued (merger)",
+   "check": 12,
+   "result": "red",
+   "first": "its toast waits while the last one is still showing"
+  },
+  {
+   "name": "M27 the flag hours forgotten on a reload (merger)",
+   "check": 8,
+   "result": "red",
+   "first": "after a reload the playtest hours hold: [false,false,false,false]"
+  },
+  {
+   "name": "M28 the companion off the pitch not handed off (merger) (with M28b (with M28) and the kick-off not waiting for it)",
+   "check": 9,
+   "result": "red",
+   "first": "courtyard: the companion on the pitch at the kick-off: [279.96,3.696871867186228,5.399798768670472,0]"
+  },
+  {
+   "name": "M29 the bench's companion switch not refused in a match (merger)",
+   "check": 11,
+   "result": "red",
+   "first": "the companion stays in the match"
+  },
+  {
+   "name": "M30 the guard as it was: 1.5 m, and the dribble let go at full speed (v37 merge) (with M30b (with M30) no speed cut when the guard lets go)",
+   "check": 13,
+   "result": "red",
+   "first": "own goals by a human in real-key play (9 of 44): [{\"day\":8,\"t\":12.769,\"who\":\"p1\",\"last\":\"dribble\",\"at\":[-28.8,10.414]},{\"day\":8,\"t\":25.305,\"who\":\"p0\",\"last\":\"dribble\",\"at\":[-28.8,9.778]},{\"day\":8,\"t\":38.041,\"who\":\"p0\",\"last\":\"dribble\",\"at\":[-28.8,9.514]},{\"day\":8,\"t\":243.585,\"who\":\"p1\",\"last\":\"dribble\",\"at\":[-28.8,9.262]},{\"day\":15,\"t\":354.042,\"who\":\"p1\",\"last\":\"dribble\",\"at\":[-28.8,9.659]},{\"day\""
+  },
+  {
+   "name": "M31 no speed cut on a guarded player's push (v37 merge)",
+   "check": 13,
+   "result": "red",
+   "first": "P1 walked the ball into our own goal from 0.68 m: [{\"t\":631.101,\"ev\":\"goal\",\"team\":\"b\",\"who\":\"p0\",\"own\":true,\"how\":\"line\",\"score\":[0,1],\"decided\":false,\"at\":[-28.8,9.056],\"last\":false}]"
+  },
+  {
+   "name": "M32 a defender's body on a child's dribble takes the goal (v37 merge)",
+   "check": 13,
+   "result": "red",
+   "first": "own goals by a human in real-key play (1 of 45): [{\"day\":15,\"t\":730.089,\"who\":\"p0\",\"last\":\"body\",\"at\":[-28.8,9.642]}]"
+  },
+  {
+   "name": "M33 the phone prompt back at 12 px (v37 merge)",
+   "check": 10,
+   "result": "red",
+   "first": "the phone prompt and its key glyph at 13 px or more: [12,13]"
+  },
+  {
+   "name": "M34 standing up from the bench hands back at once in a match (v37 merge)",
+   "check": 11,
+   "result": "red",
+   "first": "standing up mid-match keeps the two players: [\"placed\",true,true,false,\"waiting\"]"
+  },
+  {
+   "name": "M35 the playtest late line says after school (v37 merge)",
+   "check": 8,
+   "result": "red",
+   "first": "the playtest late line follows the 06:00 hours: It’s late. Tomorrow after school."
+  },
+  {
+   "name": "M36 a match goes on while the bench is lifted (review I1)",
+   "check": 11,
+   "result": "red",
+   "first": "I1: the lift stops the match and the bench keeps its roles: [\"waiting\",\"carrying\",\"menu\",true,\"Bench · Move\",\"Bench · Turn\"]"
+  },
+  {
+   "name": "M37 football writes over a bench holder's prompt (review I1)",
+   "check": 11,
+   "result": "red",
+   "first": "I1: by the bench in a waiting match, the bench prompt: [\"waiting\",\"grounded\",\"pr on p0 fb37-pr\",false]"
+  },
+  {
+   "name": "M38 the free-play ball arrow on whatever else is guiding (review I2)",
+   "check": 11,
+   "result": "red",
+   "first": "I2: no ball arrow in 300 carry frames: 300"
+  },
+  {
+   "name": "M39 the football line before Ada's bench thank-you (review I3)",
+   "check": 12,
+   "result": "red",
+   "first": "Ada thanks you for the bench first: [\"fb37-ada-won\",\"adb36\"]"
+  },
+  {
+   "name": "M40 the companion handed back only to a placed bench (review I4)",
+   "check": 11,
+   "result": "red",
+   "first": "I4: the companion back after the match: [false,false,true,\"off\"]"
+  },
+  {
+   "name": "M41 the evening nudge during a match (review I5)",
+   "check": 11,
+   "result": "red",
+   "first": "I5: no nudge in a match after six: [\"live\",true,false,\"Flat 3\"]"
+  },
+  {
+   "name": "M42 the keke drives on under a panel (review I6)",
+   "check": 11,
+   "result": "red",
+   "first": "I6: the keke held under a panel: [-19.56000000000002,\"motor\",1]"
+  },
+  {
+   "name": "M43 the carried bench no body for the ball (review I7)",
+   "check": 11,
+   "result": "red",
+   "first": "I7: the ball is out from under the carried bench: [\"carrying\",true]"
+  },
+  {
+   "name": "M44 the bench buttons offered in a match (review I8)",
+   "check": 11,
+   "result": "red",
+   "first": "I8: in a match the Menu and Today hold back the bench buttons, and after it they come back"
+  },
+  {
+   "name": "M45 the asking presses stop the match (review I9)",
+   "check": 11,
+   "result": "red",
+   "first": "I9: the asking presses leave the match on: [\"idle\",3]"
+  },
+  {
+   "name": "M46 a hidden page leaves the charge (review I10)",
+   "check": 11,
+   "result": "red",
+   "first": "I10: no kick after a hidden page"
+  },
+  {
+   "name": "M47 no wait for the children on the bench (review F1)",
+   "check": 11,
+   "result": "red",
+   "first": "the bench page offers 3:30 pm, then six: <h2>Ada’s bench</h2><p>Long enough for everybody, short enough to argue on.</p><div class=\"actions\"><button class=\"btn primary block\" data-act=\"bench36Wait\" data-t=\"18\">Wait here until six<span class=\"sub\">The neighbours come by this evening</span></button><button class=\"btn block\" data-act=\"sitmin\""
+  },
+  {
+   "name": "M48 the two arrows stack (review F2)",
+   "check": 10,
+   "result": "red",
+   "first": "view 0: the ball and goal arrows within 40 px on 24 frames"
+  },
+  {
+   "name": "M48b an arrow on the player (review F2)",
+   "check": 10,
+   "result": "red",
+   "first": "view 0: an arrow within 60 px of the player on 189 frames"
+  },
+  {
+   "name": "M49 the landscape line with the short hint, from the set-out (review F3)",
+   "check": 10,
+   "result": "red",
+   "first": "the landscape hint for two players on a portrait phone"
+  },
+  {
+   "name": "M50 the suya stand before the ball (review F4)",
+   "check": 5,
+   "result": "red",
+   "first": "by the suya stand the ball is kicked, no suya bought: [[\"suya\",1.1569356075426156],[4000,0,false],6000]"
+  },
+  {
+   "name": "M51 the morning line after today's game (review F5)",
+   "check": 12,
+   "result": "red",
+   "first": "(fixer, F5) once played today, no morning line, only the result"
+  },
+  {
+   "name": "M52 no prop fade by the waiting children (review F9)",
+   "check": 11,
+   "result": "red",
+   "first": "the invitation in view: [[\"idle\",false,true],[false,false]]"
+  },
+  {
+   "name": "M53 no evening line about the match (review F11)",
+   "check": 12,
+   "result": "red",
+   "first": "Mama Nkechi brings the match up on the evening, once: [{\"id\":\"ne04\",\"text\":\"Do not bring chairs, my dear. We are not staying. We only came to greet you properly.\"},{\"id\":\"ne04\",\"text\":\"Do not bring chairs, my dear. We are not staying. We only came to greet you properly.\"}]"
+  },
+  {
+   "name": "M54 the pill stays up by the waiting children (review F8)",
+   "check": 11,
+   "result": "red",
+   "first": "the invitation in view: [[\"idle\",true,false],[false,false]]"
+  },
+  {
+   "name": "M55 the children's limb change dropped: full-length thighs and the feet as built (kids)",
+   "check": 8,
+   "result": "red",
+   "first": "the child proportions after the mixer on every frame: kemi frame 0 upL [1,1,1]; kemi frame 0 upR [1,1,1]; kemi frame 0 ftL [1,1,1]; kemi frame 0 ftR [1,1,1]"
+  }
+ ],
+ "withoutModule": {
+  "allRed": true,
+  "findings": [
+   {
+    "checks": [
+     1
+    ],
+    "first": "no wireframe under the ball"
+   },
+   {
+    "checks": [
+     2
+    ],
+    "first": "the tap kicks"
+   },
+   {
+    "checks": [
+     3
+    ],
+    "first": "zig-zag max gap 15.076538280942884"
+   },
+   {
+    "checks": [
+     4
+    ],
+    "first": "stops after undefined"
+   },
+   {
+    "checks": [
+     5
+    ],
+    "first": "Cannot read properties of null (reading 'LINES')"
+   },
+   {
+    "checks": [
+     6,
+     7,
+     9,
+     13
+    ],
+    "first": "Cannot set properties of null (setting 'matchNo')"
+   },
+   {
+    "checks": [
+     8
+    ],
+    "first": "both faded in at 15:30"
+   },
+   {
+    "checks": [
+     10
+    ],
+    "first": "the desk1 match did not run"
+   },
+   {
+    "checks": [
+     11
+    ],
+    "first": "kicked"
+   },
+   {
+    "checks": [
+     12
+    ],
+    "first": "the panelled ball"
+   }
+  ]
+ },
+ "determinism": "identical"
+}

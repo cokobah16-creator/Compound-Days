@@ -1,5 +1,5 @@
 {
- "build": "v36-dac9dba8",
+ "build": "v37-683ed1f2",
  "passed": true,
  "checks": [
   {
@@ -61,17 +61,17 @@
    "passed": true,
    "info": {
     "scheme": "guided-lateral",
-    "guide": "5ab70f03",
+    "guide": "10b35490",
     "res": [
      {
-      "dur": 33.967,
+      "dur": 31.6,
       "bumps": 0,
       "resets": 0,
       "settle": "glide",
       "placed": "out"
      },
      {
-      "dur": 33.967,
+      "dur": 31.6,
       "bumps": 0,
       "swaps": 1,
       "resets": 0,
@@ -79,7 +79,7 @@
       "placed": "gate"
      },
      {
-      "dur": 34.5,
+      "dur": 32.133,
       "bumps": 0,
       "setdowns": 4,
       "swaps": 1,
@@ -136,9 +136,9 @@
       8.51
      ],
      [
-      "ready",
-      3.48,
-      3.72
+      "grounded",
+      3.91,
+      3.48
      ],
      [
       "ready",
@@ -500,7 +500,7 @@
     "room": 0,
     "liftedForReal": 35,
     "corner2": {
-     "downs": 31,
+     "downs": 29,
      "refused": 0
     },
     "openingRuns": 36,
@@ -584,9 +584,9 @@
     "corner2": {
      "segment": 7,
      "at": [
-      -1.661,
+      -1.664,
       4.731,
-      272.78
+      272.67
      ]
     },
     "stuckAfter": 3.033,
@@ -733,7 +733,7 @@
    }
   },
   {
-   "name": "13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close",
+   "name": "13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; (v37 review) Act opens the bench’s page (Sit for a minute, Stand up) and closing it keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close",
    "passed": true,
    "info": {
     "hips": 0.61,
@@ -758,34 +758,34 @@
      {
       "cp": "inside the gate",
       "px": [
-       204,
-       219,
+       203,
+       218,
        160,
-       191
+       190
       ]
      },
      {
       "cp": "courtyard",
       "px": [
-       167,
-       229,
-       165,
+       166,
+       228,
+       164,
        225
       ]
      },
      {
       "cp": "before the passage",
       "px": [
-       205,
+       206,
        262,
-       202,
+       203,
        236
       ]
      },
      {
       "cp": "room",
       "px": [
-       246,
+       247,
        261,
        236,
        234
@@ -805,19 +805,19 @@
      {
       "cp": "inside the gate",
       "px": [
-       97,
+       96,
        65,
-       69,
-       69
+       68,
+       68
       ]
      },
      {
       "cp": "courtyard",
       "px": [
-       113,
-       75,
-       80,
-       80
+       115,
+       77,
+       81,
+       81
       ]
      },
      {
@@ -844,11 +844,11 @@
     "phoneDeliveries": [
      [
       "390x844",
-      406
+      378
      ],
      [
       "844x390",
-      406
+      378
      ]
     ]
    }
@@ -886,24 +886,24 @@
    "name": "17. Per-frame cost: a carry sub-step makes at most 24 blocked() calls and 12 box tests (also on the frames the walls help, whose peak is recorded), a carry frame at most 2 sub-steps, and an idle frame (no delivery, or the bench placed) no bench blocked() call at all; from the lift to the bench in its place no frame runs more than one arrangement check or more than the settle planner’s budget of box tests (counted, not timed), and the glide is planned while the pair chooses; weighed in box tests (a blocked() call 3, one answered from the reach run’s index 1/4, a walk-grid cell 1/64), no frame from the lift to the bench in its place weighs more than 1,200 (about 6 ms), and the frame the chooser opens in runs no arrangement check",
    "passed": true,
    "info": {
-    "frames": 3266,
+    "frames": 3123,
     "subMax": 2,
-    "blockedMax": 16,
+    "blockedMax": 8,
     "boxMax": 8,
     "helped": {
-     "frames": 141,
-     "blockedMax": 6,
+     "frames": 291,
+     "blockedMax": 7,
      "boxMax": 4
     },
     "idle": 0,
     "frameMax": {
-     "nodes": 685,
+     "nodes": 682,
      "arr": 1,
      "bfs": 1,
      "cells": 3027
     },
-    "workMax": 685,
-    "chooserWorkMax": 685,
+    "workMax": 682,
+    "chooserWorkMax": 682,
     "indexSame": [
      157878,
      0
@@ -933,7 +933,7 @@
    }
   },
   {
-   "name": "19. Walls guide, never turn: the passage, the flat door and the veranda doorway measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames",
+   "name": "19. Walls guide, never turn: the passage, the flat door, the veranda doorway and (round 2b) the street gate measured from the walls match the module’s openings (a jamb moved 4 cm switches that opening’s funnel off and logs it); at each, the mover’s keys alone 5, 10 and 14 degrees off its axis keep the yaw exactly, draw the centre closer to the opening’s centre line and move it sideways at most 0.30 m per metre pushed, and 20 degrees off move it sideways not at all; a refused push gets at most 0.15 m of sideways help a contact, which comes back after 0.30 m of unassisted travel and after a set-down and lift; and a 2 cm post beside the flat-door jamb is never crossed between frames",
    "passed": true,
    "info": {
     "openings": [
@@ -954,6 +954,12 @@
       -4.6,
       -3.6,
       -4.1
+     ],
+     [
+      "street gate",
+      3.2,
+      4.8,
+      4
      ]
     ],
     "movedJamb": "bench36: the passage measures -1.79 m, not -1.75 m; its funnel is off",
@@ -1053,6 +1059,38 @@
       0,
       0.1,
       0.028
+     ],
+     [
+      "street gate",
+      5,
+      0.638,
+      -0.106,
+      0.05,
+      0
+     ],
+     [
+      "street gate",
+      10,
+      0.638,
+      -0.161,
+      0.05,
+      0
+     ],
+     [
+      "street gate",
+      14,
+      0.638,
+      -0.191,
+      0.05,
+      0.013
+     ],
+     [
+      "street gate",
+      20,
+      0.358,
+      0,
+      0.1,
+      0.022
      ]
     ],
     "cap": {
@@ -1820,14 +1858,14 @@
    }
   },
   {
-   "name": "25. Something to do together: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why; while the first-evening guide is on, Tasks opens its journal and the same card is in it, under its heading",
+   "name": "25. The bench card: the Today page has the “Ada’s bench needs two pairs of hands” card (fetch it while it waits with Ada, Find the bench while it waits on the ground, nothing while it is in hands or placed, nothing before it is due), and the bench lines open the Menu (the offer, then Find or Pause next to the reset); a companion household’s card offers two players on this device, an online one says why; while the first-evening guide is on, Tasks opens its journal and the same card is in it, under its heading",
    "passed": true,
    "info": {
     "cards": [
-     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands Ada left her bench at your gate. Carry it in together: one walks it, one turns it. We’ll fetch it",
-     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands It is waiting at your gate. Take an end each. Find the bench",
-     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands One of you walks it and one turns it. Your companion can’t take an end, so this one is for two players on this device. Play this with two players on this device",
-     "SOMETHING TO DO TOGETHER Ada’s bench needs two pairs of hands Carry Ada’s bench when you are both on one device."
+     "FOR THE TWO OF YOU Ada’s bench needs two pairs of hands Ada left her bench at your gate. Carry it in together: one walks it, one turns it. We’ll fetch it",
+     "FOR THE TWO OF YOU Ada’s bench needs two pairs of hands It is waiting at your gate. Take an end each. Find the bench",
+     "FOR THE TWO OF YOU Ada’s bench needs two pairs of hands One of you walks it and one turns it. Your companion can’t take an end, so this one is for two players on this device. Play this with two players on this device",
+     "FOR THE TWO OF YOU Ada’s bench needs two pairs of hands Carry Ada’s bench when you are both on one device."
     ]
    }
   },
@@ -1853,9 +1891,10 @@
    }
   },
   {
-   "name": "27. Pause and find: “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes",
+   "name": "27. Pause and find: (v37 review) \"We’ll fetch it\" marks the bench for the guide pill as the note closes; “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes",
    "passed": true,
    "info": {
+    "fetchMarks": "Ada’s bench",
     "pause": {
      "setdowns": 0
     },
@@ -1901,6 +1940,219 @@
       3.454
      ]
     }
+   }
+  },
+  {
+   "name": "30. The bench card reads clearly, in our own words: by the page’s own stylesheets (read in page order, with the @media blocks that apply and the cascade over the card’s chain of elements), its kicker, heading and text have a contrast of at least 4.5:1 against the card’s own paper, which the card sets itself, in the first-evening journal (the dark panel) and on the Today page, at 1280x800 and at 390x844; its kicker is “FOR THE TWO OF YOU”, and no card says build v36-70429384’s “Something to do together”",
+   "passed": true,
+   "info": {
+    "contrast": [
+     [
+      "1280x800",
+      "journal",
+      "kicker",
+      5.26
+     ],
+     [
+      "1280x800",
+      "journal",
+      "heading",
+      7.14
+     ],
+     [
+      "1280x800",
+      "journal",
+      "text",
+      7.44
+     ],
+     [
+      "1280x800",
+      "today",
+      "kicker",
+      5.26
+     ],
+     [
+      "1280x800",
+      "today",
+      "heading",
+      7.14
+     ],
+     [
+      "1280x800",
+      "today",
+      "text",
+      7.44
+     ],
+     [
+      "390x844",
+      "journal",
+      "kicker",
+      5.26
+     ],
+     [
+      "390x844",
+      "journal",
+      "heading",
+      7.14
+     ],
+     [
+      "390x844",
+      "journal",
+      "text",
+      7.44
+     ],
+     [
+      "390x844",
+      "today",
+      "kicker",
+      5.26
+     ],
+     [
+      "390x844",
+      "today",
+      "heading",
+      7.14
+     ],
+     [
+      "390x844",
+      "today",
+      "text",
+      7.44
+     ]
+    ],
+    "kicker": "FOR THE TWO OF YOU"
+   }
+  },
+  {
+   "name": "31. Out of the pillar corner: lifted just inside the street gate and pushed into the corner by the west pillar until the walls’ sideways help for that contact is spent and the bench has stopped (by the mover alone, and with the turner swinging too), more of the same push gets no more help, and a push the other way backs it out (at least 0.3 m in 2 s) with the yaw exactly as it was and the walls’ help used again: backing out is a new contact",
+   "passed": true,
+   "info": {
+    "runs": [
+     [
+      "the mover alone",
+      2.912,
+      5.18,
+      210,
+      1.692,
+      4
+     ],
+     [
+      "with the turner swinging",
+      2.864,
+      5.093,
+      216.62,
+      1.84,
+      4
+     ]
+    ]
+   }
+  },
+  {
+   "name": "32. Scenery never hides a holder: with the bench in hands in the corner by the street gate’s west pillar, carried through the gate, at corner 1, at the flat door and in the veranda doorway, at 1280x800 and 390x844, every wall or prop mesh that the harness’s own rays from either camera to either holder’s knee, chest and head meet (all but the players, the bench, sprites, what the base already fades, see-through meshes and floors) is faded to at most 0.5 within a second, not only the gate pillars (in the corner the compound wall is one); once the bench is down every faded mesh has its own material back, and blocked() gives the same answers throughout",
+   "passed": true,
+   "info": {
+    "poses": [
+     [
+      "1280x800",
+      "the west pillar’s corner",
+      2,
+      2
+     ],
+     [
+      "1280x800",
+      "through the gate",
+      2,
+      0
+     ],
+     [
+      "1280x800",
+      "corner 1",
+      4,
+      4
+     ],
+     [
+      "1280x800",
+      "the flat door",
+      2,
+      2
+     ],
+     [
+      "1280x800",
+      "the veranda doorway",
+      0,
+      0
+     ],
+     [
+      "390x844",
+      "the west pillar’s corner",
+      2,
+      2
+     ],
+     [
+      "390x844",
+      "through the gate",
+      3,
+      0
+     ],
+     [
+      "390x844",
+      "corner 1",
+      5,
+      5
+     ],
+     [
+      "390x844",
+      "the flat door",
+      2,
+      2
+     ],
+     [
+      "390x844",
+      "the veranda doorway",
+      0,
+      0
+     ]
+    ]
+   }
+  },
+  {
+   "name": "33. An arrow is placed before it is shown: at 844x390 and 390x844 (touch) and 1280x800, on the frame the mover’s hint, the turner’s hint or the edge arrow first appears it is laid out and placed but hidden, and from the next frame it shows, placed clear of the prompt card",
+   "passed": true,
+   "info": {
+    "runs": [
+     [
+      "844x390 the edge arrow",
+      0
+     ],
+     [
+      "844x390 the mover’s hint",
+      16
+     ],
+     [
+      "844x390 the turner’s hint",
+      8
+     ],
+     [
+      "390x844 the edge arrow",
+      0
+     ],
+     [
+      "390x844 the mover’s hint",
+      16
+     ],
+     [
+      "390x844 the turner’s hint",
+      8
+     ],
+     [
+      "1280x800 the mover’s hint",
+      18
+     ],
+     [
+      "1280x800 the turner’s hint",
+      10
+     ]
+    ]
    }
   }
  ],
@@ -2178,6 +2430,41 @@
   {
    "name": "M53 a holder with no room is reported as boxed in",
    "check": 9,
+   "result": "red"
+  },
+  {
+   "name": "M54 the street gate is not an opening",
+   "check": 19,
+   "result": "red"
+  },
+  {
+   "name": "M55 the street gate typed 6 cm off its walls",
+   "check": 19,
+   "result": "red"
+  },
+  {
+   "name": "M56 a push the other way is no new contact",
+   "check": 31,
+   "result": "red"
+  },
+  {
+   "name": "M57 only the gate pillars fade again",
+   "check": 32,
+   "result": "red"
+  },
+  {
+   "name": "M58 an arrow shows on its first frame",
+   "check": 33,
+   "result": "red"
+  },
+  {
+   "name": "M59 Act on the bench stands them up at once (v37 review F1)",
+   "check": 13,
+   "result": "red"
+  },
+  {
+   "name": "M60 the fetch leaves the pill on the player's own destination (v37 review F7)",
+   "check": 27,
    "result": "red"
   }
  ],
