@@ -1,6 +1,6 @@
 COMPOUND DAYS — WATERSIDE
 Build: v37-d30ea49c (authored character, your day in Palm Court, a bench for evening gist, monkey post)
-shown in the game Menu. PACKAGE_MANIFEST.json still records v37-00e2e17d until it is regenerated.
+shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
 1. Extract this ZIP.
@@ -44,5 +44,4 @@ All sixteen Node harnesses pass, including the bench (verify-bench-v36.cjs) and
 street football (verify-football-v37.cjs); see README.md, Verification. Headless
 browser captures were taken; real-phone performance remains unverified.
 
-Source: branch claude/authored-character, on top of commit 6c4c2bd (build v37-00e2e17d),
-with the v37 review fixes not yet committed.
+Source: branch claude/authored-character (build v37-d30ea49c, with the v37 review fixes).
