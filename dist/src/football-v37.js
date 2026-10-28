@@ -49,8 +49,19 @@ const FOOTBALL37={v:2,t:0,playT:0,
  COL:{a:'#2E9E5B',b:'#F08A24'},
  KICKOFF:{kemi:[-21.3,9.0],emeka:[-19.8,10.6]},
  SPECT:{bassey:[-24.2,6.5],enter:[[-12.9,6.5],[-30.4,6.5]],walk:1.3,near:15},
- KIDS:{kemi:{idle:[-25.0,9.4],speed:2.7,scale:0.84,head:1.06,r:0.28,aimSd:10,look:{skin:'#6E4630',hair:'twists',outfit:'tee',oc:'#F2C14E'}},
-       emeka:{idle:[-21.0,10.2],speed:2.4,scale:0.80,head:1.06,r:0.27,aimSd:13,look:{skin:'#905F3F',hair:'low',outfit:'tee',oc:'#F4F1EA'}}},
+ // the children, made younger-looking (child proportions, variant C of the kids prototype): scale is the whole model on the hero rig (1.45 m and
+ // 1.39 m in the idle pose), liteScale the same heights on the fallback avatar (no bone work there). Applied after the mixer every frame, children only:
+ // head the head bone's scale (x,y,z: wider than tall, a rounder head); leg the thighs' scale (shorter legs; the hips re-seated so the feet stay down);
+ // foot the feet's scale; shoulderIn and armIn the shoulder and arm joints pulled in (narrower shoulders); chest the chest's width (spine1 x, the neck and
+ // shoulders counter-scaled); limbX the thighs' and arms' width (slighter limbs). Applied once to the face meshes: eyes the eye parts' scale about each
+ // eyeball (lowered eyesDown), mouth the lips' and tongue's scale. Every factor at 1 (and head [1.06,1.06,1.06], scale 0.84/0.80) is the v37 look.
+ KIDS:{kemi:{idle:[-25.0,9.4],speed:2.7,scale:0.780,liteScale:0.769,r:0.28,aimSd:10,look:{skin:'#6E4630',hair:'twists',outfit:'tee',oc:'#F2C14E'},
+        head:[1.21,1.16,1.19],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88},
+       emeka:{idle:[-21.0,10.2],speed:2.4,scale:0.749,liteScale:0.738,r:0.27,aimSd:13,look:{skin:'#905F3F',hair:'low',outfit:'tee',oc:'#F4F1EA'},
+        head:[1.21,1.16,1.19],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88}},
+ // the hero rig at rest (efe.gltf.json, model units): the Hips joint 0.86 above the sole, the thighs 0.03 below it, thigh 0.37, shin 0.36, the sole 0.10 below
+ // the Foot joint; the shoulder joints at x 0.07 and the arm joints at 0.145; the mouth's centre in Head-joint space
+ KID_RIG:{hips:0.86,upOff:0.03,thigh:0.37,shin:0.36,sole:0.10,shoulderX:0.07,armX:0.145,mouthC:[0,0.174,0.219]},
  KEEPY:{gap:2.5,every:0.55,jitter:0.08,swap:6,hMin:0.25,hMax:0.6,back:1.2,backDelay:[0.6,1.0]},
  state:'off',score:[0,0],owner:null,lastTouch:null,persons:[],posts:[],marks:[],flags:null,stats:null,
  // runtime
@@ -598,13 +609,36 @@ function fbPlayedToday37(){const F=FOOTBALL37,L=fbSave37();return F.lastMatchDay
 function fbLateLine37(){const w=fbWeekday37(S.day+1),T=FOOTBALL37.LINES.shouts.late;if(fbHours37(S.day+1)[0]<12)return T.sat;return w===1?T.sun:T.school;}
 function fbCentreDist37(i){const p=players[i];if(!p)return 1e9;const P=FOOTBALL37.PITCH;return Math.hypot(p.g.position.x-P.cx,p.g.position.z-P.zc);}
 
-/* ---------- the children's models (scale, head after the mixer, Emeka's bare feet) ---------- */
+/* ---------- the children's models (scale, child proportions after the mixer, Emeka's bare feet) ---------- */
+// the leg ratio: the new hip height over the rig's 0.86 (the clip's Hips translation is multiplied by it, so the soles stay on the ground)
+function fbKidLegK37(K){const R=FOOTBALL37.KID_RIG,s=K.leg||1,f=K.foot||1;return (R.upOff+s*(R.thigh+R.shin)+s*f*R.sole)/R.hips;}
+// the face parts are rigid meshes on the Head joint: each eye cluster (eyeball, lids, lashes, brow) scaled about its eyeball, the mouth about its centre; once, at build
+function fbKidFace37(g,K){const head=g.hero.bones.head;if(!head||((K.eyes||1)===1&&(K.mouth||1)===1))return;
+ const box=new THREE.Box3(),c=new THREE.Vector3(),eyes={l:null,r:null},parts=[],M=FOOTBALL37.KID_RIG.mouthC;
+ for(const o of head.children){if(!o.isMesh||o.isSkinnedMesh)continue;o.geometry.computeBoundingBox();box.copy(o.geometry.boundingBox);box.getCenter(c);
+  const mn=(Array.isArray(o.material)?o.material:[o.material]).map(m=>m&&m.name).join('/');parts.push({o,c:c.clone(),mn});if(mn==='eye_white')eyes[c.x<0?'r':'l']=c.clone();}
+ for(const p of parts){const mouth=/lip|tongue/.test(p.mn)&&Math.abs(p.c.x)<0.06,e=eyes[p.c.x<0?'r':'l'];
+  const eye=e&&!mouth&&Math.abs(p.c.x-e.x)<0.07&&Math.abs(p.c.y-e.y)<0.09&&p.c.z>0.08&&!/skin_dark|gold/.test(p.mn);
+  if(eye&&(K.eyes||1)!==1){const s=K.eyes;p.o.scale.setScalar(s);p.o.position.set(e.x*(1-s),e.y*(1-s)-(K.eyesDown||0),e.z*(1-s));p.o.userData.kidFace37='eye';}
+  if(mouth&&(K.mouth||1)!==1){const s=K.mouth;p.o.scale.setScalar(s);p.o.position.set(M[0]*(1-s),M[1]*(1-s),M[2]*(1-s));p.o.userData.kidFace37='mouth';}}}
+// the bone changes, after the mixer every frame (the mixer writes the rotations and the Hips' translation; the scales and joint offsets are set again anyway)
+function fbKidPose37(g,K){const B=g.hero.bones,R=FOOTBALL37.KID_RIG,H=K.head,lx=K.limbX||1,cx=K.chest||1,lg=K.leg||1,ft=K.foot||1;
+ if(B.head){if(Array.isArray(H))B.head.scale.set(H[0],H[1],H[2]);else B.head.scale.setScalar(H||1);}
+ for(const sd of ['left','right']){const sg=sd==='left'?1:-1,up=B[sd+'upleg'],fo=B[sd+'foot'],sh=B[sd+'shoulder'],arm=B[sd+'arm'];
+  if(up)up.scale.set(lg*lx,lg,lg);                   // x-only thinning commutes with the front-back swing (rotations about x)
+  if(fo)fo.scale.set(ft/lx,ft,ft);
+  if(sh){sh.position.x=sg*R.shoulderX*(K.shoulderIn||1);sh.scale.set(1/cx,1,1);}
+  if(arm){arm.position.x=sg*R.armX*(K.armIn||1);arm.scale.set(lx,1,1);}}
+ if(B.spine1)B.spine1.scale.set(cx,1,1);if(B.neck)B.neck.scale.set(1/cx,1,1);
+ // the re-seat: the clip's Hips translation times the leg ratio (feet on the ground, the walk's bob and sway in proportion); only a value the mixer wrote
+ const k=g.userData.kidK37,hp=B.hips;if(hp&&k&&k!==1){const P=hp.position,last=g.userData.kidHp37;if(!last||!P.equals(last)){P.multiplyScalar(k);g.userData.kidHp37=P.clone();}}}
 function fbKidModel37(key){const F=FOOTBALL37,K=F.KIDS[key];let g=null,lite=false;
  try{if(typeof makeHeroAvatar==='function'&&typeof HERO!=='undefined'&&HERO.state==='ready')g=makeHeroAvatar(Object.assign({},K.look,{rig:'hero'}));}catch(e){g=null;}
  if(!g){lite=true;try{g=makeAvatar(Object.assign({},K.look),true);}catch(e){g=null;}}
  if(!g){g=new THREE.Group();const m=new THREE.Mesh(new THREE.CylinderGeometry(0.18,0.2,1.3,10),new THREE.MeshLambertMaterial({color:K.look.oc}));m.position.y=0.65;g.add(m);}
  g.traverse(o=>{if(o.isMesh&&o.material){if(Array.isArray(o.material))o.material=o.material.map(m=>{const c=m.clone();c.name=m.name;return c;});else{const n=o.material.name;o.material=o.material.clone();o.material.name=n;}}});   // its own materials (fades never touch a shared one)
- g.scale.setScalar(K.scale);g.userData.football37='kid';g.userData.kid37=key;g.userData.lite37=lite;
+ g.scale.setScalar(lite?(K.liteScale||K.scale):K.scale);g.userData.football37='kid';g.userData.kid37=key;g.userData.lite37=lite;
+ if(!lite&&g.hero&&g.hero.bones){g.userData.kidK37=fbKidLegK37(K);fbKidFace37(g,K);fbKidPose37(g,K);}   // the child proportions (the hero rig only)
  if(!lite&&key==='emeka'){const skin=new THREE.Color(K.look.skin),sole=skin.clone();   // (fixer) one skin colour, no darker sole: a raised foot reads as a foot
   g.traverse(o=>{if(!o.isMesh)return;if(o.userData&&o.userData.wardrobe&&/sneaker|sandal/.test(o.userData.wardrobe)){o.visible=false;return;}
    const mats=Array.isArray(o.material)?o.material:[o.material];let hit=false;const out=mats.map(m=>{if(m&&(m.name==='shoe'||m.name==='sole')){hit=true;const c=m.clone();c.name=m.name;c.color.copy(m.name==='shoe'?skin:sole);if(c.map)c.map=null;return c;}return m;});
@@ -1553,13 +1587,15 @@ if(typeof advanceClock33==='function'){const prevClock37=advanceClock33;advanceC
 // v37: a panel cancels every charge, so nothing kicks on close; after discovery the controls card tells the new controls
 const prevPanel37=openPanel;openPanel=function(html){fbCancel37();if(typeof html==='string'&&fbSave37()&&html.includes('kick the ball on the sand by walking into it'))
  html=html.replace('kick the ball on the sand by walking into it',FOOTBALL37.LINES.ui.controls);return prevPanel37.call(this,html);};
-// v37: the kick swing after the mixer; the children's heads at 1.06; the walk a quarter quicker above 3 m/s in a match
+// v37: the kick swing after the mixer; the children's proportions after the mixer; the walk a quarter quicker above 3 m/s in a match
 const prevAnim37=animAvatar;animAvatar=function(g,t,moving,carrying,speed,dt){const F=FOOTBALL37,fast=!!(g&&g.userData&&moving&&speed>3.0&&(g.userData.kid37||fbMatchOn37()));
- const r=fast?prevAnim37.call(this,g,t,moving,carrying,speed*1.25,dt):prevAnim37.apply(this,arguments);if(!g||!g.userData)return r;   // (fixer) the speed-up reaches the mixer
- const kid=g.userData.kid37;if(kid&&g.hero&&g.hero.bones&&g.hero.bones.head)g.hero.bones.head.scale.setScalar(F.KIDS[kid].head);
+ // the speed-up is decided on the speed asked for; a child's shorter legs then take quicker steps (the rate divided by the leg ratio)
+ const kk=g&&g.userData&&g.userData.kid37&&g.userData.kidK37,sp=(fast?speed*1.25:speed)/(kk&&moving?kk:1);
+ const r=(fast||sp!==speed)?prevAnim37.call(this,g,t,moving,carrying,sp,dt):prevAnim37.apply(this,arguments);if(!g||!g.userData)return r;   // (fixer) the speed-up reaches the mixer
  const sw=g.userData.swing37;if(sw&&g.hero&&g.hero.bones){const e=F.t-sw.t0;if(e<0||e>0.28){g.userData.swing37=null;}else{const B=g.hero.bones,ease=u=>u*u*(3-2*u);let up,lo;
    if(e<0.10){const u=ease(e/0.10);up=-25*u;lo=30*u;}else if(e<0.18){const u=ease((e-0.10)/0.08);up=-25+80*u;lo=30*(1-u);}else{const u=ease((e-0.18)/0.10);up=55*(1-u);lo=0;}
    if(B.rightupleg)B.rightupleg.rotateX(-up*sw.amp*D2R37);if(B.rightleg)B.rightleg.rotateX(lo*sw.amp*D2R37);}}
+ const kid=g.userData.kid37;if(kid&&!g.userData.lite37&&g.hero&&g.hero.bones)fbKidPose37(g,F.KIDS[kid]);   // the children's proportions (after the mixer and the swing)
  return r;};
 // v37: the companion plays for the household in a match (stop 0.05 so it walks onto a resting ball)
 if(typeof aiGoal==='function'){const prevAiGoal37=aiGoal;aiGoal=function(p,dt){const F=FOOTBALL37;if(fbCompanion37()&&p&&p.i===AI.i&&fbMatchOn37()&&F.state!=='ended'&&F.state!=='clearing'){const g=fbCompanionGoal37(p,dt);if(g)return g;}return prevAiGoal37.apply(this,arguments);};}

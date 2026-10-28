@@ -34,7 +34,7 @@ Round 2b (the verifier's findings, fixed in this build):
 - While the bench is held, any wall or piece of furniture that hides a holder from either half of the screen fades, not only the gate pillars. It comes back once nobody is hidden behind it.
 - On phones the faint arrows are placed before they appear, so they never show over the prompt card.
 
-v37, "Monkey post" (build **v37-d30ea49c**; check the Menu shows it):
+v37, "Monkey post" (build **v37-683ed1f2**; check the Menu shows it):
 
 - Football is in this build, but it is not part of this session. The ball on the sand in front of the compound (about 6 m from the bench at the gate) is now a football: walking near it shows "Kick · hold to shoot", and a tap gives the toast "Good touch. Kemi and Emeka play monkey post at the end of the street in the afternoons." and a Street football card in the Menu. On day 2 (a Sunday) the children come out at the west end of the street from 3:00 pm. If the players kick the ball or wander to the children, note it on the sheet with the time and do not intervene.
 - A delivery and a match never run at once: lifting the bench ends a match, and no match starts while the bench is in hands.

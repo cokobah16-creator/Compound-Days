@@ -2,7 +2,7 @@
 
 One session, two players, one device, 25 minutes. The facilitator sets up, reads one scripted line, presses a few things in the game at fixed times and fills in the sheet. Everything else the players find in the game.
 
-Build: **v37-d30ea49c** (the Menu shows it). Ada's bench (`docs/TESTING_bench.md`) is a separate session; see "The bench in this session" below.
+Build: **v37-683ed1f2** (the Menu shows it). Ada's bench (`docs/TESTING_bench.md`) is a separate session; see "The bench in this session" below.
 
 What is being tested: do two people find the ball and the controls without help, find Kemi and Emeka at the end of the street, and enjoy two or three matches against them, talking to each other as they play? Is the ball easy to follow on each half of the screen? Do the children feel like neighbours rather than opponents?
 
@@ -10,7 +10,7 @@ What is being tested: do two people find the ball and the controls without help,
 
 You need: the machine (or one phone held in landscape), one keyboard, this sheet printed or open on a second screen, a timer and a pen.
 
-1. Serve the game: `python3 -m http.server 8000 --directory dist`. Open the Menu and check it shows build v37-d30ea49c.
+1. Serve the game: `python3 -m http.server 8000 --directory dist`. Open the Menu and check it shows build v37-683ed1f2.
    - **On a phone:** the server listens on every network interface. Put the phone on the same Wi-Fi as the computer, find the computer's address on that network (for example `ip addr` or `ipconfig`; it looks like 192.168.1.20), allow port 8000 through the computer's firewall, and on the phone open `http://<that address>:8000/?football=playtest`. `localhost` on a phone is the phone itself, and the live site deploys `master`, not this build.
 2. Open `http://localhost:8000/?football=playtest`. The address keeps `?football=playtest` on the title screen and through making the household; it loses it on the first moment in the compound, when the move-in page closes (or **Continue** opens the saved household). That is expected: the flag is applied then, once, and held for this browser tab. In playtest mode the children are out at the end of the street from 6:00 am to 8:00 pm every day, day 1 included (without it they come out only in the afternoon on day 2, from 3:00 pm), but only once a player comes within about 12 m of the pitch. The 18:00 last kick-off and Mama Nkechi's call at 18:20 still apply. The first-kick toast ("…in the afternoons") and the Menu's **Street football** card still give the usual hours; in playtest mode the children are out from 06:00 anyway, and Kemi's line after 6:00 pm says "Tomorrow morning!". The first kick also records playtest mode in the save, which keeps the Menu's **Football runs**.
    - **If the page is reloaded** (F5, or the browser restores the tab), playtest mode stays for that tab: the children keep the 06:00 hours and nothing is applied a second time. Choose **Continue** on the title screen.
@@ -113,12 +113,13 @@ The Node world builds no palms, shrubs or pots, so check these by eye in the bro
 
 1. In a **new tab** open `http://localhost:8000/?football=now` and choose **Start with a companion** (the children are out on day 1 under the flag).
 2. Walk west along the street to the open ground where the keke turns. Walking up to Kemi, the bougainvillea between you and the children fades.
-3. Press Act by Kemi ("Play monkey post") and play until a goal; check the four items below.
+3. Press Act by Kemi ("Play monkey post") and play until a goal; check the five items below.
 4. Close that tab. Then make the session's household in a fresh tab with `?football=playtest` and **Start a new household on this phone**, which replaces the test save (one save per browser).
 
 The items:
 
 - during a match the bougainvillea standing on the pitch's south edge and the potted plant beside it are faint ghosts in both halves, and any palm frond between a camera and the players or the ball fades too; all come back within a second of the match ending;
+- Kemi and Emeka look about eleven and ten: their heads come to about an adult's chest, with a larger, rounder head, shorter legs and narrower shoulders than the grown-ups (built this way in build v37-683ed1f2, after a tester read them as short teenagers; their sizes are the named fields of `FOOTBALL37.KIDS`). Their feet stay on the ground while they keep the ball up, walk and kick, and Emeka is barefoot;
 - the stone cairns read as two goals at each end (pale stones with a green or orange band, a scuffed line across the mouth, Emeka's slippers by the east pair);
 - "GOAL!" shows at the top of both halves after a goal, clear of the goal and the people;
 - on a phone in landscape the first-match hint is one short line near the top for 4 s from the kick-off ("Tap Act: pass · Hold Act: shoot") and the prompt sits low, above the Act button, saying Act; held upright with two players, "Turn the phone sideways…" comes first, alone, for 4 s.
@@ -126,7 +127,7 @@ The items:
 ## Debrief (read the questions; write the answers in their words)
 
 1. Fun, 1 to 5, each player?
-2. Did Kemi and Emeka feel like neighbours or like opponents?
+2. Did Kemi and Emeka feel like neighbours or like opponents? How old did they look to you?
 3. Was the ball easy to follow on your half of the screen? Did the arrows at the edge help?
 4. Would you play again tomorrow?
 5. Anything that felt un-Nigerian or wrong (the words, the names, the way the children or Mr. Bassey speak)? (The owner's Nigerian reader has every line on `docs/READER_football.md`.)

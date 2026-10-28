@@ -1,5 +1,5 @@
 {
- "build": "v37-d30ea49c",
+ "build": "v37-683ed1f2",
  "passed": true,
  "checks": [
   {
@@ -413,7 +413,7 @@
    }
   },
   {
-   "name": "8. Window and clock: the children appear 15:30 on a school day, 15:00 on a Sunday, 10:00 on a Saturday, never on day 1 unflagged nor online, and go when everyone is 18 m off for 5 s; they are 0.84 and 0.80 high with heads at 1.06 after the mixer every frame (at most two more mixers), Emeka’s feet his skin colour; their plastic ball is touched 8 times in 10 s; your ball rolled near one is passed back to the nearest human within 1.5 s; 30 s of play move the clock 10 minutes and 30 s idle 30; the call at 18:20 banners both halves, the next goal ends it \":last\", Emeka runs east 5 m and fades, and no rematch that day; the cap at 300 s of play has Kemi’s line and no call, then 60 s without a goal ends it unfinished; the late lines follow tomorrow; a reload after the call keeps them home; the walk clip runs 1.25 times faster in a match above 3 m/s; (merger) ?football=playtest brings the children from 06:00, and a reload in the same tab keeps those hours",
+   "name": "8. Window and clock: the children appear 15:30 on a school day, 15:00 on a Sunday, 10:00 on a Saturday, never on day 1 unflagged nor online, and go when everyone is 18 m off for 5 s; they are scaled 0.780 and 0.749 and stand 1.45 and 1.39 m (within 1.5 cm) with child proportions after the mixer every frame (the head bone (1.21, 1.16, 1.19), the thighs 0.91 long and 0.819 wide, the feet (1.156, 1.04, 1.04), the shoulder joints at x 0.056 and the arm joints at 0.116, the shoulders 1.136 and the arms 0.90 wide, the chest 0.88 and the neck 1.136, the hips re-seated by the leg ratio 0.917 on every mixer update), the lowest skin point within 5 cm of the ground on every frame (at most two more mixers), Emeka’s feet his skin colour; their plastic ball is touched 8 times in 10 s; your ball rolled near one is passed back to the nearest human within 1.5 s; 30 s of play move the clock 10 minutes and 30 s idle 30; the call at 18:20 banners both halves, the next goal ends it \":last\", Emeka runs east 5 m and fades, and no rematch that day; the cap at 300 s of play has Kemi’s line and no call, then 60 s without a goal ends it unfinished; the late lines follow tomorrow; a reload after the call keeps them home; the walk clip runs 1.25 times faster in a match above 3 m/s; (merger) ?football=playtest brings the children from 06:00, and a reload in the same tab keeps those hours",
    "passed": true,
    "info": {
     "flags": {
@@ -434,8 +434,16 @@
     },
     "models": {
      "scales": [
-      0.84,
-      0.8
+      0.78,
+      0.749
+     ],
+     "heights": [
+      1.449,
+      1.39
+     ],
+     "lowest": [
+      -0.021,
+      -0.001
      ],
      "mixers": 2,
      "feet": 2,
@@ -724,7 +732,7 @@
      "walkFrames": 600,
      "blockedPoints": 3000,
      "boxesNow": "c5bb00c9:175",
-     "digest": "ee4b1587",
+     "digest": "a334ad9",
      "sameAsWithout": true,
      "worldSignature": "f27b15e:175"
     },
@@ -1193,6 +1201,12 @@
    "check": 11,
    "result": "red",
    "first": "the invitation in view: [[\"idle\",true,false],[false,false]]"
+  },
+  {
+   "name": "M55 the children's limb change dropped: full-length thighs and the feet as built (kids)",
+   "check": 8,
+   "result": "red",
+   "first": "the child proportions after the mixer on every frame: kemi frame 0 upL [1,1,1]; kemi frame 0 upR [1,1,1]; kemi frame 0 ftL [1,1,1]; kemi frame 0 ftR [1,1,1]"
   }
  ],
  "withoutModule": {
