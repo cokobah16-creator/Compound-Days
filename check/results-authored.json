@@ -1,5 +1,5 @@
 {
-  "build": "v37-00e2e17d",
+  "build": "v37-d30ea49c",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v37-00e2e17d"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v37-d30ea49c"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v37-00e2e17d"
+        "build": "v37-d30ea49c"
       }
     }
   ],

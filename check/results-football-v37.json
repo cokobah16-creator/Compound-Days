@@ -1,5 +1,5 @@
 {
- "build": "v37-00e2e17d",
+ "build": "v37-d30ea49c",
  "passed": true,
  "checks": [
   {
@@ -162,7 +162,8 @@
       "p0",
       "p1"
      ]
-    }
+    },
+    "suya": "kicked, not bought"
    }
   },
   {
@@ -190,7 +191,7 @@
       2.234,
       3.434,
       2.267,
-      3.568
+      3.567
      ],
      "waited": 7.835,
      "zonePoints": 8631
@@ -316,7 +317,7 @@
       "challenges": 2,
       "motor": true,
       "lines": 9,
-      "digest": "2fad00a0"
+      "digest": "4e63cd97"
      }
     ],
     "album": [
@@ -475,9 +476,9 @@
     "away": [
      {
       "from": "courtyard",
-      "kickoffAfter": 3.567,
+      "kickoffAfter": 3.568,
       "handoffs": 1,
-      "firstTouch": 0.334
+      "firstTouch": 0.333
      },
      {
       "from": "roof",
@@ -505,7 +506,7 @@
    }
   },
   {
-   "name": "10. Views and HUD: match 1 of check 7 at 1280x800 and again at 844x390 is the same match; with a player within 7 m of the ball (not faded out) it is in view 95% (85% on the phone) of match frames; whenever it is not, the ball arrow shows within 15 degrees, and the goal arrow whenever the goal is off-view; the person stays at 70 px (50 on the phone) whenever the ball point is kept; the camera distance changes 3% a frame at most; compact chips opposite the player cards, the body class during the match, the role line hidden on small screens, the hints worded per key (E, Enter) and, on the phone halves, a short line naming Act (portrait recorded, not gated); (merger) the person floor holds whenever the scorer point is kept too",
+   "name": "10. Views and HUD: match 1 of check 7 at 1280x800 and again at 844x390 is the same match; with a player within 7 m of the ball (not faded out) it is in view 95% (85% on the phone) of match frames; whenever it is not, the ball arrow shows within 15 degrees, and the goal arrow whenever the goal is off-view; the person stays at 70 px (50 on the phone) whenever the ball point is kept; the camera distance changes 3% a frame at most; compact chips opposite the player cards, the body class during the match, the role line hidden on small screens, the hints worded per key (E, Enter) and, on the phone halves, a short line naming Act (portrait recorded, not gated); (merger) the person floor holds whenever the scorer point is kept too; (fixer, v37 review) the two arrows never within 40 px of each other nor 60 px of the player, and the first-match hints come one card at a time after the kick-off (on a portrait phone the landscape line first, alone)",
    "passed": true,
    "info": {
     "desk": {
@@ -524,7 +525,9 @@
       "floorBad": 0,
       "scorerKept": 250,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 72.2
+      "celebrationMinPx": 72.2,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "view1": {
       "near": 1548,
@@ -541,7 +544,9 @@
       "floorBad": 0,
       "scorerKept": 327,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 73.4
+      "celebrationMinPx": 73.4,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "maxDistChange": 0.029
     },
@@ -561,7 +566,9 @@
       "floorBad": 0,
       "scorerKept": 229,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 51.1
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "view1": {
       "near": 1548,
@@ -578,7 +585,9 @@
       "floorBad": 0,
       "scorerKept": 267,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 51.1
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "maxDistChange": 0.029
     },
@@ -602,7 +611,9 @@
       "floorBad": 0,
       "scorerKept": 243,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 51.2
+      "celebrationMinPx": 51.2,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "view1": {
       "near": 1425,
@@ -619,15 +630,18 @@
       "floorBad": 0,
       "scorerKept": 266,
       "scorerFloorBad": 0,
-      "celebrationMinPx": 51.1
+      "celebrationMinPx": 51.1,
+      "arrowsStacked": 0,
+      "arrowOnPlayer": 0
      },
      "maxDistChange": 0.029
     },
+    "hints": "one at a time, after the kick-off",
     "digest": "74d44d86"
    }
   },
   {
-   "name": "11. Save and modes: nothing is saved until discovery; the first kick saves the field and S.ball where it rests, and a reload puts it there; a match is never saved; a v36 save loads with nothing added; the shared state has no football record; the Menu reset brings the ball home and a buried ball on load escapes; online there are no children, no match and the Menu line, and a guest has no kick and does not move the ball; the evening waits for a match; a day change stops it; a panel cancels a charge; the bench offer and carrying it again are refused in a match; the bench still moves with the module loaded; the gates tool reads the four new kinds; (merger) a whole bench delivery on the current route plan with football loaded, placed and sat on; a match while the bench waits at the gate; the companion switch refused in a match",
+   "name": "11. Save and modes: nothing is saved until discovery; the first kick saves the field and S.ball where it rests, and a reload puts it there; a match is never saved; a v36 save loads with nothing added; the shared state has no football record; the Menu reset brings the ball home and a buried ball on load escapes; online there are no children, no match and the Menu line, and a guest has no kick and does not move the ball; the evening waits for a match; a day change stops it; a panel cancels a charge; the bench offer and carrying it again are refused in a match; the bench still moves with the module loaded; the gates tool reads the four new kinds; (merger) a whole bench delivery on the current route plan with football loaded, placed and sat on; a match while the bench waits at the gate; the companion switch refused in a match; (fixer, v37 review) lifting the bench in a waiting match stops it and keeps the bench's Move/Turn prompt and roles, no ball arrow through a carry after discovery, a resting ball leaves the carried bench, \"Leave the bench for now\" in a match gives the companion back afterwards, no bench button in a match's Menu or Today, no \"Head home\" nudge during a match, the keke held under a panel, \"Start over?\" and Sleep's question keep the match, a hidden page cancels a charge, the bench's page offers to sit until the children come out, the props fade and the pill steps aside by the children waiting to play",
    "passed": true,
    "info": {
     "saved": [
@@ -664,6 +678,30 @@
      "afterMatch": "companion back",
      "standUpInMatch": "deferred to the end"
     },
+    "benchLift": {
+     "match": "idle",
+     "stop": "bench",
+     "roles": [
+      "Bench · Move",
+      "Bench · Turn"
+     ]
+    },
+    "carryArrows": {
+     "frames": 300,
+     "ballArrow": 0
+    },
+    "carriedBench": "ball pushed out",
+    "benchButtons": "held back in a match",
+    "leaveInMatch": "companion back after the match",
+    "eveningNudge": "after the match",
+    "kekeUnderPanel": "held",
+    "askFirst": "match kept",
+    "hiddenPage": "no kick",
+    "benchWait": "until 3:30 pm",
+    "invitation": {
+     "fade": "on",
+     "pill": "hidden"
+    },
     "gates": {
      "warnings": 0,
      "grades": [
@@ -679,23 +717,29 @@
    }
   },
   {
-   "name": "12. Inert, loop, cost: before discovery the blocked() sample, a 600-frame walk (the save, camera distances, prompts), the hooks, recipes, line tables, save keys, Menu and Today are the same as without the module (compared by the runner), the world signature is f27b15e:175 and the ball is the panelled ball; after discovery the morning line, the waypoint once and never over another, Mama Nkechi +1 that day, Today's result, Tunde's line once, the waypoint toast once even under another waypoint; with OWNER.children false no child is named; no wall clock or Math.random call in the module; inside the step at most 16 blocked() and levelAt() a rolling frame, one per 60 frames at rest, 20 blocked() a match frame; (merger) the waypoint toast waits 2.6 s after the first-kick toast",
+   "name": "12. Inert, loop, cost: before discovery the blocked() sample, a 600-frame walk (the save, camera distances, prompts), the hooks, recipes, line tables, save keys, Menu and Today are the same as without the module (compared by the runner), the world signature is f27b15e:175 and the ball is the panelled ball; after discovery the morning line, the waypoint once and never over another, Mama Nkechi +1 that day, Today's result, Tunde's line once, the waypoint toast once even under another waypoint; with OWNER.children false no child is named; no wall clock or Math.random call in the module; inside the step at most 16 blocked() and levelAt() a rolling frame, one per 60 frames at rest, 20 blocked() a match frame; (merger) the waypoint toast waits 2.6 s after the first-kick toast; (fixer) Ada's bench thank-you comes before her football line; the morning line in its own card and gone once played; Mama Nkechi's evening line",
    "passed": true,
    "info": {
     "before": {
      "walkFrames": 600,
      "blockedPoints": 3000,
      "boxesNow": "c5bb00c9:175",
-     "digest": "8928fa60",
+     "digest": "ee4b1587",
      "sameAsWithout": true,
      "worldSignature": "f27b15e:175"
     },
+    "eveningLine": "fb37-nkechi-evening",
     "after": {
      "morning": true,
      "waypoint": "once",
      "nkechi": 1,
-     "today": "Monkey post today: Kemi and Emeka won 3–2.",
-     "tunde": "fb37-tunde-lost"
+     "today": "Monkey post today: won 3–2.",
+     "tunde": "fb37-tunde-won",
+     "ada": [
+      "adb36",
+      "fb37-ada-won"
+     ],
+     "adaEvening": "ade36"
     },
     "toastQueue": {
      "after": 2.6
@@ -711,8 +755,8 @@
       8
      ],
      "match": [
-      8,
-      1713
+      10,
+      1449
      ]
     }
    }
@@ -1029,6 +1073,126 @@
    "check": 8,
    "result": "red",
    "first": "the playtest late line follows the 06:00 hours: It’s late. Tomorrow after school."
+  },
+  {
+   "name": "M36 a match goes on while the bench is lifted (review I1)",
+   "check": 11,
+   "result": "red",
+   "first": "I1: the lift stops the match and the bench keeps its roles: [\"waiting\",\"carrying\",\"menu\",true,\"Bench · Move\",\"Bench · Turn\"]"
+  },
+  {
+   "name": "M37 football writes over a bench holder's prompt (review I1)",
+   "check": 11,
+   "result": "red",
+   "first": "I1: by the bench in a waiting match, the bench prompt: [\"waiting\",\"grounded\",\"pr on p0 fb37-pr\",false]"
+  },
+  {
+   "name": "M38 the free-play ball arrow on whatever else is guiding (review I2)",
+   "check": 11,
+   "result": "red",
+   "first": "I2: no ball arrow in 300 carry frames: 300"
+  },
+  {
+   "name": "M39 the football line before Ada's bench thank-you (review I3)",
+   "check": 12,
+   "result": "red",
+   "first": "Ada thanks you for the bench first: [\"fb37-ada-won\",\"adb36\"]"
+  },
+  {
+   "name": "M40 the companion handed back only to a placed bench (review I4)",
+   "check": 11,
+   "result": "red",
+   "first": "I4: the companion back after the match: [false,false,true,\"off\"]"
+  },
+  {
+   "name": "M41 the evening nudge during a match (review I5)",
+   "check": 11,
+   "result": "red",
+   "first": "I5: no nudge in a match after six: [\"live\",true,false,\"Flat 3\"]"
+  },
+  {
+   "name": "M42 the keke drives on under a panel (review I6)",
+   "check": 11,
+   "result": "red",
+   "first": "I6: the keke held under a panel: [-19.56000000000002,\"motor\",1]"
+  },
+  {
+   "name": "M43 the carried bench no body for the ball (review I7)",
+   "check": 11,
+   "result": "red",
+   "first": "I7: the ball is out from under the carried bench: [\"carrying\",true]"
+  },
+  {
+   "name": "M44 the bench buttons offered in a match (review I8)",
+   "check": 11,
+   "result": "red",
+   "first": "I8: in a match the Menu and Today hold back the bench buttons, and after it they come back"
+  },
+  {
+   "name": "M45 the asking presses stop the match (review I9)",
+   "check": 11,
+   "result": "red",
+   "first": "I9: the asking presses leave the match on: [\"idle\",3]"
+  },
+  {
+   "name": "M46 a hidden page leaves the charge (review I10)",
+   "check": 11,
+   "result": "red",
+   "first": "I10: no kick after a hidden page"
+  },
+  {
+   "name": "M47 no wait for the children on the bench (review F1)",
+   "check": 11,
+   "result": "red",
+   "first": "the bench page offers 3:30 pm, then six: <h2>Ada’s bench</h2><p>Long enough for everybody, short enough to argue on.</p><div class=\"actions\"><button class=\"btn primary block\" data-act=\"bench36Wait\" data-t=\"18\">Wait here until six<span class=\"sub\">The neighbours come by this evening</span></button><button class=\"btn block\" data-act=\"sitmin\""
+  },
+  {
+   "name": "M48 the two arrows stack (review F2)",
+   "check": 10,
+   "result": "red",
+   "first": "view 0: the ball and goal arrows within 40 px on 24 frames"
+  },
+  {
+   "name": "M48b an arrow on the player (review F2)",
+   "check": 10,
+   "result": "red",
+   "first": "view 0: an arrow within 60 px of the player on 189 frames"
+  },
+  {
+   "name": "M49 the landscape line with the short hint, from the set-out (review F3)",
+   "check": 10,
+   "result": "red",
+   "first": "the landscape hint for two players on a portrait phone"
+  },
+  {
+   "name": "M50 the suya stand before the ball (review F4)",
+   "check": 5,
+   "result": "red",
+   "first": "by the suya stand the ball is kicked, no suya bought: [[\"suya\",1.1569356075426156],[4000,0,false],6000]"
+  },
+  {
+   "name": "M51 the morning line after today's game (review F5)",
+   "check": 12,
+   "result": "red",
+   "first": "(fixer, F5) once played today, no morning line, only the result"
+  },
+  {
+   "name": "M52 no prop fade by the waiting children (review F9)",
+   "check": 11,
+   "result": "red",
+   "first": "the invitation in view: [[\"idle\",false,true],[false,false]]"
+  },
+  {
+   "name": "M53 no evening line about the match (review F11)",
+   "check": 12,
+   "result": "red",
+   "first": "Mama Nkechi brings the match up on the evening, once: [{\"id\":\"ne04\",\"text\":\"Do not bring chairs, my dear. We are not staying. We only came to greet you properly.\"},{\"id\":\"ne04\",\"text\":\"Do not bring chairs, my dear. We are not staying. We only came to greet you properly.\"}]"
+  },
+  {
+   "name": "M54 the pill stays up by the waiting children (review F8)",
+   "check": 11,
+   "result": "red",
+   "first": "the invitation in view: [[\"idle\",true,false],[false,false]]"
   }
  ],
  "withoutModule": {

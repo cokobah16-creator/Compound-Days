@@ -34,18 +34,26 @@ Round 2b (the verifier's findings, fixed in this build):
 - While the bench is held, any wall or piece of furniture that hides a holder from either half of the screen fades, not only the gate pillars. It comes back once nobody is hidden behind it.
 - On phones the faint arrows are placed before they appear, so they never show over the prompt card.
 
+v37, "Monkey post" (build **v37-d30ea49c**; check the Menu shows it):
+
+- Football is in this build, but it is not part of this session. The ball on the sand in front of the compound (about 6 m from the bench at the gate) is now a football: walking near it shows "Kick · hold to shoot", and a tap gives the toast "Good touch. Kemi and Emeka play monkey post at the end of the street in the afternoons." and a Street football card in the Menu. On day 2 (a Sunday) the children come out at the west end of the street from 3:00 pm. If the players kick the ball or wander to the children, note it on the sheet with the time and do not intervene.
+- A delivery and a match never run at once: lifting the bench ends a match, and no match starts while the bench is in hands.
+- **We'll fetch it** now points the guide pill at the bench ("Ada's bench · 12 m away") until an end is taken.
+- Act while the pair sit on the placed bench ("Sit a while") opens the bench's page: **Wait here until six** when the neighbours are coming that evening, **Sit until 3:00 pm** once they have kicked the ball and the children are due later that day, **Sit for a minute** and **Stand up**. Moving still stands them up.
+- On the veranda evening after the delivery, Ada notices her bench once.
+
 **Do not explain any of this to the players.**
 
 ## Before the players arrive (about 10 minutes)
 
 You need: the machine, one keyboard (or two pads), this sheet printed or open on a second screen, a timer, and a pen.
 
-1. Serve the game: `python3 -m http.server 8000 --directory dist`.
+1. Serve the game: `python3 -m http.server 8000 --directory dist`. To play on a phone, see "On a phone" below for the address to open.
 2. Open `http://localhost:8000/?bench=playtest`. The address loses `?bench=playtest` straight away. That is expected: a flag is used once, so pressing F5 later never restarts anything. Playtest mode is now remembered in the save.
 3. On the title screen choose **Start a new household on this phone** and make Player 1 and Player 2 (any looks; use the players' first names if you know them, because the game uses the names in its toasts).
 4. Carry the sofa in yourself: walk both players to the sofa by the gate, take an end each, and carry it through the passage on the left into the flat.
 5. End day 1: open **Tasks** and press **Explore freely for now** (this pauses the first-evening guide; its progress stays saved), then **Back to the compound**. Open **Tasks** again: the Today page now has **Sleep until tomorrow**. Press it, and on the night page press **Sleep until tomorrow** again (skip the rating faces). Close the day-2 morning page with **Back to the compound**. Do this as late as you can before the players sit down: the game clock runs one in-game hour per real minute while no panel is open, and day 2 starts at 7:30 in the morning.
-6. Open **Menu** and press **We'll fetch it**. Read Ada's note and press **Off we go**. The toast says "Grab an end each."
+6. Open **Menu** and press **We'll fetch it**. Read Ada's note and press **Off we go**. The toast says "Grab an end each." and the guide pill reads "Ada's bench · … m away"
 7. Walk one player out to the street gate and confirm that the bench is lying across the street and that its two pale rings show on the ground when you come within a few steps. Walk that player back into the flat and stand both players inside, near the door.
 8. Put the keyboard between the two chairs: Player 1 on the left (WASD to move, E to act), Player 2 on the right (arrow keys to move, Enter to act). With pads: stick to move, A to act.
 9. Start the timer when you finish reading "What to say".
@@ -158,6 +166,8 @@ Copy each "Delivery N" line and both delivery toasts onto the sheet, and beside 
 
 ## On a phone (390×844)
 
+To load this build on a phone: the server from step 1 listens on every network interface. Put the phone on the same Wi-Fi as the computer, find the computer's address on that network (for example `ip addr` or `ipconfig`; it looks like 192.168.1.20), allow port 8000 through the computer's firewall, and on the phone open `http://<that address>:8000/?bench=playtest`. (`localhost` on a phone is the phone itself, and the live site deploys `master`, not this build.) Check the Menu shows build v37-d30ea49c.
+
 If the session is played on a phone, each player uses one thumb zone and their own Act button. Note:
 
 - whether the prompt card or a place-name caption hides the bench at the flat door;
@@ -188,5 +198,5 @@ The computer model of two players (36 held-out pairs) is the gate before people 
 
 ## After the session
 
-- Keep the sheet with the "Bench runs" lines and the two delivery toasts.
+- Keep the sheet with the "Bench runs" lines and the two delivery toasts. Copy **Menu → Bench runs** and **Menu → Copy timeline and days** before starting another household: **Start a new household on this phone** replaces the browser's single save, and with it Bench runs, Football runs and the day log. Run the bench and football sessions (`docs/TESTING_football.md`) in separate households, copying each one's logs first.
 - To run another pair on the same machine, start again from step 2 with a new household, or use **Menu → Carry Ada's bench again** for a quick repeat (it keeps the placed bench until the new pair agrees on an arrangement).

@@ -54,3 +54,9 @@ Round 2b ships as build **v36-aebec1fb**. It fixes what the round-3 verifier fou
 - **Backing out is a new contact.** In `benchAssistSlide36`, a refused push the other way along the bench gets the walls' sideways allowance back (`assist.sd`, the side of the last help). A holder wedged in the corner by the west pillar, the help spent on the way in, can now be backed out. The walls still never turn the bench. Check 31 (M56).
 - **Scenery never hides a holder.** `benchOccSkip36`, `benchOccList36`, `benchOccWant36` and `benchOccluders36` fade any wall or prop mesh between either camera and either holder, not only the gate pillars, and give each its own material back afterwards. Visual only. Check 32 (M57).
 - **An arrow is placed before it is shown.** `benchArrows36` keeps an arrow hidden on the frame it first appears (`arrowVis36`) and shows it from the next. Check 33 (M58). The Move and Turn hints' element is now classed `hint36`, not `hint`: the page's own `.hint` rule gave it a gold edge, padding and an 8 px top margin, which put it 8 px lower than placed (onto the prompt card at 844x390).
+
+## v37: Monkey post, and the v37 review's fixes (our own work, nothing borrowed)
+
+Street football (`dist/src/football-v37.js` and `dist/src/football-v37.css`, builds v37-00e2e17d and v37-d30ea49c) borrows nothing from other packages: no code, copy or art from build v36-70429384 or any other outside build. Its spec, its two engineers' work, the merge and the review fixes are our own.
+
+The v37 review's fixes to the bench (build v37-d30ea49c) are our own too: the bench's page when the pair sit on it (`benchRestPage36`, `benchRestOffers36`, `ACTIONS.bench36Wait`, `ACTIONS.bench36Up`; bench check 13, M59), the fetch pointing the guide pill at the bench (`benchFind36(true)` as the note closes; check 27, M60), and Ada's evening line about her bench (`ade36`, in the bench's `line35` wrap).

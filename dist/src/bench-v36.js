@@ -889,7 +889,7 @@ function benchSeatedStep36(dt){const B=BENCH36;if(!SEATING30.active){B.seatTarge
 const prevClose36=closePanel;closePanel=function(){const B=BENCH36;B.vel.s=0;B.vel.w=0;B.latch=[null,null];B.wall.s=0;B.wall.w=0;
  let r;if(B.state==='seated'&&S&&S.day===B.seatDay&&!B.standing){const keep=sitStop;sitStop=function(){};try{r=prevClose36.apply(this,arguments);}finally{sitStop=keep;}}else r=prevClose36.apply(this,arguments);
  if(B.state==='seated'&&!SEATING30.active){B.seatTarget=null;benchSetState36('placed');}
- if(B.notePending&&!overlayOpen()){B.notePending=false;benchSpawn36(false);}return r;};
+ if(B.notePending&&!overlayOpen()){B.notePending=false;benchSpawn36(false);benchFind36(true);}return r;};   // (v37 review F7) and the guide pill points at it from the first frame
 // wrap: a day change, a new household or entering the world stands the pair up first (going online does too: hosting or joining enters a new
 // world, and a household that turns online stands up in the step; nethost itself is left alone, as tune-v35 reads its source)
 for(const n of ['nextday','sleep','newgame','newconfirm']){const prev=ACTIONS[n];if(typeof prev!=='function')continue;ACTIONS[n]=function(){bench36StandUp();return prev.apply(this,arguments);};}
@@ -904,7 +904,7 @@ function bench36Hot(i,list,d){const B=BENCH36,s=B.state;if(s==='off')return null
   if(dd<=1.0&&list){const o=players[1-i],near=o&&Math.hypot(o.g.position.x-pose.x,o.g.position.z-pose.z)<=2.4;
    // (round 3, RP-9) a companion or online partner is not waited for: nobody is coming because a prompt says so
    if(near||!((typeof AI!=='undefined'&&AI.on)||(typeof NET!=='undefined'&&NET.on)))list.push({id:'bench36Sit',label:near?'Sit on the bench together':`Wait for ${benchPlayerName36(1-i)}`,dist:dd-0.45});}return null;}   // a player standing at the bench's end gets the seat (not only one pressed against it), one at the pepper pot's own point the pot (whose entry takes a 0.2 m lead)
- if(s==='seated')return p.g.sitting?{id:'bench36Stand',label:'Stand up',dist:0}:null;
+ if(s==='seated')return p.g.sitting?{id:'bench36Rest',label:'Sit a while',dist:0}:null;   // (v37 review F1) the bench's page, as the sofa has one
  if(B.paused)return null;
  if(s==='choosing')return {id:'bench36Agree',label:B.agree[i]?'Not yet':(B.okCache&&B.okCache[B.choice]===false?'Not free':'Agree'),dist:0};
  if(s==='settling')return null;
@@ -929,8 +929,9 @@ HOTSPOT_HOOKS.push(bench36Hot);
 ACT_HOOKS.push(function(i,kind){if(kind.slice(0,7)!=='bench36')return false;const B=BENCH36,s=B.state;
  if(kind==='bench36Sit'){benchSit36(i);return true;}
  if(kind==='bench36Stand'){bench36StandUp();benchStoodUp36();return true;}
+ if(kind==='bench36Rest'){benchRestPage36();return true;}
  if(B.paused)return true;
- if(kind==='bench36Agree'||(s==='choosing'&&kind!=='bench36Sit'&&kind!=='bench36Stand')){benchAgree36(i);return true;}   // the live state decides: in the chooser any bench Act is an agreement
+ if(kind==='bench36Agree'||(s==='choosing'&&kind!=='bench36Sit'&&kind!=='bench36Stand'&&kind!=='bench36Rest')){benchAgree36(i);return true;}   // the live state decides: in the chooser any bench Act is an agreement
  if(kind==='bench36Reset'){if(B.stuck)bench36Reset();return true;}
  if(kind==='bench36Round'){benchToast36('Come round to this end first.');return true;}
  if(kind==='bench36Keep'){benchToast36(`${benchPlayerName36(1-i)} needs this end to get round. Take the other one.`);return true;}
@@ -1219,6 +1220,8 @@ if(typeof EVENING35!=='undefined'&&typeof EVENING35.start==='function'){const pr
 if(typeof line35==='function'){const prevLine36=line35;
  // wrap: Ada thanks the pair once for carrying her bench in (placed today or yesterday), and her day-6 bench musing follows the delivery
  line35=function(who,ctx){const L=benchSave36();
+  // (v37 review F11) on the veranda evening after the delivery, Ada notices her bench, once
+  if(who==='ada'&&L&&ctx&&ctx.evening&&L.state==='placed'&&!L.adEve){L.adEve=S.day;return {id:'ade36',text:'Look at you two, on my bench, on your own veranda. I told you it was long enough for everybody.'};}
   if(who==='ada'&&L&&!(ctx&&ctx.evening)){
    if(L.state==='placed'&&L.placedDay!==null&&(S.day===L.placedDay||S.day===L.placedDay+1)&&!L.adb){const used=S.life&&S.life.lines35&&S.life.lines35.day===S.day&&S.life.lines35.used&&S.life.lines35.used.ada||[];
     if(!used.includes('adb36')){L.adb=S.day;return {id:'adb36',text:'You carried it in yourselves? Through that passage? Then it is yours twice. Sit, sit. Gist is better sitting down.'};}}}
@@ -1320,9 +1323,9 @@ function benchPauseDelivery36(){const B=BENCH36,s=B.state;if(B.paused)return fal
   if(bench36RoomDown()){benchPaused36();return true;}return false;}
  return false;}
 function benchPaused36(){const L=benchSave36();benchToast36('The bench is down. Walk back and take an end each when you’re ready.');save();if(L&&L.duo)benchSolo36();}
-function benchFind36(){const B=BENCH36;if(B.state!=='grounded'||B.paused||typeof LIFE34==='undefined')return false;const w0=LIFE34.waypoint;if(!(w0&&w0.bench36))B.findPrev36=w0||null;   // round 3 (L2): the player's own destination comes back afterwards
+function benchFind36(quiet){const B=BENCH36;if(B.state!=='grounded'||B.paused||typeof LIFE34==='undefined')return false;const w0=LIFE34.waypoint;if(!(w0&&w0.bench36))B.findPrev36=w0||null;   // round 3 (L2): the player's own destination comes back afterwards
  LIFE34.waypoint={x:B.pose.x,z:B.pose.z,name:'Ada’s bench',bench36:true};B.finding=true;
- if(typeof refreshMarker34==='function')refreshMarker34();benchToast36('Ada’s bench is marked. Follow the distance on screen.');return true;}
+ if(typeof refreshMarker34==='function')refreshMarker34();if(!quiet)benchToast36('Ada’s bench is marked. Follow the distance on screen.');return true;}
 function benchFindClear36(drop){const B=BENCH36;if(!B.finding)return;B.finding=false;const prev=B.findPrev36||null;B.findPrev36=null;if(typeof LIFE34==='undefined')return;const w=LIFE34.waypoint;if(w&&w.bench36){LIFE34.waypoint=drop?null:prev;if(typeof refreshMarker34==='function')refreshMarker34();}}
 // a reset moves the bench: the marker follows it
 {const prevReset36=bench36Reset;bench36Reset=function(){const r=prevReset36.apply(this,arguments);const B=BENCH36;if(r&&B.finding&&typeof LIFE34!=='undefined'&&LIFE34.waypoint&&LIFE34.waypoint.bench36){LIFE34.waypoint={x:B.pose.x,z:B.pose.z,name:'Ada’s bench',bench36:true};if(typeof refreshMarker34==='function')refreshMarker34();}return r;};}
@@ -1349,7 +1352,7 @@ function benchStoodUp36(){const L=benchSave36();if(L&&L.duo&&BENCH36.state==='pl
 for(const n of ['nextday','sleep']){const prev=ACTIONS[n];if(typeof prev!=='function')continue;ACTIONS[n]=function(){const r=prev.apply(this,arguments);benchStoodUp36();return r;};}
 
 ACTIONS.bench36Pause=function(){closePanel();benchPauseDelivery36();};
-ACTIONS.bench36Find=function(){closePanel();benchFind36();};
+ACTIONS.bench36Find=function(){closePanel();benchFind36(false);};
 ACTIONS.bench36Pick=function(d){benchPick36(+(d&&d.v)||1);};
 ACTIONS.bench36Vote=function(d){benchAgree36(+(d&&d.i)===1?1:0);};
 ACTIONS.bench36Duo=function(){closePanel();benchDuo36();};
@@ -1435,3 +1438,18 @@ function benchReachFast36(fn){const B=BENCH36,ix=benchObsIndex36(),keep=blocked;
   for(const pb of PUSH){if(pb.lvl!==0||pb.gone)continue;const bx=pushBox(pb);if(x+r>bx.x1&&x-r<bx.x2&&z+r>bx.z1&&z-r<bx.z2)return bx;}
   const b=bench36GroundBox();return b&&bench36CircleOBB(x,z,r||0,b)?b:null;};
  try{return fn();}finally{blocked=keep;}}
+
+/* ---------- 12. (v37 review F1) Sitting on the bench passes the time, as the sofa does ---------- */
+// Act while the pair sit on the placed bench opens its page: a wait until the neighbours' evening visit when it is due today, any wait another
+// module offers (football: until Kemi and Emeka come out), a minute, and the way up. Other modules push functions onto BENCH36.restOffers that
+// return {label, t, sub} or null; the offers are shown earliest first, only those later than now.
+BENCH36.restOffers=[];
+function benchRestOffers36(){const out=[];for(const f of BENCH36.restOffers){try{const o=f();if(o&&o.t>S.time)out.push(o);}catch(e){}}
+ if(typeof EVENING35!=='undefined'&&EVENING35&&typeof EVENING35.pending==='function'&&EVENING35.pending()&&EVENING35.state==='idle'&&S.time<18)out.push({label:'Wait here until six',t:18,sub:'The neighbours come by this evening'});
+ return out.sort((a,b)=>a.t-b.t);}
+function benchRestPage36(){if(BENCH36.state!=='seated')return false;const offers=benchRestOffers36();
+ openPanel(`<h2>Ada’s bench</h2><p>Long enough for everybody, short enough to argue on.</p><div class="actions">${offers.map((o,k)=>btn(esc(o.label),'bench36Wait',{t:o.t},(k?'':'primary ')+'block',o.sub?esc(o.sub):'')).join('')}${btn('Sit for a minute','sitmin',{},'block')}${btn('Stand up','bench36Up',{},'quiet')}</div>`);return true;}
+ACTIONS.bench36Wait=function(d){const t=+(d&&d.t);if(BENCH36.state!=='seated'||!(t>S.time)){closePanel();return;}
+ if(t===18&&typeof ACTIONS.evening35Wait==='function'&&typeof home34==='function'&&home34())ACTIONS.evening35Wait();else ACTIONS.sitwait({t});};
+ACTIONS.bench36Up=function(){closePanel();bench36StandUp();benchStoodUp36();};
+if(typeof LOCAL_ONLY!=='undefined')for(const n of ['bench36Wait','bench36Up'])LOCAL_ONLY.add(n);

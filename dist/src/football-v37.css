@@ -41,7 +41,7 @@
 .fb37-arrow.goal{color:#8FDDAE}
 .fb37-arrow.goal .c{font-size:max(13px,.8rem);font-weight:800;background:rgba(37,27,20,.7);color:#8FDDAE;padding:1px 7px;border-radius:9px}
 /* during a match the wayfinding pill steps aside, and on small screens the Pantry cards too */
-body.football37-match #life-guide34{display:none!important}
+body.football37-match #life-guide34,body.football37-near #life-guide34{display:none!important}
 @media (max-width:820px),(max-height:520px){body.football37-match #inv0,body.football37-match #inv1{display:none!important}body.football37-match .pcard .prole{display:none}}
 .fb37-menu{margin:8px 0}
 .fb37-morning{margin:6px 0 0;font-weight:600}

@@ -17,7 +17,7 @@ Builds before v33 (v1, v19, v21) used a flat layout with `index.html` at the roo
 
 ## Imports
 
-A build archive is committed byte-for-byte, including `dist/index.html` and its outer artifact wrapper, because the build id is a hash over every file under `dist` and the results files in `check/` (`results-authored.json`, `results-v33.json`, `results-feel.json`) record that id. `PACKAGE_MANIFEST.json` lists the SHA-256 of every packaged file; an import is only committed once every hash matches.
+A build archive is committed byte-for-byte, including `dist/index.html` and its outer artifact wrapper, because the build id is a hash over every file under `dist` and every results file in `check/` (`results-*.json`, sixteen of them) records that id. `PACKAGE_MANIFEST.json` lists the SHA-256 of every packaged file; an import is only committed once every hash matches.
 
 Before committing an import, two checks run here:
 

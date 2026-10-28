@@ -1,5 +1,5 @@
 {
- "build": "v37-00e2e17d",
+ "build": "v37-d30ea49c",
  "passed": true,
  "checks": [
   {
@@ -733,7 +733,7 @@
    }
   },
   {
-   "name": "13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close",
+   "name": "13. Sitting: both sit facing the seat’s way (hips 0.61 m, feet on the floor, seats 0.72 m apart); the Menu opened and closed keeps them seated; (v37 review) Act opens the bench’s page (Sit for a minute, Stand up) and closing it keeps them seated; a held key stands them up on free spots; past midnight and Start day nobody is sitting and both are in the room, and the save says so; a day change by any other route stands them up at the next panel close",
    "passed": true,
    "info": {
     "hips": 0.61,
@@ -1891,9 +1891,10 @@
    }
   },
   {
-   "name": "27. Pause and find: “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes",
+   "name": "27. Pause and find: (v37 review) \"We’ll fetch it\" marks the bench for the guide pill as the note closes; “Pause delivery and explore” beside the reset sets a carried bench down with the safe set-down (liftable, not counted as a set-down) and frees both players’ keys; “Find the bench” marks it with the destination marker, which follows a reset and goes when either player takes an end; carrying on is walking back and lifting; in the chooser a pause leaves it in the doorway and lifting it there opens the chooser again; the player’s own destination comes back once Find’s marker goes",
    "passed": true,
    "info": {
+    "fetchMarks": "Ada’s bench",
     "pause": {
      "setdowns": 0
     },
@@ -2454,6 +2455,16 @@
   {
    "name": "M58 an arrow shows on its first frame",
    "check": 33,
+   "result": "red"
+  },
+  {
+   "name": "M59 Act on the bench stands them up at once (v37 review F1)",
+   "check": 13,
+   "result": "red"
+  },
+  {
+   "name": "M60 the fetch leaves the pill on the player's own destination (v37 review F7)",
+   "check": 27,
    "result": "red"
   }
  ],

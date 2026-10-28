@@ -95,7 +95,9 @@ FOOTBALL37.LINES={
   tunde:{won:'I heard you beat the small ones at the end of the street. Don’t let it go to your head. Kemi will want revenge.',lost:'Kemi beat you? Join the club. She did me last week.',other:'Last goal wins, and nobody scored? That is a true street game.'},
   nkechi:{won:'Emeka came home talking about you. He wants a rematch after his food.',lost:'Emeka came in grinning from ear to ear. So you were the ones he beat?',other:'I called him in and he said, ‘Last goal, Auntie, last goal!’',otherUncalled:'Emeka says nobody won. He says it like it is a trophy.'},
   ada:{won:'Mr. Bassey told the whole Yard about your goal. I have heard it four times.',lost:'Lose today, win tomorrow. That is how the street works.',other:'A draw? Then everybody gets to talk.'},
-  bassey:{won:'I am still talking about that goal.',lost:'Ah, these small ones! Next time una go learn.',other:'Unfinished business. The best kind.'}},
+  bassey:{won:'I am still talking about that goal.',lost:'Ah, these small ones! Next time una go learn.',other:'Unfinished business. The best kind.'},
+  // (fixer, v37 review F11) Mama Nkechi's line on the veranda evening after a match (today's or yesterday's)
+  nkechiEvening:'Emeka told me the whole game before he even washed his feet. Every goal, twice.'},
  // the interface (plain English)
  ui:{us:'Us',them:'Kemi & Emeka',firstTo:'first to 3',lastGoal:'Last goal wins',role:'Monkey post · Green',
   hint:'Tap {k}: pass · hold {k}: shoot · {k} away from the ball: call for it',hintShort:'Tap {k}: pass · Hold {k}: shoot',landscape:'Turn the phone sideways: both of you get more room.',
@@ -103,8 +105,9 @@ FOOTBALL37.LINES={
   releaseChip:'{name}: Release!',goalArrow:'Goal',goalSprite:'GOAL!',
   fullTime:'Full time · Us {a} – {b} Kemi & Emeka',lastUs:'Last goal wins · Us! ({a} – {b} before it)',lastThem:'Last goal wins · Kemi & Emeka! ({a} – {b} before it)',
   unfinished:'Unfinished · {a} – {b} · to finish tomorrow',goals:'Goals: {list}',og:'(o.g.)',
-  morning:'Kemi and Emeka play monkey post at the end of the street from {h}.',morningFlag:'Kemi and Emeka play monkey post at the end of the street.',waypoint:'The end of the street',
+  morning:'Kemi and Emeka play monkey post at the end of the street today from {h}.',morningFlag:'Kemi and Emeka play monkey post at the end of the street.',waypoint:'The end of the street',
   waypointToast:'Kemi and Emeka are playing at the end of the street.',
+  benchWait:'Sit until {h}',benchWaitSub:'Then Kemi and Emeka are out at the end of the street',
   kick:'Kick · hold to shoot',call:'Call for it',motor:'Motor!',road:'Wait for the road to clear',play:'Play monkey post',again:'Another game?',wait:'Wait for {name}',
   menuTitle:'Street football.',menuWhat:'Monkey post (from “mocking post”, a joke on real goalposts) is small-goal street football: no keeper, no referee.',
   menuWhen:'Kemi and Emeka play at the end of the street after school from {wd0} to {wd1}, and at the weekend from {sat}, or from {sun} after church.',
@@ -264,13 +267,20 @@ function football37Ball(dt){const F=FOOTBALL37,b=ball;if(!b)return;
  b.position.y=F.R+(b.h||0);}
 // height is visual only: a hard shot or a post hit pops it, gravity brings it down, collisions and goals ignore it
 function fbHeight37(dt){const b=ball;if(!(b.h>0||b.vy>0))return;b.vy-=9.8*dt;b.h+=b.vy*dt;if(b.h<=0){b.h=0;if(Math.abs(b.vy)<0.6)b.vy=0;else b.vy=-b.vy*0.4;if(b.vy<0.6)b.vy=Math.max(0,b.vy);}}
-function fbSubsteps37(dt){const F=FOOTBALL37,b=ball;let vx=b.v[0],vz=b.v[1],s=Math.hypot(vx,vz);
+// (fixer, v37 review I7) the bench while it is carried is no collider for blocked() (the world signature stays as it is), so the ball tests it
+// itself: the box of the carried bench, or null; and the outward normal of the face nearest a point inside or touching it
+function fbCarried37(){if(typeof BENCH36==='undefined'||!BENCH36||BENCH36.state!=='carrying'||BENCH36.paused||typeof benchBox36!=='function')return null;return benchBox36(BENCH36.pose,0);}
+function fbBoxNormal37(x,z,B){const c=Math.cos(B.yaw),s=Math.sin(B.yaw),dx=x-B.x,dz=z-B.z,lx=dx*c-dz*s,lz=dx*s+dz*c;
+ if(Math.abs(lx)-B.hx>=Math.abs(lz)-B.hz){const g=lx>=0?1:-1;return {n:[g*c,-g*s],out:(B.hx-Math.abs(lx))};}const g=lz>=0?1:-1;return {n:[g*s,g*c],out:(B.hz-Math.abs(lz))};}
+function fbSubsteps37(dt){const F=FOOTBALL37,b=ball,CB=fbCarried37();let vx=b.v[0],vz=b.v[1],s=Math.hypot(vx,vz);
  if(s<0.02&&!(b.h>0)){
+  // a carried bench moved onto a resting ball pushes it out of its way, as a walker does
+  if(CB&&bench36CircleOBB(b.position.x,b.position.z,F.R,CB)){const q=fbBoxNormal37(b.position.x,b.position.z,CB);vx=q.n[0]*1.0;vz=q.n[1]*1.0;s=1.0;}else{
   // at rest: a player walking into it knocks it on at their walking speed (circle tests only, no blocked() call)
   let kx=0,kz=0,ks=0,kP=null;if(!b.motor)for(const P of F.persons){if((P.y||0)>F.LEVEL_WALL)continue;const ddx=b.position.x-P.pos[0],ddz=b.position.z-P.pos[1],dd=Math.hypot(ddx,ddz);if(dd>=F.R+P.r||dd<1e-6)continue;
    const vpn=P.vel[0]*ddx/dd+P.vel[1]*ddz/dd;if(vpn>ks){ks=vpn;kx=ddx/dd;kz=ddz/dd;kP=P;}}
   if(ks<0.05){b.v=[0,0];F.restT+=dt;if(F.restT>=2.0){F.restT=0;fbBuriedCheck37('rest');}return;}
-  vx=fbOwnCap37(kP,kx*ks,0);vz=kz*ks;s=Math.max(Math.hypot(vx,vz),0.02);const P0=F.persons.find(P=>Math.hypot(b.position.x-P.pos[0],b.position.z-P.pos[1])<F.R+P.r);if(P0)fbTouch37(P0,'body');}
+  vx=fbOwnCap37(kP,kx*ks,0);vz=kz*ks;s=Math.max(Math.hypot(vx,vz),0.02);const P0=F.persons.find(P=>Math.hypot(b.position.x-P.pos[0],b.position.z-P.pos[1])<F.R+P.r);if(P0)fbTouch37(P0,'body');}}
  F.restT=0;
  const n=Math.min(F.SUBMAX,Math.max(1,Math.ceil(s*dt/F.SUB))),h=dt/n,fric=(F.state==='restart'||b.motor)?3:1;
  let inside;const ox0=b.position.x,oz0=b.position.z;
@@ -284,6 +294,9 @@ function fbSubsteps37(dt){const F=FOOTBALL37,b=ball;let vx=b.v[0],vz=b.v[1],s=Ma
   // the cairns: ball-only posts while they are out
   if(F.mesh.cairns.length){for(let pi=0;pi<4;pi++){const c=F.mesh.cairns[pi];if(!c||!c.placed)continue;const px=c.pos[0],pz=c.pos[1],ddx=nx-px,ddz=nz-pz,dd=Math.hypot(ddx,ddz),rr=F.R+F.PITCH.postR;
    if(dd<rr&&dd>1e-6){const ux=ddx/dd,uz=ddz/dd,vn=vx*ux+vz*uz;if(vn<0){const sp=Math.hypot(vx,vz);vx-=(1+F.E_POST)*vn*ux;vz-=(1+F.E_POST)*vn*uz;fbPostHit37(pi,sp);}nx=px+ux*rr;nz=pz+uz*rr;}}}
+  // (fixer, I7) the carried bench: the ball bounces off it as off a wall, and one inside it (the bench came onto it) leaves by the nearest face
+  if(CB&&bench36CircleOBB(nx,nz,F.R,CB)){const q=fbBoxNormal37(nx,nz,CB),vn=vx*q.n[0]+vz*q.n[1];if(vn<0){const vi=Math.abs(vn);vx-=(1+F.E_WALL)*vn*q.n[0];vz-=(1+F.E_WALL)*vn*q.n[1];fbWall37('bench',vi,vi*F.E_WALL,nx,nz,false);}
+   if(!bench36CircleOBB(ox,oz,F.R,CB)){nx=ox;nz=oz;}else{const d=q.out+F.R+0.005;nx+=q.n[0]*d;nz+=q.n[1]*d;}}
   // people: soft bodies (not the owner); a walking player knocks a ball at least at their walking speed
   if(!b.motor)for(const P of F.persons){if(F.owner&&P.key===F.owner.key)continue;if((P.y||0)>F.LEVEL_WALL)continue;if(F.kickBy[P.key]!==undefined&&F.t-F.kickBy[P.key]<0.25)continue;/* a ball just kicked never bounces off its own kicker */const ddx=nx-P.pos[0],ddz=nz-P.pos[1],dd=Math.hypot(ddx,ddz),rr=F.R+P.r;
    if(dd<rr&&dd>1e-6){const ux=ddx/dd,uz=ddz/dd,vn=vx*ux+vz*uz,vpn=Math.max(0,P.vel[0]*ux+P.vel[1]*uz);
@@ -408,7 +421,8 @@ function fbBuriedCheck37(why){const F=FOOTBALL37;if(!ball||ball.glide||ball.fade
 function football37BallHome(){const F=FOOTBALL37;if(!ball||fbMatchOn37()||fbGuest37())return false;const h=F.HOME,s2=fbFreeAt37(h[0],h[1])?h:(fbRing37(h[0],h[1])||h);
  ball.glide=null;ball.v=[0,0];ball.fade={phase:'out',t0:F.t,to:s2};fbSetOwner37(null);return true;}
 // cheap per-frame watch: the crate's position, the bench's and the sofa's states (no blocked() call unless one changed)
-function fbWatch37(){const F=FOOTBALL37;const c=typeof crate!=='undefined'&&crate?crate.position.x+','+crate.position.z:'';const bs=typeof BENCH36!=='undefined'&&BENCH36?BENCH36.state+(BENCH36.paused?'p':''):'';const ss=S&&S.sofa?S.sofa.state+(typeof sofa!=='undefined'&&sofa&&sofa.carrying?'c':''):'';
+// (fixer, v37 review I7) and the grounded bench's pose: a reset that moves it re-runs the buried check
+function fbWatch37(){const F=FOOTBALL37;const c=typeof crate!=='undefined'&&crate?crate.position.x+','+crate.position.z:'';const bs=typeof BENCH36!=='undefined'&&BENCH36?BENCH36.state+(BENCH36.paused?'p':'')+(BENCH36.state==='grounded'&&BENCH36.pose?'@'+Math.round(BENCH36.pose.x*100)+','+Math.round(BENCH36.pose.z*100)+','+Math.round(BENCH36.pose.yaw*100):''):'';const ss=S&&S.sofa?S.sofa.state+(typeof sofa!=='undefined'&&sofa&&sofa.carrying?'c':''):'';
  const ch=c!==F.lastCrate||bs!==F.lastBench||ss!==F.lastSofa;F.lastCrate=c;F.lastBench=bs;F.lastSofa=ss;if(ch&&F.watchArmed)fbBuriedCheck37('watch');F.watchArmed=true;}
 
 /* ======================================================================================================================================
@@ -648,14 +662,20 @@ function football37Start(){const F=FOOTBALL37;const L=fbEnsureSave37();F.matchNo
  if(F.kidBall){F.kidBall.hidden=true;F.kidBall.m.visible=false;if(K&&K.kemi.g&&typeof playPick==='function')playPick(K.kemi.g);}
  fbSetupTraffic37();fbSetState37('setout','start');fbLog37('match','coop');
  fbShout37('kemi',F.LINES.shouts.setout);fbToast37(F.LINES.toasts.measure);
- if(L&&(L.hints||0)<2){L.hints=(L.hints||0)+1;F.hintUntil=F.t+20;F.hintShortUntil=F.t+F.HINT_SHORT;}else F.hintUntil=F.hintShortUntil=0;
+ // (fixer, v37 review F3) the first-match hints wait for the kick-off (fbHintsGo37): during the set-out its toast has the screen
+ F.hintUntil=F.hintShortUntil=F.landUntil37=0;F.hintAtKick37=false;if(L&&(L.hints||0)<2){L.hints=(L.hints||0)+1;F.hintAtKick37=true;}
  fbEmit37('start',{matchNo:F.matchNo});return true;}
 function fbKickoff37(team,first){const F=FOOTBALL37,P=F.PITCH;F.kickoffTeam=team;F.kickoffT=F.t;
  const go=()=>{ball.held=false;F.keepOff={team:team==='a'?'b':'a',until:F.t+F.KEEPOFF_T.kickoff,touched:false,kind:'kickoff'};fbShout37('kemi',F.LINES.shouts.oya);fbEmit37('kickoff',{team,first:!!first});};
- if(first){if(!F.kekeAt)F.kekeAt=F.rng.range(F.KEKE.after[0],F.KEKE.after[1]);fbSetState37('live','kickoff');go();return;}
+ if(first){if(!F.kekeAt)F.kekeAt=F.rng.range(F.KEKE.after[0],F.KEKE.after[1]);fbSetState37('live','kickoff');go();fbHintsGo37();return;}
  fbSetState37('live','kickoff');ball.held=true;ball.v=[0,0];ball.motor=false;fbSetOwner37(null);
  const far=Math.hypot(ball.position.x-P.cx,ball.position.z-P.zc)>3;
  if(far)ball.fade={phase:'out',t0:F.t,to:[P.cx,P.zc],done:go};else ball.glide={from:[ball.position.x,ball.position.z],to:[P.cx,P.zc],t0:F.t,dur:0.4,done:go};}
+// (fixer, v37 review F3) at the first kick-off: the set-out toast is cleared, then one card at a time: on a portrait phone the "turn sideways" line
+// for 4 s, then the short line naming Act for 4 s; on larger halves the full line for 16 s
+function fbHintsGo37(){const F=FOOTBALL37;try{const el=typeof document!=='undefined'&&document.getElementById?document.getElementById('toast'):null;if(el&&el.classList)el.classList.remove('on');}catch(e){}
+ if(!F.hintAtKick37)return;F.hintAtKick37=false;const portrait=typeof innerHeight!=='undefined'&&innerHeight>innerWidth&&fbLocalPair37();
+ F.landUntil37=portrait?F.t+F.HINT_SHORT:0;F.hintShortUntil=(portrait?F.landUntil37:F.t)+F.HINT_SHORT;F.hintUntil=Math.max(F.t+16,F.hintShortUntil);}
 function football37Goal(team,how,at){const F=FOOTBALL37,pc=F.pendingCall;if(!(F.state==='live'||(how==='street'&&(F.state==='restart'||F.state==='live'))))return false;
  if(how!=='street')F.pendingCall=null;else{F.pendingCall=null;F.streetCallUsed=true;if(F.stats)F.stats.streetCall=true;}
  if(F.state==='restart'){ball.fade=null;fbBallOpacity37(1);F.out=null;}
@@ -1184,6 +1204,8 @@ football37On('square',()=>{const F=FOOTBALL37,G=F.SQUARE_GOAL;fbGoalSprite37(G.x
 FOOTBALL37.ui37=[{},{}];FOOTBALL37.arrows37=[null,null];FOOTBALL37.cam37=[null,null];
 // the page knows a match is on (the CSS hides the wayfinding pill, and on small screens the Pantry cards): set from setout to clearing
 function fbBodyClass37(){if(typeof document==='undefined'||!document.body||!document.body.classList)return;const on=MATCH37.includes(FOOTBALL37.state),cl=document.body.classList;if(cl.contains('football37-match')!==on)cl.toggle('football37-match',on);}
+// (fixer, v37 review F8) beside the children waiting to play, the wayfinding pill steps aside too (football37-near), as it does in a match
+function fbNearClass37(){if(typeof document==='undefined'||!document.body||!document.body.classList)return;const on=fbNearKids37(),cl=document.body.classList;if(cl.contains('football37-near')!==on)cl.toggle('football37-near',on);}
 function fbHalfShown37(i){if(typeof players==='undefined'||!players[i])return false;if(fbOnline37())return i===NET.myIndex;if(fbCompanion37())return i===0;return true;}
 function fbEl37(i,key,cls){const F=FOOTBALL37,U=F.ui37[i];if(U[key])return U[key];if(typeof document==='undefined'||!document.getElementById)return null;const host=document.getElementById('half'+i);
  if(!host||!host.appendChild||!document.createElement)return null;const el=document.createElement('div');el.className=cls;if(el.style)el.style.display='none';host.appendChild(el);U[key]=el;return el;}
@@ -1203,7 +1225,9 @@ function fbSummary37(){const F=FOOTBALL37,U=F.LINES.ui,R=F.result;if(!R)return n
  else top=fbFill37(U.fullTime,{a:R.a,b:R.b});
  const tally=[];for(const g of goals){const n=fbNameOf37(g.who)+(g.own?' '+U.og:'');const t=tally.find(x=>x.n===n);if(t)t.c++;else tally.push({n,c:1});}
  return {top,goals:tally.length?fbFill37(U.goals,{list:tally.map(t=>t.n+(t.c>1?' ×'+t.c:'')).join(', ')}):''};}
-function fbHudStep37(){const F=FOOTBALL37;if(typeof document==='undefined'||!document.getElementById)return;const U=F.LINES.ui,on=fbMatchOn37()&&F.state!=='clearing';
+function fbHudStep37(){const F=FOOTBALL37;if(typeof document==='undefined'||!document.getElementById)return;const U=F.LINES.ui,on=fbMatchOn37()&&F.state!=='clearing';fbNearClass37();
+ // (fixer, F4) the prompt follows the kick entry on the frame it comes or goes, not up to 0.25 s later
+ if(typeof hotspotCache!=='undefined'){const kk=F.kickHot37||(F.kickHot37=[false,false]);let ch=false;for(const i of [0,1]){const k=!!(hotspotCache[i]&&hotspotCache[i].id==='kick37');if(k!==kk[i]){kk[i]=k;ch=true;}}if(ch)fbHUD37();}
  // the summary goes on an Act press by either human (not the one asking for another game)
  if(F.state==='ended')for(const i of [0,1])if(held37[i]&&!prevHeld37[i]){const hs=typeof hotspotCache!=='undefined'?hotspotCache[i]:null;if(!(hs&&/^(again37|play37|kick37)$/.test(hs.id))){fbClearStart37();break;}}
  // the charge cells advance between the base's 0.25 s refreshes
@@ -1225,7 +1249,7 @@ function fbHudStep37(){const F=FOOTBALL37;if(typeof document==='undefined'||!doc
   // the first-match hint (and, for two players on a portrait screen, the landscape hint)
   // (fixer) worded for the player's own input (E, Enter, Act, A); on a phone half a short line at the top for 4 s, the "turn sideways" line apart
   const hint=show&&F.hintUntil&&F.t<F.hintUntil&&F.state!=='ended';const portrait=typeof innerHeight!=='undefined'&&innerHeight>innerWidth&&fbLocalPair37();
-  const kn=fbKeyName37(i),hs=compact?(F.t<(F.hintShortUntil||0)?`<span>${esc(fbFill37(U.hintShort,{k:kn}))}</span>`:''):`<span>${esc(fbFill37(U.hint,{k:kn}))}</span>`,hl=portrait?`<span class="land">${esc(U.landscape)}</span>`:'';
+  const land=portrait&&F.t<(F.landUntil37||0),kn=fbKeyName37(i),hs=land?'':compact?(F.t<(F.hintShortUntil||0)?`<span>${esc(fbFill37(U.hintShort,{k:kn}))}</span>`:''):`<span>${esc(fbFill37(U.hint,{k:kn}))}</span>`,hl=land?`<span class="land">${esc(U.landscape)}</span>`:'';   // (fixer, F3) one at a time
   fbPut37(fbEl37(i,'hint','fb37-hint'),'fb37-hint'+(compact?' compact':''),hs+hl,!!hint&&!!(hs||hl));
   // (fixer) "GOAL!" at the top of each view, clear of the goal and the people, in the scoring side's colour
   const gb=F.goalBanner37&&F.t-F.goalBanner37.t<F.GOAL_BANNER?F.goalBanner37:null;
@@ -1239,6 +1263,7 @@ football37On('call',e=>{const F=FOOTBALL37,i=+String(e.who).slice(1),O=F.owner;i
 function fbPrompts37(){const F=FOOTBALL37;if(!S||!S.p||typeof players==='undefined'||!players.length||typeof document==='undefined'||S.phase!=='play')return;
  const on=fbMatchOn37();if(!on&&!charge37[0]&&!charge37[1]&&!F.roleOn37)return;const open=typeof overlayOpen==='function'&&overlayOpen();
  for(const i of [0,1]){if(!players[i]||(fbOnline37()&&i!==NET.myIndex)||(fbCompanion37()&&i!==0))continue;const pr=document.getElementById('pr'+i),role=document.getElementById('prole'+i);
+  if(typeof bench36Role==='function'&&bench36Role(i))continue;   // (fixer, I1) a bench holder keeps the bench's own Move/Turn prompt and role line
   if(pr&&(on||charge37[i])&&!open){const hs=typeof nearest==='function'?nearest(i):hotspotCache[i];
    const g37=fbCompact37(i)&&fbTouchScreen37()?FOOTBALL37.LINES.ui.touchName:glyph(i);   // (fixer) never a key glyph on a phone half
    if(hs&&hs.label){pr.className='pr on p'+i+(on?' fb37-pr':'');pr.innerHTML=`<span class="k">${esc(g37)}</span><span>${esc(hs.label)}</span>`;}else pr.className='pr p'+i;}
@@ -1251,6 +1276,16 @@ function fbProject37(i,x,y,z){const out={inside:false,ang:0,px:0,py:0};if(typeof
  const vp=v21Viewport(i);let sx=fbPv37.x,sy=fbPv37.y;if(behind){sx=-sx;sy=-sy;}const px=(sx+1)/2*vp.w,py=(1-sy)/2*vp.h,cx=vp.w/2,cy=(vp.top+vp.h-vp.bottom)/2;
  out.px=px;out.py=py;out.inside=!behind&&px>=0&&px<=vp.w&&py>=vp.top&&py<=vp.h-vp.bottom;out.ang=Math.atan2(py-cy,px-cx);return out;}
 function fbSeen37(i,x,y,z){return fbProject37(i,x,y,z).inside;}
+// slide a point on the edge rectangle (fbEdge37's) along its edge until it is at least min px from 'from' (away from it, or the other way if the
+// corner stops it); e is changed in place
+function fbSlide37(i,e,from,min){if(Math.hypot(e[0]-from[0],e[1]-from[1])>=min)return e;const vp=v21Viewport(i),x0=Math.max(28,vp.w*0.06),x1=vp.w-x0,y0=vp.top+30,y1=Math.max(y0+20,vp.h-vp.bottom-30);
+ const vert=Math.abs(e[0]-x0)<1||Math.abs(e[0]-x1)<1,a=vert?1:0,lo=vert?y0:x0,hi=vert?y1:x1,off=Math.abs(e[1-a]-from[1-a]),need=Math.sqrt(Math.max(0,min*min-off*off));
+ const dir=e[a]>=from[a]?1:-1;let v=from[a]+dir*need;if(v<lo||v>hi)v=from[a]-dir*need;e[a]=fbClamp37(v,lo,hi);return e;}
+// the nearest place along the edge (in 4 px steps, up to 240 px either way) at least 60 px from this view's player and 44 px from the other arrow
+function fbPlace37(i,e,pt,other){const ok=(x,y)=>(!pt||Math.hypot(x-pt[0],y-pt[1])>=60)&&(!other||Math.hypot(x-other[0],y-other[1])>=44);if(ok(e[0],e[1]))return e;
+ const vp=v21Viewport(i),x0=Math.max(28,vp.w*0.06),x1=vp.w-x0,y0=vp.top+30,y1=Math.max(y0+20,vp.h-vp.bottom-30),vert=Math.abs(e[0]-x0)<1||Math.abs(e[0]-x1)<1,a=vert?1:0,lo=vert?y0:x0,hi=vert?y1:x1;
+ for(let k=1;k<=60;k++)for(const sg of [1,-1]){const v=e[a]+sg*4*k;if(v<lo||v>hi)continue;const q=[e[0],e[1]];q[a]=v;if(ok(q[0],q[1])){e[a]=v;return e;}}
+ if(pt)fbSlide37(i,e,pt,60);return e;}
 function fbEdge37(i,ang){const vp=v21Viewport(i),x0=Math.max(28,vp.w*0.06),x1=vp.w-x0,y0=vp.top+30,y1=Math.max(y0+20,vp.h-vp.bottom-30),cx=vp.w/2,cy=(y0+y1)/2,dx=Math.cos(ang),dy=Math.sin(ang);
  let t=1e9;if(dx>1e-6)t=Math.min(t,(x1-cx)/dx);if(dx<-1e-6)t=Math.min(t,(x0-cx)/dx);if(dy>1e-6)t=Math.min(t,(y1-cy)/dy);if(dy<-1e-6)t=Math.min(t,(y0-cy)/dy);return [cx+dx*t,cy+dy*t];}
 
@@ -1313,17 +1348,30 @@ function fbCamPoints37(i,pts){const F=FOOTBALL37;if(!Array.isArray(pts)||typeof 
  st.goalKept=false;if(Math.hypot(st.g[0],st.g[1])>0.05){const n1=pts.length,G=fbGoalOf37('a');for(let q=0;q<8;q++)pts.push(C[16+q].set(p.x+st.g[0]+(q&1?0.3:-0.3),q&2?0.5:0,p.z+st.g[1]+(q&4?1.2:-1.2)));
   if(fbPersonPx37(i,fbFitDist37(i,pts))<st.aim)pts.length=n1;else st.goalKept=true;void G;}}
 // the edge arrows: the ball (in a match, and in free play within 15 m after discovery) and, in a match, the goal being attacked
+// (fixer, v37 review I2) in free play the arrow follows the camera's rule: only a ball rolling faster than 1 m/s, or kicked by this player in the
+// last 1.5 s, earns it; and never while anything else is guiding: the bench in hands, the chooser, its glide or sitting on it, the evening, or
+// a player in the flat
+function fbFreeArrow37(i,p){const F=FOOTBALL37;if(typeof benchBusy36==='function'&&benchBusy36())return false;
+ if(typeof BENCH36!=='undefined'&&BENCH36&&(BENCH36.state==='seated'||BENCH36.state==='settling'))return false;
+ if(typeof EVENING35!=='undefined'&&EVENING35&&typeof EVENING35.active==='function'&&EVENING35.active())return false;
+ if(typeof inFlat==='function'&&inFlat(p.x,p.z))return false;
+ const kb=F.kickBy['p'+i];return Math.hypot(ball.v[0],ball.v[1])>1.0||(kb!==undefined&&F.t-kb<=1.5);}
 function fbArrows37(){const F=FOOTBALL37;if(typeof document==='undefined'||!document.getElementById||typeof ball==='undefined'||!ball||typeof cams==='undefined')return;
  const match=['setout','live','goal','restart','motor','waiting','ended'].includes(F.state),L=fbSave37();
  for(const i of [0,1]){let sb=false,sg=false,ab=0,ag=0;
   if((match||L)&&fbHalfShown37(i)&&!fbOnline37()&&!(fbCompanion37()&&i!==0)&&players[i]){const p=players[i].g.position;
-   if(match||Math.hypot(ball.position.x-p.x,ball.position.z-p.z)<=15){const r=fbProject37(i,ball.position.x,F.R,ball.position.z);if(!r.inside){sb=true;ab=r.ang;}}
+   if(match||(Math.hypot(ball.position.x-p.x,ball.position.z-p.z)<=15&&fbFreeArrow37(i,p))){const r=fbProject37(i,ball.position.x,F.R,ball.position.z);if(!r.inside){sb=true;ab=r.ang;}}
    if(match&&F.state!=='ended'){const G=fbGoalOf37('a'),r=fbProject37(i,G[0],0.3,G[1]);if(!r.inside){sg=true;ag=r.ang;}}}
-  const deg=a=>Math.round(a*1800/Math.PI)/10;F.arrows37[i]={ball:{show:sb,ang:sb?deg(ab):null},goal:{show:sg,ang:sg?deg(ag):null}};
+  const deg=a=>Math.round(a*1800/Math.PI)/10;
+  // (fixer, v37 review F2) where each arrow sits on the edge: never within 60 px of this view's player (slid along the edge away from them) and
+  // never within 40 px of the other arrow (the goal arrow slides on by 44 px), so neither stacks on the other nor reads as a name tag
+  const eb=sb?fbEdge37(i,ab):null,eg=sg?fbEdge37(i,ag):null;if(eb||eg){const q=players[i].g.position,pp=fbProject37(i,q.x,(players[i].y||0)+0.9,q.z);
+   const pt=pp.inside?[pp.px,pp.py]:null;if(eb)fbPlace37(i,eb,pt,null);if(eg)fbPlace37(i,eg,pt,eb);}
+  F.arrows37[i]={ball:{show:sb,ang:sb?deg(ab):null,at:eb?[Math.round(eb[0]),Math.round(eb[1])]:null},goal:{show:sg,ang:sg?deg(ag):null,at:eg?[Math.round(eg[0]),Math.round(eg[1])]:null}};
   const U=F.ui37[i];if(!sb&&!sg&&!U.aBall)continue;
   const put=(key,cls,show,ang,cap)=>{const el=fbEl37(i,key,'fb37-arrow '+cls);if(!el)return;if(!show){if(el._on37){el._on37=false;if(el.style)el.style.display='none';}return;}
    if(!el._on37){el._on37=true;el.className='fb37-arrow '+cls;el.innerHTML=`<span class="g">➜</span>${cap}`;if(el.style)el.style.display='';}
-   const e=fbEdge37(i,ang);if(el.style)el.style.transform=`translate(${e[0].toFixed(0)}px,${e[1].toFixed(0)}px) translate(-50%,-50%)`;
+   const e=key==='aBall'?eb:eg;if(el.style)el.style.transform=`translate(${e[0].toFixed(0)}px,${e[1].toFixed(0)}px) translate(-50%,-50%)`;
    if(el.firstChild&&el.firstChild.style)el.firstChild.style.transform=`rotate(${(ang*180/Math.PI).toFixed(0)}deg)`;el._ang37=ang;};
   put('aBall','ball',sb,ab,'<span class="b"></span>');put('aGoal','goal',sg,ag,`<span class="c">${esc(F.LINES.ui.goalArrow)}</span>`);}}
 
@@ -1343,8 +1391,10 @@ function fbClock37(v){let m=Math.round(v*60);const h24=Math.floor(m/60)%24;m=m%6
 function fbTodayLine37(L){const F=FOOTBALL37,T=F.LINES.ui.today,l=L&&L.last;if(!l||!(l.day===S.day||l.day===S.day-1))return '';const v={when:l.day===S.day?T.today:T.yesterday,a:l.a,b:l.b};
  return fbFill37(l.result==='won'?(l.last?T.wonLast:T.won):l.result==='lost'?(l.last?T.lostLast:T.lost):T.unfinished,v);}
 function fbTodayAdd37(h){const F=FOOTBALL37,L=fbSave37();if(!L||typeof h!=='string'||fbOnline37())return h;
- if(F.OWNER.children&&(S.day>=2||football37Flags().on)){const line=`<p class="small fb37-morning">${esc(football37Flags().on?F.LINES.ui.morningFlag:fbFill37(F.LINES.ui.morning,{h:fbHHMM37(fbHours37(S.day)[0])}))}</p>`,k=h.indexOf('class="life-note34 morning35" data-morning=');
-  if(k>=0){const e=h.indexOf('</h3>',k);h=e>=0?h.slice(0,e+5)+line+h.slice(e+5):h;}else h=h.replace('<div class="life-chips34">',`<div class="life-note34 fb37-morning-card">${line}</div><div class="life-chips34">`);}
+// (fixer, v37 review F5) a small card of its own, never spliced into another morning card; once today's game is played (or the children are
+ // called in, or their hours are over) it goes, and Today's result line says what happened
+ const hrs=fbHours37(S.day);if(F.OWNER.children&&(S.day>=2||football37Flags().on)&&!fbPlayedToday37()&&!fbHomeToday37()&&S.time<hrs[1]){const line=`<p class="small fb37-morning">${esc(football37Flags().on?F.LINES.ui.morningFlag:fbFill37(F.LINES.ui.morning,{h:fbHHMM37(hrs[0])}))}</p>`;
+  h=h.replace('<div class="life-chips34">',`<div class="life-note34 fb37-morning-card">${line}</div><div class="life-chips34">`);}
  const t=fbTodayLine37(L);if(t)h=h.replace('<div class="life-chips34">',`<p class="small fb37-today">${esc(t)}</p><div class="life-chips34">`);return h;}
 function fbNeighbourLine37(who){const F=FOOTBALL37,L=fbSave37(),T=F.LINES.neighbours[who];if(!T||!L||!L.last||fbOnline37())return null;if(!(L.last.day===S.day||L.last.day===S.day-1))return null;
  if(who==='bassey'){if(L.said&&L.said.day===S.day&&L.said.who.includes('bassey'))return null;}
@@ -1383,8 +1433,11 @@ if(typeof updateAmbient==='function'){const prevAmbient37=updateAmbient;updateAm
  const t=Math.max(0,+dt||0);
  if(typeof walkers!=='undefined')for(const w of walkers){const g=w.g,q=w.r&&w.r[w.i];if(!g||!q||!g.visible)continue;const x=g.position.x,z=g.position.z;if(fbInKeep37(x,z))continue;
   const dx=q[0]-x,dz=q[1]-z,d=Math.hypot(dx,dz);if(d<1e-6)continue;const f=Math.min(1,(w.sp*t+0.05)/d);if(fbInKeep37(x+dx*f,z+dz*f))w.i=(w.i+w.r.length-1)%w.r.length;}
- const kk=typeof keke!=='undefined'&&keke?keke:null,kx0=kk?kk.position.x:0;
+ const kk=typeof keke!=='undefined'&&keke?keke:null,kx0=kk?kk.position.x:0,kd0=kk?kk.dir:0,kr0=kk?kk.rotation.y:0;
  const r=prevAmbient37.apply(this,arguments);
+ // (fixer, v37 review I6) under an open panel the match is paused, and so is the keke while the posts are out: it never drives through the
+ // frozen children, and its one "Motor!" lap waits for the players
+ if(kk&&typeof overlayOpen==='function'&&overlayOpen()){kk.position.x=kx0;kk.dir=kd0;kk.rotation.y=kr0;}
  if(kk){const x=kk.position.x;
   if(F.state==='live'&&!F.kekeDone&&!F.kekeThrough&&!F.lastGoal&&F.playT>=F.kekeAt&&F.kekeAt>0&&kk.dir<0&&kx0>F.KEKE.warnX&&x<=F.KEKE.warnX)fbMotor37();
   if(F.kekeThrough){if(kk.dir>0&&kx0<F.KEKE.outX&&x>=F.KEKE.outX&&F.state==='motor')fbMotorEnd37();}
@@ -1428,6 +1481,13 @@ function football37Hot(i,list,d){const F=FOOTBALL37,U=F.LINES.ui;if(!S||S.phase!
    if(e){e.dist=kd-0.4;list.push(e);}}}
  return null;}
 HOTSPOT_HOOKS.push(football37Hot);
+// (fixer, v37 review F4) beside the suya stand a ball within the press's reach is what Act is for: the stand's entry (which the base adds after
+// every hook, at up to 1.6 m) gives way to the kick when the ball is within REACH + PRESS_SLACK, and to nothing (no prompt, no purchase) when the
+// ball is nearer than the stand point and within 1.6 m. The prompt is redrawn on the frame the kick entry comes or goes (fbHudStep37).
+function fbNearest37(i,r){if(!r||r.id!=='suya'||typeof ball==='undefined'||!ball||!players[i]||ball.held||ball.fade||ball.glide||!fbKickEligible37(i))return r;
+ const F=FOOTBALL37,p=players[i].g.position,bd=Math.hypot(ball.position.x-p.x,ball.position.z-p.z);
+ if(bd<=F.REACH+F.PRESS_SLACK)return {id:'kick37',label:F.LINES.ui.kick,dist:bd};if(bd<=F.RELEASE_REACH&&bd<(r.dist||0))return {id:'none37',label:'',dist:bd};return r;}
+if(typeof nearest==='function'){const prevNearest37=nearest;nearest=function(i){const r=prevNearest37.apply(this,arguments);try{return fbNearest37(i,r);}catch(e){return r;}};}
 function football37Act(i,kind){const F=FOOTBALL37;if(!/37$/.test(kind))return false;
  if(kind==='kick37'){football37Press(i);return true;}
  if(kind==='call37'){football37Call(i);return true;}
@@ -1449,7 +1509,9 @@ function football37Call(i){const F=FOOTBALL37;if(F.t-(F.callT[i]||-9)<1.5)return
    ====================================================================================================================================== */
 function fbGuards37(){const F=FOOTBALL37;
  if(fbOnline37()||S.phase!=='play'){if(fbMatchOn37())football37Stop(fbOnline37()?'online':'phase',true);else if(F.kids){fbKidsRemove37();fbSetState37('off','away');}return;}
- if(fbPartyOn37()&&(fbMatchOn37()||F.kids)){if(fbMatchOn37())football37Stop('party',true);else{fbKidsRemove37();fbSetState37('off','party');}}}
+ if(fbPartyOn37()&&(fbMatchOn37()||F.kids)){if(fbMatchOn37())football37Stop('party',true);else{fbKidsRemove37();fbSetState37('off','party');}}
+ // (fixer, v37 review I1) the two never run at once: a pair who walk off a match and lift the open bench delivery end the match there and then
+ if(fbMatchOn37()&&F.state!=='clearing'&&typeof benchBusy36==='function'&&benchBusy36())football37Stop('bench',false);}
 // a human inside a cairn after moving is put back out to contact, if that point is free (one blocked() call per contact frame)
 function fbPushOutPosts37(){const F=FOOTBALL37;if(!F.mesh.cairns.length)return;for(const P of F.persons){if(P.kind!=='human'&&P.kind!=='companion')continue;const p=P.p;if(!p)continue;
  for(const c of F.mesh.cairns){if(!c.placed||c.clearT!==undefined)continue;const dx=p.g.position.x-c.pos[0],dz=p.g.position.z-c.pos[1],d=Math.hypot(dx,dz),m=F.PITCH.postR+PR;
@@ -1509,10 +1571,17 @@ if(typeof rebuildFurniture==='function'){const prevFurn37=rebuildFurniture;rebui
 // v37: the evening waits for a match (it retries on its own)
 if(typeof EVENING35!=='undefined'&&EVENING35&&typeof EVENING35.start==='function'){const prevEvening37=EVENING35.start;EVENING35.start=function(){
  if(['setout','live','goal','restart','motor','waiting','ended'].includes(FOOTBALL37.state))return false;return prevEvening37.apply(this,arguments);};}
+// v37 (fixer, review I5): nor does its "Head home" nudge come during a match (the step's idle checks wait; the nudge comes once it is over).
+// eveningTick35 calls EVENING35.tick by property, so the wrap is seen; the tick caps its own wall-clock gap at 1 s, so the skipped calls cost nothing
+if(typeof EVENING35!=='undefined'&&EVENING35&&typeof EVENING35.tick==='function'){const prevEveTick37=EVENING35.tick;EVENING35.tick=function(dt){
+ if(EVENING35.state==='idle'&&['setout','live','goal','restart','motor','waiting','ended'].includes(FOOTBALL37.state))return;return prevEveTick37.apply(this,arguments);};}
 // v37: a day change or a new household stops a match cleanly first (and the children go). Going online (nethost, netjoin) is caught by the
 // step's guard on the next frame instead: verify-tune-v35 reads ACTIONS.nethost's own source, so it is left unwrapped.
-for(const n of ['nextday','sleep','newgame','newconfirm']){const prev=typeof ACTIONS!=='undefined'?ACTIONS[n]:null;if(typeof prev!=='function')continue;
- ACTIONS[n]=function(){try{football37Stop(n,true);if(n==='newgame'||n==='newconfirm'){FOOTBALL37.homeDay=0;FOOTBALL37.lastMatchDay=0;}}catch(e){}return prev.apply(this,arguments);};}
+// (fixer, v37 review I9) not at the presses that only ask first ("Start over?", and Sleep's "Sleep anyway?" on an evening day): the match
+// stops when the day really ends (endDay, the night card) or the new household really starts
+for(const n of ['nextday','newgame']){const prev=typeof ACTIONS!=='undefined'?ACTIONS[n]:null;if(typeof prev!=='function')continue;
+ ACTIONS[n]=function(){try{football37Stop(n,true);if(n==='newgame'){FOOTBALL37.homeDay=0;FOOTBALL37.lastMatchDay=0;}}catch(e){}return prev.apply(this,arguments);};}
+if(typeof endDay==='function'){const prevEndDay37=endDay;endDay=function(){try{football37Stop('sleep',true);}catch(e){}return prevEndDay37.apply(this,arguments);};}
 // v37: no bench delivery starts during a match
 if(typeof ACTIONS!=='undefined'&&typeof ACTIONS.bench36Start==='function'){const prevBenchStart37=ACTIONS.bench36Start;ACTIONS.bench36Start=function(){
  if(fbMatchOn37()&&FOOTBALL37.state!=='clearing'){try{closePanel();}catch(e){}fbToast37(FOOTBALL37.LINES.toasts.finishGame);return;}return prevBenchStart37.apply(this,arguments);};}
@@ -1528,7 +1597,11 @@ for(const n of ['bench36Duo','bench36Solo']){const prev=typeof ACTIONS!=='undefi
 if(typeof benchSolo36==='function'){const prevBenchSolo37=benchSolo36;
  benchSolo36=function(){if(fbMatchOn37()&&FOOTBALL37.state!=='clearing'){FOOTBALL37.soloLater37=true;return false;}return prevBenchSolo37.apply(this,arguments);};
  football37On('state',e=>{const F=FOOTBALL37;if(!F.soloLater37||!['clearing','idle','off'].includes(e.to))return;F.soloLater37=false;
-  const L=typeof benchSave36==='function'?benchSave36():null;if(L&&L.duo&&typeof BENCH36!=='undefined'&&BENCH36.state==='placed')benchSolo36();});}
+  const L=typeof benchSave36==='function'?benchSave36():null;if(L&&L.duo&&!(typeof benchBusy36==='function'&&benchBusy36()))benchSolo36();});}   // (fixer, I4) whatever the bench's state (after "Leave the bench for now" it is off), unless it is in hands
+// (fixer, v37 review F1) sitting on Ada's bench: "Sit until 3:00 pm" when the children come out later today (after discovery, before today's game)
+if(typeof BENCH36!=='undefined'&&BENCH36&&Array.isArray(BENCH36.restOffers))BENCH36.restOffers.push(function(){const F=FOOTBALL37,L=fbSave37();
+ if(!L||!F.OWNER.children||fbOnline37()||fbPlayedToday37()||fbHomeToday37()||!(S.day>=2||football37Flags().on))return null;const h=fbHours37(S.day)[0];if(!(S.time<h))return null;
+ return {label:fbFill37(F.LINES.ui.benchWait,{h:fbClock37(h)}),t:h,sub:F.LINES.ui.benchWaitSub};});
 // the Menu: the ball reset and the stop button, after discovery (B words the card)
 if(typeof ACTIONS!=='undefined'){ACTIONS.football37BallHome=function(){try{closePanel();}catch(e){}if(!football37BallHome())fbToast37(FOOTBALL37.LINES.toasts.finishGame);};
  ACTIONS.football37Stop=function(){try{closePanel();}catch(e){}football37Stop('menu',false);};
@@ -1537,14 +1610,25 @@ function fbMenuHTML37(){const F=FOOTBALL37,L=fbSave37(),U=F.LINES.ui;if(!L)retur
  const H=F.HOURS,hh=fbClock37;
  let h=`<div class="card small fb37-menu"><b>${esc(U.menuTitle)}</b> ${esc(U.menuWhat)} ${F.OWNER.children?esc(fbFill37(U.menuWhen,{wd0:hh(H.weekday[0]),wd1:hh(H.weekday[1]),sat:hh(H.sat[0]),sun:hh(F.OWNER.sundayFrom)}))+' ':''}${esc(U.menuHow)} ${esc(fbFill37(U.menuRecord,{played:L.played,won:L.won,square:L.square||0}))}`;
  h+=`<div class="actions">${fbMatchOn37()?btn(U.menuStop,'football37Stop',{},'quiet'):btn(U.menuHome,'football37BallHome',{},'quiet')}${L.playtest?btn(U.menuRuns,'football37Runs',{},'quiet'):''}</div></div>`;return h;}
-if(typeof openMenu==='function'){const prevMenu37=openMenu;openMenu=function(){const r=prevMenu37.apply(this,arguments);try{if(typeof silentMode==='function'&&silentMode())return r;const h=fbMenuHTML37();
+// (fixer, v37 review I8) while a match is on, the bench buttons football would refuse (or that would hand the controls back mid-match) are not
+// offered: the first one becomes the plain line "Finish the game first.", the others go
+const FB_BENCHBTN37=/<button[^>]*data-act="(?:bench36Start|bench36Again|bench36Duo|bench36Solo|bench36Leave|bench36Cancel)"[^>]*>[\s\S]*?<\/button>/g;
+function fbBenchButtons37(h){if(typeof h!=='string'||!fbMatchOn37()||FOOTBALL37.state==='clearing')return h;let n=0;
+ return h.replace(FB_BENCHBTN37,()=>n++?'':`<p class="small fb37-later">${esc(FOOTBALL37.LINES.toasts.finishGame)}</p>`);}
+if(typeof openMenu==='function'){const prevMenu37=openMenu;openMenu=function(){const r=prevMenu37.apply(this,arguments);try{if(typeof silentMode==='function'&&silentMode())return r;
+ if(typeof panel!=='undefined'&&panel&&typeof panel.innerHTML==='string'){const b=fbBenchButtons37(panel.innerHTML);if(b!==panel.innerHTML)panel.innerHTML=b;}const h=fbMenuHTML37();
  if(h&&typeof panel!=='undefined'&&typeof panel.innerHTML==='string'){const at=panel.innerHTML.indexOf('<div class="card small"><b>Where things are.');if(at>=0)panel.innerHTML=panel.innerHTML.slice(0,at)+h+panel.innerHTML.slice(at);else panel.innerHTML+=h;}}catch(e){}return r;};}
 // the touch Act buttons: the base listens only for pointerdown (and calls stopPropagation, not stopImmediatePropagation), so the hold is tracked here
 function fbTouchSetup37(){if(typeof document==='undefined'||!document.getElementById)return;for(const [id,i] of [['actl',0],['actr',1]]){const b=document.getElementById(id);if(!b||!b.addEventListener||b.fb37)continue;b.fb37=true;
  b.addEventListener('pointerdown',()=>{touchHeld37[i]=true;});const up=()=>{touchHeld37[i]=false;};b.addEventListener('pointerup',up);b.addEventListener('pointercancel',up);b.addEventListener('pointerleave',up);}}
 fbTouchSetup37();
 // a lost focus (another window) clears the Act keys and every charge: a hold never outlives a missed keyup
-if(typeof window!=='undefined'&&window.addEventListener)window.addEventListener('blur',()=>{try{for(const k of ['e','enter','/','shift'])if(typeof keys!=='undefined')keys[k]=false;touchHeld37[0]=touchHeld37[1]=false;fbCancel37();}catch(e){}});
+// (fixer, v37 review I10) and so does a hidden page (a phone's app switch hides the page without blurring the window); the charge itself is
+// cancelled here, so keys another listener has already cleared (the bench's) are never read as a release on the next frame
+function fbLetGo37(){try{for(const k of ['e','enter','/','shift'])if(typeof keys!=='undefined')keys[k]=false;touchHeld37[0]=touchHeld37[1]=false;fbCancel37();}catch(e){}}
+function fbVis37(){if(typeof document!=='undefined'&&(document.hidden||document.visibilityState==='hidden'))fbLetGo37();}
+FOOTBALL37.listeners=[['window','blur',fbLetGo37],['document','visibilitychange',fbVis37]];
+for(const [tg,t,f] of FOOTBALL37.listeners){const T=tg==='document'?(typeof document!=='undefined'?document:null):(typeof window!=='undefined'?window:null);if(T&&T.addEventListener)T.addEventListener(t,f);}
 
 /* ======================================================================================================================================
    B.8 Engineer B's wrappers (each calls the earlier function; each one-line comment says what it changes)
@@ -1585,7 +1669,11 @@ function fbFadeCands37(){if(fbFade37.list)return fbFade37.list;const F=FOOTBALL3
    const P=F.PITCH,E=F.FADE37.edge,on=c.x>=P.x1-E&&c.x<=P.x2+E&&c.z>=P.z1-E&&c.z<=P.z2+E&&c.y<2.5;out.push({m:o,c:c.clone(),r,on});});}
  return (fbFade37.list=out);}
 function fbSegSphere37(a,b,c,r){fbFw37.subVectors(b,a);const L=fbFw37.lengthSq()||1e-9;const u=fbClamp37(fbFv37.subVectors(c,a).dot(fbFw37)/L,0,1);fbFv37.copy(a).addScaledVector(fbFw37,u);return fbFv37.distanceTo(c)<r;}
-function fbFadeStep37(dt){const F=FOOTBALL37,M=fbFade37.map,on=fbMatchOn37()&&F.state!=='clearing',t=Math.max(0,Math.min(+dt||0,0.1)),k=Math.min(1,t*F.FADE37.rate);
+// (fixer, v37 review F9) and before a match, from when a player comes within 3 m of a child waiting to play, so the invitation is seen
+function fbNearKids37(){const F=FOOTBALL37,K=F.kids;if(!K||!(F.state==='idle'||F.state==='ended'))return false;
+ for(const i of fbHumans37()){const p=players[i].g.position;for(const k in K){const c=K[k];if(!c.gone&&Math.hypot(c.pos[0]-p.x,c.pos[1]-p.z)<=3)return true;}}return false;}
+function fbFadeOn37(){return (fbMatchOn37()&&FOOTBALL37.state!=='clearing')||fbNearKids37();}
+function fbFadeStep37(dt){const F=FOOTBALL37,M=fbFade37.map,on=fbFadeOn37(),t=Math.max(0,Math.min(+dt||0,0.1)),k=Math.min(1,t*F.FADE37.rate);
  const want=new Set();
  if(on&&typeof cams!=='undefined'){const cands=fbFadeCands37(),tg=[];if(ball)tg.push(new THREE.Vector3(ball.position.x,F.R,ball.position.z));
   for(const P of F.persons){if(P.soft)continue;tg.push(new THREE.Vector3(P.pos[0],1.1*(P.kind==='kid'?0.82:1),P.pos[1]));tg.push(new THREE.Vector3(P.pos[0],0.2,P.pos[1]));}
@@ -1600,9 +1688,14 @@ function fbFadeStep37(dt){const F=FOOTBALL37,M=fbFade37.map,on=fbMatchOn37()&&F.
 if(typeof updateFades==='function'){const prevFades37=updateFades;updateFades=function(dt){ // v37 (fixer): props between the cameras and a match fade on top of the base's fade
  for(const [m,e] of fbFade37.map)if(!e.orig)m.material.opacity=e.base;const r=prevFades37.apply(this,arguments);try{fbFadeStep37(dt);}catch(e){}return r;};}
 // v37: Tunde, Mama Nkechi and Ada give one football line each after a match (today's or yesterday's), in ordinary talk only
-if(typeof line35==='function'){const prevLine37=line35;line35=function(who,ctx){try{if(!(ctx&&ctx.evening)){const l=fbNeighbourLine37(who);if(l)return l;}}catch(e){}return prevLine37.apply(this,arguments);};}
+// (fixer, v37 review I3) but Ada's one-time thank-you for the bench (adb36, placed today or yesterday) comes first: the football line waits a talk
+function fbBenchThanksDue37(who){if(who!=='ada'||typeof benchSave36!=='function')return false;const B=benchSave36();if(!B||B.state!=='placed'||B.placedDay==null||B.adb)return false;
+ if(!(S.day===B.placedDay||S.day===B.placedDay+1))return false;const u=S.life&&S.life.lines35&&S.life.lines35.day===S.day&&S.life.lines35.used&&S.life.lines35.used.ada;return !(Array.isArray(u)&&u.includes('adb36'));}
+// (fixer, v37 review F11) and on the veranda evening after a match, Mama Nkechi brings it up once
+function fbEveningLine37(who){const F=FOOTBALL37,L=fbSave37();if(who!=='nkechi'||!L||!L.last||fbOnline37()||!(L.last.day===S.day||L.last.day===S.day-1))return null;if(L.eveDay===S.day)return null;L.eveDay=S.day;return {id:'fb37-nkechi-evening',text:F.LINES.neighbours.nkechiEvening};}
+if(typeof line35==='function'){const prevLine37=line35;line35=function(who,ctx){try{if(ctx&&ctx.evening){const e=fbEveningLine37(who);if(e)return e;}else if(!fbBenchThanksDue37(who)){const l=fbNeighbourLine37(who);if(l)return l;}}catch(e){}return prevLine37.apply(this,arguments);};}
 // v37: Mr Bassey's line after a match (the v35 line table has none for him, so his talk is wrapped instead)
 if(typeof talk==='function'){const prevTalk37=talk;talk=function(i,who){/* outside lines_talk35 (the v35 lines wrapper, still underneath) */const out=prevTalk37.apply(this,arguments);try{if(who==='bassey'){const l=fbNeighbourLine37('bassey'),L=fbSave37();
   if(l&&L){if(!L.said||L.said.day!==S.day)L.said={day:S.day,who:[],bassey:[]};L.said.who.push('bassey');return say('bassey',esc(l.text))+(out||'');}}}catch(e){}return out;};}
 // v37: the Today page (the morning card's renderer): the football line on a football morning and the latest match, after discovery
-if(typeof todayHTML34==='function'){const prevMorning37=todayHTML34;todayHTML34=function(){const h=prevMorning37.apply(this,arguments);try{return fbTodayAdd37(h);}catch(e){return h;}};}
+if(typeof todayHTML34==='function'){const prevMorning37=todayHTML34;todayHTML34=function(){const h=prevMorning37.apply(this,arguments);try{return fbBenchButtons37(fbTodayAdd37(h));}catch(e){return h;}};}
