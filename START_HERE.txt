@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v37-683ed1f2 (authored character, your day in Palm Court, a bench for evening gist, monkey post)
+Build: v38-a2e8c3ca (authored character, your day in Palm Court, a bench for evening gist, monkey post, evening gist and daily finds)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
@@ -19,29 +19,35 @@ WASD + E for Player 1; arrow keys + Enter for Player 2; touch controls on phones
 PLAYTESTS
 - Ada's bench: docs/TESTING_bench.md (open http://localhost:8000/?bench=playtest).
 - Street football: docs/TESTING_football.md (open http://localhost:8000/?football=playtest).
-- The Nigerian reader's sheet for the football copy: docs/READER_football.md.
+- Evening gist and daily finds: docs/TESTING_gist.md (open http://localhost:8000/?gist=playtest).
+- The Nigerian reader's sheets: docs/READER_football.md (football) and docs/READER_gist.md
+  (the evening gist, the lost things, the shelf and Ada's carvings).
 
 CONTENTS
 - dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
 - dist/assets/characters/efe.gltf.json: the authored character; dist/assets/wardrobe/: its 16 pieces.
-- tools/: wardrobe, hair and material authoring tools, the build stamp and the manifest tool.
-- check/: the Node verification harness: sixteen harnesses (verify-*.cjs) and their results
+- tools/: wardrobe, hair and material authoring tools, the build stamp, the manifest tool and
+  the testers' tools (gates-v35.cjs, quiet-v38.cjs) and the reader's-sheet tool (reader-v38.cjs).
+- check/: the Node verification harness: seventeen harnesses (verify-*.cjs) and their results
   (results-*.json); README.md, section Verification, lists them and what a passing run prints.
-- docs/: the playtest guides (TESTING_bench.md, TESTING_football.md, TESTING_v35.md), the
-  Nigerian reader's sheet (READER_football.md), PROVENANCE.md and earlier plans.
+- docs/: the playtest guides (TESTING_bench.md, TESTING_football.md, TESTING_gist.md,
+  TESTING_v35.md), the Nigerian reader's sheets (READER_football.md, READER_gist.md),
+  PROVENANCE.md and earlier plans.
 - README.md: features, what this build keeps and removes, run and verification instructions.
 - CHARACTER.md: the character and wardrobe binding contract and how to deliver a new base mesh.
 - CONTRIBUTING.md: repository layout, imports and the build stamp.
 - PACKAGE_MANIFEST.json: build id and SHA-256 hashes of packaged files.
 
 Saves belong to the browser and origin where you play. The live Site's save does
-not automatically move to localhost. Saves from builds v26-v37 load; their retired
+not automatically move to localhost. Saves from builds v26-v38 load; their retired
 outfit and hair choices are mapped to the authored wardrobe. Companion and
 same-screen play are supported; cross-device online play is not provided by this
 static build.
 
-All sixteen Node harnesses pass, including the bench (verify-bench-v36.cjs) and
-street football (verify-football-v37.cjs); see README.md, Verification. Headless
+All seventeen Node harnesses pass, including the bench (verify-bench-v36.cjs), street
+football (verify-football-v37.cjs) and the evening gist and daily finds
+(verify-gist-v38.cjs); see README.md, Verification. Headless
 browser captures were taken; real-phone performance remains unverified.
 
-Source: branch claude/authored-character (build v37-683ed1f2, with the v37 review fixes and the children made younger-looking).
+Source: branch claude/authored-character (build v38-a2e8c3ca: v37-683ed1f2 plus the evening gist,
+the lost things, shell kinds and the wash, Ada's shelf and Ada's carvings).

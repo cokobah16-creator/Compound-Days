@@ -1,0 +1,42 @@
+/* v38 Evening gist and daily finds. Engineer B owns this file (the Today card, the recap, the caption); engineer A's rules for the return
+   panel and the shelf panel (found-v38.js) are in the first block. The panels sit on the base's dark panel (#panel), so text is cream. */
+
+/* ---- A: the return panel, Ada's carving panel and the shelf panel (found-v38.js) ---- */
+#panel .gist38-panel .gist38-kicker{margin:0 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#F1C36B}
+#panel .gist38-panel h2{margin-top:0}
+#panel .gist38-thanks .card.say{margin:8px 0;font-size:16px;line-height:1.45}
+#panel .gist38-keep{margin:12px 0 6px;font-size:15px;line-height:1.45;color:#F1E4CC}
+#panel .gist38-shelf .gist38-set{margin:10px 0;padding:10px 12px;border-radius:12px;background:rgba(255,246,228,.08);border:1px solid rgba(241,195,107,.28)}
+#panel .gist38-shelf .gist38-set b{display:block;margin-bottom:3px;font-size:14px;color:#F8EFDD}
+#panel .gist38-shelf .gist38-set span{font-size:14px;line-height:1.5;color:#F1E4CC}
+#panel .gist38-shelf .gist38-set .gist38-done{font-weight:800;color:#9FD8B0}
+#panel .gist38-shelf .gist38-foot{margin:10px 0 0;font-size:13px;color:#E6D6B8}
+
+/* ---- B: Today's card "What the compound is saying" (the life panel, light paper) and the night page's "Tonight's gist" (gist-v38.js) ---- */
+#panel .life-note34.gist38-card{background:#EFE8D6;border-left-color:#C9A23A;color:#3B3226}
+#panel .life-note34.gist38-card .life-kicker{color:#6B5A36}
+#panel .life-note34.gist38-card p.gist38-row{margin:8px 0 4px;font-size:15px;line-height:1.45;color:#3B3226}
+#panel .life-note34.gist38-card .btn{margin:2px 0 6px}
+#panel .recap35.gist38-recap{border-color:#F1C36B55}
+@media (max-width:480px){#panel .life-note34.gist38-card p.gist38-row{font-size:14px}}
+
+/* ---- the fixer: the glint at the edge of a view (found-v38.js, foundEdgeFrame38): a small soft star, under the panels and the top bar ---- */
+.gist38-edge{position:fixed;left:0;top:0;width:30px;height:30px;margin:-15px 0 0 -15px;z-index:5;pointer-events:none;display:none;border-radius:50%;
+ background:radial-gradient(circle,rgba(255,252,236,1) 0,rgba(255,214,110,.95) 16%,rgba(240,170,40,.45) 45%,rgba(240,170,40,0) 70%)}
+.gist38-edge::after{content:'';position:absolute;inset:4px;background:rgba(255,240,186,.95);
+ clip-path:polygon(50% 0,57% 43%,100% 50%,57% 57%,50% 100%,43% 57%,0 50%,43% 43%)}
+
+/* ---- the fixer: while a gist visit is live (body.gist38-visit, gist-v38.js) ---- */
+/* the players' prompt pills give way (the session review, S9); Act still advances the caption, and the caption has its own button */
+body.gist38-visit #pr0,body.gist38-visit #pr1{visibility:hidden}
+/* on a short screen (a landscape phone) the caption is a low strip, its button beside the line, so the guests in the street stay in view
+   above it and the Act buttons below it (the session review, S1); from 760 px wide every line of speech (at most 160 characters) fits in two
+   lines, so the strip's height is held to 66 px there */
+@media (max-height:480px){
+ body.gist38-visit #evening35{bottom:calc(72px + env(safe-area-inset-bottom,0px));width:calc(100vw - 32px);padding:6px 10px 6px 14px}
+ body.gist38-visit #evening35.on{display:grid;grid-template-columns:1fr auto;column-gap:12px;align-items:center}
+ body.gist38-visit #evening35 .evening35-name{grid-column:1;font-size:11px;line-height:1.2}
+ body.gist38-visit #evening35 .evening35-line{grid-column:1;margin:1px 0 0;font-size:14px;line-height:1.3}
+ body.gist38-visit #evening35 .evening35-next{grid-column:2;grid-row:1 / span 2;min-height:40px}
+}
+@media (max-height:480px) and (min-width:760px){body.gist38-visit #evening35{max-height:66px;overflow:hidden}}
