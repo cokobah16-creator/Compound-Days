@@ -1,0 +1,1393 @@
+{
+ "build": "v38-a2e8c3ca",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. inert: on day 3 at 10:00 before discovery the world (3,000 blocked() points, the save and its keys, 600 frames of cameras and prompts, the Menu, Today) and line35 for the v35 guests are as without the modules; TICK_HOOKS 17, cue hooks 2, the audio recipes, LINES35, WHEN35, DAYS35.rows and the pinned sources unchanged; a v35-pending household runs the v35 evening and no gist; a day-3 household after its v35 evening gets none; positive: the glasses lie out at 12:00 on day 3 with no record",
+   "passed": true,
+   "info": {
+    "pins": {
+     "tick": 17,
+     "cue": 2,
+     "recipes": [
+      "cast",
+      "nibble",
+      "bite",
+      "catch",
+      "water"
+     ],
+     "talk": [
+      42,
+      41,
+      41
+     ],
+     "evening": [
+      4,
+      4,
+      4
+     ],
+     "keys": [
+      "tunde:42",
+      "nkechi:41",
+      "ada:41",
+      "evening:3",
+      "short:15",
+      "text:58"
+     ],
+     "short": 15,
+     "text": 58,
+     "when": 31,
+     "rows": 12,
+     "finds": 15,
+     "src": [
+      true,
+      true,
+      true,
+      true,
+      true
+     ]
+    },
+    "digest": "6c127d23:14241",
+    "lines": [
+     "te04",
+     "ne04",
+     "ae04"
+    ],
+    "v35": {
+     "ids": [
+      "te04",
+      "ne04",
+      "ae04"
+     ],
+     "gistAfter": false
+    },
+    "day3": {
+     "gist": false
+    },
+    "glasses": "out at 12:00, no record",
+    "withoutModules": {
+     "digest": "6c127d23:14241",
+     "lines": [
+      "te04",
+      "ne04",
+      "ae04"
+     ]
+    }
+   }
+  },
+  {
+   "name": "2. first-find (local pair, real keys): every candidate spot passes the spot rules; nothing at 11:59, the glasses at 12:00 at (0.6, 13.4) within 1 mm; the glint invisible beyond 8 m and visible within, and its star at the edge of the view exactly when it is in reach but out of view; \"Pick up reading glasses\" within 1.3 m and not at 1.4 m; Act: the toast, S.life.gist38 (via find, found 3), the pocket, the find log, the mesh gone, no game time; \"Give Mama Nkechi her glasses\" beats \"Talk to Mama Nkechi\" at 1.2 m; the return panel, the fan, friendship +1, the log; the click guard on the panel just after the Act (and while the pointer is held); the chain: given back at 14:00 the chisel lies at its spot the same frame, its owner told (its toast names Ada), Ada's thanks passes on the adapter, at 15:45 not until midday tomorrow; day 4: the adapter at its hashed spot from 12:00 and not before, Today saying what Ada said; a day-old thing glints at 9 m; the companion household by P1's keys",
+   "passed": true,
+   "info": {
+    "spots": {
+     "lost": {
+      "glasses": [
+       [
+        0.6,
+        13.4,
+        2.56,
+        24.3,
+        0.085
+       ]
+      ],
+      "chisel": [
+       [
+        9.6,
+        13.2,
+        2.48,
+        25.5,
+        0.012
+       ],
+       [
+        8.6,
+        13.2,
+        3.22,
+        24.7,
+        0.012
+       ],
+       [
+        10.4,
+        12.6,
+        2.56,
+        26.2,
+        0.012
+       ],
+       [
+        8.8,
+        12.2,
+        3.76,
+        24.4,
+        0.012
+       ],
+       [
+        11.2,
+        12,
+        2.51,
+        26.8,
+        0.012
+       ]
+      ],
+      "adapter": [
+       [
+        -15.1,
+        3.3,
+        4.24,
+        37.5,
+        0.012
+       ],
+       [
+        -14.5,
+        4.1,
+        4.19,
+        36.5,
+        0.012
+       ],
+       [
+        -14.1,
+        3.1,
+        5.11,
+        37.3,
+        0.012
+       ],
+       [
+        -15.1,
+        2.3,
+        5.02,
+        38.5,
+        0.012
+       ],
+       [
+        -15.1,
+        4.9,
+        3.26,
+        36.3,
+        0.012
+       ]
+      ],
+      "lenscap": [
+       [
+        6.2,
+        12.7,
+        2.38,
+        23.3,
+        0.085
+       ],
+       [
+        7.2,
+        12.8,
+        2.72,
+        23.7,
+        0.085
+       ],
+       [
+        7.9,
+        12.1,
+        3.7,
+        23.5,
+        0.085
+       ],
+       [
+        6.9,
+        11.3,
+        3.92,
+        22.2,
+        0.012
+       ]
+      ],
+      "wrapper": [
+       [
+        0.6,
+        8.8,
+        4.33,
+        20.3,
+        0.01
+       ],
+       [
+        -0.4,
+        8.8,
+        3.54,
+        21.3,
+        0.01
+       ],
+       [
+        0.6,
+        9.8,
+        3.61,
+        20.7,
+        0.01
+       ],
+       [
+        1.6,
+        8.8,
+        3.96,
+        19.3,
+        0.01
+       ]
+      ],
+      "rule": [
+       [
+        21.9,
+        0.1,
+        2.28,
+        42.2,
+        0.012
+       ],
+       [
+        22.9,
+        0.1,
+        2.24,
+        43.2,
+        0.012
+       ],
+       [
+        20.9,
+        -0.1,
+        2.56,
+        41.2,
+        0.012
+       ],
+       [
+        21.9,
+        1.1,
+        2.36,
+        41.7,
+        0.012
+       ],
+       [
+        20.9,
+        0.9,
+        2.25,
+        40.7,
+        0.012
+       ]
+      ],
+      "seeds": [
+       [
+        -22,
+        -6.6,
+        2.6,
+        49.8,
+        0.012
+       ],
+       [
+        -23,
+        -6.6,
+        2.79,
+        50.8,
+        0.012
+       ],
+       [
+        -21,
+        -6.6,
+        2.79,
+        48.8,
+        0.012
+       ],
+       [
+        -24,
+        -6.6,
+        3.28,
+        51.8,
+        0.012
+       ],
+       [
+        -20,
+        -6.6,
+        3.28,
+        48.1,
+        0.012
+       ]
+      ]
+     },
+     "wash": [
+      [
+       -0.6,
+       15.5,
+       2.47,
+       26.7,
+       0.012
+      ],
+      [
+       1.4,
+       15.5,
+       4.23,
+       25.9,
+       0.012
+      ],
+      [
+       3.4,
+       15.4,
+       2.24,
+       25.5,
+       0.012
+      ]
+     ],
+     "shelf": {
+      "x": -7.1,
+      "w": 1.4,
+      "tiers": [
+       1.91,
+       2.07,
+       2.27
+      ],
+      "top": 2.405
+     }
+    },
+    "glasses": {
+     "at": [
+      0.6,
+      13.4
+     ],
+     "time": "12:00"
+    },
+    "glint": {
+     "8.3m": "hidden",
+     "7.3m": "shown"
+    },
+    "edge": {
+     "bearings6m": "00111111",
+     "beyond": "hidden"
+    },
+    "prompt": {
+     "1.2m": "Pick up reading glasses",
+     "1.4m": null
+    },
+    "pick": {
+     "toast": true,
+     "save": {
+      "via": "find",
+      "found": 3
+     },
+     "log": "find glasses"
+    },
+    "give": {
+     "label": "Give Mama Nkechi her glasses",
+     "at": 1.27,
+     "beats": "Talk to Mama Nkechi",
+     "keepsake": "fan",
+     "chisel": {
+      "at": [
+       10.4,
+       12.6
+      ],
+      "when": "the same frame"
+     }
+    },
+    "day4": {
+     "adapter": [
+      -14.5,
+      4.1
+     ],
+     "today": "Ada said yesterday: Tunde is doing the sound by the square’s stage today. Look out for a small black plug."
+    },
+    "late": {
+     "chisel": "day 4 12:00",
+     "glint": "9 m on day 5"
+    },
+    "companion": {
+     "pick": true,
+     "give": true
+    }
+   }
+  },
+  {
+   "name": "3. gist-visit (local pair, day 4, v35 evening on day 3): seated on the bench at 18:14, standing on the veranda by the bench as the guests come at 18:15 with the gate toast, which goes when they reach the rail; both glide to the rail (from inside the room by the door; a player out in the compound is not moved; a pair seated from inside stand on the veranda side); spots by the evening's rules; discovery on the talking frame; every script line in order by Listen, gs38 ids, gs38-nk-first first; Ehen? on tip lines, Next, Goodnight; no empty caption; S.life.evening35, doneToday, the album (+1, then +0), one gist and no evening event, the engine's guests and copy as at load; the zobo tray; the 8 s timer; the fallback lines for Mr. Bassey and Mrs. Oyelaran; aborts (a new day, a party, online, walking out) put everything back, log nothing and count a try; a retry after ten game minutes; no third try",
+   "passed": true,
+   "info": {
+    "stood": {
+     "p0": [
+      -6.05,
+      6.65
+     ],
+     "p1": [
+      -5.48,
+      6.4
+     ]
+    },
+    "spots": [
+     [
+      "nkechi",
+      -6.35,
+      7.8
+     ],
+     [
+      "tunde",
+      -7.1,
+      7.8
+     ]
+    ],
+    "rail": {
+     "p0": [
+      -5.85,
+      6.4
+     ],
+     "p1": [
+      -4.95,
+      6.4
+     ],
+     "inside": {
+      "p0": [
+       -5.55,
+       6.4
+      ],
+      "p1": [
+       -4.65,
+       6.4
+      ]
+     },
+     "out": "not moved",
+     "fromInside": {
+      "p0": [
+       -6.05,
+       6.65
+      ],
+      "p1": [
+       -5.48,
+       6.4
+      ]
+     }
+    },
+    "first": {
+     "guests": [
+      "nkechi",
+      "tunde"
+     ],
+     "ids": [
+      "gs38-nk-first",
+      "gs38-tu-soon",
+      "gs38-lost-glasses",
+      "gs38-back-r-nkechi",
+      "gs38-by-nk1"
+     ],
+     "buttons": [
+      "Next",
+      "Next",
+      "Ehen?",
+      "Next",
+      "Goodnight"
+     ],
+     "start": "18:15"
+    },
+    "after": {
+     "evening35": "unchanged",
+     "memories": "+1",
+     "log": [
+      "nkechi+tunde:lost"
+     ]
+    },
+    "timer": {
+     "ids": [
+      "gs38-ba-o4",
+      "gs38-nk-o1",
+      "gs38-lost-r",
+      "gs38-back-r-nkechi",
+      "gs38-wash-ba",
+      "gs38-by-ba3"
+     ]
+    },
+    "fallback": {
+     "bassey": 7,
+     "oyelaran": 7
+    },
+    "aborts": {
+     "nextday": 1,
+     "party": 1,
+     "online": 1
+    },
+    "retry": {
+     "first": "walked out",
+     "retryAfter": "9.5 game minutes",
+     "third": false
+    }
+   }
+  },
+  {
+   "name": "4. tips-tomorrow (a pair and a companion household, days F to F+6, real keys): every tip pays off the next day at its time and not before (a new thing at 12:00 at its spot, the wash at 13:30, the pocket owner where told), Today's rows are the tips heard, the owner of a thing told by another is the other guest and answers back, the pocket owner never comes, no pair two nights running, gistPlan38 twice deep-equal and changes nothing, the line about today retells today's return; Mrs. Oyelaran back at six",
+   "passed": true,
+   "info": {
+    "days": {
+     "4": {
+      "today": [
+       "pocket",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [],
+      "guests": [
+       "nkechi",
+       "oyelaran"
+      ],
+      "tips": [
+       "wash:oyelaran"
+      ],
+      "ids": [
+       "gs38-nk-first",
+       "gs38-oy-o3",
+       "gs38-wash-oy",
+       "gs38-re-nk2",
+       "gs38-by-nk1"
+      ]
+     },
+     "5": {
+      "today": [
+       "pocket",
+       "wash",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "wash 13:30"
+      ],
+      "guests": [
+       "tunde",
+       "ada"
+      ],
+      "tips": [
+       "lost:new:adapter:tunde"
+      ],
+      "ids": [
+       "gs38-tu-soon",
+       "gs38-ad-o1",
+       "gs38-lost-adapter",
+       "gs38-re-ad1",
+       "gs38-ask-gist",
+       "gs38-by-tu1"
+      ]
+     },
+     "6": {
+      "today": [
+       "lost",
+       "carve",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "adapter 12:00"
+      ],
+      "guests": [
+       "bassey",
+       "tunde"
+      ],
+      "tips": [
+       "lost:remind:adapter:bassey"
+      ],
+      "ids": [
+       "gs38-ba-o1",
+       "gs38-tu-o4",
+       "gs38-lost-r",
+       "gs38-back-r-tunde",
+       "gs38-by-ba1"
+      ]
+     },
+     "7": {
+      "today": [
+       "lost",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [],
+      "guests": [
+       "nkechi",
+       "bassey"
+      ],
+      "tips": [
+       "lost:new:lenscap:nkechi",
+       "wash:nkechi"
+      ],
+      "ids": [
+       "gs38-nk-o3",
+       "gs38-ba-o2",
+       "gs38-told-adapter",
+       "gs38-lost-lenscap",
+       "gs38-back-lenscap",
+       "gs38-wash-nk",
+       "gs38-by-nk2"
+      ]
+     },
+     "8": {
+      "today": [
+       "lost",
+       "wash",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "lenscap 12:00",
+       "wash 13:30"
+      ],
+      "away": true
+     },
+     "9": {
+      "today": [
+       "wait",
+       "shelf"
+      ],
+      "payoff": [],
+      "guests": [
+       "nkechi",
+       "bassey"
+      ],
+      "tips": [
+       "pocket:wrapper:nkechi"
+      ],
+      "ids": [
+       "gs38-nk-o1",
+       "gs38-ba-o4",
+       "gs38-pocket",
+       "gs38-re-ba2",
+       "gs38-by-nk3"
+      ]
+     }
+    },
+    "companion": {
+     "4": {
+      "today": [
+       "wait",
+       "shelf"
+      ],
+      "payoff": [],
+      "guests": [
+       "nkechi",
+       "tunde"
+      ],
+      "tips": [
+       "lost:new:adapter:tunde",
+       "wash:tunde"
+      ]
+     },
+     "5": {
+      "today": [
+       "lost",
+       "wash",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "adapter 12:00",
+       "wash 13:30"
+      ],
+      "guests": [
+       "nkechi",
+       "bassey"
+      ],
+      "tips": [
+       "lost:new:lenscap:nkechi"
+      ]
+     },
+     "6": {
+      "today": [
+       "lost",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "lenscap 12:00"
+      ],
+      "guests": [
+       "oyelaran",
+       "ada"
+      ],
+      "tips": [
+       "lost:new:wrapper:oyelaran"
+      ]
+     },
+     "7": {
+      "today": [
+       "lost",
+       "carve",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "wrapper 12:00"
+      ],
+      "guests": [
+       "ada",
+       "bassey"
+      ],
+      "tips": [
+       "lost:new:rule:ada",
+       "wash:bassey"
+      ]
+     },
+     "8": {
+      "today": [
+       "lost",
+       "wash",
+       "carve",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "rule 12:00",
+       "wash 13:30"
+      ],
+      "guests": [
+       "nkechi",
+       "tunde"
+      ],
+      "tips": [
+       "lost:new:seeds:nkechi"
+      ]
+     },
+     "9": {
+      "today": [
+       "lost",
+       "wait",
+       "shelf"
+      ],
+      "payoff": [
+       "seeds 12:00"
+      ],
+      "guests": [
+       "bassey",
+       "nkechi"
+      ],
+      "tips": []
+     }
+    }
+   }
+  },
+  {
+   "name": "5. copy: every line of GIST38.LINES and FOUND38's speech (no weekday, British spelling, no digit or ₦ but 1979, curly apostrophes, no markup, at most 160 characters, only the four placeholders), ids unique and gs38-; UI text; every tip kind has a line for every teller, every lost thing its pickup, give, thanks, retold and tip lines and an answer-back where needed; the texts as rendered",
+   "passed": true,
+   "info": {
+    "lines": 99,
+    "rendered": 7,
+    "gistShown": [
+     "gs38-tu-soon",
+     "gs38-oy-o3",
+     "gs38-wash-tu",
+     "gs38-re-oy1",
+     "gs38-by-tu2"
+    ]
+   }
+  },
+  {
+   "name": "6. shells-wash: before discovery the base toast; after it the kind by hash, \"One for the shelf\" for new kinds only, the base count exactly as before; on the wash day (F+2) nothing at 13:29, three shells at 13:30 at the probed spots, the cowrie at hash38(day,5) % 3 counted as a shell and kept; the shells gone at 15:30 and the wet sand faded in 2 s; no wash on other days; no cowrie from a morning spot on days F to F+8",
+   "passed": true,
+   "info": {
+    "wash5": {
+     "cowrie": 1,
+     "kinds": [
+      "olive",
+      "cowrie",
+      "murex"
+     ]
+    },
+    "found": 3,
+    "morningKinds": {
+     "3": [
+      "periwinkle",
+      "olive"
+     ],
+     "4": [
+      "periwinkle",
+      "murex",
+      "cockle"
+     ],
+     "5": [
+      "olive",
+      "cockle",
+      "murex"
+     ],
+     "6": [
+      "cockle",
+      "olive",
+      "periwinkle"
+     ],
+     "7": [
+      "murex",
+      "periwinkle",
+      "olive"
+     ],
+     "8": [
+      "periwinkle",
+      "murex",
+      "cockle"
+     ],
+     "9": [
+      "olive",
+      "cockle",
+      "murex"
+     ],
+     "10": [
+      "cockle",
+      "olive",
+      "periwinkle"
+     ],
+     "11": [
+      "murex",
+      "periwinkle",
+      "olive"
+     ]
+    },
+    "kept": [
+     "periwinkle",
+     "olive",
+     "murex",
+     "cockle",
+     "cowrie"
+    ]
+   }
+  },
+  {
+   "name": "7. shelf: ₦4,999 refused; ₦5,000 ordered, up the next morning on the back wall over the mattress (columns 0-1, clear of the sign over the sofa) within 1 mm, planks at 1.91 and 2.07 m; wall pieces hung under it stay clear of it; blocked() and fitsHome34 identical with it up; at most 10 item groups; no rebuild over 300 idle frames; the panel's counts; both sets complete (memory, log, \"Complete\"); the full shelf and the carvings' place below the top bar at 1280x800 for a player in front of it",
+   "passed": true,
+   "info": {
+    "offer": "on Today",
+    "up": {
+     "at": [
+      -7.1,
+      2.09
+     ],
+     "planks": [
+      1.91,
+      2.07
+     ],
+     "items": 1
+    },
+    "hung": {
+     "pieceTop": 1.87,
+     "shelfBottom": 1.89
+    },
+    "todayComplete": true,
+    "sets": {
+     "keepsake": 7,
+     "shells": 8,
+     "items": 10
+    },
+    "view": {
+     "topPx": 75,
+     "bar": 64
+    }
+   }
+  },
+  {
+   "name": "8. interplay: the bench (no offer before discovery; Wait here until the neighbours come at 18:15; they stand; ade36 unused; the page as bench check 13 reads it; held while carried); football (waits for a match and the call-in at 18:20, 18:15 without a match; its evening line once a save, never on the first gist); framing at 1280x800, 390x844 and 844x390, and at 844x390 the caption strip below every guest; football's line third, after her greeting; the sofa's 18:12 then the gist by 18:16; a companion household; a v35-pending household as before; Mrs. Oyelaran back at six; the nudge once per household after discovery",
+   "passed": true,
+   "info": {
+    "bench": {
+     "offer": "18:15",
+     "stood": true,
+     "ade36": "unused"
+    },
+    "carry": "held",
+    "football": {
+     "match": "waits",
+     "calledIn": "18:20",
+     "noMatch": "18:15",
+     "line": {
+      "once": 5,
+      "nights": 2
+     }
+    },
+    "framing": {
+     "1280x800": {
+      "inView": [
+       0.82,
+       0.82
+      ],
+      "fits": [
+       true,
+       true
+      ]
+     },
+     "390x844": {
+      "inView": [
+       0.55,
+       0.67
+      ],
+      "fits": [
+       false,
+       false
+      ]
+     },
+     "844x390": {
+      "inView": [
+       0.49,
+       0.5
+      ],
+      "fits": [
+       false,
+       false
+      ],
+      "caption": {
+       "feet": [
+        241,
+        241
+       ],
+       "top": 252
+      }
+     }
+    },
+    "sofa": {
+     "sat": "18:12",
+     "gist": "by 18:16"
+    },
+    "companion": {
+     "ids": [
+      "gs38-nk-first",
+      "gs38-tu-soon",
+      "gs38-lost-glasses",
+      "gs38-back-r-nkechi",
+      "gs38-by-nk1"
+     ]
+    },
+    "v35": {
+     "ids": [
+      "te04",
+      "ne04",
+      "ae04"
+     ]
+    },
+    "oyelaran": {
+     "back": "18:00"
+    },
+    "nudge": {
+     "once": true
+    }
+   }
+  },
+  {
+   "name": "9. day-loop: no card before discovery; the rows per state (the chisel's owner named after the glasses' thanks), after football's card, at most four at 390 px; Today's lost row \"today\" only on the day a told thing comes out, then \"still lying out, as you heard\"; contrast 4.5:1; the night page and recap35 as without a record; Tonight's gist after a tip, pure; no \"The compound was quiet.\" after a gist; LOG35.kinds has the six kinds once (carve is engineer C's); the gates tool reads them with no warnings and the same grades; tools/quiet-v38.cjs reads a paste",
+   "passed": true,
+   "info": {
+    "contrast": [
+     [
+      "1280x800",
+      "kicker",
+      5.47
+     ],
+     [
+      "1280x800",
+      "row",
+      10.29
+     ],
+     [
+      "390x844",
+      "kicker",
+      5.47
+     ],
+     [
+      "390x844",
+      "row",
+      10.29
+     ]
+    ],
+    "night": "Mama Nkechi and Mrs. Oyelaran stood at the rail with you until the mosquitoes won.",
+    "recap": "TONIGHT’S GIST Shells at the water’s edge after midday tomorrow.",
+    "rows": {
+     "day3": [
+      "pocket",
+      "shelf"
+     ],
+     "day4": [
+      "pocket",
+      "wait",
+      "shelf"
+     ],
+     "day5": [
+      "pocket",
+      "wash",
+      "wait",
+      "shelf"
+     ]
+    },
+    "plainNight": "tip",
+    "heardRows": {
+     "day6": "Heard last night: Tunde is doing the sound by the square’s stage today. Look out for a small black plug.",
+     "day8": "Still lying out, as you heard: Tunde’s adapter, by the square’s stage."
+    },
+    "gates": {
+     "warnings": 0,
+     "grades": [
+      "FAIL",
+      "NOT YET",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "NOT YET"
+     ]
+    },
+    "quiet": "8 days"
+   }
+  },
+  {
+   "name": "10. save-modes-and-cost: a v37-style save loads, plays and saves with the keys of S and S.life unchanged and no v38 record; a reload keeps the pocket; stripState has no gist38; online no v38 object, offline back; no tagged object after newgame, newconfirm, an enterWorld into day 2 and going online, and the scene count the same as without the modules; ?gist=now applied once; the verify-lines, verify-log and verify-tune subset copies load with both v38 tags, no error and no new global but v38's; no Math.random call across a lost-thing spawn, a wash spawn and a shelf build; the cost: no blocked() or levelAt() call in the step or the prompt hook on an inert frame, an item frame or a spawn, at most 2 v38 objects outside the flat (8 on a wash afternoon); the step ran",
+   "passed": true,
+   "info": {
+    "oldSave": {
+     "keys": "unchanged",
+     "glasses": "out"
+    },
+    "online": {
+     "off": "nothing",
+     "back": [
+      "glint",
+      "lost:chisel",
+      "shelf"
+     ]
+    },
+    "teardown": [
+     "newconfirm",
+     "newgame",
+     "enterWorld day 2",
+     "online"
+    ],
+    "flags": {
+     "now": "09:00 glasses",
+     "once": true
+    },
+    "subsets": {
+     "lines": {
+      "loads": true,
+      "v38Names": 145,
+      "played": 300
+     },
+     "log": {
+      "loads": true,
+      "v38Names": 145,
+      "played": 300
+     },
+     "tune": {
+      "loads": true,
+      "v38Names": 145,
+      "played": 300
+     }
+    },
+    "quiet": {
+     "lost": 0,
+     "wash": 0,
+     "shelf": 0
+    },
+    "cost": {
+     "inert": "0 blocked, 0 levelAt, 0 objects over 600 frames",
+     "spawn": [
+      0,
+      0
+     ],
+     "item": [
+      0,
+      0
+     ],
+     "outside": 2,
+     "stepRan": true
+    },
+    "sceneCount": {
+     "objects": 2079,
+     "sameAsWithout": true
+    }
+   }
+  },
+  {
+   "name": "11. carvings (engineer C; owner decision 2, the afternoon fish): before discovery the reels are the base's and Ada names nothing; after it Ada names one fish a day she has not carved, in her talk (today) or in the gist before the goodbye (tomorrow), the plan pure; it bites only in its window (12:30 to 15:30; the catfish after six), within four casts there and never outside; the catch card's quiet Keep it for Ada through Let it swim (nothing sold, one primary); Today's row (asked, kept, carving); given to Ada by keys for her line, free (FOUND38.CARVE_PRICE 0; above 0 spend() is used), friendship and the carve log; carved the next morning onto the third plank; a kept fish keeps until six the next evening and blocks a new ask; six carvings complete the set, below the top bar at 1280x800; the shelf row counts them on their own; a companion household with no shelf (the carving waits for one)",
+   "passed": true,
+   "info": {
+    "before": {
+     "reels": 12
+    },
+    "ask": {
+     "via": "talk",
+     "fish": "croaker",
+     "today": "asked"
+    },
+    "morning": {
+     "casts": 18,
+     "asked": 0
+    },
+    "afternoon": {
+     "casts": 4,
+     "seen": [
+      "snapper",
+      "mullet",
+      "mullet",
+      "croaker"
+     ],
+     "at": 13.33
+    },
+    "shelfRow": "Your shelf: 1 of 10. Ada’s carvings: 1 of 6.",
+    "carved": {
+     "fish": "croaker",
+     "plank": 2.27,
+     "items": 2
+    },
+    "late": {
+     "casts": 14,
+     "asked": 0
+    },
+    "gist": {
+     "day": 6,
+     "guests": [
+      "nkechi",
+      "ada"
+     ],
+     "line": 5,
+     "of": 6
+    },
+    "keeps": {
+     "until": "18:00 the next day"
+    },
+    "price": {
+     "refused": 1499,
+     "paid": 1500
+    },
+    "view": {
+     "topPx": 75,
+     "bar": 64
+    },
+    "set": {
+     "carved": 6,
+     "day": 14
+    },
+    "companion": "asked, kept, given",
+    "withoutModules": {
+     "reels": 12,
+     "same": true
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M5 the first item ignores LOST_AT",
+   "check": 2,
+   "result": "red",
+   "first": "nothing at 11:59"
+  },
+  {
+   "name": "M10 the shelf adds a box to FURN_OBS",
+   "check": 7,
+   "result": "red",
+   "first": "no collider added (OBS, FURN_OBS, PUSH)"
+  },
+  {
+   "name": "M11 the typeof EVENING35 guard around A's tick wrapper removed",
+   "check": 10,
+   "result": "red",
+   "first": "lines subset with v38: EVENING35 is not defined"
+  },
+  {
+   "name": "M12 the lost thing's mesh built outside quiet38",
+   "check": 10,
+   "result": "red",
+   "first": "Math.random calls in a spawn [lost thing, wash, shelf]"
+  },
+  {
+   "name": "M1 gistSave38(true) called without a trigger (in the step)",
+   "check": 1,
+   "result": "red",
+   "first": "no S.life.gist38 at 10:00 after 600 frames"
+  },
+  {
+   "name": "M2 the next wrapper does not restore S.life.evening35",
+   "check": 3,
+   "result": "red",
+   "first": "S.life.evening35"
+  },
+  {
+   "name": "M3 the cue35 filter removed",
+   "check": 3,
+   "result": "red",
+   "first": "no evening event"
+  },
+  {
+   "name": "M4 the trigger drops doneDay < S.day",
+   "check": 8,
+   "result": "red",
+   "first": "no gist the same night"
+  },
+  {
+   "name": "M6 the abort wrapper does not restore E.guests",
+   "check": 3,
+   "result": "red",
+   "first": "a new day: guests"
+  },
+  {
+   "name": "M7 the recap block clears last after drawing",
+   "check": 9,
+   "result": "red",
+   "first": "days_night35 twice"
+  },
+  {
+   "name": "M8 the wash tip reads today instead of tomorrow",
+   "check": 4,
+   "result": "red",
+   "first": "day 5: a wash day exactly when it was told"
+  },
+  {
+   "name": "M9 the line35 wrapper serves gist lines without a live visit",
+   "check": 1,
+   "result": "red",
+   "first": "the v35 evening lines: [null,null,null]"
+  },
+  {
+   "name": "M13 fb37-nkechi-evening let through on every gist",
+   "check": 8,
+   "result": "red",
+   "first": "football's line once: [{\"d\":5,\"first\":false},{\"d\":8,\"first\":false}]"
+  },
+  {
+   "name": "M14 the asked fish bites outside its window",
+   "check": 11,
+   "result": "red",
+   "first": "no offer in the morning"
+  },
+  {
+   "name": "M15 Keep it for Ada offered for any species not carved (the first design)",
+   "check": 11,
+   "result": "red",
+   "first": "no offer in the morning"
+  },
+  {
+   "name": "M16 a second ask the same day",
+   "check": 11,
+   "result": "red",
+   "first": "one ask a day: the second talk has none"
+  },
+  {
+   "name": "M17 Keep it for Ada clears the catch itself (not through Let it swim)",
+   "check": 11,
+   "result": "red",
+   "first": "kept for Ada through Let it swim: [null,{\"i\":0,\"phase\":\"caught\",\"elapsed\":3.466666666666157,\"biteAt\":3.441998312016949,\"wall35\":null,\"nib35\":true},false,{\"id\":\"croaker\",\"day\":4}]"
+  },
+  {
+   "name": "M18 the gist plan records Ada's ask (not pure)",
+   "check": 11,
+   "result": "red",
+   "first": "the day-5 ask lapsed"
+  },
+  {
+   "name": "M19 the carving is not free",
+   "check": 11,
+   "result": "red",
+   "first": "free"
+  },
+  {
+   "name": "M20 Today's heard row back to the last gist alone (M1: how it was heard ignored, and \"today\" on any day) (with M20b the second half of M20)",
+   "check": 9,
+   "result": "red",
+   "first": "day 8: Heard the other night: Tunde is doing the sound by the square’s stage today. Look out for a small black plug."
+  },
+  {
+   "name": "M21 no glide to the rail when the guests arrive (S2)",
+   "check": 3,
+   "result": "red",
+   "first": "both at the rail: [[-6.050000000000001,6.65],[-5.4799999999999995,6.4]]"
+  },
+  {
+   "name": "M22 the bench pair stand where they sat down from (S2)",
+   "check": 3,
+   "result": "red",
+   "first": "stood up on the veranda side, not back inside: [[-7,5.4],[-6.3,5.4]]"
+  },
+  {
+   "name": "M23 a thank-you tells nothing about the next thing (L2, C2)",
+   "check": 2,
+   "result": "red",
+   "first": "the chisel toast names Ada (her thank-you said whose it is)"
+  },
+  {
+   "name": "M24 the night page still calls the compound quiet after a gist (C4)",
+   "check": 9,
+   "result": "red",
+   "first": "the night page after a gist:  Night x The compound was quiet. Mrs. Oyelaran’s radio played highlife until nine, then the generator next door took over the melody. TOMORROW Fresh shells will be on the beach in the morning. TONIGHT’S GIST Shells at the water’s edge after midday tomorrow. How was today? "
+  },
+  {
+   "name": "M25 no click guard on a panel opened by an Act (S3)",
+   "check": 2,
+   "result": "red",
+   "first": "the click guard with the pointer held: while held, not outside the panel, on its release, then not"
+  },
+  {
+   "name": "M26 no star at the edge of the view (S4)",
+   "check": 2,
+   "result": "red",
+   "first": "bearing 2: the star shown exactly when the glint is outside the view: {\"shown\":false,\"x\":null,\"y\":null,\"inside\":false,\"r\":[24,616,84,704]}"
+  },
+  {
+   "name": "M27 the shelf back at its first heights (M2)",
+   "check": 11,
+   "result": "red",
+   "first": "the carvings below the top bar: the shelf's top at 16 px"
+  },
+  {
+   "name": "M28 the carvings back in the shelf's count (S8)",
+   "check": 11,
+   "result": "red",
+   "first": "the shelf row: Your shelf: 2 of 16. Ada’s carvings: 1 of 6."
+  },
+  {
+   "name": "M29 football's line replaces Mama Nkechi's greeting again (S10)",
+   "check": 8,
+   "result": "red",
+   "first": "football's line third: [\"gs38-ba-o4\",\"fb37-nkechi-evening\",\"fb37-nkechi-evening\",\"gs38-lost-r\",\"gs38-back-r-nkechi\",\"gs38-wash-ba\",\"gs38-by-ba3\"]"
+  },
+  {
+   "name": "M30 Today promises the shelf when there is none (L1)",
+   "check": 11,
+   "result": "red",
+   "first": "Today with no shelf: [[\"carve\",\"Ada is carving your croaker. It goes on your shelf tomorrow morning.\"],[\"shelf\",\"Ada will put up a shelf for the things you find: ₦5,000 for the wood.\"]]"
+  },
+  {
+   "name": "M31 the landscape caption back over the guests (S1)",
+   "check": 8,
+   "result": "red",
+   "first": "the guests above the caption at 844x390: feet at [241,241] px, the caption from 216 px"
+  },
+  {
+   "name": "M32 the gate toast stays after the guests reach the rail",
+   "check": 3,
+   "result": "red",
+   "first": "the gate toast gone when they reach the rail"
+  }
+ ],
+ "withoutModules": {
+  "allRed": true,
+  "findings": [
+   {
+    "checks": [
+     1
+    ],
+    "first": "the glasses at 12:00 on day 3"
+   },
+   {
+    "checks": [
+     2
+    ],
+    "first": "FOUND38 is not defined"
+   },
+   {
+    "checks": [
+     3
+    ],
+    "first": "a gist by 18:16"
+   },
+   {
+    "checks": [
+     4,
+     9
+    ],
+    "first": "a lost thing lies out"
+   },
+   {
+    "checks": [
+     5,
+     6,
+     7,
+     10,
+     11
+    ],
+    "first": "the module"
+   },
+   {
+    "checks": [
+     8
+    ],
+    "first": "the first gist"
+   }
+  ]
+ },
+ "determinism": "identical"
+}
