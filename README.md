@@ -84,6 +84,7 @@ Per day, before (v37) and after (v38 as built), mean of three samples with the r
 - **Day 6** is Mrs. Oyelaran's wrapper: she is out in the afternoon, so it can only go back after six, which is why the companion household's day 6 is its worst.
 - The "Wait until then" rows model a player who uses Today's wait after the match; most of that gain is the wait itself (v37's sofa already offered one to 18:12), not new content. Moving the lost things to 13:00 was also measured and lowered nothing (owner decision 6 stands).
 - **Ada's fish from 10:30 was tried** (the session review's suggestion for the run-up to midday): with `FISH_WIN.day` at 10:30–15:30, three samples each, idle before the gist on days 4–6 rose to 5.03 (pair; 2 of 9 under 4.5) and 5.35 (companion; 0 of 9), and stretches over 3 minutes appeared (pair 4 of 9, longest 4.6; companion 6 of 9, longest 3.5), because the errand then finishes early and leaves one long afternoon. It was not kept; the window stays 12:30–15:30, and the lost things stay at midday.
+- **The owner's call on the miss:** the owner accepted the first aim's miss for this build and asked for v38 to ship as it is. Aunty Bisi the evening seller (Phase 1b) is the next step towards 4.5.
 - The day simulator is a scratch tool and is not shipped. The integrator's rerun on the stamped build gave outputs byte-identical to engineer C's run on the same modules.
 
 **How it was checked.**
