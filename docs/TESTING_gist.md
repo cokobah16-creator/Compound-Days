@@ -2,7 +2,7 @@
 
 One session, two players, one device, about 45 minutes of play plus a short debrief. The facilitator sets up, reads one scripted line, keeps a stopwatch and fills in the sheet. Everything else the players find in the game.
 
-Build: **v38** (the Menu shows the exact build). Spec: `gist/SPEC.md` §17.2.
+Build: **v38** (the Menu shows the exact build). Spec: `gist/SPEC.md` §17.2. **For a v39 build, use the v39 section at the end of this script** (it changes the setup, the observation table, the debrief and the aims); the v38 parts it does not replace still apply.
 
 What is being tested: is the middle of the day less empty now that something turns up there (a lost thing from midday, Ada's fish to catch in the early afternoon, shells at the water's edge every third afternoon)? Do the players come home in the evening for the neighbours' gist, and do they act on what they heard the next day without help? Does standing at the rail feel right, and does the "Ehen?" button help or get in the way?
 
@@ -72,3 +72,61 @@ One game hour is one real minute while no page is open; any open page stops the 
 - Ada's carvings are her gift (₦0; `FOUND38.CARVE_PRICE` is the owner's number if that changes), as the owner put it: "she names a fish, you catch it, she carves it for your shelf". She names one fish a day at most, and that fish gets "Keep it for Ada"; it bites only from half past twelve to half past three (the catfish, her sixth, only after six). A fish kept for her keeps until six the next evening. The carvings sit on the shelf's top plank, at 2.27 m.
 - When the guests reach the rail, the players at home glide to it (a slide, not a walk); a player out in the compound stays where they are.
 - The seller, the Finds tip and the set thank-you beats are the next build's.
+
+---
+
+# v39: Aunty Bisi, thanks at the rail and fuller afternoons
+
+Build: **v39** (the Menu shows the exact build). Spec: `v39/SPEC.md` §17.2. The same session shape as v38 (two players, one device, about 45 minutes of play from day 3, a short debrief), with the changes below.
+
+What is being tested: does Aunty Bisi feel like part of the street, or like a shop? Is the early afternoon fuller now that a neighbour asks for fish for the pot? Do the players notice a neighbour coming to the rail for the thing they still have, and the thank-you when a set on Ada’s shelf is finished? Does handing the stool over the rail to the eldest guest feel right, the first time and the times after?
+
+The owner’s choices this build is made to (their own words): Aunty Bisi “About 4 evenings in 5”: “Never two missed in a row, and Today tells you each morning whether she's coming. She stays a small treat rather than a routine.”; the fish for the pot, “Add it”; the stool, “Only the eldest sits”: “Ada's stool is handed over the rail to the eldest guest (Mr. Bassey, then Mrs. Oyelaran, then Mama Nkechi). Everyone else, including your household, stands.”; after the seven lost things, “Five new, then 'again'”: “Five new small things, one per neighbour. After that, the old things go missing 'again', one a day. Returns stay thanks and friendship, never cash.”
+
+## Setup changes
+
+1. Serve the game as for v38, but open `http://localhost:8000/?gist39=playtest&bisi=off` (you may add `&gist=playtest` for v38’s shelf footer). With the v39 flag Aunty Bisi passes every evening (normally about four evenings in five, with one evening off in her first week) except the one evening `bisi=off` keeps her away: the evening after her first, which is day 5 in this session. That evening off is there so the players can see the owner’s “Today tells you each morning whether she's coming” work on a morning when she is not: on day 5 Today says “Aunty Bisi is not passing”, and at that night’s gist one of the guests says she passes tomorrow evening. Today carries her sentence only once the household has met her (bought from her or had a taste), so make sure the players meet her on day 4. If you forget `bisi=off`, she passes on day 5 too; note it on the sheet and skip the day-5 Bisi observation. The first time a player talks to Mama Nkechi or Mr. Bassey after buying from Aunty Bisi, the fish for the pot is asked for, whatever the hour (without the flag, before half past one). Nothing else changes. The flag is applied once and noted for the tab.
+2. Everything else as for v38: a new household, the sofa, the seedling, sleep to day 3 and leave the day-3 morning page open. Do not walk out to the street between five and six before the session (Aunty Bisi belongs to the players).
+
+## What to say
+
+As for v38: “Play three days at your own pace. Talk as much as you like.” Nothing about Aunty Bisi, the pot, the shelf or the stool.
+
+## During the session (in place of v38’s table)
+
+| Real time | Game | Observe |
+|---|---|---|
+| 0–12 min | Day 3 | As for v38 (the glasses, the chisel, the veranda evening). No Aunty Bisi on the veranda evening’s day. |
+| 12–26 min | Day 4 | From five (about 9.5 real minutes into the day) Aunty Bisi walks in by the gate and strolls along the street calling “Puff-puff! Hot puff-puff!” (a player whose view does not show her sees “Aunty Bisi: Puff-puff! Hot puff-puff!” at the foot of their half, with an arrow): do the players notice her? Do they call her from the rail (“Call Aunty Bisi”, anywhere on the rail in front of the walkway) or walk out to her? Do they buy without help, and press “Help her lift the tray” (her tray comes down to her chest while she serves and goes back up as they help)? If they are short of money, does the taste read as kind, not as charity? If Kemi and Emeka were out after a match (even if they have since gone in because everybody walked home), do they buy the children a bag and take it back to the pitch, where the children come out again? She is gone by ten past six: did they miss her? At the gist, a guest may mention the puff-puff (the treat line). |
+| 26–40 min | Day 5 | **Her evening off.** Today’s morning card says “Aunty Bisi is not passing” (with `bisi=off`): do the players read it? Note whether either says so out loud, and whether either still goes out to the street or the rail between five and six looking for her (write down the game time). There is no “Wait for Aunty Bisi” on her evening off. At the gist, does the guest’s line that she passes tomorrow evening land? (If the players did not buy or taste on day 4, Today has no Bisi sentence yet: note it and skip this observation.) If Mama Nkechi or Mr. Bassey asks for two or three fish caught after two: do they go fishing after two without being told, press the quiet “Keep it for {name}’s pot” on the catch card, and take the fish over by half past five? Does the bowl at six land? Two fish errands may fall in one afternoon (Ada’s and the pot): fine, or too much? If the thing in their pocket was still there at last night’s gist, its owner comes to the rail tonight and asks for it: do they understand “Give it back”? If a set on Ada’s shelf finished, its neighbour opens the gist with a thank-you: do they notice? If an elder comes and the household has Ada’s stool, the button reads “Bring the stool for {name}”: does handing it over feel right, and does it feel right that only the elder sits? |
+| 40–45 min | Debrief | Below |
+
+**The stopwatch**, as for v38: between 10:30 am and 6:00 pm game time, time every stretch over 20 seconds with nothing to do, and write down the game time it started. After the session paste the day log through `node tools/quiet-v38.cjs tester-1.txt` as before; the gates tool (`node tools/gates-v35.cjs`) also reads v39’s three new log kinds (`bisi`, `pot`, `thanks`) once the integrator has added them.
+
+**Interventions**, as for v38: only after two real minutes stuck, “Have you looked at Today?”. Never point at Aunty Bisi, a fish or a neighbour.
+
+## Debrief additions (after v38’s questions)
+
+- “Did Aunty Bisi feel like part of the street, or like a shop?”
+- “Did you notice the neighbour coming for their thing at the gist?”
+- “Bringing the stool: did it feel right that only the elder sat?”
+- “The stool each time that elder came: a courtesy, or a chore?”
+- “Did the fish for the pot feel like a favour or a chore?”
+- “On the morning of her evening off (day 5), did Today tell you whether Aunty Bisi was coming that evening? What did it say, and did you believe it?” (Write down whether they remember that she was not coming.)
+
+## Pass aims for v39 (not promises; the owner sees the sheet)
+
+- On days 4 and 5, no “nothing to do” stretch longer than 2 real minutes between 10:30 and 18:00.
+- Aunty Bisi bought from without help on her first evening.
+- The pot given at least once without help.
+- Each player rates the evening at least 4 out of 5.
+
+## Known limits to expect (v39)
+
+- Buying from Aunty Bisi stops the clock (every panel does): she is there for the street and for character, and adds only seconds of play an evening. The measured idle table is in the README’s v39 section; after the fix round both households are under 4.5 minutes on days 4 to 6 in the simulation (4.14 and 4.31 buying in the street, 4.21 and 4.28 at the rail), and days 8 to 14 stay over 4.5 for both (about 5.0 to 5.5).
+- Her bubbles and the children’s are kept inside each half of the screen, under the top bar; on a narrow phone half they are drawn a little smaller. A speaker shows one bubble at a time (her “I dey come!” replaces her call), and a half whose view does not show the speaker draws no bubble: while she calls, that player sees her call on the chip at the foot of their half instead.
+- The bag for Kemi and Emeka is offered while the children’s hours last (until about half past six), even after they have gone in because everybody left the pitch: walking back with it brings them out again.
+- The pot wants fish caught after two o’clock (the owner’s wording), so a household that has finished its morning early may wait for two; the wash at half past one is on the way. Watch for a wait here and note it: it is a possible question for the owner.
+- On an evening with a give-back or an elder’s first stool line, the pot ask moves to the next evening, so a gist stays within two new lines.
+- The pot can be asked for most days from day 5 by a household that talks to Mama Nkechi and Mr. Bassey every morning (both now ask in their morning talk, or at the gist for tomorrow).
+- Days 8 to 14: five new lost things after the seventh (from two days after it goes back), then the old things go missing “again”, one a day.

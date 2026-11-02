@@ -1,0 +1,37 @@
+/* v39 Aunty Bisi, thanks at the rail and fuller afternoons. Engineer B owns this file (the pot pages; the stool button is the caption's own); engineer A's rules for
+   Aunty Bisi's panel and the shelf picture (seller-v39.js) are in the first block. The panels sit on the base's dark panel (#panel). */
+
+/* ---- A: Aunty Bisi's panel (seller-v39.js, bisiPanelHTML39): the kicker, her line as the heading, the wares, one primary at a time ---- */
+#panel .gist39-bisi .life-kicker{margin:0 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#F1C36B}
+#panel .gist39-bisi h2{margin-top:0;line-height:1.3}
+#panel .gist39-bisi > p{margin:8px 0 4px;font-size:15px;line-height:1.45;color:#F1E4CC}
+#panel .gist39-bisi .btn[disabled]{opacity:.55;cursor:default}
+/* (fixer, DOD-7) after a sale the lift and the close sit under her line, above the items; on a short screen (a phone on its side) the panel is
+   compact: a smaller heading, the items two to a row, so "Help her lift the tray" is on screen without scrolling */
+#panel .gist39-bisi .gist39-lift{margin:6px 0 4px}
+@media (max-height:480px){#panel .gist39-bisi h2{font-size:18px;margin:2px 0 6px}#panel .gist39-bisi > p{margin:4px 0 2px;font-size:14px}
+ #panel .gist39-bisi .actions{margin:6px 0}#panel .gist39-bisi .gist39-items{display:flex;flex-wrap:wrap;gap:6px}#panel .gist39-bisi .gist39-items .btn{flex:1 1 45%;min-height:40px;margin:0}
+ #panel .gist39-bisi p.gist39-tip{margin:6px 0 2px;padding:5px 10px;font-size:13px}}
+#panel .gist39-bisi p.gist39-tip{margin:12px 0 6px;padding:8px 12px;border-left:3px solid #B9739F;border-radius:6px;background:rgba(255,246,228,.07);font-style:italic;color:#F8EFDD}
+/* ---- A: the shelf picture in "See your shelf" (seller-v39.js, shelfShot39) ---- */
+#panel .gist38-shelf img.gist39-shot{display:block;width:100%;height:auto;max-height:42vh;object-fit:contain;margin:6px 0 10px;border-radius:10px;border:1px solid rgba(241,195,107,.35);background:#2A1F17}
+
+/* ---- B: the pot's pages (gist-v39.js): the catch page after "Keep it for {name}'s pot" (on the life panel, as v38's "For Ada" page) and the
+   thanks when the fish are given (on v38's return-panel frame, .gist38-panel); the shelf panel's "Things given back" line ---- */
+#panel .gist39-pot .life-kicker{margin:0 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#F1C36B}
+#panel .gist39-pot h2{margin-top:0;line-height:1.3}
+#panel section.gist39-pot > p{margin:8px 0 4px;font-size:15px;line-height:1.45;color:#F1E4CC}
+#panel .gist38-shelf p.gist39-returned{margin:10px 0 2px;color:#F1E4CC}
+/* (fixer, DOD-3) the catch page after "Keep it for {name}'s pot" opens on the light life card: its text takes the card's own colours (contrast
+   #334d43 on #f3efdf 8.0:1, the kicker #7c6840 4.7:1); the pale text above is only for the dark thanks panel */
+#panel.life-panel34 section.gist39-pot > p{color:#334d43}
+#panel.life-panel34 .gist39-pot .life-kicker{color:#7c6840}
+
+/* ---- (fixer, S4) Aunty Bisi's call on the HUD (seller-v39.js, bisiChip39; football's fb37-call pattern): in a half whose view does not show her,
+   with an arrow towards her ---- */
+.gist39-call{position:absolute;left:50%;bottom:170px;transform:translateX(-50%);z-index:6;pointer-events:none;display:flex;align-items:center;gap:8px;white-space:nowrap;max-width:94%;overflow:hidden;
+ background:#F8EFDD;color:#2A1F17;border:2px solid #6B2D5C;border-radius:14px;padding:5px 12px;font-size:max(13px,.95rem);font-weight:800;box-shadow:0 4px 14px #0005}
+.gist39-call .ar{display:inline-block;font-size:1.1rem;color:#6B2D5C}
+@media (hover:none) and (pointer:coarse){.half .gist39-call{bottom:306px}}
+@media (hover:none) and (pointer:coarse) and (orientation:portrait){#half0 .gist39-call{bottom:158px}}
+@media (orientation:landscape) and (max-height:520px) and (pointer:coarse){.half .gist39-call{bottom:230px;font-size:13px;padding:3px 9px}}

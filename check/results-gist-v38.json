@@ -1,5 +1,5 @@
 {
- "build": "v38-a2e8c3ca",
+ "build": "v39-ddaf49d8",
  "passed": true,
  "checks": [
   {
@@ -47,7 +47,7 @@
       true
      ]
     },
-    "digest": "6c127d23:14241",
+    "digest": "7e85a426:14241",
     "lines": [
      "te04",
      "ne04",
@@ -66,7 +66,7 @@
     },
     "glasses": "out at 12:00, no record",
     "withoutModules": {
-     "digest": "6c127d23:14241",
+     "digest": "7e85a426:14241",
      "lines": [
       "te04",
       "ne04",
