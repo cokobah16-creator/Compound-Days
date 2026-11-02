@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v39-97785cdc (authored character, your day in Palm Court, a bench for evening gist, monkey post, evening gist and daily finds, Aunty Bisi and thanks at the rail)
+Build: v39-ddaf49d8 (authored character, your day in Palm Court, a bench for evening gist, monkey post, evening gist and daily finds, Aunty Bisi and thanks at the rail)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
@@ -54,7 +54,7 @@ and Aunty Bisi, thanks at the rail and fuller afternoons (verify-gist-v39.cjs); 
 README.md, Verification. Headless
 browser captures were taken; real-phone performance remains unverified.
 
-Source: branch claude/authored-character (build v39-97785cdc: v38-a2e8c3ca plus Aunty Bisi the evening
+Source: branch claude/authored-character (build v39-ddaf49d8: v38-a2e8c3ca plus Aunty Bisi the evening
 seller, the Finds tip, thanks at the rail for a finished shelf set, Ada's stool for the eldest guest,
 fish for a neighbour's pot, the lost things after the seven, giving a thing back at the gist and the
 walk to the rail).

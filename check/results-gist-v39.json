@@ -1,5 +1,5 @@
 {
- "build": "v39-97785cdc",
+ "build": "v39-ddaf49d8",
  "passed": true,
  "checks": [
   {
@@ -397,7 +397,7 @@
    }
   },
   {
-   "name": "8. rounds: rotEntry39 pure for 7 to 40, round two one thing per neighbour, then the again round under -a ids, never the same owner twice running, no -a id in TOLD_NEXT; round two's spots pass v38's check-2 rules and spec §4 (the guest patch, Aunty Bisi's route, reachable); the seventh back on day R: entry 8 set at R+1's new day (v39 discovered), nothing at R+1's noon, told at R+1's gist by its owner, out at R+2's noon at its spot, Today's heard and pocket rows, entry 9 appended at the pickup, given back by keys (friendship, her thanks, no keepsake twice, the next tomorrow); every appended id has every v38 table entry with gs39 ids; reloads with lost.i 9 out, pocket and back keep the state (entries through 10, or 11); an again thing never fires TOLD_NEXT; found38Today and Today's pocket row for entry 15",
+   "name": "8. rounds: rotEntry39 pure for 7 to 40, round two one thing per neighbour, then the again round (an again entry with its base; the first cycle under <id>-a), never the same owner twice running, no again id of any cycle in TOLD_NEXT; round two's spots pass v38's check-2 rules and spec §4 (the guest patch, Aunty Bisi's route, reachable); the seventh back on day R: entry 8 set at R+1's new day (v39 discovered), nothing at R+1's noon, told at R+1's gist by its owner, out at R+2's noon at its spot, Today's heard and pocket rows, entry 9 appended at the pickup, given back by keys (friendship, her thanks, no keepsake twice, the next tomorrow); every appended id has every v38 table entry with gs39 ids; reloads with lost.i 9 out, pocket and back keep the state (entries through 10, or 11); an again thing never fires TOLD_NEXT; found38Today and Today's pocket row for entry 15; (fixer, Codex P2) for every entry 24 to 47 (the second and third cycles) the thing told at a gist is heard (heard that night, told 1), on Today the next morning, reminded once the evening after (told 2) and not again; a save from the build that repeated the -a ids (second cycle) loads with each return under its cycle id and last night's untracked tip recorded as heard, and reloads unchanged; every entry 0 to 60 has its own id, the first cycle <id>-a, cycle c <id>-a<c+1>",
    "passed": true,
    "info": {
     "spots": {
@@ -601,6 +601,82 @@
      "entry12": "cloth-a",
      "toldNext": false,
      "entry15": "tape-a"
+    },
+    "cycles": {
+     "entries": "24-47",
+     "ids": [
+      "tape-a2",
+      "pin-a2",
+      "cloth-a2",
+      "pins-a2",
+      "rule-a2",
+      "wrapper-a2",
+      "seeds-a2",
+      "pencil-a2",
+      "glasses-a2",
+      "chisel-a2",
+      "adapter-a2",
+      "lenscap-a2",
+      "rule-a3",
+      "wrapper-a3",
+      "pencil-a3",
+      "seeds-a3",
+      "chisel-a3",
+      "glasses-a3",
+      "lenscap-a3",
+      "adapter-a3",
+      "pin-a3",
+      "tape-a3",
+      "pins-a3",
+      "cloth-a3"
+     ]
+    },
+    "oldSave": {
+     "pocket26": {
+      "ret": [
+       "glasses",
+       "chisel",
+       "adapter",
+       "lenscap",
+       "wrapper",
+       "rule",
+       "seeds",
+       "pencil",
+       "tape",
+       "pin",
+       "cloth",
+       "pins",
+       "cloth-a",
+       "pins-a",
+       "pin-a",
+       "tape-a",
+       "pencil-a",
+       "seeds-a",
+       "rule-a",
+       "wrapper-a",
+       "lenscap-a",
+       "adapter-a",
+       "chisel-a",
+       "glasses-a",
+       "tape-a2",
+       "pin-a2"
+      ],
+      "tip": "cloth-a2",
+      "ownerTold": 229,
+      "id": "cloth-a2"
+     },
+     "out24": {
+      "lost": [
+       239,
+       1,
+       "new"
+      ],
+      "tip": "tape-a2"
+     }
+    },
+    "ids": {
+     "unique": 61,
+     "last": "lenscap-a5"
     }
    }
   },
@@ -762,16 +838,16 @@
    }
   },
   {
-   "name": "12. copy: every GIST39.LINES and BISI39.LINES line (ids unique and gs39-) and every UI string: no weekday, British spelling, curly apostrophes, no markup, at most 160 characters, only the placeholders thing, owner, area, where, name, fish, piece, dish and n, no digit or ₦ in speech but 1979; every round-two and again entry complete (7 to 30); the toasts, rows, panels and lines rendered in checks 4 to 9 under the same rules; (fixer) the again and give-back lines read right for all twelve things",
+   "name": "12. copy: every GIST39.LINES and BISI39.LINES line (ids unique and gs39-) and every UI string: no weekday, British spelling, curly apostrophes, no markup, at most 160 characters, only the placeholders thing, owner, area, where, name, fish, piece, dish and n, no digit or ₦ in speech but 1979; every round-two and again entry complete (7 to 30); the toasts, rows, panels and lines rendered in checks 4 to 9 under the same rules; (fixer) the again and give-back lines read right for all twelve things, in the first three cycles",
    "passed": true,
    "info": {
-    "again12": 36,
+    "again12": 108,
     "lines": {
      "speech": 132,
      "ids": 82,
      "ui": 71,
      "entries": 24,
-     "rendered": 166
+     "rendered": 646
     }
    }
   }
@@ -1016,6 +1092,24 @@
    "check": 4,
    "result": "red",
    "first": "never last night’s pair: {\"guests\":[\"tunde\",\"bassey\"],\"first\":false,\"ids\":[\"gs39-th-keep\",\"gs38-ba-o3\",\"gs38-lost-r\",\"gs38-back-r-bassey\",\"gs38-wash-tu\",\"gs39-pot-ba-g\",\"gs39-bi-tom1\",\"gs38-by-tu2\"],\"kinds\":[\"thank\",\"\",\"\",\"\",\"\",\"potask\",\"bisitom\",\"\"],\"slots\":2,\"opens\":[\"tunde\",\"bassey\",\"\",\"\",\"\",\"\",\"\",\"\"],\"tips\":[\"lost:remind:lenscap:tunde\",\"wash::wash:tunde\"],\"texts\":[\"Now your shelf has been to m"
+  },
+  {
+   "name": "M41 (Codex P2) every again cycle under the first cycle's -a ids",
+   "check": 8,
+   "result": "red",
+   "first": "entry 24 (tape-a): the tip heard"
+  },
+  {
+   "name": "M42 (Codex P2) a save's repeated -a ids left as they were",
+   "check": 8,
+   "result": "red",
+   "first": "each return under its cycle’s id"
+  },
+  {
+   "name": "M43 (Codex P2) the again noun read from a bare -a suffix",
+   "check": 12,
+   "result": "red",
+   "first": "the copy rules: [\"again: My tape-a2 has gone on tour again. Witho: a digit or ₦ in speech\",\"again: Tunde’s tape-a2 has gone walking again t: a digit or ₦ in speech\",\"again: Is that my tape-a2? I have been looking : a digit or ₦ in speech\",\"again: My pin-a2 has gone walking again. If you: a digit or ₦ in speech\",\"again: Mama Nkechi’s pin-a2 has gone walking ag: a digit or ₦ in speech\",\"again: Eh! M"
   }
  ],
  "withoutV39": {
@@ -1052,7 +1146,7 @@
  "subsets": {
   "lines": {
    "loads": true,
-   "v39Names": 158,
+   "v39Names": 161,
    "otherNew": [],
    "gone": [],
    "warn": 0,
@@ -1060,7 +1154,7 @@
   },
   "log": {
    "loads": true,
-   "v39Names": 158,
+   "v39Names": 161,
    "otherNew": [],
    "gone": [],
    "warn": 0,
@@ -1068,7 +1162,7 @@
   },
   "tune": {
    "loads": true,
-   "v39Names": 158,
+   "v39Names": 161,
    "otherNew": [],
    "gone": [],
    "warn": 0,

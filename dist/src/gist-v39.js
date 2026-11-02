@@ -239,7 +239,7 @@ function potTy39(day){return (gistHash39(day,7)>>>16)%2;}
 // the gist ask for tomorrow: Mr. Bassey's first one carries the setup (C4), then one of two by the day's hash (S5); [id, text]
 function potGistLine39(who,day,b){const P=GIST39.LINES.pot[who];if(P.gist0&&!(b&&b.potLast&&typeof b.potLast[who]==='number'))return P.gist0;return P.gist[(gistHash39(day,17)>>>16)%P.gist.length];}
 // (fixer, C1) the singular container noun for the shared again and give-back lines: "pair of glasses", "packet of seed", "tin of drawing pins"
-function againNoun39(id){const L=typeof GIST38!=='undefined'&&GIST38?GIST38.LINES:{},base=String(id).replace(/-a$/,''),r=GIST39.LINES.round[base];
+function againNoun39(id){const L=typeof GIST38!=='undefined'&&GIST38?GIST38.LINES:{},base=rotSrc39(id),r=GIST39.LINES.round[base];
  return (r&&r.pocket)||(L.pocketThing&&L.pocketThing[base])||(L.thing&&L.thing[base])||base;}
 // a pot line with {n} spoken ("two" or "three"), capitalised where it starts a sentence
 function potSay39(t,n){const w=['two','three'][n-2]||'two';return String(t).replace(/(^|[.!?]\s+)?\{n\}/g,(m,pre)=>pre!==undefined?pre+gistUp39(w):w);}
@@ -509,13 +509,21 @@ function rotCycle39(c){if(ROT39.cycles[c])return ROT39.cycles[c];const base=rotB
  const dfs=last=>{if(out.length===base.length)return true;for(const k of pref){if(used[k]||base[k].owner===last)continue;used[k]=true;out.push(k);if(dfs(base[k].owner))return true;used[k]=false;out.pop();}return false;};
  if(!dfs(prev)){out.length=0;for(const k of pref)out.push(k);}
  return (ROT39.cycles[c]=out);}
-// entry i (7 and on) of the lost things, pure: round two's five, then the again round's twelve to a cycle under "<id>-a"
+// (fixer, Codex P2) the again round's ids, one per cycle: the first cycle keeps "<id>-a" (a save already in it loads unchanged), cycle c from
+// the second on is "<id>-a<c+1>" ("tape-a2", "tape-a3" ...), so no id repeats. v38 finds a lost thing by its id (gistItem38, gistDone38's
+// heard and ownerTold, said.told for a return retold): a shared id found the first cycle's entry, and the later cycles' tips were never heard.
+function rotId39(src,c){return c>0?src+'-a'+(c+1):src+'-a';}
+// the source id of a lost thing (an entry, or an id): an again entry's base ("tape" for "tape-a" and "tape-a2"), else the id itself. The one
+// place an again id is read: an id is an again id only when its stem is one of the twelve and its suffix one rotId39 makes.
+function rotSrc39(x){if(x&&typeof x==='object'){if(x.v39==='again'&&x.base)return x.base;x=x.id;}const id=String(x),m=/^(.+)-a([2-9]|[1-9]\d+)?$/.exec(id);
+ return m&&gistOn39()&&FOUND38.LOST.length>=7&&rotBase39().some(e=>e.id===m[1])?m[1]:id;}
+// entry i (7 and on) of the lost things, pure: round two's five, then the again round's twelve to a cycle under rotId39's ids
 function rotEntry39(i){if(!(i>=7))return null;const R=GIST39.LINES.round,U=GIST39.UI;
  if(i<12){const id=GIST39.LINES.ROUND_ORDER[i-7],r=R[id];return {id,owner:r.owner,name:r.name,long:r.long,area:r.area,say:r.say,ownerKnown:true,spots:r.spots.map(s=>s.slice()),
    pickLabel:r.pickLabel,pickToast:r.pickToast,giveLabel:r.giveLabel,v39:'round'};}
  const c=Math.floor((i-12)/12),j=(i-12)%12,base=rotBase39(),k=rotCycle39(c)[j],src=base[k];
  const o=k<7?FOUND38.LOST[k]:Object.assign({id:src.id},R[src.id]);
- return {id:src.id+'-a',owner:o.owner,name:o.name,long:o.long,area:o.area,say:o.say,ownerKnown:true,spots:o.spots.map(s=>s.slice()),pickLabel:o.pickLabel,
+ return {id:rotId39(src.id,c),owner:o.owner,name:o.name,long:o.long,area:o.area,say:o.say,ownerKnown:true,spots:o.spots.map(s=>s.slice()),pickLabel:o.pickLabel,
   pickToast:gistUp39(gistFill39(U.againPick,{thing:o.long,owner:gistNm39(o.owner)})),giveLabel:o.giveLabel,v39:'again',base:src.id};}
 // the words for entry e in v38's tables (only where absent), remembered so a new household can take them out again
 function rotWords39(e){const L=GIST38.LINES,U=GIST38.UI,F=FOUND38,R=GIST39.LINES,set=(o,k,v,tag)=>{if(o&&!(k in o)){o[k]=v;GIST39.added.push([tag,k]);}};
@@ -532,7 +540,21 @@ function rotAppend39(i){const F=FOUND38;if(F.LOST.length!==i)return false;const 
 // a table left longer by another household is cut back to what this one needs
 function rotEnsure39(){if(!gistOn39())return;const F=FOUND38,G=typeof S!=='undefined'&&S&&S.p&&S.life&&S.life.gist38&&typeof gistSave38==='function'?gistSave38():null;
  let need=7;if(G&&G.lost&&(G.lost.i|0)>=7)need=(G.lost.i|0)+(G.lost.status==='out'?1:2);
- while(F.LOST.length>need&&F.LOST.length>7)F.LOST.pop();for(let i=F.LOST.length;i<need;i++)if(!rotAppend39(i))break;}
+ while(F.LOST.length>need&&F.LOST.length>7)F.LOST.pop();for(let i=F.LOST.length;i<need;i++)if(!rotAppend39(i))break;
+ if(G&&(G.lost.i|0)>=12)rotMigrate39(G);}
+// (fixer, Codex P2) a save from a build that gave every again cycle the first cycle's ids ("tape-a" again in the second): the later returns of
+// an id take their cycle's id (its n-th return is cycle n), the pickup record and last night's tips about the thing out now take its new id,
+// and a tip about it that the old build failed to record as heard is recorded now (heard that night, told once; the owner told, for the
+// pocket). Nothing changes for a save made by this build: no repeated id, nothing under an old id.
+function rotMigrate39(G){const F=FOUND38,seen={};
+ if(Array.isArray(G.returned))for(const r of G.returned){if(!r||typeof r.id!=='string')continue;const src=rotSrc39(r.id);if(src===r.id||r.id!==rotId39(src,0)){continue;}
+  const n=seen[r.id]=(seen[r.id]|0)+1;if(n>1)r.id=rotId39(src,n-1);}
+ const L=G.lost,it=F.LOST[L.i|0];if(!it||it.v39!=='again')return;const old=rotId39(it.base,0);if(old===it.id)return;
+ const b=gistB39();if(b&&b.picked&&b.picked.id===old&&L.status==='pocket')b.picked.id=it.id;
+ const last=G.last;if(!last||!Array.isArray(last.tips))return;
+ for(const t of last.tips){if(!t||t.arg!==old)continue;t.arg=it.id;if(!(last.day>=(L.since|0)-1))continue;
+  if(t.kind==='lost'&&L.status==='out'&&!((L.heard|0)>0)){L.heard=last.day;L.told=Math.max(1,L.told|0);L.heardMode=t.mode||'new';delete L.heardBy;}
+  else if(t.kind==='pocket'&&L.status==='pocket'&&!((L.ownerTold|0)>0))L.ownerTold=last.day;}}
 // a new household: round two's entries and words out of v38's tables
 function rotReset39(){if(!gistOn39())return;const F=FOUND38;while(F.LOST.length>7)F.LOST.pop();
  const T={thing:GIST38.LINES.thing,pocketThing:GIST38.LINES.pocketThing,lost:GIST38.LINES.lost,told:GIST38.LINES.told,back:GIST38.LINES.back,heardLost:GIST38.UI.heardLost,recapLost:GIST38.UI.recapLost,ty:F.SPEECH.ty};
@@ -544,7 +566,7 @@ function rotStart39(G){const F=FOUND38;if(!G||!G.lost||G.lost.i!==6||G.lost.stat
  if(!rotAppend39(7))return false;G.lost={i:7,since:S.day+GIST39.ROUND2_GAP-1,at:F.LOST_AT,status:'out',heard:0,told:0,ownerTold:0};gistSave39(true);return true;}
 // meshes for round two's things (v38's found38BuildItem builds them inside quiet38); an "again" id draws its original
 if(gistOn39()&&typeof found38ItemMesh==='function'){const prevItemMesh39=found38ItemMesh;found38ItemMesh=function(it){
- if(!it||!it.id)return prevItemMesh39.apply(this,arguments);const id=it.base||String(it.id).replace(/-a$/,'');
+ if(!it||!it.id)return prevItemMesh39.apply(this,arguments);const id=rotSrc39(it);
  if(!GIST39.LINES.round[id])return id===it.id?prevItemMesh39.apply(this,arguments):prevItemMesh39.call(this,Object.assign({},it,{id}));
  const g=new THREE.Group();g.name='found38_'+it.id;const k=new THREE.Group();g.add(k);
  if(id==='pencil'){const b=found38Cyl(k,0.007,0.1,'#E8C23A',0,0.007,0,8);b.rotation.z=Math.PI/2;const t=found38Cone(k,0.007,0.02,'#D9B98C',0.06,0.007,0);t.rotation.z=-Math.PI/2;found38Cyl(k,0.0075,0.012,'#C8553D',-0.056,0.007,0,8).rotation.z=Math.PI/2;}
