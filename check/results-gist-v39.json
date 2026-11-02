@@ -1,0 +1,1079 @@
+{
+ "build": "v39-97785cdc",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. inert: (a) on day 3 at 10:00 before v38 is discovered the save, the keys of S and S.life, 600 frames of cameras and prompts, the Menu and Today are as without v39; TICK_HOOKS 17, cue hooks 2, the audio recipes, LINES35, WHEN35, DAYS35.rows, FINDS34 and the pinned sources unchanged; a household past its v35 evening with v38 undiscovered gets no Bisi at 17:20; (b) on day 5 with v38 discovered by a pickup and no v39 trigger, from 07:30 to the end of the gist the save, Today, the plan, the talk lines and the gist lines are as without v39 (only her figure, bubbles and prompts differ, between 16:54 and 18:10); no G.b39, no v39 log line, no wait for her anywhere",
+   "passed": true,
+   "info": {
+    "pins": {
+     "tick": 17,
+     "cue": 2,
+     "recipes": [
+      "cast",
+      "nibble",
+      "bite",
+      "catch",
+      "water"
+     ],
+     "talk": [
+      42,
+      41,
+      41
+     ],
+     "evening": [
+      4,
+      4,
+      4
+     ],
+     "short": 15,
+     "text": 58,
+     "when": 31,
+     "rows": 12,
+     "finds": 15,
+     "src": [
+      true,
+      true,
+      true,
+      true,
+      true
+     ]
+    },
+    "beforeV38": {
+     "day": 4,
+     "from": "16:51",
+     "to": "17:51",
+     "bisi": false
+    },
+    "dayFive": {
+     "seen": true,
+     "b39": false,
+     "log": "none"
+    },
+    "waits": "none before discovery",
+    "withoutV39": {
+     "dayThree": "dc33032b:14217",
+     "dayFive": "f5944db1:35955"
+    }
+   }
+  },
+  {
+   "name": "2. bisi-walk: bisiDay39 pure, true on the first gist evening, never false two days running over days 4-60, the alternative rule false only on days 2, 9, 16 ...; a non-regular evening: nothing at 16:53, in from the gate, the stroll as a triangle wave in S.time, out from 17:50, hidden by 18:10; a regular: at her stop at 17:00, one call, out from 18:00; the call from the rail: she walks to (-4.0, 7.55) and stops calling; frozen for 300 frames under a panel; jumps to 17:00, 17:30, 18:00, 18:12, 18:15 and +0.15 h snap or hide her; none on the v35 evening's day, online, at a party; hidden on Sleep, enterWorld, a new household; the route clear at r 0.3 and her stroll and stop off the walker lanes; her bubbles one sprite per text, never in the base's bubbles, gone when she hides; no wall-clock read; (fixer) an evening off in the five after her first; the street-side buy beats the suya stand; her bubbles drawn inside each camera's half on both phones; her call on the HUD for a player who cannot see her; (polish) a speaker's new line replaces that speaker's live bubble; no bubble for a camera that cannot see the speaker, and the HUD chip agrees with it",
+   "passed": true,
+   "info": {
+    "route": {
+     "lines": 37,
+     "westEnd": 5.6,
+     "railReach": [
+      -5.1,
+      -2.95
+     ],
+     "railFree": true
+    },
+    "days": {
+     "missing": [
+      7,
+      12,
+      19,
+      27,
+      35,
+      43,
+      46,
+      51,
+      54,
+      59
+     ],
+     "alternative": [
+      2,
+      9,
+      16
+     ],
+     "offFlag": [
+      5,
+      7,
+      12,
+      19
+     ]
+    },
+    "chip": {
+     "samples": 10,
+     "shown": 10
+    },
+    "clamp": {
+     "cases": 16,
+     "outsideUnclamped": 16
+    },
+    "unseen": {
+     "stub": 6,
+     "agree": 30,
+     "hidden": 12
+    },
+    "nonRegular": {
+     "day": 5,
+     "in": "16:54",
+     "stroll": 7,
+     "out": "17:50",
+     "gone": "18:10"
+    },
+    "street": {
+     "at": [
+      -3.2,
+      9.9
+     ],
+     "her": 1.762
+    },
+    "replace": {
+     "speaker": "bisi",
+     "live": 1
+    },
+    "call": {
+     "rail": [
+      -4,
+      7.55
+     ],
+     "frozen": 300,
+     "calls": "stopped"
+    },
+    "jumps": [
+     "17:00",
+     "17:30",
+     "+0.15 h",
+     "18:00",
+     "18:12",
+     "18:15"
+    ],
+    "regular": {
+     "stop": "17:00",
+     "calls": 1,
+     "out": "18:00"
+    }
+   }
+  },
+  {
+   "name": "3. bisi-buy: the call zone (x -4.9 to -3.1 on the rail, standing only); during the stroll the buy prompt only from the street side; at her stop within 2.4 m from the rail and not at 2.5 m; south of her Mallam's prompt wins at equal distance; the panel with one primary before and after a sale; ₦500 and buy puffpuff39; one of each; the toasts; cheer and energy; no game time; a regular bought from at the rail stands at the rail spot during the panel and walks back after; Help her lift the tray (the pose, her bubble, bisi lift); the taste with ₦400 (once, no credit); jara on the third evening; the bag carried to the pitch and given (beats Play; not in a live match); the bag gone when the children go in, with its toast; the Finds tip names tomorrow's piece (the armchair first) and pays off the next day only; Wait for Aunty Bisi on Today and the bench lands at 17:00, offered only before 17:00 and after discovery; (fixer) the call and a regular's buy beat the pepper pot anywhere in front of the walkway; her line in her heading with a plain toast; after a sale or the taste an item the purse cannot pay for shows no price and gives no taste; the lift above the items; the tray lowered and lifted with the players' hands; the bag offered after the children went in while their window is open, kept through a reload, and given on walking back; the payoff with a companion beside you",
+   "passed": true,
+   "info": {
+    "tip": {
+     "day": 4,
+     "piece": "armchair"
+    },
+    "sale": {
+     "money": -1000,
+     "toast": true,
+     "lift": true
+    },
+    "payoff": "Woven armchair is in Build storage. Aunty Bisi was right about the armchair.",
+    "bag": {
+     "given": true
+    },
+    "regular": {
+     "reach": "2.4 m",
+     "jara": true,
+     "bagGone": true
+    },
+    "waits": {
+     "today": "17:00",
+     "bench": "17:00"
+    },
+    "payoffOtherDay": "Woven armchair is in Build storage.",
+    "bagWalkedHome": {
+     "offered": true,
+     "reload": true,
+     "given": true
+    },
+    "payoffCompanion": "Woven armchair is in Build storage. Aunty Bisi was right about the armchair. Ola: “That one is correct. The flat will thank us.”"
+   }
+  },
+  {
+   "name": "4. thanks: a set completed with the shelf up brings its patron to the next gist (the shells Ada, the keepsakes Tunde, the carvings Mr. Bassey with Ada beside him on days 12, 14 and 15) through one narrowed call of v38's own plan (the rest of the script is v38's for the narrowed pair), the patron's greeting swapped for the thank-you (on the carvings night Ada's too), no slot taken, GIST38.GUESTS and found38Today put back, the plan pure; on a plain night the kept guest is the one not in last night's pair; never last night's pair; deferred while both guests have roles and on the first gist; none without the shelf; once per set; friendship +1, thanks set:, v39 discovered; Mr. Bassey's photograph the next morning (the album memory, the caption in Node) and the print the morning after, in its own group outside the shelf",
+   "passed": true,
+   "info": {
+    "shells": {
+     "day": 7,
+     "v38": [
+      "oyelaran",
+      "bassey"
+     ],
+     "forced": [
+      "ada",
+      "bassey"
+     ],
+     "kept": "bassey"
+    },
+    "shellsGist": {
+     "shown": 6,
+     "once": true
+    },
+    "carve": {
+     "12": {
+      "v38": [
+       "tunde",
+       "nkechi"
+      ],
+      "forced": [
+       "ada",
+       "bassey"
+      ]
+     },
+     "14": {
+      "v38": [
+       "oyelaran",
+       "ada"
+      ],
+      "forced": [
+       "ada",
+       "bassey"
+      ]
+     },
+     "15": {
+      "v38": [
+       "tunde",
+       "oyelaran"
+      ],
+      "forced": [
+       "bassey",
+       "ada"
+      ]
+     }
+    },
+    "photo": {
+     "taken": "next morning",
+     "print": "the morning after",
+     "items": 16
+    },
+    "keepsake": {
+     "deferred": 18,
+     "forced": 19,
+     "guests": [
+      "tunde",
+      "bassey"
+     ]
+    },
+    "noRepeat": {
+     "last": [
+      "bassey",
+      "tunde"
+     ],
+     "tonight": [
+      "oyelaran",
+      "bassey"
+     ],
+     "why": "the pair came last night"
+    },
+    "deferrals": {
+     "firstGist": true,
+     "noShelf": true
+    }
+   }
+  },
+  {
+   "name": "5. give-back: a thing held through an earlier gist brings its owner (forced in, the pocket hidden for the one call): the beat line with \"Give it back\", v38's own thanks planned right after it, before the goodbye, one slot; on Next found38Give does the return (back, returned, the keepsake on a first return, the next thing tomorrow, TOLD_NEXT, the logs, friendship) with openPanel, found38Visiting and save put back, no save() between the beat and Goodnight and one at Goodnight, the keepsake toast with its shelf hint; Ada's ask booked on that night and G.last.ids the lines shown; a thing picked up that day: no owner; an abort before the beat: still in the pocket; (fixer) only the shelf hint toasted over the planned thanks; a full day log still gives the give-back",
+   "passed": true,
+   "info": {
+    "giveBack": {
+     "day": 5,
+     "guests": [
+      "nkechi",
+      "ada"
+     ],
+     "beat": "gs39-gb-nkechi",
+     "thanks": 2,
+     "saves": [
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      0,
+      1
+     ],
+     "keepsake": "fan",
+     "told": "chisel",
+     "adaAsk": "croaker"
+    },
+    "picked": "no owner the same night",
+    "abort": "still in the pocket"
+   }
+  },
+  {
+   "name": "6. stool: the eldest by ELDEST (Mr. Bassey, Mrs. Oyelaran before Mama Nkechi, none with Tunde and Ada); Ada's tenth stool the morning after her \"nine times\" line; the first gist with Mr. Bassey: his line right after his greeting, the greeting's button \"Bring the stool for Mr. Bassey\", the reach pose over the rail, seated on the 0.45 m stool at his spot (hips above 0.45 m), the stool's yaw his, the household and the other guest standing; framing at 1280x800, 390x844 and 844x390 no worse seated than standing; Goodnight: he stands and the stool goes back over the rail; the next gist: seated as they arrive, no line, no button; unseated with the stool gone on a direct abort, a new day, walking out, a party and going online; (fixer) no pot ask on an elder's first stool night",
+   "passed": true,
+   "info": {
+    "eldest": {
+     "oyelaranNkechi": "oyelaran",
+     "tundeAda": null,
+     "basseyOyelaran": "bassey"
+    },
+    "first": {
+     "day": 6,
+     "button": "Bring the stool for Mr. Bassey",
+     "reach": {
+      "fwd": 0.42,
+      "y": 1.16
+     },
+     "hips": 0.551,
+     "framing": {
+      "1280x800": {
+       "seated": {
+        "fits": [
+         true,
+         true
+        ],
+        "over": 0
+       },
+       "standing": {
+        "fits": [
+         true,
+         true
+        ],
+        "over": 0
+       }
+      },
+      "390x844": {
+       "seated": {
+        "fits": [
+         false,
+         false
+        ],
+        "over": 0
+       },
+       "standing": {
+        "fits": [
+         false,
+         false
+        ],
+        "over": 0
+       }
+      },
+      "844x390": {
+       "seated": {
+        "fits": [
+         false,
+         false
+        ],
+        "over": 0
+       },
+       "standing": {
+        "fits": [
+         false,
+         false
+        ],
+        "over": 0
+       }
+      }
+     }
+    },
+    "second": {
+     "day": 7,
+     "seated": true,
+     "lines": 7
+    },
+    "aborts": [
+     "direct",
+     "nextday",
+     "walkedOut",
+     "party",
+     "online"
+    ]
+   }
+  },
+  {
+   "name": "7. interplay: on her evening the gist due at 18:15 on a day with no match starts by 18:16, after a match at 18:20; the sofa's 18:12 then the gist by 18:16; bench36Wait {t:18.25} and gist38Wait land at 18:15; she is never visible while EVENING35 is not idle (?gist=now at 17:30 hides her), and hidden by 18:10; at most two v39 lines in any gist; the bench page keeps v38's strings; (fixer) no save() by v39 while a gist runs, the bag's toast after Goodnight",
+   "passed": true,
+   "info": {
+    "gist": {
+     "noMatch": "by 18:16",
+     "match": "18:20",
+     "sofa": "by 18:16",
+     "waits": "18:15",
+     "gistNow": "hidden"
+    },
+    "bagInGist": {
+     "saves": 0,
+     "toast": true
+    }
+   }
+  },
+  {
+   "name": "8. rounds: rotEntry39 pure for 7 to 40, round two one thing per neighbour, then the again round under -a ids, never the same owner twice running, no -a id in TOLD_NEXT; round two's spots pass v38's check-2 rules and spec §4 (the guest patch, Aunty Bisi's route, reachable); the seventh back on day R: entry 8 set at R+1's new day (v39 discovered), nothing at R+1's noon, told at R+1's gist by its owner, out at R+2's noon at its spot, Today's heard and pocket rows, entry 9 appended at the pickup, given back by keys (friendship, her thanks, no keepsake twice, the next tomorrow); every appended id has every v38 table entry with gs39 ids; reloads with lost.i 9 out, pocket and back keep the state (entries through 10, or 11); an again thing never fires TOLD_NEXT; found38Today and Today's pocket row for entry 15",
+   "passed": true,
+   "info": {
+    "spots": {
+     "pencil": [
+      [
+       -3,
+       -14,
+       3.23,
+       21.57,
+       59.4
+      ],
+      [
+       -2,
+       -13.5,
+       4.35,
+       21.14,
+       60.2
+      ],
+      [
+       1,
+       -14,
+       3.83,
+       22.12,
+       58
+      ],
+      [
+       -2.5,
+       -12,
+       4.74,
+       19.61,
+       59.1
+      ]
+     ],
+     "tape": [
+      [
+       -16,
+       -2,
+       4.39,
+       14.72,
+       42
+      ],
+      [
+       -17,
+       0,
+       2.98,
+       14.09,
+       41.6
+      ],
+      [
+       -18,
+       0,
+       3.7,
+       14.88,
+       42
+      ],
+      [
+       -16,
+       0,
+       2.47,
+       13.32,
+       40.6
+      ],
+      [
+       -15.5,
+       -1,
+       3.32,
+       13.65,
+       40.8
+      ]
+     ],
+     "pin": [
+      [
+       13,
+       -1,
+       2.73,
+       13.91,
+       36.3
+      ],
+      [
+       13,
+       1,
+       2.73,
+       12.45,
+       34.3
+      ],
+      [
+       14,
+       0,
+       2.58,
+       13.86,
+       35.8
+      ],
+      [
+       17,
+       0,
+       2.58,
+       16.16,
+       37.9
+      ],
+      [
+       18,
+       0,
+       2.33,
+       16.98,
+       38.9
+      ]
+     ],
+     "cloth": [
+      [
+       -12,
+       12,
+       7.75,
+       6.8,
+       34.1
+      ],
+      [
+       -13,
+       13,
+       8.28,
+       8.16,
+       35.6
+      ],
+      [
+       -12,
+       14,
+       9.04,
+       7.94,
+       35
+      ],
+      [
+       -11,
+       13,
+       8.2,
+       6.53,
+       33.6
+      ],
+      [
+       -14,
+       12,
+       6.88,
+       8.62,
+       36.1
+      ]
+     ],
+     "pins": [
+      [
+       -0.5,
+       -2.5,
+       3.04,
+       10.64,
+       11.3
+      ],
+      [
+       -1.5,
+       -1.5,
+       4.27,
+       9.39,
+       9.9
+      ],
+      [
+       0.5,
+       -1,
+       4.53,
+       9.66,
+       10.2
+      ],
+      [
+       1.5,
+       -1,
+       4.74,
+       9.81,
+       11.2
+      ]
+     ]
+    },
+    "roundTwo": {
+     "R": 8,
+     "out": 10,
+     "told": 9,
+     "spot": [
+      1,
+      -14
+     ],
+     "next": 11
+    },
+    "reload": {
+     "out": {
+      "same": true,
+      "len": 10
+     },
+     "pocket": {
+      "same": true,
+      "len": 11
+     },
+     "back": {
+      "same": true,
+      "len": 11
+     }
+    },
+    "again": {
+     "entry12": "cloth-a",
+     "toldNext": false,
+     "entry15": "tape-a"
+    }
+   }
+  },
+  {
+   "name": "9. pot: no ask before v39 discovery; the ask in Mama Nkechi's talk (today, n by hash, the number as words), recorded with the log; never Mrs. Oyelaran; Today's row; no catch-card button before 14:00, from 14:00 a quiet one (one primary) through lifeCatch release, none once all are kept; \"Give Mama Nkechi the fish\" at her live place, her thanks, friendship +1, the bowl at six with cheer +4 and energy +6; not the same asker two days running; at a gist with Mr. Bassey the ask for tomorrow before the goodbye with \"Ehen?\", recorded only when shown, told on the night page, pending; Ada's and the pot's buttons together; the give prompt gone and the pot lapsed after half past five, no bowl; Today's cap: a five-row v38 day with the pot and Bisi rows drops Bisi's, then the wait (and the shelf on a phone), never the pot; (fixer) Aunty Bisi's sentence folded into the evening row and never dropped, on an evening off too; counts, thanks and gist asks by the hash's high bits; Mr. Bassey's ask in his morning talk",
+   "passed": true,
+   "info": {
+    "talk": {
+     "day": 5,
+     "n": 2,
+     "kept": 2,
+     "bowl": "18:00"
+    },
+    "together": "croaker",
+    "gist": {
+     "day": 6,
+     "n": 3,
+     "lapsed": true
+    },
+    "cap": {
+     "desk": [
+      "lost",
+      "wash",
+      "carve",
+      "bisi",
+      "pot"
+     ],
+     "phone": [
+      "lost",
+      "wash",
+      "bisi",
+      "pot"
+     ]
+    },
+    "capOff": {
+     "day": 12,
+     "desk": [
+      "lost",
+      "wash",
+      "carve",
+      "bisi",
+      "shelf"
+     ],
+     "phone": [
+      "lost",
+      "wash",
+      "carve",
+      "bisi"
+     ]
+    },
+    "hash": [
+     [
+      2,
+      2,
+      2
+     ],
+     [
+      2,
+      2,
+      2
+     ]
+    ],
+    "basseyTalk": {
+     "day": 13,
+     "n": 2
+    }
+   }
+  },
+  {
+   "name": "10. save-modes-and-cost: v35, v36, v37 and v38 saves load, run 60 frames and save with the keys of S and S.life unchanged and no G.b39; a v39 save loads and plays in the v38 build (a copy without the v39 tags); stripState has no life.gist38; online no v39 object, offline back; no v39 object after newgame, newconfirm, an enterWorld into day 2 and going online (bubbles and the bag included), and the scene count as without v39; no Math.random call inside her builds (hero and lite), her bubbles and the bag; no wall-clock or Math.random read by seller-v39.js; an inert frame and a frame with her in the street: no blocked() or levelAt() call, no new object",
+   "passed": true,
+   "info": {
+    "saves": [
+     "v35",
+     "v36",
+     "v37",
+     "v38"
+    ],
+    "v38build": {
+     "error": null,
+     "v39": false,
+     "b39": true,
+     "day": 4
+    },
+    "teardown": [
+     "newconfirm",
+     "newgame",
+     "enterWorld day 2",
+     "online"
+    ],
+    "quiet": {
+     "hero": 0,
+     "lite": 0,
+     "rebuild": 0,
+     "bag": 0
+    },
+    "cost": {
+     "inert": "0 blocked, 0 levelAt, 0 objects over 600 frames",
+     "street": "0 blocked, 0 levelAt",
+     "steps": true
+    },
+    "sceneCount": {
+     "objects": 2080,
+     "sameAsWithout": true
+    }
+   }
+  },
+  {
+   "name": "11. walk-and-shelf: the household walks to the rail (the walk clip on at least 90% of the glide frames for each player gliding), from inside the flat by the door (a sample at x -4.1 between z 5.0 and 6.4), to the very spots v38 chose (to 1 mm, and as without v39); the path round the furniture (cut item 3, built): planned for each player starting inside, and for 33 free starts in a default flat clear at r 0.3 to the door; the shelf picture (cut item 2, built): null in Node, rendered once into its own target with the previous one put back, cached, shown above the lists in See your shelf",
+   "passed": true,
+   "info": {
+    "walk": {
+     "frames": {
+      "0": 41,
+      "1": 30
+     },
+     "walking": {
+      "0": 40,
+      "1": 29
+     },
+     "door": true,
+     "spots": "as v38 chose",
+     "planned": {
+      "0": true,
+      "1": true
+     }
+    },
+    "paths": {
+     "starts": 33,
+     "clear": true,
+     "longest": 4.34
+    },
+    "shot": {
+     "node": null,
+     "rendered": 1,
+     "restored": true,
+     "cached": true,
+     "camera": [
+      -7.1,
+      2.27,
+      3.59
+     ],
+     "panel": true
+    },
+    "withoutV39": {
+     "rail": [
+      [
+       "0",
+       -5.55,
+       6.4
+      ],
+      [
+       "1",
+       -4.65,
+       6.4
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "12. copy: every GIST39.LINES and BISI39.LINES line (ids unique and gs39-) and every UI string: no weekday, British spelling, curly apostrophes, no markup, at most 160 characters, only the placeholders thing, owner, area, where, name, fish, piece, dish and n, no digit or ₦ in speech but 1979; every round-two and again entry complete (7 to 30); the toasts, rows, panels and lines rendered in checks 4 to 9 under the same rules; (fixer) the again and give-back lines read right for all twelve things",
+   "passed": true,
+   "info": {
+    "again12": 36,
+    "lines": {
+     "speech": 132,
+     "ids": 82,
+     "ui": 71,
+     "entries": 24,
+     "rendered": 166
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 gistSave39(true) without a trigger (in the step)",
+   "check": 1,
+   "result": "red",
+   "first": "no G.b39"
+  },
+  {
+   "name": "M2 Bisi spawns without S.life.gist38 (with M2b the second half of M2)",
+   "check": 1,
+   "result": "red",
+   "first": "no Bisi before v38 is discovered"
+  },
+  {
+   "name": "M3 Bisi walks to the rail spot while a panel is open",
+   "check": 2,
+   "result": "red",
+   "first": "frozen for 300 frames under a panel: [{\"vis\":true,\"x\":-2.195,\"z\":8.603,\"phase\":\"stop\",\"mode\":\"walk\",\"atRail\":true,\"held\":true,\"calls\":2,\"t\":17.14111},{\"vis\":true,\"x\":-4,\"z\":7.55,\"phase\":\"stop\",\"mode\":\"stay\",\"atRail\":true,\"held\":true,\"calls\":2,\"t\":17.14111}]"
+  },
+  {
+   "name": "M4 Bisi hidden at 18:20 instead of 18:10",
+   "check": 7,
+   "result": "red",
+   "first": "her phase at 18:10: off"
+  },
+  {
+   "name": "M5 Bisi's avatar built outside quiet39",
+   "check": 10,
+   "result": "red",
+   "first": "Math.random calls in her builds [hero, lite, rebuild, bubbles and bag]"
+  },
+  {
+   "name": "M14 the empty purse refused",
+   "check": 3,
+   "result": "red",
+   "first": "the taste"
+  },
+  {
+   "name": "M15 the walking glide's final spot moved by 0.1 m",
+   "check": 11,
+   "result": "red",
+   "first": "player 0 on gistRailSpots38's spot: [[-5.450000000000001,6.4],[-5.550000000000001,6.4]]"
+  },
+  {
+   "name": "M16 shelfShot39 leaves the previous render target unrestored",
+   "check": 11,
+   "result": "red",
+   "first": "rendered once into its own target, read back, the previous target put back"
+  },
+  {
+   "name": "M19 bisiBubble39 timed on performance.now()",
+   "check": 10,
+   "result": "red",
+   "first": "direct reads [performance.now, Date.now, Math.random]"
+  },
+  {
+   "name": "M21 (S17) no evening off guaranteed in her first week",
+   "check": 2,
+   "result": "red",
+   "first": "bisiDay39(7)"
+  },
+  {
+   "name": "M22 (S1) the street-side buy has no lead over the suya stand",
+   "check": 2,
+   "result": "red",
+   "first": "the street buy beats the suya stand: [\"suya\",\"bisi39buy\"]"
+  },
+  {
+   "name": "M23 (I4, S14) bubbles not clamped into their half",
+   "check": 2,
+   "result": "red",
+   "first": "(fixer, I4) every bubble inside its camera's half: [{\"w\":844,\"i\":0,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":0,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":0,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":0,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":1,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":1,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":1,\"raw\":true,\"ok\":false},{\"w\":844,\"i\":1,\"raw\":true,\"ok\":false},{\"w\":390,\"i\":0,\"raw\":true,\"ok\":false},{\"w\":3"
+  },
+  {
+   "name": "M24 (S4) no call chip on the HUD",
+   "check": 2,
+   "result": "red",
+   "first": "(fixer, S4) her call on the HUD for a player who cannot see her: {\"want\":10,\"shown\":0}"
+  },
+  {
+   "name": "M25 (S1) the call at its old distance, under the pepper pot's prompt",
+   "check": 3,
+   "result": "red",
+   "first": "the call beats the pepper pot at (-4.7, 6.6): [\"garden34\",\"bisi39call\"]"
+  },
+  {
+   "name": "M26 (DOD-9, C3) the taste again after a purchase",
+   "check": 3,
+   "result": "red",
+   "first": "no taste after a purchase"
+  },
+  {
+   "name": "M27 (S3) the bag only while the children are out this minute",
+   "check": 3,
+   "result": "red",
+   "first": "(fixer, S3) the bag offered after they went in, their window still open: [\"puffpuff\",\"groundnut\",\"bisi39Close\"]"
+  },
+  {
+   "name": "M28 (DOD-6) the bag not rebuilt after a reload",
+   "check": 3,
+   "result": "red",
+   "first": "(fixer, DOD-6) the bag back in hand after a reload"
+  },
+  {
+   "name": "M29 (DOD-4) the payoff only at the end of the toast",
+   "check": 3,
+   "result": "red",
+   "first": "(fixer, DOD-4) the payoff with the companion beside you: Woven armchair is in Build storage. Ola: “That one is correct. The flat will thank us.”"
+  },
+  {
+   "name": "M38 (polish) a speaker's new line drawn over their live one",
+   "check": 2,
+   "result": "red",
+   "first": "(polish) one bubble of hers visible and live after her second line"
+  },
+  {
+   "name": "M39 (polish) a bubble drawn for a speaker the camera cannot see",
+   "check": 2,
+   "result": "red",
+   "first": "(polish) no bubble for a speaker outside the frame by more than the margin or behind the camera: {\"0\":{\"shown\":true,\"x\":0},\"1.05\":{\"shown\":true,\"x\":0.888},\"-1.05\":{\"shown\":true,\"x\":-0.888},\"1.3\":{\"shown\":true,\"x\":0.888},\"-1.3\":{\"shown\":true,\"x\":-0.888},\"behind\":true}"
+  },
+  {
+   "name": "M40 (polish) the HUD chip's own edge test, without the bubble's margin",
+   "check": 2,
+   "result": "red",
+   "first": "(polish) the HUD chip's \"cannot see her\" agrees with the bubble's margin"
+  },
+  {
+   "name": "M30 (DOD-8) the bag's end saved during a gist",
+   "check": 7,
+   "result": "red",
+   "first": "(fixer, DOD-8) no save() by v39 while the visit runs"
+  },
+  {
+   "name": "M6 the plan wrapper rebuilds the script instead of calling the original",
+   "check": 4,
+   "result": "red",
+   "first": "the rest is v38’s own script for the narrowed pair"
+  },
+  {
+   "name": "M7 GIST38.GUESTS not restored in finally",
+   "check": 4,
+   "result": "red",
+   "first": "shells: the plan is pure and puts GIST38.GUESTS and found38Today back"
+  },
+  {
+   "name": "M8 the thank-you ignores shelf.state==='up'",
+   "check": 4,
+   "result": "red",
+   "first": "no thank-you without a shelf: [\"gs39-th-keep\",\"gs38-ba-o3\",\"gs38-lost-r\",\"gs38-back-r-bassey\",\"gs38-wash-tu\",\"gs39-pot-ba-g\",\"gs39-bi-tom1\",\"gs38-by-tu2\"]"
+  },
+  {
+   "name": "M9 the give-back allowed on the first gist after the pickup",
+   "check": 5,
+   "result": "red",
+   "first": "picked up today: Ada is not invited: [\"tunde\",\"ada\"]"
+  },
+  {
+   "name": "M10 found38Visiting not restored after the give-back",
+   "check": 5,
+   "result": "red",
+   "first": "openPanel, found38Visiting and save put back"
+  },
+  {
+   "name": "M11 the stool not removed on abort",
+   "check": 6,
+   "result": "red",
+   "first": "unseated, the stool gone (direct)"
+  },
+  {
+   "name": "M12 round two's first thing at R+1",
+   "check": 8,
+   "result": "red",
+   "first": "R+1: entry 8 for R+2"
+  },
+  {
+   "name": "M13 the pot accepts fish caught before 14:00",
+   "check": 9,
+   "result": "red",
+   "first": "no pot button before 14:00 (13.95)"
+  },
+  {
+   "name": "M17 the give-back calls found38Give without holding off save",
+   "check": 5,
+   "result": "red",
+   "first": "no save() inside the beat’s Next"
+  },
+  {
+   "name": "M18 Today drops the pot row before the shelf and carve rows",
+   "check": 9,
+   "result": "red",
+   "first": "1280: Aunty Bisi in the evening row, the shelf dropped, the pot kept: [\"lost\",\"wash\",\"carve\",\"bisi\",\"shelf\"]"
+  },
+  {
+   "name": "M31 (DOD-1, C5, S2) Today drops Aunty Bisi's sentence first",
+   "check": 9,
+   "result": "red",
+   "first": "1280: Aunty Bisi in the evening row, the shelf dropped, the pot kept: [\"lost\",\"wash\",\"carve\",\"shelf\",\"pot\"]"
+  },
+  {
+   "name": "M32 (DOD-2, I1, S6) Mr. Bassey never asks in his talk",
+   "check": 9,
+   "result": "red",
+   "first": "his ask in his talk:  Mr. Bassey  Retired photographer, learning to host workshops.   Mr. Bassey Good afternoon. Okon Bassey. Thirty-one years of weddings and three presidents. Now I teach, slowly.   Later  "
+  },
+  {
+   "name": "M33 (S5) the pot's count follows the day's parity",
+   "check": 9,
+   "result": "red",
+   "first": "the ask in her talk:  Mama Nkechi  Runs the provisions shop. Wants a café one day.   Mama Nkechi I am making pepper soup today. Anybody fishing after two, bring me three. Not before two. Fish that sits in the sun is not pepper soup fish.   Mama Nkechi Buy from me twice and I will teach you something. Not before. I have "
+  },
+  {
+   "name": "M34 (DOD-10) the give-back keyed on the day log alone",
+   "check": 5,
+   "result": "red",
+   "first": "the next evening Ada is due: {\"guests\":[\"oyelaran\",\"bassey\"],\"first\":false,\"ids\":[\"gs38-oy-o2\",\"gs38-ba-o2\",\"gs38-wash-oy\",\"gs38-re-ba2\",\"gs39-pot-ba-g0\",\"gs39-bi-tom1\",\"gs38-by-oy2\"],\"kinds\":[\"\",\"\",\"\",\"\",\"potask\",\"bisitom\",\"\"],\"slots\":2,\"opens\":[\"oyelaran\",\"bassey\",\"\",\"\",\"\",\"\",\"\"],\"tips\":[\"wash::wash:oyelaran\"],\"texts\":[\"Good evening. My radio is resting, so I came to hear people instead.\",\"Good "
+  },
+  {
+   "name": "M35 (S18) the keepsake toasted over its own thanks",
+   "check": 5,
+   "result": "red",
+   "first": "the one-time shelf hint toasted: [\"Mama Nkechi pressed a hand fan into your hands. It will look well somewhere you can see it. Ada could put up a shelf for things like this.\"]"
+  },
+  {
+   "name": "M36 (S9) the pot ask on an elder's first stool night",
+   "check": 6,
+   "result": "red",
+   "first": "(fixer, S9) his pot ask waits for a night without his first stool line: [\"gs38-tu-soon\",\"gs38-ba-o1\",\"gs39-st-bassey\",\"gs38-pl-tu1\",\"gs38-re-ba1\",\"gs39-pot-ba-g0\",\"gs38-by-tu1\"]"
+  },
+  {
+   "name": "M37 (C1, DOD-5, S10) the again and give-back lines fill the bare plural noun",
+   "check": 12,
+   "result": "red",
+   "first": "the copy rules: [\"again or give-back: My drawing pins is out there again. I will not discuss it.\",\"again or give-back: Mrs. Oyelaran’s drawing pins has gone walking again today: the courtyard, by the noticeboard.\",\"again or give-back: My seeds has gone on tour again. Without me.\",\"again or give-back: Tunde’s seeds has gone walking again today: by the square’s garden bed.\",\"again or give-back: Is t"
+  },
+  {
+   "name": "M20 the narrowed pair allowed to repeat last night's pair",
+   "check": 4,
+   "result": "red",
+   "first": "never last night’s pair: {\"guests\":[\"tunde\",\"bassey\"],\"first\":false,\"ids\":[\"gs39-th-keep\",\"gs38-ba-o3\",\"gs38-lost-r\",\"gs38-back-r-bassey\",\"gs38-wash-tu\",\"gs39-pot-ba-g\",\"gs39-bi-tom1\",\"gs38-by-tu2\"],\"kinds\":[\"thank\",\"\",\"\",\"\",\"\",\"potask\",\"bisitom\",\"\"],\"slots\":2,\"opens\":[\"tunde\",\"bassey\",\"\",\"\",\"\",\"\",\"\",\"\"],\"tips\":[\"lost:remind:lenscap:tunde\",\"wash::wash:tunde\"],\"texts\":[\"Now your shelf has been to m"
+  }
+ ],
+ "withoutV39": {
+  "allRed": true,
+  "findings": [
+   {
+    "checks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "first": "the module"
+   }
+  ]
+ },
+ "withoutV38": {
+  "error": null,
+  "same": true,
+  "scene": 2079,
+  "random": 0,
+  "hooks": "6,6,17,object",
+  "hooksNone": "6,6,17,undefined",
+  "passed": true
+ },
+ "subsets": {
+  "lines": {
+   "loads": true,
+   "v39Names": 158,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "log": {
+   "loads": true,
+   "v39Names": 158,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "tune": {
+   "loads": true,
+   "v39Names": 158,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  }
+ },
+ "determinism": "identical"
+}
