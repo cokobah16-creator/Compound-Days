@@ -1,5 +1,5 @@
 COMPOUND DAYS — WATERSIDE
-Build: v39-ddaf49d8 (authored character, your day in Palm Court, a bench for evening gist, monkey post, evening gist and daily finds, Aunty Bisi and thanks at the rail)
+Build: v40-5f9ef4d7 (authored character, your day in Palm Court, a bench for evening gist, monkey post, evening gist and daily finds, Aunty Bisi and thanks at the rail, notices and fresh evenings)
 shown in the game Menu and recorded in PACKAGE_MANIFEST.json.
 
 START HERE
@@ -22,17 +22,21 @@ PLAYTESTS
 - Evening gist and daily finds: docs/TESTING_gist.md (open http://localhost:8000/?gist=playtest).
 - Aunty Bisi, thanks at the rail and fuller afternoons: the v39 section of docs/TESTING_gist.md
   (open http://localhost:8000/?gist39=playtest; ?bisi=now puts Aunty Bisi at her stop).
+- Notices, children's things and fresh evenings: the v40 section of docs/TESTING_gist.md
+  (open http://localhost:8000/?gist40=playtest; ?board=now puts the next card up at once,
+  ?mallam=now puts Mallam at his stand with the coals to fan).
 - The Nigerian reader's sheets: docs/READER_football.md (football) and docs/READER_gist.md
   (the evening gist, the lost things, the shelf and Ada's carvings, and in its v39 section
-  Aunty Bisi, the thank-yous, the stool, the pot and the lost things after the seven).
+  Aunty Bisi, the thank-yous, the stool, the pot and the lost things after the seven, and in its
+  v40 section the noticeboard's cards, Kemi's and Emeka's things, the match and season gist and Mallam).
 
 CONTENTS
 - dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
 - dist/assets/characters/efe.gltf.json: the authored character; dist/assets/wardrobe/: its 16 pieces.
 - tools/: wardrobe, hair and material authoring tools, the build stamp, the manifest tool and
   the testers' tools (gates-v35.cjs, quiet-v38.cjs) and the reader's-sheet tools (reader-v38.cjs,
-  reader-v39.cjs).
-- check/: the Node verification harness: eighteen harnesses (verify-*.cjs) and their results
+  reader-v39.cjs, reader-v40.cjs).
+- check/: the Node verification harness: nineteen harnesses (verify-*.cjs) and their results
   (results-*.json); README.md, section Verification, lists them and what a passing run prints.
 - docs/: the playtest guides (TESTING_bench.md, TESTING_football.md, TESTING_gist.md,
   TESTING_v35.md), the Nigerian reader's sheets (READER_football.md, READER_gist.md),
@@ -43,18 +47,19 @@ CONTENTS
 - PACKAGE_MANIFEST.json: build id and SHA-256 hashes of packaged files.
 
 Saves belong to the browser and origin where you play. The live Site's save does
-not automatically move to localhost. Saves from builds v26-v39 load; their retired
+not automatically move to localhost. Saves from builds v26-v40 load; their retired
 outfit and hair choices are mapped to the authored wardrobe. Companion and
 same-screen play are supported; cross-device online play is not provided by this
 static build.
 
-All eighteen Node harnesses pass, including the bench (verify-bench-v36.cjs), street
-football (verify-football-v37.cjs), the evening gist and daily finds (verify-gist-v38.cjs)
-and Aunty Bisi, thanks at the rail and fuller afternoons (verify-gist-v39.cjs); see
-README.md, Verification. Headless
+All nineteen Node harnesses pass, including the bench (verify-bench-v36.cjs), street
+football (verify-football-v37.cjs), the evening gist and daily finds (verify-gist-v38.cjs),
+Aunty Bisi, thanks at the rail and fuller afternoons (verify-gist-v39.cjs) and notices,
+children's things and fresh evenings (verify-gist-v40.cjs); see README.md, Verification. Headless
 browser captures were taken; real-phone performance remains unverified.
 
-Source: branch claude/authored-character (build v39-ddaf49d8: v38-a2e8c3ca plus Aunty Bisi the evening
-seller, the Finds tip, thanks at the rail for a finished shelf set, Ada's stool for the eldest guest,
-fish for a neighbour's pot, the lost things after the seven, giving a thing back at the gist and the
-walk to the rail).
+Source: branch claude/authored-character (build v40-5f9ef4d7: v39-ddaf49d8 plus the noticeboard's
+"LOST:" cards from half past ten, a neighbour's errand, Kemi's and Emeka's lost things at the pitch,
+gist about the match and the seasons with a repeat guard, a chime when you pick something up, and
+Mallam's day: the late-morning order, the coals to fan from five and his seat by the grill at the gist;
+and the keke and the danfo restyled to the owner's pictures).

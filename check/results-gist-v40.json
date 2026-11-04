@@ -1,0 +1,1856 @@
+{
+ "build": "v40-5f9ef4d7",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. inert: (a) on day 3 at 10:00 before v38 is discovered the save, the keys of S and S.life, 600 frames of cameras and prompts, the Menu and Today are as without v40; TICK_HOOKS 17, cue hooks 2, the audio recipes and twins, LINES35, WHEN35, DAYS35.rows, FINDS34 and the five pinned sources unchanged; (b) days 5 and 7 with v38 discovered and no v39 trigger (layer 2 closed): from 07:30 to the gist's end the save, Today, the plan, the talk and gist lines, the prompts, the log and the board's panel are as without v40, and nothing of v40's is in the world; (c) layer 2 open and v40 not discovered, both ways (v39 discovered: days 6 and 7; v38 only: days 8 and 9): the save, Today, the plan, the talk and gist lines, the prompts and the log as without v40, the only difference the card and its pulse from 10:30 and Mrs. Oyelaran's bubble; a player past the board at 10:45: the bubble built once, shown once, timed and taken down, with no Math.random call; no G.b40; (d) verify-tune check 12's day-1 household: the board's panel as without v40, with \"Compound meeting this week.\"",
+   "passed": true,
+   "info": {
+    "pins": {
+     "tick": 17,
+     "cue": 2,
+     "recipes": [
+      "cast",
+      "nibble",
+      "bite",
+      "catch",
+      "water"
+     ],
+     "twins": [
+      "cast",
+      "nibble",
+      "bite",
+      "catch",
+      "water"
+     ],
+     "talk": [
+      42,
+      41,
+      41
+     ],
+     "evening": [
+      4,
+      4,
+      4
+     ],
+     "short": 15,
+     "text": 58,
+     "when": 31,
+     "rows": 12,
+     "finds": 15,
+     "src": [
+      true,
+      true,
+      true,
+      true,
+      true
+     ]
+    },
+    "layerClosed": {
+     "days": [
+      5,
+      7
+     ],
+     "objects": 0,
+     "b40": false
+    },
+    "layerOpen": {
+     "days": {
+      "b39": [
+       6,
+       7
+      ],
+      "b38": [
+       8,
+       9
+      ]
+     },
+     "card": true,
+     "b40": false
+    },
+    "bubble": {
+     "shown": 1,
+     "ms": 3600,
+     "down": true,
+     "quiet": 0
+    },
+    "card": {
+     "material": "MeshBasicMaterial",
+     "pulse": "colour lerp"
+    },
+    "tune12": "Compound meeting this week.",
+    "withoutV40": {
+     "dayThree": "dc33032b:14217",
+     "closed": "42588400:74228",
+     "layer2": "fb1af2aa:154914"
+    }
+   }
+  },
+  {
+   "name": "2. board: before discovery the v40 block only from 10:30 with layer 2 open, above the base cards, TUNE's copyFix and the host button, which are as the board without v40; the real openPanel once per read; discovery on the first read with a card (G.b40, \"board read\"), not before 10:30, not online, with or without G.b39 (via b38 and b39); the 10:30 change on a jump; the crossed card at once, through the next change and down at the second; the read prompt over talking to Mrs. Oyelaran beside the board while a v40 card is up and unread (and not once read); at most two world cards, the upper 0.40 x 0.20; at most four panel blocks; the pulse a colour lerp on a MeshBasicMaterial (no emissive); Mrs. Oyelaran's bubble once a morning within 6 m and not beyond; (repair, H4) a read before 10:30 of yesterday's crossed card leaves the new card unread: it pulses and the read keeps its lead",
+   "passed": true,
+   "info": {
+    "discovery": {
+     "via": "b38",
+     "day": 8,
+     "card": "block"
+    },
+    "cross": {
+     "atOnce": true,
+     "next": true,
+     "second": "down",
+     "still": true
+    },
+    "readSpot": {
+     "at": [
+      0.15,
+      -4.31
+     ],
+     "oy": 0.995
+    },
+    "bubble": {
+     "near": 5.3,
+     "far": 6.3
+    },
+    "viaB39": {
+     "day": 5
+    },
+    "earlyRead": {
+     "pulse": 0.055,
+     "lead": "board"
+    }
+   }
+  },
+  {
+   "name": "3. card-things: cardFor40 pure and a card on every day from 5 to 60 for an eager household (the noon chain played too); never the same owner twice running, never the owner or area of the thing that comes out at noon that day; a household that leaves the noon thing out still gets a card on each of thirty days, and a record with nothing left to pass still gives one; Today never says new notices are up for a card from an earlier day; every spot 2.2 m from the neighbours' morning and afternoon places (the dropped spots recorded) and every area keeps one; the again cycle after ten with the \"again\" words, each thing in its second area; every spot passes the spot rules and is at least 2.2 m from the noon spot; nothing out before the read; the pick at 1.3 m with lead 0.25; the hand record (not drawn); the give at the live owner with lead 1.1 (v38's give and the pot win a tie); thanks, friendship +1, no money, no keepsake; the card crossed; Mrs. Oyelaran after noon in the evening; reloads in up, read, hand, back and crossed; FOUND38.LOST and rotEntry39(7..40) unchanged; (repair, VN-1) every noon thing of the chain left out from day 5 or 9: a card every day to 60, its thing never within 2.2 m of a thing lying out (the bench's one spot under the glasses: no spot that day), and the proof that a card always exists (every noon spot with every child's spot leaves no item with both areas blocked)",
+   "passed": true,
+   "info": {
+    "sweep": {
+     "days": 56,
+     "again": 46,
+     "noonDays": 55,
+     "aheadDays": 3,
+     "first10": [
+      "block",
+      "print",
+      "oil",
+      "film",
+      "rose",
+      "pad",
+      "knob",
+      "spoon",
+      "minutes",
+      "block"
+     ],
+     "errands": 56
+    },
+    "spots": {
+     "areas": {
+      "stage": 10,
+      "garden": 5,
+      "bench": 1,
+      "market": 10,
+      "yard": 3,
+      "rocks": 5,
+      "photo": 3,
+      "waterW": 4,
+      "street": 4,
+      "court": 2
+     },
+     "dropped": [
+      {
+       "area": "yard",
+       "spot": [
+        -3,
+        -14
+       ],
+       "near": "ada morning"
+      },
+      {
+       "area": "photo",
+       "spot": [
+        6.2,
+        12.7,
+        0.085
+       ],
+       "near": "bassey afternoon"
+      },
+      {
+       "area": "court",
+       "spot": [
+        -0.5,
+        -2.5,
+        0.054
+       ],
+       "near": "tunde afternoon"
+      },
+      {
+       "area": "court",
+       "spot": [
+        -1.5,
+        -1.5,
+        0.054
+       ],
+       "near": "tunde afternoon"
+      }
+     ]
+    },
+    "reloads": [
+     "hand",
+     "back",
+     "crossed",
+     "up",
+     "read"
+    ],
+    "pick": {
+     "reach": 1.3,
+     "lead": 0.25
+    },
+    "oyelaran": "after six",
+    "thirty": {
+     "cards": 30,
+     "deadEnd": "minutes"
+    },
+    "outThings": {
+     "sweeps": 26,
+     "pass4": 36,
+     "proof": {
+      "noonSpots": 264,
+      "both": 0,
+      "minFree": 9,
+      "kidNear": 0
+     }
+    }
+   }
+  },
+  {
+   "name": "4. errand: the notice at 10:30 (the lower card and the panel); not collectable before 12:30; taken at the sender's live place, the parcel drawn in a hand apart from v39's bag; given at the receiver's, offered until 18:00; friendship +1, no money; the 18:00 lapse with its toast after the gist; one a day; never Mrs. Oyelaran, never the card owner as receiver, never the same sender twice running (days 5 to 60); reloads in up and hand; (repair, H7) an errand in hand when the day ends before six lapses then, its toast the next morning",
+   "passed": true,
+   "info": {
+    "given": {
+     "pair": "box",
+     "day": 5
+    },
+    "lapse": {
+     "at": "18:00",
+     "toast": "after the gist"
+    },
+    "hands": "parcel left, bag right",
+    "reloads": [
+     "up",
+     "hand"
+    ],
+    "dayEnd": {
+     "lapsed": true,
+     "toast": "the next morning"
+    }
+   }
+  },
+  {
+   "name": "5. kids: (repair, VC-6) Mama Nkechi's marble line \"His feet came home…\" only once Emeka has gone home, another while he is still out at the pitch; the children's spots (free, level, outside the pitch plus 1 m and the keep region, 2.2 m from every prompt and lost-thing spot, 2.4 m from Aunty Bisi, bare ground, reachable); the leads (to Mama Nkechi below the card thing, the pot and v38's give; the child's give between v39's bag and Play); about one match day in three over days 5 to 60, never within two days; no drop before v40 discovery; on a morning-match day no drop at the morning exit and the drop at 14:00 with the child's call and Today's line from 14:00; the thing on the sand at once, picked at 1.3 m by keys into the hand (not drawn); given to Emeka at the pitch (his thanks, then the play line; no money); not the next day; the fade exit (Kemi's band), never to Mama Nkechi or Mr. Bassey, Kemi asking once the next day and her thanks; Today's \"still on the sand\"; a thing nobody heard fall (a fade exit) told on Today once the child has asked for it; no give during a live match; the call ends a match; Emeka's things to Mama Nkechi (her panel, friendship +1, her \"again\" line the second time); the window's close; football's save untouched; no say or aff for a child; nothing in FOUND38.LOST or the keepsakes; (repair, H2) the children leaving during the gist (one player home, one at the pitch): the thing drops after it",
+   "passed": true,
+   "info": {
+    "spots": [
+     [
+      -29,
+      13.9,
+      15.12
+     ],
+     [
+      -27.5,
+      13.9,
+      13.63
+     ],
+     [
+      -26,
+      13.9,
+      12.15
+     ],
+     [
+      -24.5,
+      13.9,
+      10.67
+     ],
+     [
+      -21.5,
+      13.9,
+      7.74
+     ],
+     [
+      -18.5,
+      13.9,
+      4.88
+     ]
+    ],
+    "leads": {
+     "shop": 1.05,
+     "card": 1.1,
+     "pot": 1.15,
+     "kid": 0.5,
+     "bag": 0.6
+    },
+    "rate": {
+     "hashDays": 19,
+     "days": 13,
+     "of": 56,
+     "sat": [
+      15,
+      29,
+      36
+     ]
+    },
+    "undiscovered": "no drop",
+    "notBassey": true,
+    "marbleLine": {
+     "out": "gs40-kid-nk-marble-out",
+     "home": "gs40-kid-nk-marble"
+    },
+    "drops": {
+     "afternoon": [
+      8,
+      15
+     ],
+     "fade": 11,
+     "window": 24,
+     "call": 30,
+     "gapDay": 9
+    },
+    "unheard": {
+     "day": 11,
+     "asked": 12,
+     "today": true
+    },
+    "exitInGist": {
+     "day": 21,
+     "id": "marble",
+     "heard": true
+    }
+   }
+  },
+  {
+   "name": "6. gist: no line but a transition tip promises rain tomorrow (every pool, Mallam's lines and the cards); the plan pure for every evening 5 to 40 and the transition tip exactly on the evening before each change, naming the coming season; days 5 to 13 played (the card and the errand by keys, a real match daily, a child's thing after each): every v40 entry with id equal to v40k and no cat, today or v39, swap40 on every guard replacement, one insert at most and never into eight, at most two v39 lines, script.g39 kept; the skip night (v38's once-only football line) untouched; one match line whose facts hold, by the speaker order; the children's mention in both forms by the fond adult, the match line moved when it takes the slot; the errand's and a card thing's mention by the receiver or owner; the match line's first claim on the insert over a card thing's return, which takes a free reaction when one is left; rain lines only after rain; the transition tip shown and the Menu's season the next morning; the stool handed over to Mr. Bassey on a later night through v40's copy of script.g39; (repair, VP-1b) the transition tip before the children's mention: on a change evening with a child's thing lost and no free reaction the tip takes the insert and the mention waits, with one the tip takes the reaction and the mention the insert",
+   "passed": true,
+   "info": {
+    "rainRule": {
+     "lines": 310,
+     "transition": 30
+    },
+    "transition": [
+     6,
+     9,
+     12,
+     18,
+     21,
+     24,
+     30,
+     33,
+     36
+    ],
+    "lastDay": 13,
+    "nights": [
+     {
+      "d": 5,
+      "guests": "nkechi+tunde",
+      "match": "nkechi",
+      "v40": 2,
+      "swaps": 0
+     },
+     {
+      "d": 6,
+      "guests": "nkechi+bassey",
+      "match": null,
+      "v40": 0,
+      "swaps": 0
+     },
+     {
+      "d": 7,
+      "guests": "oyelaran+bassey",
+      "match": "bassey",
+      "v40": 1,
+      "swaps": 0
+     },
+     {
+      "d": 8,
+      "guests": "ada+tunde",
+      "match": "ada",
+      "v40": 1,
+      "swaps": 0
+     },
+     {
+      "d": 9,
+      "guests": "nkechi+tunde",
+      "match": null,
+      "v40": 1,
+      "swaps": 1
+     },
+     {
+      "d": 10,
+      "guests": "ada+bassey",
+      "match": "bassey",
+      "v40": 1,
+      "swaps": 0
+     },
+     {
+      "d": 11,
+      "guests": "ada+nkechi",
+      "match": null,
+      "v40": 1,
+      "swaps": 1
+     },
+     {
+      "d": 12,
+      "guests": "tunde+nkechi",
+      "match": null,
+      "v40": 2,
+      "swaps": 1
+     },
+     {
+      "d": 13,
+      "guests": "nkechi+bassey",
+      "match": "bassey",
+      "v40": 3,
+      "swaps": 4
+     }
+    ],
+    "skipNight": 6,
+    "quietDay": 11,
+    "mentions": {
+     "out": 1,
+     "back": 1,
+     "moved": 0
+    },
+    "menu": [
+     [
+      7,
+      "dry season",
+      true
+     ],
+     [
+      10,
+      "harmattan",
+      true
+     ],
+     [
+      13,
+      "rainy season",
+      true
+     ]
+    ],
+    "played": {
+     "errands": 9,
+     "cards": 5
+    },
+    "stool": 18,
+    "matchFirst": {
+     "insert": "gs40-fb-ba3",
+     "withReaction": [
+      "gs40-fb-ba3",
+      "gs40-ret-ad1"
+     ]
+    },
+    "changeEveningTip": {
+     "day": 9,
+     "ids": [
+      "gs38-tu-soon",
+      "gs38-nk-o1",
+      "gs39-st-nkechi",
+      "gs38-told-rule",
+      "gs38-lost-seeds",
+      "gs38-back-seeds",
+      "gs40-tr-har-nk",
+      "gs38-by-nk3"
+     ],
+     "inserted": "gs40-tr-har-nk"
+    },
+    "tipFirst": {
+     "day": 12,
+     "who": "emeka",
+     "waits": [
+      "gs38-x-once",
+      "gs38-f-o",
+      "gs39-st-nkechi",
+      "gs38-told-q",
+      "gs38-lost-q",
+      "gs38-back-q",
+      "gs40-tr-rai-tu",
+      "gs38-by-f"
+     ],
+     "withReaction": [
+      "gs40-tr-rai-tu",
+      "gs40-kid-mn-marble-out"
+     ]
+    }
+   }
+  },
+  {
+   "name": "7. repeats: the long sweep (nights 8 to 40; a mutant's rerun 8 to 16), an eager pair and a companion household with a real match every day, before (v40 never discovered) and after (discovered on day 5): per category the lines heard twice within fourteen evenings, under the ceilings of the day-2 sizing run; all lines at most one in five; every first-time retelling and lost tip still told; every replaced v38 line booked in v38's said list; every v38 greeting shown within the sweep; gs38-ad-o1 never twice within fourteen evenings; the knees line never outside the rains; the guard's pool-dry count and swaps by tier recorded; on the evenings the household fanned Mallam's coals a guest's Mallam goodbye in place of a plain v38 one, at least four evenings apart and booked in v38's said list; (fix round, DOD-F4) the sweep to night 40, nights 29 to 40 at most one in five as well",
+   "passed": true,
+   "info": {
+    "pair": {
+     "before": {
+      "shown": 225,
+      "heardTwice": 139,
+      "byCategory": {
+       "opener": [
+        66,
+        46
+       ],
+       "information and first-time": [
+        11,
+        0
+       ],
+       "pot ask": [
+        18,
+        14
+       ],
+       "goodbye": [
+        33,
+        9
+       ],
+       "plain": [
+        1,
+        0
+       ],
+       "reaction": [
+        21,
+        9
+       ],
+       "wash tip": [
+        11,
+        6
+       ],
+       "Ada's ask": [
+        13,
+        10
+       ],
+       "Bisi tomorrow": [
+        4,
+        4
+       ],
+       "again tip": [
+        26,
+        21
+       ],
+       "again retelling": [
+        21,
+        20
+       ]
+      }
+     },
+     "after": {
+      "shown": 232,
+      "heardTwice": 9,
+      "byCategory": {
+       "opener": [
+        39,
+        0
+       ],
+       "information and first-time": [
+        11,
+        0
+       ],
+       "pot ask": [
+        18,
+        3
+       ],
+       "v40 line": [
+        67,
+        0
+       ],
+       "goodbye": [
+        27,
+        1
+       ],
+       "plain": [
+        1,
+        0
+       ],
+       "v40 transition tip": [
+        8,
+        0
+       ],
+       "wash tip": [
+        11,
+        1
+       ],
+       "Ada's ask": [
+        13,
+        2
+       ],
+       "Bisi tomorrow": [
+        4,
+        1
+       ],
+       "again tip": [
+        26,
+        1
+       ],
+       "reaction": [
+        7,
+        0
+       ]
+      },
+      "nights29to40": {
+       "shown": 84,
+       "heardTwice": 4,
+       "byCategory": {
+        "opener": [
+         13,
+         0
+        ],
+        "v40 line": [
+         27,
+         0
+        ],
+        "again tip": [
+         12,
+         1
+        ],
+        "pot ask": [
+         6,
+         1
+        ],
+        "v40 transition tip": [
+         3,
+         0
+        ],
+        "Ada's ask": [
+         6,
+         2
+        ],
+        "goodbye": [
+         9,
+         0
+        ],
+        "wash tip": [
+         4,
+         0
+        ],
+        "reaction": [
+         3,
+         0
+        ],
+        "Bisi tomorrow": [
+         1,
+         0
+        ]
+       }
+      }
+     },
+     "poolDry": {},
+     "swapsByTier": {
+      "mallam": 7,
+      "season": 63,
+      "evergreen": 3,
+      "v38": 23
+     },
+     "mallamBye": [
+      6,
+      12,
+      18,
+      25,
+      29,
+      33,
+      39
+     ],
+     "changeEvenings": [
+      "6:gs40-tr-dry-ad",
+      "9:gs40-tr-har-nk",
+      "12:gs40-tr-rai-tu",
+      "18:gs40-tr-dry-tu",
+      "21:gs40-tr-har-ad",
+      "24:gs40-tr-rai-nk",
+      "30:gs40-tr-dry-ad",
+      "33:gs40-tr-har-tu",
+      "36:gs40-tr-rai-ad"
+     ]
+    },
+    "comp": {
+     "before": {
+      "shown": 225,
+      "heardTwice": 139,
+      "byCategory": {
+       "opener": [
+        66,
+        46
+       ],
+       "information and first-time": [
+        11,
+        0
+       ],
+       "pot ask": [
+        18,
+        14
+       ],
+       "goodbye": [
+        33,
+        9
+       ],
+       "plain": [
+        1,
+        0
+       ],
+       "reaction": [
+        21,
+        9
+       ],
+       "wash tip": [
+        11,
+        6
+       ],
+       "Ada's ask": [
+        13,
+        10
+       ],
+       "Bisi tomorrow": [
+        4,
+        4
+       ],
+       "again tip": [
+        26,
+        21
+       ],
+       "again retelling": [
+        21,
+        20
+       ]
+      }
+     },
+     "after": {
+      "shown": 232,
+      "heardTwice": 9,
+      "byCategory": {
+       "opener": [
+        39,
+        0
+       ],
+       "information and first-time": [
+        11,
+        0
+       ],
+       "pot ask": [
+        18,
+        3
+       ],
+       "v40 line": [
+        68,
+        0
+       ],
+       "goodbye": [
+        26,
+        1
+       ],
+       "plain": [
+        1,
+        0
+       ],
+       "v40 transition tip": [
+        8,
+        0
+       ],
+       "wash tip": [
+        11,
+        1
+       ],
+       "Ada's ask": [
+        13,
+        2
+       ],
+       "Bisi tomorrow": [
+        4,
+        1
+       ],
+       "again tip": [
+        26,
+        1
+       ],
+       "reaction": [
+        7,
+        0
+       ]
+      },
+      "nights29to40": {
+       "shown": 84,
+       "heardTwice": 4,
+       "byCategory": {
+        "opener": [
+         13,
+         0
+        ],
+        "v40 line": [
+         28,
+         0
+        ],
+        "again tip": [
+         12,
+         1
+        ],
+        "pot ask": [
+         6,
+         1
+        ],
+        "v40 transition tip": [
+         3,
+         0
+        ],
+        "Ada's ask": [
+         6,
+         2
+        ],
+        "goodbye": [
+         8,
+         0
+        ],
+        "wash tip": [
+         4,
+         0
+        ],
+        "reaction": [
+         3,
+         0
+        ],
+        "Bisi tomorrow": [
+         1,
+         0
+        ]
+       }
+      }
+     },
+     "poolDry": {},
+     "swapsByTier": {
+      "mallam": 6,
+      "season": 63,
+      "evergreen": 5,
+      "v38": 23
+     },
+     "mallamBye": [
+      6,
+      12,
+      18,
+      25,
+      29,
+      37
+     ],
+     "changeEvenings": [
+      "6:gs40-tr-dry-ad",
+      "9:gs40-tr-har-nk",
+      "12:gs40-tr-rai-tu",
+      "18:gs40-tr-dry-tu",
+      "21:gs40-tr-har-ad",
+      "24:gs40-tr-rai-nk",
+      "30:gs40-tr-dry-ad",
+      "33:gs40-tr-har-tu",
+      "36:gs40-tr-rai-ad"
+     ]
+    },
+    "nights": "8-40"
+   }
+  },
+  {
+   "name": "8. mallam: none before v40 discovery; his phases by S.time (10:30-12:00 morning, 17:00 the fan open at once, 17:30 self-lit when unfanned, seated during a visit, after to 22:00), jumps snap; the order (no money, kept; a round before the gist brings another line and the order stays kept; after the gist \"Your two sticks are ready.\" once within 4 m and not beyond; the kept order's line on a round after the gist, also one bought just before ten; lapsed at 22:00); the fan beat: the glow rises with presses and sinks without, \"Turn the sticks\" for the player not fanning (after the first turn never for the one fanning), the first stick after the hold and two turns, 12 to 15 s of S.time for one player under the bot and at most 15 s for two, at most 15 s for one human pressing four times a second (a press in the pose kept); the taste once to each helper, no money; Aunty Bisi's buy wins in her stroll and at her stop where it comes before the base round, and elsewhere at her stop the fan takes the base round's place ((-2.85, 10.86), (-3.0, 10.6), (-3.3, 10.3)), Act there never buying the base round; the fan beats the base suya prompt at the fan point; seated at (-4.2, 13.0) during a visit; hidden at a party, online, on Sleep and on the v35 evening's day; the walk-in line clear and south of the ball; built in quiet40; the base round still works and no v40 ACT_HOOKS entry mentions suya; (repair) H1: a kept order always collectable after the gist (\"Collect your two sticks, ₦2,000\" ahead of the base round: a round at 18:05 before the gist, a purse that cannot pay, the gist skipped: from ten, while he stays until half past ten); a round just before ten with no order brings his line; VP-3: a pair where only one presses finishes within 15 s; H5: same-frame presses open one order panel with his name; H6: a reload mid-beat keeps who fanned; H9: an afternoon round while he is away brings no line at five; VP-2: \"Your two sticks are ready.\" only once his bubble is drawn for the player who came near (walks from the rail side at 1280 x 800 and at 390 x 844: never while his bubble point is outside that player's camera, always before the fan point); H3: no panel opens by itself at the beat's end (the taste is the \"Taste the first stick\" prompt, a press still coming in the first 0.8 s opens nothing, the player's own Act opens the panel)",
+   "passed": true,
+   "info": {
+    "headSeen": {
+     "morning": [
+      [
+       [
+        0.297,
+        -0.502,
+        0.75
+       ],
+       [
+        -0.205,
+        -0.318,
+        0.75
+       ]
+      ],
+      [
+       [
+        -0.205,
+        -0.316,
+        0.75
+       ],
+       [
+        0.297,
+        -0.5,
+        0.75
+       ]
+      ]
+     ],
+     "five": [
+      [
+       [
+        0.332,
+        -0.356,
+        0.75
+       ],
+       [
+        -0.186,
+        -0.176,
+        0.75
+       ]
+      ],
+      [
+       [
+        -0.185,
+        -0.174,
+        0.75
+       ],
+       [
+        0.332,
+        -0.354,
+        0.75
+       ]
+      ]
+     ]
+    },
+    "tastePrompt": {
+     "pause": 0.8,
+     "selfOpen": false
+    },
+    "single": 13.63,
+    "pair": 11.3,
+    "readyWalk": {
+     "desk": 1.08,
+     "deskUnseenNear": 54,
+     "portrait": 0.94,
+     "portraitUnseenNear": 56
+    },
+    "kept": {
+     "beforeGist": "another line",
+     "ready": "within 4 m, once",
+     "collectBeforeTen": true
+    },
+    "human": 13.87,
+    "bisi": {
+     "stroll": "her buy",
+     "stop": "her buy where it comes first ((-3.6, 9.98)); the fan at (-3.3, 10.3), (-2.85, 10.86), (-3.0, 10.6)"
+    },
+    "bubble": {
+     "portraitFont": [
+      15.9,
+      13
+     ],
+     "landscape": {
+      "without": [
+       151.3,
+       135.6,
+       347,
+       182.2
+      ],
+      "moved": [
+       107.3,
+       119.6,
+       303,
+       166.2
+      ]
+     }
+    },
+    "walk": {
+     "from": [
+      1.145,
+      13.764
+     ],
+     "southOfBall": true
+    },
+    "hidden": [
+     "party",
+     "online",
+     "Sleep",
+     "v35 evening"
+    ],
+    "afternoonRound": "no line",
+    "reloadBeat": {
+     "fanned": [
+      0,
+      1
+     ]
+    },
+    "lonePair": 12.8,
+    "collect": {
+     "beforeGist": "base round, still kept",
+     "poorPurse": "no credit",
+     "paid": 2000
+    },
+    "skipped": {
+     "collectFrom": 22,
+     "until": 22.5
+    },
+    "sameFrame": {
+     "panels": 1,
+     "name": true
+    },
+    "lateGist": {
+     "end": 22.831,
+     "seatedAt": 22.526,
+     "margin": 0.5
+    },
+    "lateNoOrder": {
+     "end": 22.442,
+     "seatedAt": 22.025
+    },
+    "reload": {
+     "stores": [
+      22.421,
+      22.518
+     ],
+     "until": [
+      22.9211,
+      23.0189
+     ],
+     "phoneReadyAt": 2.33
+    },
+    "thumb": {
+     "390x844": {
+      "taps": 12,
+      "pressed": 0,
+      "spent": 0,
+      "nameSeenAfterQuiet": 1
+     },
+     "844x390": {
+      "taps": 12,
+      "pressed": 0,
+      "spent": 0,
+      "nameSeenAfterQuiet": 1
+     }
+    }
+   }
+  },
+  {
+   "name": "9. chime: with a stand-in sound bus (football's): no context made when none exists and nothing sounded; with Sound on two notes reach the master for a v38 thing, a card thing, a child's thing and a v39 thing (round two's first); nothing for the base's morning shell or with Sound off; AUDIO35.played, the five recipes and twins, the cue hooks and the tick hooks unchanged (the chime on the wash shells is cut)",
+   "passed": true,
+   "info": {
+    "noContext": {
+     "made": 0,
+     "chimes": 0
+    },
+    "v38": {
+     "osc": 2,
+     "conn": 2,
+     "chime": 1
+    },
+    "baseShell": "silent",
+    "card": {
+     "osc": 2,
+     "conn": 2,
+     "chime": 1
+    },
+    "kid": {
+     "osc": 2,
+     "conn": 2,
+     "chime": 1
+    },
+    "v39": {
+     "id": "pencil",
+     "d": {
+      "osc": 2,
+      "conn": 2,
+      "chime": 1
+     }
+    },
+    "soundOff": "silent",
+    "byKind": {
+     "lost": 3,
+     "card": 1,
+     "kid": 1
+    },
+    "wash": "not built (cut item 1)"
+   }
+  },
+  {
+   "name": "10. today-and-log: the hand (board40Hand) folded into v38's pocket row, its own row without one; a busy day at 390 px (the hand, the pot, Aunty Bisi's evening, the shelf) at four rows with the hand, the pot and Bisi's sentence kept; five rows at 1280 px; Today shows the hand; the integrator's v40 block outside the gist card when daily-v40.js has it; that block (the integrator's part): nothing before v40 is discovered or online, then before the gist card and the chips the board line in its five states (before half past ten, new, read, with you, back), Mallam's order and the children's line from 14:00 on the morning-match day, three lines at once, and still at 390 px; LOG35.kinds board, kid, mallam once each; the gates tool reads them with no warnings and the same grades",
+   "passed": true,
+   "info": {
+    "folded": true,
+    "busy390": [
+     "hand",
+     "bisi",
+     "shelf",
+     "pot"
+    ],
+    "block": "present",
+    "full390": [
+     "lost",
+     "hand",
+     "wash",
+     "pot"
+    ],
+    "full1280": [
+     "lost",
+     "hand",
+     "wash",
+     "bisi",
+     "pot"
+    ],
+    "gates": {
+     "warnings": 0,
+     "grades": [
+      "FAIL",
+      "NOT YET",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "NOT YET"
+     ]
+    },
+    "block40": {
+     "read": "On the noticeboard: Ada lost her sanding block in the Makers’ Yard.",
+     "order": "Mallam is keeping two sticks for you tonight.",
+     "hand": "Ada’s sanding block is with you.",
+     "kid": "Emeka is looking for his best marble by the pitch.",
+     "three": 3,
+     "back": "Ada’s sanding block is back. She crossed it off herself.",
+     "before": "The noticeboard: Mrs. Oyelaran changes the notices at half past ten.",
+     "fresh": "New notices are up."
+    }
+   }
+  },
+  {
+   "name": "11. save-modes-and-cost: v35, v36, v37, v38 and v39 saves load, run 60 frames and save with the keys of S and S.life unchanged and no G.b40; a v40 save loads in the v39 build (a copy without the v40 tags) with b40 kept; stripState has no life.gist38; online no v40 object, offline back; no v40 object after newgame, newconfirm, an enterWorld into day 2 and going online, and the scene count as without v40; no Math.random call in v40's builds (cards, thing, glint, parcel, bubbles, Mallam, stool, glow, fan); no wall-clock or Math.random read by board-v40.js or mallam-v40.js; an inert frame and a frame with the card up: no blocked() or levelAt() call, no new object; (repair, H8) the question alone (newconfirm, then \"No, keep it\") changes nothing, mid fan beat too",
+   "passed": true,
+   "info": {
+    "saves": [
+     "v35",
+     "v36",
+     "v37",
+     "v38",
+     "v39"
+    ],
+    "v39build": {
+     "b40": "kept"
+    },
+    "keepIt": {
+     "glow": [
+      0.331,
+      0.327
+     ]
+    },
+    "teardown": [
+     "newconfirm",
+     "newgame",
+     "enterWorld day 2",
+     "online"
+    ],
+    "quiet": {
+     "builds": 0
+    },
+    "cost": {
+     "inert": "0 blocked, 0 levelAt, 0 objects over 600 frames",
+     "cardUp": "0 blocked, 0 levelAt, no rebuild"
+    },
+    "sceneCount": {
+     "objects": 2081,
+     "sameAsWithout": true
+    }
+   }
+  },
+  {
+   "name": "12. copy: (repair) no child seller, Mrs. Oyelaran never at home \"this afternoon\", the v40 wash wordings varied from v38's (no \"High water tonight. Tomorrow\" opening, no five-word run in common); every GIST40.LINES and MALLAM40.LINES line (ids unique, gs40-), the cards (BOARD40.CARDS and GIST40.CARDS: bd40-, standard English with no Pidgin word, \"Flat 3\" the only digit, LOST cards start \"LOST\", signed, notices start \"NOTICE.\"), the interface tables and every text rendered in checks 5, 6 and 10: no weekday or month, British spelling, curly apostrophes, no markup, no \"at dusk\", speech at most 160 characters with no digit (1979 aside) and only the allowed placeholders, cards at most 200, no Aunty or Uncle from a child, no rain tomorrow outside a transition tip; every bubble drawn whole, no line cut off",
+   "passed": true,
+   "info": {
+    "names40": "all",
+    "againTips": 20,
+    "washVary": 10,
+    "overlap": {
+     "v40": 377,
+     "old": 760,
+     "places": 49,
+     "runs": 0
+    },
+    "boardStrings": 108,
+    "bubbles": {
+     "texts": 93,
+     "mostLines": 7
+    },
+    "wetLines": [
+     "gs40-fb-ba10",
+     "gs40-fb-nk7",
+     "gs40-fb-oy5"
+    ],
+    "oyelaranMatch": "no hour, no sight",
+    "wetCases": [
+     "Saturday morning, ended 10:40, rain 14:00: dry",
+     "ended 15:50, rain from 16:00: dry, from noon",
+     "15:30 to 16:10, rain from 15:30: wet, from noon",
+     "rain 13:00, ended 15:50: wet, from noon",
+     "no rain, ended 15:50: dry, from noon"
+    ],
+    "againChange": {
+     "se": "rains",
+     "next": "dry",
+     "ids": [
+      "gs38-x-o",
+      "gs38-y-o",
+      "gs40-ag-ada",
+      "gs40-tr-dry-tu",
+      "gs38-by-y"
+     ]
+    },
+    "lines": {
+     "speech": 328,
+     "cards": 49,
+     "ui": 70,
+     "rendered": 107,
+     "kid": 27,
+     "match": 52,
+     "season": 91,
+     "evergreen": 30,
+     "transition": 30,
+     "cardReturn": 15,
+     "errand": 16,
+     "mallam": 18
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 gistSave40(true) without a read (in the step)",
+   "check": 1,
+   "result": "red",
+   "first": "no G.b40 after layer 2 days"
+  },
+  {
+   "name": "M2 the world card with layer 2 closed (v38 discovered, day 7, no G.b39)",
+   "check": 1,
+   "result": "red",
+   "first": "no v40 object on days 5 and 7 (layer 2 closed)"
+  },
+  {
+   "name": "M3 the openBoard wrapper bypasses the real openPanel (TUNE's copyFix lost)",
+   "check": 2,
+   "result": "red",
+   "first": "the v40 block straight after the heading"
+  },
+  {
+   "name": "M4 discovery on a read before 10:30",
+   "check": 2,
+   "result": "red",
+   "first": "no world card before 10:30"
+  },
+  {
+   "name": "M5 the card mesh built outside quiet40",
+   "check": 11,
+   "result": "red",
+   "first": "Math.random calls in v40's builds [hero day, lite and rebuild]"
+  },
+  {
+   "name": "M6 cardFor40 allows the noon thing's owner",
+   "check": 3,
+   "result": "red",
+   "first": "the card rules over days 5 to 60: [\"day 25: the noon owner bassey\",\"day 38: the noon owner ada\",\"day 44: the noon owner tunde\",\"day 57: the noon owner tunde\"]"
+  },
+  {
+   "name": "M7 the card thing out before the card is read",
+   "check": 3,
+   "result": "red",
+   "first": "up after the change"
+  },
+  {
+   "name": "M8 the card thing's give pays money",
+   "check": 3,
+   "result": "red",
+   "first": "no money on day 5"
+  },
+  {
+   "name": "M9 the card thing written into FOUND38.LOST",
+   "check": 3,
+   "result": "red",
+   "first": "no card thing in FOUND38.LOST"
+  },
+  {
+   "name": "M10 the errand collectable before 12:30",
+   "check": 4,
+   "result": "red",
+   "first": "not collectable before 12:30: [\"errand40take\"]"
+  },
+  {
+   "name": "M11 the parcel not removed at the 18:00 lapse",
+   "check": 4,
+   "result": "red",
+   "first": "the parcel gone at the lapse"
+  },
+  {
+   "name": "M34 cardFor40 without its last passes (DOD-F1: a day without a card) (with M34b the second half of M34: no pass 3 or 4)",
+   "check": 3,
+   "result": "red",
+   "first": "a card on each of thirty days with the noon thing left out"
+  },
+  {
+   "name": "M42 the board's read loses to talking to Mrs. Oyelaran (S9)",
+   "check": 2,
+   "result": "red",
+   "first": "the read prompt at (0.15, -4.31) with Mrs. Oyelaran in place: Talk to Mrs. Oyelaran"
+  },
+  {
+   "name": "M43 card spots beside a neighbour's place (S10)",
+   "check": 3,
+   "result": "red",
+   "first": "the spot probe"
+  },
+  {
+   "name": "M48 the again card names its area in the first form (\"Try near the rocks\", DOD-F9)",
+   "check": 3,
+   "result": "red",
+   "first": "the card rules over days 5 to 60: [\"day 14: the again card does not name its area in the again form: LOST AGAIN: my sanding block. I blame the Yard. Try looking near the rocks. — A.\",\"day 16: the again card does not name its area in the again form: LOST AGAIN: my tin of wood oil. I blame the Yard. Try looking in the Makers’ Yard. — A.\",\"day 17: the again card does not name its area in the again fo"
+  },
+  {
+   "name": "M46 no minimum text height for a bubble (S8)",
+   "check": 8,
+   "result": "red",
+   "first": "at 390 x 844 at least 13 px of text in both halves: [15.9,7.96]"
+  },
+  {
+   "name": "M47 a bubble not moved off the HUD chips (S7)",
+   "check": 8,
+   "result": "red",
+   "first": "at 844 x 390 the bubble clear of the pantry chip and the prompt pill: {\"bubble\":[151.3,135.6,347,182.2],\"chips\":{\"inv0\":{\"left\":121.26778692118938,\"top\":170.22918181151138,\"right\":221.26778692118938,\"bottom\":212.22918181151138},\"pr0\":{\"left\":307.0324928035423,\"top\":139.58212298798196,\"right\":407.0324928035423,\"bottom\":175.58212298798196}}}"
+  },
+  {
+   "name": "M73 a top-level name not ending in 40 again (gistB40w, repair VN-2)",
+   "check": 12,
+   "result": "red",
+   "first": "top-level names end in 40: [\"gist-v40.js: gistB40w\"]"
+  },
+  {
+   "name": "M51 a straight apostrophe in an area's again form (the board's strings in check 12)",
+   "check": 12,
+   "result": "red",
+   "first": "the copy rules: [\"BOARD40.AREAS.yard.look: a straight apostrophe\",\"filled card block cycle 2: a straight apostrophe\",\"filled card oil cycle 1: a straight apostrophe\"]"
+  },
+  {
+   "name": "M52 the sketch mark on every card in Ada's hand (C16)",
+   "check": 12,
+   "result": "red",
+   "first": "the sketch mark only on the card that mentions a sketch"
+  },
+  {
+   "name": "M53 the bubble cut to three lines again (the kept line loses its end)",
+   "check": 12,
+   "result": "red",
+   "first": "every bubble drawn whole: [\"This yaji is my father’s own. Groundnut, pepper, ginger, and / 3\",\"Two sticks, as I promised. More pepper on yours, as you said / 3\",\"Two sticks, as I promised. More onion on yours, as you said. / 3\",\"In the rains the charcoal sulks. Give it time. Everybody sul / 3\"]"
+  },
+  {
+   "name": "M63 a card thing beside a thing lying out (the 2.2 m rule off, repair VN-1)",
+   "check": 3,
+   "result": "red",
+   "first": "the card rules over days 5 to 60: [\"day 5: within 2.2 m of the noon spot\"]"
+  },
+  {
+   "name": "M64 a read recorded per day again (a read before 10:30 silences the new card, repair H4)",
+   "check": 2,
+   "result": "red",
+   "first": "today's card pulses after a read of yesterday's before 10:30: [0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84,0.84]"
+  },
+  {
+   "name": "M67 no lapse when the day ends (the parcel goes silently on Sleep before six, repair H7)",
+   "check": 4,
+   "result": "red",
+   "first": "lapsed when the day ended: {\"day\":7,\"id\":\"seedlings\",\"state\":\"hand\",\"seen\":0,\"by\":0}"
+  },
+  {
+   "name": "M31 cardFor40 with no next-cycle fallback (a day without a card)",
+   "check": 3,
+   "result": "red",
+   "first": "the card rules over days 5 to 60: [\"day 14: oyelaran twice running\",\"day 34: oyelaran twice running\",\"day 34: the noon owner oyelaran\",\"day 51: the noon owner oyelaran\",\"day 52: the noon owner bassey\"]"
+  },
+  {
+   "name": "M12 a child's thing dropped with a synthetic record (no result)",
+   "check": 5,
+   "result": "red",
+   "first": "no drop on a synthetic record (a fixture): {\"day\":11,\"who\":\"kemi\",\"id\":\"band\",\"state\":\"lost\",\"spot\":[-18.5,13.9],\"heard\":false,\"at\":\"exit\",\"told\":0,\"asked\":0}"
+  },
+  {
+   "name": "M13 a child's spot at z 13.4 (inside the pitch plus 1 m)",
+   "check": 5,
+   "result": "red",
+   "first": "the children's spots: [\"(-24.5, 13.4): inside the pitch plus 1 m, inside football's keep region\"]"
+  },
+  {
+   "name": "M14 Emeka's thing to Mama Nkechi with lead 1.25 (beats v38's give)",
+   "check": 5,
+   "result": "red",
+   "first": "Emeka's thing to Mama Nkechi loses ties to the card thing, the pot and v38's give: {\"shop\":1.25,\"card\":1.1,\"pot\":1.15,\"kid\":0.5,\"bag\":0.6}"
+  },
+  {
+   "name": "M15 say(child, …) called on the thanks",
+   "check": 5,
+   "result": "red",
+   "first": "no say or aff for a child"
+  },
+  {
+   "name": "M40 the match line never inserts; the card thing's return takes the insert (S5)",
+   "check": 6,
+   "result": "red",
+   "first": "the match line takes the insert, the return waits: {\"ids\":[\"gs38-x-o\",\"gs38-y-o\",\"gs38-told-x\",\"gs39-z\",\"gs40-ret-ad1\",\"gs38-by-x\"],\"meta\":{\"swaps\":[],\"kept\":[],\"inserted\":\"gs40-ret-ad1\",\"moved\":null,\"today\":null,\"trans\":null,\"len0\":5}}"
+  },
+  {
+   "name": "M41 the child's ask leaves the thing unheard (S6)",
+   "check": 5,
+   "result": "red",
+   "first": "asked, and heard: {\"day\":11,\"who\":\"emeka\",\"id\":\"marble\",\"state\":\"lost\",\"spot\":[-18.5,13.9],\"heard\":false,\"at\":\"exit\",\"told\":0,\"asked\":12}"
+  },
+  {
+   "name": "M44 the Mallam goodbye every evening he is fanned (no four-evening spacing, S4)",
+   "check": 7,
+   "result": "red",
+   "first": "pair: Mallam goodbyes at least four evenings apart: 6,7,8,13"
+  },
+  {
+   "name": "M49 the wordings for the information lines off (nights 29 to 40 over one in five, DOD-F4)",
+   "check": 7,
+   "result": "red",
+   "first": "pair: all lines at most one in five heard twice (56 of 232)"
+  },
+  {
+   "name": "M54 the transition tip placed after the line about today again (the day-9 night loses it to the match line, fix round 2) (with M54b the second half of M54: the tip's call after the today lines)",
+   "check": 6,
+   "result": "red",
+   "first": "day 9 (before harmattan, the match lost, no free reaction, the stool button on her greeting) carries the transition tip: [\"gs38-tu-soon\",\"gs38-nk-o1\",\"gs39-st-nkechi\",\"gs38-told-rule\",\"gs38-lost-seeds\",\"gs38-back-seeds\",\"gs40-fb-tu8\",\"gs38-by-nk3\"]"
+  },
+  {
+   "name": "M71 the children's mention before the transition tip again (a change evening loses the tip to the mention, repair VP-1b) (with M71b the second half of M71: the tip after the mention)",
+   "check": 6,
+   "result": "red",
+   "first": "the tip takes the insert, the children's mention waits: [\"gs38-x-once\",\"gs38-f-o\",\"gs39-st-nkechi\",\"gs38-told-q\",\"gs38-lost-q\",\"gs38-back-q\",\"gs40-kid-mn-marble-out\",\"gs38-by-f\"]"
+  },
+  {
+   "name": "M70 the children's exit seen only outside the gist (a thing never dropped when they leave during it, repair H2)",
+   "check": 5,
+   "result": "red",
+   "first": "the child's thing dropped after the gist: null"
+  },
+  {
+   "name": "M16 the plan wrapper drops script.g39",
+   "check": 6,
+   "result": "red",
+   "first": "script.g39 kept on day 5"
+  },
+  {
+   "name": "M17 a v40 entry carries cat",
+   "check": 6,
+   "result": "red",
+   "first": "a v40 entry's fields on day 5: {\"id\":\"gs40-fb-nk8\",\"k\":\"nkechi\",\"cat\":\"re:nkechi\",\"v40k\":\"gs40-fb-nk8\",\"tip\":0,\"info\":1,\"trans\":0,\"swap40\":{\"cat\":\"re:nkechi\",\"id\":\"gs38-re-nk1\"},\"g40\":0,\"g40t\":null,\"today\":null,\"v39\":null,\"v39k\":null,\"once\":null,\"open\":0,\"kid40\":null,\"text\":\"Emeka washed his feet tonight without being told. The match must have been a good one.\"}"
+  },
+  {
+   "name": "M18 the match line taken on the night v38's once-only line is due",
+   "check": 6,
+   "result": "red",
+   "first": "the skip night untouched: [\"gs38-nk-o4\",\"gs38-ba-o1\",\"gs38-told-adapter\",\"gs38-lost-lenscap\",\"gs38-back-lenscap\",\"gs39-pot-ba-g0\",\"gs40-tr-dry-nk\",\"gs38-by-nk3\"]"
+  },
+  {
+   "name": "M19 a non-transition line says rain tomorrow",
+   "check": 6,
+   "result": "red",
+   "first": "a non-transition line promises rain tomorrow"
+  },
+  {
+   "name": "M20 the plan wrapper writes G.b40.heard",
+   "check": 6,
+   "result": "red",
+   "first": "the plan pure (twice the same, S unchanged): [5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40]"
+  },
+  {
+   "name": "M21 the repeat guard swaps a told:<id> first retelling (the slot always replaceable)",
+   "check": 7,
+   "result": "red",
+   "first": "pair: every first-time retelling still told: after 8:/nkechi+tunde 9:/bassey+nkechi 10:/ada+bassey 11:/tunde+oyelaran 12:/nkechi+tunde 13:/bassey+nkechi 14:/oyelaran+ada 15:/bassey+oyelaran 16:/oyelaran+nkechi || before 8:gs38-told-rule/nkechi+tunde 9:gs38-told-seeds/bassey+nkechi 10:/ada+bassey 11:gs39-told-pencil/tunde+oyelaran 12:/nkechi+tunde 13:/bassey+nkechi 14:gs39-told-cloth/oyelaran+ada 1"
+  },
+  {
+   "name": "M22 HEARD_NIGHTS 3 instead of 13",
+   "check": 7,
+   "result": "red",
+   "first": "pair: opener heard twice within fourteen evenings 6 > 1"
+  },
+  {
+   "name": "M29 the swap40 booking skipped (v38's greeting rotation frozen)",
+   "check": 7,
+   "result": "red",
+   "first": "pair: the swap40 booking"
+  },
+  {
+   "name": "M23 Mallam standing at his spot (not seated, not gone) during a visit",
+   "check": 8,
+   "result": "red",
+   "first": "seated at (-4.2, 13.0) during the visit: {\"vis\":true,\"x\":-1.8,\"z\":12.4,\"sit\":false,\"phase\":\"seated\",\"mode\":\"stand\",\"glow\":0.993}"
+  },
+  {
+   "name": "M24 the fan's lead 0.35 (beats Aunty Bisi's buy from the south)",
+   "check": 8,
+   "result": "red",
+   "first": "her stroll buy wins over the fan: Fan the coals ○○○○○"
+  },
+  {
+   "name": "M25 the taste spends money",
+   "check": 8,
+   "result": "red",
+   "first": "no money changes hands"
+  },
+  {
+   "name": "M30 an ACT_HOOKS entry for suya (never reached; his line missing on the round) (with M30b the second half of M30: the flag watch taken out)",
+   "check": 8,
+   "result": "red",
+   "first": "his line on the round (no order today): []"
+  },
+  {
+   "name": "M32 the fan offered at Aunty Bisi's stop where her buy comes first",
+   "check": 8,
+   "result": "red",
+   "first": "no fan where her buy comes first: [\"suya\",\"bisi39buy\",\"mallam40fan\"]"
+  },
+  {
+   "name": "M33 the fan hidden by a 2.4 m radius round Aunty Bisi at her stop (the base round at the stall's front, S1)",
+   "check": 8,
+   "result": "red",
+   "first": "\"Fan the coals\", not the base round, at (-3.3, 10.3): Two suyas, ₦2,000"
+  },
+  {
+   "name": "M35 the kept order's line before the gist (DOD-F5)",
+   "check": 8,
+   "result": "red",
+   "first": "before the gist a regular's or the season's line, not the kept order's: [\"Two sticks, as I promised. More onion on yours, as you said. I told you I would remember.\"]"
+  },
+  {
+   "name": "M36 no flag watch at ten (a round bought just before ten loses his line)",
+   "check": 8,
+   "result": "red",
+   "first": "his line on a round bought just before ten: []"
+  },
+  {
+   "name": "M37 no \"Your two sticks are ready.\" after the gist",
+   "check": 8,
+   "result": "red",
+   "first": "its bubble shows"
+  },
+  {
+   "name": "M38 a press during the fan pose dropped (S2)",
+   "check": 8,
+   "result": "red",
+   "first": "one human at four presses a second: at most 15 s (16.53)"
+  },
+  {
+   "name": "M39 the turn offered to the fanner after the first turn (DOD-F7)",
+   "check": 8,
+   "result": "red",
+   "first": "after the first turn never \"Turn the sticks\" for the one fanning (DOD-F7)"
+  },
+  {
+   "name": "M45 Mallam back behind his stall at (-3, 13.2), out of the desk cameras (S3)",
+   "check": 8,
+   "result": "red",
+   "first": "his head on screen in desk camera 1 in the morning (P(0) at (-3,10.9)): NDC [-1.201,-0.397,0.75]"
+  },
+  {
+   "name": "M50 his name line with a sentence the owner did not see (C4)",
+   "check": 8,
+   "result": "red",
+   "first": "the name line as the owner approved it: Sannu. My name is Sani. Everybody calls me Mallam. You can call me either."
+  },
+  {
+   "name": "M60 no collection of the kept order (the base round's one per sitting refuses it, repair H1)",
+   "check": 8,
+   "result": "red",
+   "first": "the collection leads at ten to ten: Two suyas, ₦2,000"
+  },
+  {
+   "name": "M61 the collection on credit (no purse test, repair H1)",
+   "check": 8,
+   "result": "red",
+   "first": "a purse that cannot pay: the base round's toast"
+  },
+  {
+   "name": "M72 no stay after ten for a waiting order (a skipped gist never hands it over, repair H1)",
+   "check": 8,
+   "result": "red",
+   "first": "still at his grill after ten with the order waiting"
+  },
+  {
+   "name": "M55 \"Your two sticks are ready.\" to a player within 4 m whatever his camera shows (unseen from the rail side, repair VP-2)",
+   "check": 8,
+   "result": "red",
+   "first": "1280 x 800: \"Your two sticks are ready.\" only once his bubble is drawn, and before the fan point: {\"at\":{\"d\":3.74,\"seen\":false,\"live\":true},\"unseenNear\":6,\"firedUnseen\":1,\"ready0\":0}"
+  },
+  {
+   "name": "M56 the taste panel opened by itself at the beat's end again (under both thumbs at 390 x 844, repair H3)",
+   "check": 8,
+   "result": "red",
+   "first": "no panel opens by itself at the end of the beat"
+  },
+  {
+   "name": "M57 no pause after the beat (a fanning tap still coming opens the taste panel, repair H3)",
+   "check": 8,
+   "result": "red",
+   "first": "no panel opens by itself at the end of the beat"
+  },
+  {
+   "name": "M58 \"His feet came home and his marble stayed out to play.\" while Emeka is still out at the pitch (repair VC-6)",
+   "check": 5,
+   "result": "red",
+   "first": "while Emeka is still out at the pitch, her marble line says so: gs40-kid-nk-marble"
+  },
+  {
+   "name": "M59 a child seller in Mr. Bassey's wash line again (repair VC-1)",
+   "check": 12,
+   "result": "red",
+   "first": "no child seller (VC-1): [\"gs40-wash-ba-d\"]"
+  },
+  {
+   "name": "M74 Mrs. Oyelaran wiping the rail \"this afternoon\" while she is out (repair VC-4)",
+   "check": 12,
+   "result": "red",
+   "first": "Mrs. Oyelaran out all afternoon (VC-4): [\"gs40-se-oy-h3\"]"
+  },
+  {
+   "name": "M75 Mrs. Oyelaran's wash wording a near copy of v38's again (repair VC-3)",
+   "check": 12,
+   "result": "red",
+   "first": "the v40 wash wordings vary from v38's (VC-3): [\"gs40-wash-oy-r\"]"
+  },
+  {
+   "name": "M62 the lone fanner never offered the second turn (a pair where one presses never finishes, repair VP-3)",
+   "check": 8,
+   "result": "red",
+   "first": "a pair where only one presses finishes within 15 s (69.87, turns 1)"
+  },
+  {
+   "name": "M65 the order panel opened twice by same-frame presses (the name line spent on the hidden one, repair H5)",
+   "check": 8,
+   "result": "red",
+   "first": "one panel for two same-frame presses"
+  },
+  {
+   "name": "M66 the helpers overwritten at the beat's end (a reload loses who fanned before it, repair H6)",
+   "check": 8,
+   "result": "red",
+   "first": "both kept as helpers after the reload: {\"day\":13,\"order\":null,\"glow\":1,\"fanned\":[1],\"turned\":[1],\"tasted\":0,\"lit\":\"fan\",\"kept\":0,\"owed\":0,\"turns\":2}"
+  },
+  {
+   "name": "M69 the suya flags not kept current while he is away (an afternoon round brings his line at five, repair H9)",
+   "check": 8,
+   "result": "red",
+   "first": "no line over him at five for the afternoon round: [\"You again. Good. Same as before? I have already started.\"]"
+  },
+  {
+   "name": "M68 the teardown on the question (newconfirm) again (\"No, keep it\" resets the beat, repair H8)",
+   "check": 11,
+   "result": "red",
+   "first": "the question changes nothing in the scene"
+  },
+  {
+   "name": "M81 Ada's catfish ask a near copy of v38's again (repair 3 R3-3)",
+   "check": 12,
+   "result": "red",
+   "first": "no v40 line shares more than four words in a row with a v38, v39 or other v40 line (R3-3): [\"gs40-ask-cat-r [and bring one to me] ~ found-v38.js: Catfish do not come out by day. Neither do I, some days. Tom\"]"
+  },
+  {
+   "name": "M82 a pot wording that promises rain on a dry evening again (repair 3 R3-4)",
+   "check": 12,
+   "result": "red",
+   "first": "a line about today's rain only after rain that day (R3-4, R3-6): [\"gs40-pot-nk-r\"]"
+  },
+  {
+   "name": "M83 Tunde's \"The rain came through the courtyard today.\" on a dry rains evening (no rain gate; repair 3 R3-6, moved in the final touch)",
+   "check": 12,
+   "result": "red",
+   "first": "a line about today's rain only after rain that day (R3-4, R3-6): [\"gs40-se-tu-r2\"]"
+  },
+  {
+   "name": "M76 he leaves at half past ten after a late gist (no margin after its end, repair 3 R3-1)",
+   "check": 8,
+   "result": "red",
+   "first": "Today still says he is keeping them"
+  },
+  {
+   "name": "M77 he leaves at half past ten during a late gist (repair 3 R3-1)",
+   "check": 8,
+   "result": "red",
+   "first": "seated by his grill through the gist past half past ten: {\"t\":22.526,\"m\":{\"vis\":false,\"x\":-4.2,\"z\":13,\"sit\":false,\"phase\":\"off\",\"mode\":\"sit\",\"glow\":0},\"today\":false}"
+  },
+  {
+   "name": "M79 the base round bought by an Act straight after the taste (no hush, repair 3 R3-2)",
+   "check": 8,
+   "result": "red",
+   "first": "\"The coals are going.\" just after the taste: Two suyas, ₦2,000"
+  },
+  {
+   "name": "M80 the name line spent when a touch-opened panel opens, before it is seen (repair 3 R3-2)",
+   "check": 8,
+   "result": "red",
+   "first": "390x844: the name line unused while the thumb taps"
+  },
+  {
+   "name": "M78 the touch hold not started again by each press (a thumb tapping on presses Taste unseen, repair 3 R3-2)",
+   "check": 8,
+   "result": "red",
+   "first": "390x844: four taps a second for three seconds press nothing: [{\"pressed\":null,\"open\":false,\"name\":false,\"held\":true,\"dim\":null},{\"pressed\":null,\"open\":false,\"name\":false,\"held\":true,\"dim\":null},{\"pressed\":null,\"open\":false,\"name\":false,\"held\":true,\"dim\":null},{\"pressed\":null,\"open\":false,\"name\":false,\"held\":true,\"dim\":null},{\"pressed\":null,\"open\":true,\"name\":false,\"held\":true,\"dim\":true},{\"pressed"
+  },
+  {
+   "name": "M90 Mrs. Oyelaran watching the afternoon match from her window again (repair 4 R4-5)",
+   "check": 12,
+   "result": "red",
+   "first": "Mrs. Oyelaran's match lines: none watched or heard from home (R4-5): [\"gs40-fb-oy7\"]"
+  },
+  {
+   "name": "M91 an again tip that says \"today\" the evening before (repair 4 R4-3)",
+   "check": 12,
+   "result": "red",
+   "first": "the again tips true the evening before (R4-3): [\"gs40-ag-ad-d\"]"
+  },
+  {
+   "name": "M84 a reload during a late gist loses the kept order (the gistOn mark not read, repair 4 R4-1)",
+   "check": 8,
+   "result": "red",
+   "first": "the 22:15-22:30 store: the reload counted as the gist's end: {\"t\":22.3906,\"day\":10,\"vis\":true,\"phase\":\"lit\",\"ev\":\"idle\",\"today\":true,\"until\":22.5,\"on\":10,\"end\":null,\"id\":\"\",\"ready\":0}"
+  },
+  {
+   "name": "M85 no mark in his record when a gist starts with the order waiting (repair 4 R4-1)",
+   "check": 8,
+   "result": "red",
+   "first": "the saved record carries the mark of a gist begun with the order waiting, and no end: {\"day\":10,\"order\":\"onion\",\"glow\":0,\"fanned\":[],\"turned\":[],\"tasted\":0,\"lit\":\"self\",\"kept\":0,\"owed\":0,\"orderAt\":10.8061}"
+  },
+  {
+   "name": "M86 with no order waiting he leaves at ten in the middle of a late gist (repair 4 R4-2)",
+   "check": 8,
+   "result": "red",
+   "first": "seated by his grill through the whole gist past ten with no order waiting: {\"past\":{\"t\":22.022,\"m\":{\"vis\":false,\"x\":-4.2,\"z\":13,\"sit\":false,\"phase\":\"off\",\"mode\":\"sit\",\"glow\":0}},\"cut\":{\"t\":22.006,\"m\":{\"vis\":false,\"x\":-4.2,\"z\":13,\"sit\":false,\"phase\":\"off\",\"mode\":\"sit\",\"glow\":0}}}"
+  },
+  {
+   "name": "M87 he vanishes from his stool when a gist past ten ends (no beat at his grill, repair 4 R4-2)",
+   "check": 8,
+   "result": "red",
+   "first": "up from his stool and at his grill when it ends: {\"vis\":false,\"x\":-4.2,\"z\":13,\"sit\":false,\"phase\":\"off\",\"mode\":\"sit\",\"glow\":0}"
+  },
+  {
+   "name": "M88 \"Your two sticks are ready.\" by boardSeen40's 0.1 margin again (said at 844 x 390 where it cannot show, repair 4 R4-6)",
+   "check": 8,
+   "result": "red",
+   "first": "844 x 390, P(0) standing still 5 s at (-4, 8.5): his bubble point inside boardSeen40's margin but not the camera, and \"Your two sticks are ready.\" not said: [{\"t\":22.5572,\"day\":10,\"vis\":true,\"phase\":\"lit\",\"ev\":\"idle\",\"today\":true,\"until\":22.8856,\"on\":10,\"end\":22.3856,\"id\":\"\",\"ready\":1},[true,true]]"
+  },
+  {
+   "name": "M92 the wet match lines on the day's rain alone again (a morning match before the rain, repair 5 R5-1)",
+   "check": 12,
+   "result": "red",
+   "first": "the wet lines not eligible: Saturday morning, ended 10:40, rain 14:00 {\"n\":\"Saturday morning, ended 10:40, rain 14:00\",\"wet\":true,\"aft\":false,\"rain\":true,\"wetEl\":[\"gs40-fb-ba10\",\"gs40-fb-nk7\",\"gs40-fb-oy5\"],\"tu5\":false,\"oy\":{\"k\":\"oyelaran\",\"id\":\"gs40-fb-oy1\",\"v40k\":\"gs40-fb-oy1\",\"text\":\"One day that ball will find my window. Once is a game. Twice is a compound meeting.\",\"info\":1}}"
+  },
+  {
+   "name": "M93 no record of when the match ended (football's end event not read, repair 5 R5-1)",
+   "check": 6,
+   "result": "red",
+   "first": "v40 records when today's match ended (R5-1): [null,{\"day\":5,\"t\":15.601666666666667}]"
+  },
+  {
+   "name": "M94 Mrs. Oyelaran's match news pinned to six o'clock again (repair 5 R5-2)",
+   "check": 12,
+   "result": "red",
+   "first": "no Oyelaran match line claims a time or a first-hand sight (R5-2): {\"time\":[\"gs40-fb-oy2\"],\"sight\":[]}"
+  },
+  {
+   "name": "M95 Mrs. Oyelaran claiming the ball touched her window today again (repair 5 R5-2)",
+   "check": 12,
+   "result": "red",
+   "first": "no Oyelaran match line claims a time or a first-hand sight (R5-2): {\"time\":[],\"sight\":[\"gs40-fb-oy1\"]}"
+  },
+  {
+   "name": "M96 a general (hearsay) match line by Mr. Bassey, who watched from the touchline (repair 5)",
+   "check": 12,
+   "result": "red",
+   "first": "no general match line by Mr. Bassey: {\"k\":\"bassey\",\"id\":\"gs40-fb-g8\",\"v40k\":\"gs40-fb-g8\",\"text\":\"Football today, I hear. The sand by the pitch has more footprints than the market.\",\"info\":1}"
+  },
+  {
+   "name": "M97 an again tip in today's season wording on the evening before the season changes (repair 5)",
+   "check": 12,
+   "result": "red",
+   "first": "the evening before a change, the again tip's season-free wording: {\"se\":\"rains\",\"next\":\"dry\",\"ids\":[\"gs38-x-o\",\"gs38-y-o\",\"gs40-ag-ad-r\",\"gs40-tr-dry-tu\",\"gs38-by-y\"]}"
+  },
+  {
+   "name": "M89 the touch hold not shown (buttons never dimmed, repair 4 R4-7)",
+   "check": 8,
+   "result": "red",
+   "first": "390x844: the buttons dimmed while the hold runs: [[false,true,null],[false,true,null],[false,true,null],[false,true,null],[true,true,null],[true,true,null],[true,true,null],[true,true,null],[true,true,null],[true,true,null],[true,true,null],[true,true,null]]"
+  },
+  {
+   "name": "M26 the chime calls AUDIO35.play()",
+   "check": 9,
+   "result": "red",
+   "first": "a v38 thing: two notes reach the master, one chime"
+  },
+  {
+   "name": "M27 the chime sounds with Sound off",
+   "check": 9,
+   "result": "red",
+   "first": "a pickup with Sound off: nothing"
+  },
+  {
+   "name": "M28 Today's board line pushed into the gist card's rows (dropped at the cap)",
+   "check": 10,
+   "result": "red",
+   "first": "the board line in Today"
+  }
+ ],
+ "withoutV40": {
+  "allRed": true,
+  "findings": [
+   {
+    "checks": [
+     1,
+     2,
+     3,
+     4,
+     5,
+     6,
+     7,
+     8,
+     9,
+     10,
+     11,
+     12
+    ],
+    "first": "the module"
+   }
+  ]
+ },
+ "withoutV39": {
+  "error": null,
+  "scene": 2079,
+  "random": 0,
+  "hooks": "7,7,17,false,false",
+  "hooksRef": "7,7,17,false,false",
+  "passed": true
+ },
+ "withoutV38": {
+  "error": null,
+  "scene": 2079,
+  "random": 0,
+  "hooks": "6,6,17,false,false",
+  "hooksRef": "6,6,17,false,false",
+  "passed": true
+ },
+ "subsets": {
+  "lines": {
+   "loads": true,
+   "v40Names": 252,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "log": {
+   "loads": true,
+   "v40Names": 252,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "tune": {
+   "loads": true,
+   "v40Names": 252,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  }
+ },
+ "determinism": "identical"
+}
