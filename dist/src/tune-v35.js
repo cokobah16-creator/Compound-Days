@@ -189,14 +189,13 @@ function applyPaint35(){const f=TUNE35.flat;if(!f||(!f.walls.length&&!f.floor))r
  // wrap: "Cast again" on the page after a catch casts straight away (one press per cast, not two); from the world it opens the line as before
  ACTIONS.lifeFish=function(){const again=!silent()&&!LIFE34.fish&&!(life34()&&life34().catch)&&TUNE35.isFishPanel();const r=fishPrev.apply(this,arguments);
   if(again&&LIFE34.fish&&LIFE34.fish.phase==='ready')ACTIONS.lifeCast();return r;};
- let fishSeq=-1,fishTab=null,fishShown=false,bodyFish=false,padDown=false;
+ let fishSeq=-1,fishTab=null,fishShown=false,padDown=false;
  const fishPanelNow=()=>{if(!overlayOpen()){fishShown=false;fishSeq=-1;return false;}if(TUNE35.seq!==fishSeq||LIFE34.tab!==fishTab){fishSeq=TUNE35.seq;fishTab=LIFE34.tab;fishShown=TUNE35.isFishPanel();}return fishShown;};
- // twitch the world float before the bite (after life-world's and the bridge's bob updates), lift touch Act over the fishing sheet, read the pad's A button
+ // Twitch the world float before the bite and read the pad's A button while the fishing sheet is open.
  TICK_HOOKS.push(function tune_tick35(){if(!S||S.phase!=='play')return;
   const g=LIFE34.fishingWorld,bob=g&&g.userData.bob;
   if(bob&&TUNE35.nibble()){const t=clock35()/1000;bob.position.y=.12-.035*Math.abs(Math.sin(t*26));const ring=g.userData.ring;if(ring)ring.scale.setScalar(1+.15*Math.sin(t*26));}
   const fishNow=fishPanelNow();
-  if(fishNow!==bodyFish){bodyFish=fishNow;if(document.body&&document.body.classList)document.body.classList.toggle('fishact35',fishNow);}
   guideTick();
   if(fishNow&&typeof navigator!=='undefined'&&navigator.getGamepads){let down=false;try{const pads=navigator.getGamepads()||[];for(let k=0;k<pads.length;k++){const p=pads[k];if(p&&p.buttons&&p.buttons[0]&&p.buttons[0].pressed){down=true;break;}}}catch(e){}
    if(down&&!padDown)actPrimary35();padDown=down;}else padDown=false;});
@@ -410,9 +409,6 @@ dispatch=function(name,d){if(!silent()&&((name==='lifeCell'&&cellShuts(d))||(nam
  TUNE35.css=`.fishing34.nibble35 .float34{animation:nibble35 .16s ease-in-out infinite}
 @keyframes nibble35{50%{margin-top:6px;transform:translate(-50%,-50%) rotate(-12deg)}}
 @media(prefers-reduced-motion:reduce){.fishing34.nibble35 .float34{animation:none}}
-@media (hover:none) and (pointer:coarse){body.fishact35 #touch{z-index:21}body.fishact35 #touch .zone{pointer-events:none}
- body.fishact35 #touch .stick{display:none!important}body.fishact35 #touch .act{pointer-events:auto}
- body.fishact35 #panel.life-panel34{padding-bottom:calc(112px + env(safe-area-inset-bottom,0px))}}
 #panel .paint35{margin-top:18px}#panel .paint35>h3{margin:0 0 4px}
 #panel .paint35-swatch{display:block;height:64px;border-radius:12px;margin:0 0 10px;border:1px solid #0002}
 #panel .paint35-card h3{margin:4px 0 2px}#panel .paint35-card>.btn{margin-top:10px}

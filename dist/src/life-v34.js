@@ -42,10 +42,16 @@ const nextDay34=ACTIONS.nextday;ACTIONS.nextday=d=>{
 /* Fishing: readable bobber, an unhurried bite, and atomic catch decisions. */
 doFish=function(i){life34();LIFE34.fish={i,phase:'ready',elapsed:0,biteAt:0};openFishing34();};
 function openFishing34(){
- const l=life34();if(l.catch){const f=FISH34.find(x=>x.id===l.catch.id);openLifePanel34(`<p class="life-kicker">WATERSIDE · A LITTLE DISCOVERY</p><h2>${esc(f.name)}</h2><div class="catch34">${fishIcon34(f)}<b>${l.catch.size} cm</b></div><p>${esc(f.note)}</p><p class="small muted">Recorded in your almanac. Keep it for cooking, sell it, or let it swim.</p><div class="life-options">${btn('Keep for the kitchen','lifeCatch',{v:'keep'},'primary')}${btn('Sell for '+naira(f.value),'lifeCatch',{v:'sell'})}${btn('Let it swim','lifeCatch',{v:'release'},'quiet')}</div>`,'fish');return;}
+ const l=life34();if(l.catch){const f=FISH34.find(x=>x.id===l.catch.id);openLifePanel34(`<div class="fish-result34"><header><p class="life-kicker">THE WATERFRONT · IN THE ALMANAC</p><h2>${esc(f.name)}</h2></header><div class="catch34">${fishIcon34(f)}<b>${l.catch.size} cm</b></div><p>${esc(f.note)}</p><div class="life-options">${btn('Keep for the kitchen','lifeCatch',{v:'keep'},'primary')}${btn('Sell for '+naira(f.value),'lifeCatch',{v:'sell'})}${btn('Let it swim','lifeCatch',{v:'release'},'quiet')}</div></div>`,'fish');return;}
  const f=LIFE34.fish||{phase:'ready',i:0};LIFE34.fish=f;
- const title=f.phase==='bite'?'There! The float dipped.':f.phase==='waiting'?'A quiet moment by the water.':'What’s in the water today?';
- openLifePanel34(`<p class="life-kicker">WATERSIDE · TAKE YOUR TIME</p><h2>${title}</h2><div class="fishing34 ${f.phase}"><div class="water-line34"></div><span class="float34"></span><span class="ripple34"></span><span class="ripple34 second"></span></div><p role="status">${f.phase==='bite'?'Tap Reel in when you are ready. The bite will wait for you.':f.phase==='waiting'?'Watch the float. A fish will be along in a moment.':'Six discoveries for your almanac. Each cast is a new chance.'}</p><div class="actions">${f.phase==='ready'?btn('Cast your line','lifeCast',{},'primary block'):f.phase==='bite'?btn('Reel in','lifeReel',{},'primary block'):'<button class="btn block" disabled>Waiting for a bite…</button>'}${btn('Back to the shore','close',{},'quiet')}</div>`,'fish');
+ const ready=f.phase==='ready',bite=f.phase==='bite';
+ const title=ready?'Cast a line':bite?'There! The float dipped.':'Watching the float';
+ const status=ready?'Six fish to discover in your almanac.':bite?'Reel in when you’re ready. The bite will wait.':'Waiting for a bite…';
+ const action=ready?btn('Cast your line','lifeCast',{},'primary'):bite?btn('Reel in','lifeReel',{},'primary'):'';
+ openLifePanel34(`<div class="fish-sheet34 ${f.phase}"><header><p class="life-kicker">THE WATERFRONT · FISHING</p><h2>${title}</h2></header>
+  <div class="fishing34 ${f.phase}" aria-hidden="true">${ready?'':'<span class="ripple34"></span><span class="ripple34 second"></span><span class="float34"></span>'}</div>
+  <p class="fish-status34" role="status"><span aria-hidden="true"></span>${status}</p>
+  <div class="actions fish-actions34">${action}${btn('Back to the shore','close',{},'quiet')}</div></div>`,'fish');
 }
 ACTIONS.lifeFish=()=>{if(life34().catch){openFishing34();return;}if(!near34(12.4,14.2,3)){navigate34('fish');return;}doFish(players.find(p=>Math.hypot(p.g.position.x-12.4,p.g.position.z-14.2)<3)?.i||0);};
 ACTIONS.lifeCast=()=>{if(life34().catch||!LIFE34.fish||LIFE34.fish.phase!=='ready'||!near34(12.4,14.2,3,LIFE34.fish.i))return;LIFE34.fish.phase='waiting';LIFE34.fish.elapsed=0;LIFE34.fish.biteAt=2.2+R()*2.2;buildFishing34();openFishing34();};
