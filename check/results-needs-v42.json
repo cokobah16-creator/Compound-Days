@@ -1,0 +1,71 @@
+{
+ "build": "v42-4f28be5e",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Off until a new morning: frames on day 1 write no S.needs42, nothing online; the first Sleep starts it with three wants (two from the aspiration) and one fear for each player",
+   "passed": true,
+   "info": {
+    "wants": [
+     [
+      "s-catch2",
+      "s-sell",
+      "g-help"
+     ],
+     [
+      "h-talk3",
+      "h-help",
+      "g-eat"
+     ]
+    ],
+    "fears": [
+     "f-broke",
+     "f-hungry"
+    ]
+   }
+  },
+  {
+   "name": "2. Decay: two game hours away from home take hunger 8, fun 6, social 5 and comfort 4; at home comfort rises with the furniture; one step never counts more than four hours",
+   "passed": true,
+   "info": {
+    "homeRate": 3.666666666666667
+   }
+  },
+  {
+   "name": "3. The felt mood is half the base mood (cheer, wants, fears) and half the needs with energy; the base mood field is never overwritten",
+   "passed": true
+  },
+  {
+   "name": "4. Filling: eating together (hunger +45 both), a talk (social +12 for the one talking), a catch (fun for the one fishing), cooking and a party seen on the household counters",
+   "passed": true
+  },
+  {
+   "name": "5. Wants: met by the day's events (three different neighbours for a talk want), +10 mood and aspiration points; milestones add an album memory, the third a perk (the stall cook's dishes are better)",
+   "passed": true,
+   "info": {
+    "perk": 3
+   }
+  },
+  {
+   "name": "6. Fears: going to bed hungry costs 12 mood the next morning, with a toast; a fear that did not happen costs nothing",
+   "passed": true
+  },
+  {
+   "name": "7. Mood matters: a cheerful kitchen adds to a dish and a low one takes away; a neighbour notices a low need in the talk; a need falling low gets one toast",
+   "passed": true,
+   "info": {
+    "up": 79,
+    "mid": 76,
+    "down": 72
+   }
+  },
+  {
+   "name": "8. Today shows each player's bars, mood, aspiration, wants and fear; the pinned hooks hold (TICK_HOOKS 17, the bridge's openTalk outermost, talk still wrapped by the v35 lines) and v41's ladder still counts the talk",
+   "passed": true
+  },
+  {
+   "name": "9. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}

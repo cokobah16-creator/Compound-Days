@@ -1,5 +1,5 @@
 {
- "build": "v41-ba0e78d0",
+ "build": "v42-4f28be5e",
  "passed": true,
  "checks": [
   {
@@ -80,9 +80,9 @@
     },
     "tune12": "Compound meeting this week.",
     "withoutV40": {
-     "dayThree": "ff95dece:15323",
-     "closed": "a50ed511:80807",
-     "layer2": "3505e972:168111"
+     "dayThree": "126b7735:16407",
+     "closed": "e02259ee:87458",
+     "layer2": "a17669a5:181302"
     }
    }
   },
