@@ -1,0 +1,10 @@
+/* v41 Bonds: level marks, mood tint, the People list and the thanks panel */
+.bonds41-marks{display:inline-flex;gap:3px;margin-left:6px;vertical-align:middle}
+.bonds41-marks i{display:inline-block;width:9px;height:9px;border-radius:50%;border:1.5px solid currentColor;opacity:.55}
+.bonds41-marks i.on{background:#E3A72F;border-color:#E3A72F;opacity:1}
+.bonds41-mood{margin:4px 0 2px;font-weight:600}
+.bonds41-mood.m-bright{color:#2F6B4F}.bonds41-mood.m-easy{color:#4A6A7A}.bonds41-mood.m-tired{color:#8A7F9E}.bonds41-mood.m-worried{color:#B5512C}
+.bonds41-people{margin-top:14px}
+.bonds41-people h3{margin:2px 0 8px}
+.bonds41-card .tiny{margin-top:6px}
+.bonds41-talk{margin-top:6px}
