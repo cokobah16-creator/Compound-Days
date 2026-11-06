@@ -54,9 +54,9 @@ NEEDS42.WANTS={
 };
 NEEDS42.FEARS=[
  {id:'f-hungry',text:'Going to bed hungry',test:(i,N)=>N.p[i].hunger<20,said:'went to bed hungry.'},
- {id:'f-lonely',text:'A whole day without talking to a neighbour',test:(i,N)=>!(N.day.talkK||[]).length,said:'went a whole day without talking to anyone.'},
+ {id:'f-lonely',text:'A whole day without talking to a neighbour',test:(i,N)=>!needsTalked42(N,i).length,said:'went a whole day without talking to anyone.'},
  {id:'f-bored',text:'A day with nothing fun in it',test:(i,N)=>N.p[i].fun<20,said:'had a day with nothing fun in it.'},
- {id:'f-broke',text:'The purse running under ₦1,000',test:()=>NEEDS42.state.minMoney<1000,said:'watched the purse run under ₦1,000.'}];
+ {id:'f-broke',text:'The purse running under ₦1,000',test:(i,N)=>N.day.minMoney!=null&&N.day.minMoney<1000,said:'watched the purse run under ₦1,000.'}];
 NEEDS42.TITLES={
  quiet:['A tidy corner','A home that breathes','The calm flat on the courtyard','Palm Court’s garden flat'],
  stall:['People ask what you cooked','A dish with your name on it','Neighbours queue at your door','The compound’s favourite cook'],
@@ -79,10 +79,12 @@ function needsClamp42(v){return Math.max(0,Math.min(100,Math.round(v*1e6)/1e6));
 /* the day's wants and fear for both players, rolled once per day from a hash of the household and the day */
 function needsRoll42(N){const seed=(S.household||'')+'|'+N.since+'|'+S.day;
  const pick=(arr,n,salt,avoid)=>{const out=[];let k=needsHash42(seed+'|'+salt)%arr.length;for(let t=0;out.length<n&&t<arr.length*2;t++){const w=arr[(k+t)%arr.length];if(!out.includes(w)&&!(avoid||[]).some(x=>x.ev===w.ev))out.push(w);}return out;};
- N.day={d:S.day,talkK:[],w:[0,1].map(i=>{const a=needsAsp42(i);const mine=pick(NEEDS42.WANTS[a],2,'a'+i);const gen=pick(NEEDS42.WANTS.general,1,'g'+i,mine);
+ N.day={d:S.day,talkK:[[],[]],minMoney:S.money,w:[0,1].map(i=>{const a=needsAsp42(i);const mine=pick(NEEDS42.WANTS[a],2,'a'+i);const gen=pick(NEEDS42.WANTS.general,1,'g'+i,mine);
    return mine.map(w=>({id:w.id,ev:w.ev,n:w.n,text:w.text,asp:true,c:0,done:false})).concat(gen.map(w=>({id:w.id,ev:w.ev,n:w.n,text:w.text,asp:false,c:0,done:false})));}),
   f:[0,1].map(i=>{const f=NEEDS42.FEARS[needsHash42(seed+'|f'+i)%NEEDS42.FEARS.length];return {id:f.id,hit:false};})};
- NEEDS42.state.minMoney=S.money;}
+ }
+// the neighbours one player has talked to today (each player keeps their own list)
+function needsTalked42(N,i){const t=N.day.talkK;if(!Array.isArray(t[0]))N.day.talkK=[[],[]];return N.day.talkK[i]||(N.day.talkK[i]=[]);}
 
 /* ---------- events ---------- */
 // one thing happened: fill needs (for one player or the whole household), then count it toward today's wants
@@ -90,10 +92,10 @@ function needsEvent42(ev,who,arg){const N=needs42(false);if(!N||!N.day||N.day.d!
  const fill=NEEDS42.FILL[ev]||{};
  for(const i of players_){const P=N.p[i];if(!P)continue;const a=needsAsp42(i),perk=N.asp[i].lvl>=3;
   for(const k in fill){let v=fill[k];if(perk&&a==='host'&&ev==='talk'&&k==='social')v*=1.5;if(perk&&a==='studio'&&ev==='photo')v*=2;if(perk&&a==='maker'&&ev==='decorate')v*=2;P[k]=needsClamp42(P[k]+v);if(P[k]>=NEEDS42.LOW+10)NEEDS42.state.lowSaid[i+k]=false;}}
- if(ev==='talk'&&arg&&!N.day.talkK.includes(arg))N.day.talkK.push(arg);
+ if(ev==='talk'&&arg&&who!=null){const t=needsTalked42(N,who);if(!t.includes(arg))t.push(arg);}
  const evs=[ev];if(ev==='talk'){evs.push('talk:'+arg);}
  for(const i of players_.length===1&&ev!=='talk'?[0,1]:players_)for(const w of N.day.w[i]){if(w.done)continue;
-  if(w.ev==='talkK'){if(ev!=='talk')continue;w.c=N.day.talkK.length;}else if(evs.includes(w.ev))w.c++;else continue;
+  if(w.ev==='talkK'){if(ev!=='talk')continue;w.c=needsTalked42(N,i).length;}else if(evs.includes(w.ev))w.c++;else continue;
   if(w.c>=w.n)needsWantDone42(N,i,w);}}
 function needsWantDone42(N,i,w){w.done=true;w.c=w.n;try{cheer(i,NEEDS42.WANT_MOOD);}catch(e){}const A=N.asp[i];A.pts+=w.asp?2:1;
  const lvl=NEEDS42.MILESTONES.filter(m=>A.pts>=m).length;
@@ -120,11 +122,11 @@ function needsStep42(dh){const N=needs42(false);if(!N)return;
   const home=pl&&typeof inFlat==='function'&&inFlat(pl.g.position.x,pl.g.position.z);
   const perk=N.asp[i].lvl>=3&&needsAsp42(i)==='quiet';P.comfort=needsClamp42(P.comfort+(home?needsComfortRate42()*(perk?2:1):-NEEDS42.DECAY.comfort)*dh);
   for(const k of NEEDS42.KEYS){if(P[k]<NEEDS42.LOW&&!NEEDS42.state.lowSaid[i+k]){NEEDS42.state.lowSaid[i+k]=true;if(i===0||!(typeof AI!=='undefined'&&AI.on&&AI.i===i))needsToast42(NEEDS42.LINES.low[k].replace('{name}',needsName42(i)));}}}
- if(N.day&&N.day.d===S.day)NEEDS42.state.minMoney=Math.min(NEEDS42.state.minMoney==null?S.money:NEEDS42.state.minMoney,S.money);}
+}
 function needsTick42(dt){if(!needsOn42()||!S.needs42)return;const st=NEEDS42.state;st.t+=dt;if(st.t<1)return;st.t=0;const N=S.needs42;
  if(!N.day||N.day.d!==S.day)needsRoll42(N);
  const t=N.t||{day:S.day,time:S.time};let dh=t.day===S.day?S.time-t.time:0;N.t={day:S.day,time:S.time};
- if(dh>0)needsStep42(Math.min(dh,NEEDS42.MAX_DT));needsWatch42();}
+ if(dh>0)needsStep42(Math.min(dh,NEEDS42.MAX_DT));N.day.minMoney=Math.min(N.day.minMoney==null?S.money:N.day.minMoney,S.money);needsWatch42();}
 // wrap: the per-frame step rides on EVENING35.tick, as v40's and v41's do, so the pinned TICK_HOOKS list stays as it is
 if(typeof EVENING35!=='undefined'&&typeof EVENING35.tick==='function'){const prevEveTick42=EVENING35.tick;EVENING35.tick=function(dt){const r=prevEveTick42.apply(this,arguments);try{needsTick42(dt);}catch(e){}return r;};}
 
@@ -153,6 +155,8 @@ const nextday42=ACTIONS.nextday;ACTIONS.nextday=function(){let hits=[];
  try{const N=needs42(true);if(N){for(const [i,F] of hits){S.p[i].mood=Math.max(0,(S.p[i].mood|0)+NEEDS42.FEAR_MOOD);}
   const bed=typeof placed==='function'&&placed('bed');for(const i of [0,1]){const P=N.p[i];P.hunger=needsClamp42(P.hunger-20);P.social=needsClamp42(P.social-5);P.comfort=needsClamp42(P.comfort+(bed?25:12));}
   N.t={day:S.day,time:S.time};needsRoll42(N);NEEDS42.state.snap=null;save();
+  // the earlier wrappers opened Today before the new morning was rolled: draw it again with today's wants
+  try{if(!needsSilent42()&&typeof overlayOpen==='function'&&overlayOpen()&&panel.classList.contains('life-panel34')&&LIFE34.tab==='today')openLife34('today');}catch(e){}
   if(hits.length&&!needsSilent42())setTimeout(()=>{try{toast(hits.map(([i,F])=>NEEDS42.LINES.fearHit.replace('{name}',needsName42(i)).replace('{fear}',F.said)).join(' '));}catch(e){}},4200);}}catch(e){}
  return r;};
 

@@ -1,5 +1,5 @@
 {
- "build": "v42-4f28be5e",
+ "build": "v42-64f03d0b",
  "passed": true,
  "checks": [
   {
@@ -40,14 +40,14 @@
    "passed": true
   },
   {
-   "name": "5. Wants: met by the day's events (three different neighbours for a talk want), +10 mood and aspiration points; milestones add an album memory, the third a perk (the stall cook's dishes are better)",
+   "name": "5. Wants: met by the day's events (three different neighbours for a talk want, each player counting their own talks), +10 mood and aspiration points; milestones add an album memory, the third a perk (the stall cook's dishes are better)",
    "passed": true,
    "info": {
     "perk": 3
    }
   },
   {
-   "name": "6. Fears: going to bed hungry costs 12 mood the next morning, with a toast; a fear that did not happen costs nothing",
+   "name": "6. Fears: going to bed hungry costs 12 mood the next morning, with a toast; the day's lowest purse is saved, so the broke fear survives a reload",
    "passed": true
   },
   {

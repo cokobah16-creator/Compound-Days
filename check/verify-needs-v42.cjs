@@ -10,8 +10,8 @@ const NAMES=[
  '2. Decay: two game hours away from home take hunger 8, fun 6, social 5 and comfort 4; at home comfort rises with the furniture; one step never counts more than four hours',
  '3. The felt mood is half the base mood (cheer, wants, fears) and half the needs with energy; the base mood field is never overwritten',
  '4. Filling: eating together (hunger +45 both), a talk (social +12 for the one talking), a catch (fun for the one fishing), cooking and a party seen on the household counters',
- '5. Wants: met by the day\'s events (three different neighbours for a talk want), +10 mood and aspiration points; milestones add an album memory, the third a perk (the stall cook\'s dishes are better)',
- '6. Fears: going to bed hungry costs 12 mood the next morning, with a toast; a fear that did not happen costs nothing',
+ '5. Wants: met by the day\'s events (three different neighbours for a talk want, each player counting their own talks), +10 mood and aspiration points; milestones add an album memory, the third a perk (the stall cook\'s dishes are better)',
+ '6. Fears: going to bed hungry costs 12 mood the next morning, with a toast; the day\'s lowest purse is saved, so the broke fear survives a reload',
  '7. Mood matters: a cheerful kitchen adds to a dish and a low one takes away; a neighbour notices a low need in the talk; a need falling low gets one toast',
  '8. Today shows each player\'s bars, mood, aspiration, wants and fear; the pinned hooks hold (TICK_HOOKS 17, the bridge\'s openTalk outermost, talk still wrapped by the v35 lines) and v41\'s ladder still counts the talk',
  '9. Determinism: two runs give identical reports'];
@@ -59,7 +59,8 @@ function inner(){
   step(4,()=>{fresh('host');next();settle();const w=J("S.needs42.day.w[0]");const t3=w.find(x=>x.ev==='talkK');const m0=run('S.p[0].mood');
    run("S.needs42.day.w[0]=[{id:'h-talk3',ev:'talkK',n:3,text:'Talk to three different neighbours',asp:true,c:0,done:false},{id:'h-cook',ev:'cook',n:1,text:'Cook something to share',asp:true,c:0,done:false},{id:'g-eat',ev:'eat',n:1,text:'Eat together',asp:false,c:0,done:false}];");
    for(const k of ['tunde','tunde','ada']){run(`{const n=npcs.${k};n.g.visible=true;players[0].g.position.set(n.g.position.x+1,0,n.g.position.z);}S.time+=0.01;openTalk(0,'${k}');closePanel();`);}
-   assert.equal(J("S.needs42.day.w[0][0].c"),2,'two different so far');run("{const n=npcs.bassey;n.g.visible=true;players[0].g.position.set(n.g.position.x+1,0,n.g.position.z);}openTalk(0,'bassey');closePanel();");
+   assert.equal(J("S.needs42.day.w[0][0].c"),2,'two different so far');
+   run("{const n=npcs.oyelaran;n.g.visible=true;players[1].g.position.set(n.g.position.x+1,0,n.g.position.z);}openTalk(1,'oyelaran');closePanel();");assert.equal(J("S.needs42.day.w[0][0].c"),2,'the other player\u2019s talk does not count for this one');run("{const n=npcs.bassey;n.g.visible=true;players[0].g.position.set(n.g.position.x+1,0,n.g.position.z);}openTalk(0,'bassey');closePanel();");
    assert.equal(J("S.needs42.day.w[0][0].done"),true);assert.equal(J('S.needs42.asp[0].pts'),2);
    run("S.needs42.asp[0].pts=3;");run("S.cooked.jollof=(S.cooked.jollof|0)+1;");settle();assert.equal(J('S.needs42.asp[0].lvl'),1,'first milestone at 5');assert(run("S.memories.some(m=>m.caption==='Efe: A welcoming door.')"),'album memory');
    run("S.p[0].aspiration='stall';S.needs42.asp[0].pts=21;S.needs42.asp[0].lvl=2;S.needs42.day.w[0][2].done=false;S.dishes.push({name:'J',quality:70});dispatch('eat',{ix:0});");assert.equal(J('S.needs42.asp[0].lvl'),3,'third milestone');
@@ -67,8 +68,9 @@ function inner(){
    run(feel(50)+"S.needs42.asp[0].lvl=0;S.ck={r:'jollof',st:[0,1],ans:[[],[]],quick:true};");const r1=J("(()=>{const R=rng;rng=()=>0.5;finishCook();rng=R;return S.dishes[S.dishes.length-1].quality})()");
    assert.equal(r0-r1,3,'the stall perk adds 3');return {perk:r0-r1};});
 
-  step(5,()=>{fresh();next();settle();run("S.needs42.day.f=[{id:'f-hungry',hit:false},{id:'f-lonely',hit:false}];S.needs42.day.talkK=['tunde'];");set(0,{hunger:10});set(1,{hunger:90});run('S.p[0].mood=60;S.p[1].mood=60;TOASTS42=[];');
-   next();const m=J('[S.p[0].mood,S.p[1].mood]');assert(m[0]<=48,'hungry bed: '+m[0]);assert.equal(m[1],60,'no fear met');assert(run("TOASTS42.some(t=>/Efe: went to bed hungry/.test(t))"),'a toast');});
+  step(5,()=>{fresh();next();settle();run("S.needs42.day.f=[{id:'f-hungry',hit:false},{id:'f-lonely',hit:false}];S.needs42.day.talkK=[[],['tunde']];");set(0,{hunger:10});set(1,{hunger:90});run('S.p[0].mood=60;S.p[1].mood=60;TOASTS42=[];');
+   run("S.needs42.day.f[1]={id:'f-broke',hit:false};S.money=500;");settle();run("S.money=5000;save();S=load();enterWorld();closePanel();");assert.equal(J('S.needs42.day.minMoney'),500,'the day\u2019s lowest purse survives a reload');
+   next();const m=J('[S.p[0].mood,S.p[1].mood]');assert(m[0]<=48,'hungry bed: '+m[0]);assert(m[1]<=48,'the broke fear, kept through the reload: '+m[1]);assert(run("TOASTS42.some(t=>/Efe: went to bed hungry/.test(t))"),'a toast');});
 
   step(6,()=>{fresh();next();settle();run(feel(90)+"S.ck={r:'jollof',st:[0,1],ans:[[],[]],quick:true};PH42='';");const up=J("(()=>{const R=rng;rng=()=>0.5;finishCook();rng=R;return S.dishes[S.dishes.length-1].quality})()");assert(run('PH42').includes('good mood'));
    run(feel(20)+"S.ck={r:'jollof',st:[0,1],ans:[[],[]],quick:true};");const down=J("(()=>{const R=rng;rng=()=>0.5;finishCook();rng=R;return S.dishes[S.dishes.length-1].quality})()");
