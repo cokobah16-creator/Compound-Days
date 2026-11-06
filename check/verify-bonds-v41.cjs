@@ -7,7 +7,7 @@ const assert=require('assert/strict'),fs=require('fs'),path=require('path'),cp=r
 const OUT=path.join(__dirname,'results-bonds-v41.json');
 const NAMES=[
  '1. Off until used: nothing shows on day 1 or in online play, and 60 frames on day 2 write no S.bonds41',
- '2. The ladder: plain chat counts once per neighbour per day; other friendship (a request, a party) counts in full; five levels at 0, 4, 12, 24 and 40 points; points never fall',
+ '2. The ladder: plain chat counts once per neighbour per day; other friendship (a request, a party, a task reward inside a talk) counts in full; five levels at 0, 4, 12, 24 and 40 points; points never fall',
  '3. An old save is seeded from its friendship, capped at Friend',
  '4. Moods and wants: one of each per neighbour per day, the same for the same household and day, kept through save and load; a want never repeats on the next day',
  '5. Helping: the item is taken, +3 ladder points and +1 friendship, no money, their mood turns bright, the player cheers; only near them, and only once a day',
@@ -42,7 +42,10 @@ function inner(){
    run("aff('tunde',2)");assert.equal(nb('tunde').pts,a+2,'other friendship counts in full');
    assert.deepEqual(J('BONDS41.LEVELS.map(l=>l.n)'),[0,4,12,24,40]);assert.deepEqual(J('[0,3,4,11,12,23,24,39,40,99].map(bondLevel41)'),[0,0,1,1,2,2,3,3,4,4]);
    next();talk('tunde');assert.equal(nb('tunde').pts,a+3,'one chat point the next day');
-   for(let d=0;d<8;d++){next();}assert.equal(nb('tunde').pts,a+3,'points never fall');return {afterChatAndAff:a+3};});
+   for(let d=0;d<8;d++){next();}assert.equal(nb('tunde').pts,a+3,'points never fall');
+   // a task reward given inside a talk counts in full, even after the day's chat point (Ada's photographs: aff('ada',2) in her talk)
+   run("S.time=9");talk('ada');const p0=nb('ada').pts;run("S.nb.ada.aff=1;delete S.flags.adaPhotos;S.p[0].sk.photo=1;S.time=14");talk('ada');assert.equal(run('!!S.flags.adaPhotos'),true,'the photo task ran');
+   assert.equal(nb('ada').pts,p0+2,'the photo reward counts in full');return {afterChatAndAff:a+3,photoReward:nb('ada').pts-p0};});
 
   step(2,()=>{fresh();next();run("delete S.bonds41;S.nb.ada.aff=30;S.nb.tunde.aff=5;");run('bonds41(true)');assert.equal(nb('ada').pts,12);assert.equal(nb('ada').lvl,2);assert.equal(nb('tunde').pts,5);assert.equal(nb('tunde').lvl,1);});
 

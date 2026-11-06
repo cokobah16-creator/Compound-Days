@@ -137,7 +137,10 @@ function bondAdd41(k,n,why){const B=bonds41(true);if(!B||!B.nb[k]||!(n>0))return
   if(!bondsSilent41())setTimeout(()=>{try{toast(CAST[k].name+' now thinks of you as: '+L.name+'.');}catch(e){}},2500);}}
 // wrap: every base friendship gain also climbs the ladder; plain chat counts once per neighbour per day
 const aff41=aff;aff=function(who,n){try{if(bondsOn41())bonds41(true);}catch(e){}const r=aff41(who,n);try{if(bondsOn41()&&BONDS41.CAST.includes(who)){const B=bonds41(true),b=B.nb[who];
- if(BONDS41.state.inTalk){if(b.chatDay!==S.day){b.chatDay=S.day;bondAdd41(who,1,'chat');}}else bondAdd41(who,n,'aff');}}catch(e){}return r;};
+ if(BONDS41.state.talkAff)BONDS41.state.talkAff.push([who,n]);else bondAdd41(who,n,'aff');}}catch(e){}return r;};
+// inside a talk, gains are held until it returns: the base talk's chat bump (its last aff call, made only on a first talk)
+// is capped at one point per neighbour per day; any task reward given in the same dialogue counts in full
+function bondTalkAff41(calls,first){calls.forEach(([who,n],ix)=>{if(first&&ix===calls.length-1){const b=S.bonds41.nb[who];if(b.chatDay!==S.day){b.chatDay=S.day;bondAdd41(who,1,'chat');}}else bondAdd41(who,n,'aff');});}
 
 /* ---------- the talk panel ---------- */
 function bondMarks41(l){return `<span class="bonds41-marks" aria-label="${esc(BONDS41.LEVELS[l].name)}">${[1,2,3,4].map(i=>`<i class="${i<=l?'on':''}"></i>`).join('')}</span>`;}
@@ -157,7 +160,8 @@ function bondTalkLines41(k){const B=bonds41(true),b=bondToday41(k);if(!b)return 
 // missed-you, level-up or secret line) and today's want card at its end, so they sit above the request card and Later.
 // openTalk itself is not wrapped: the bridge's openTalk stays outermost.
 const talk41=talk;talk=function(i,k){/* outside lines_talk35 (the v35 lines wrapper, still underneath) */if(!bondsOn41()||bondsSilent41()||!BONDS41.CAST.includes(k))return talk41.apply(this,arguments);
- BONDS41.state.inTalk=true;let out;try{out=talk41.apply(this,arguments);}finally{BONDS41.state.inTalk=false;}
+ const calls=[];BONDS41.state.talkAff=calls;let out;try{out=talk41.apply(this,arguments);}finally{BONDS41.state.talkAff=null;}
+ try{bondTalkAff41(calls,!!arguments[2]);}catch(e){}
  try{let lines=bondTalkLines41(k);
   // "company" is met by talking to them in the evening (from six)
   const b=S.bonds41.nb[k];if(!b.want.heard)b.want.heard=slot();if(b.want.id==='company'&&!b.want.done&&slot()==='evening'&&bondGive41(k,true))lines+=say(k,esc(BONDS41.LINES.thanks[k]));
