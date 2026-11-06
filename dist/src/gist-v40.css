@@ -1,0 +1,65 @@
+/* v40 Notices, children's things and fresh evenings. Engineer B owns this file (the children's pages, Mama Nkechi's panel, the hand row, the
+   morning board line); engineer A's rules for the board's cards and hands and Mallam's panels (board-v40.js, mallam-v40.js) are in the first
+   block. The panels sit on the base's dark panel (#panel). No web fonts: each hand is slant, weight, letter-spacing and paper colour only.
+   Every ink on its paper is at least 4.5:1. */
+
+/* ---- A: the board's v40 cards (board-v40.js, boardHTML40): after the heading, newest first, each in its owner's hand ---- */
+#panel .gist40-board{display:flex;flex-direction:column;gap:8px;margin:6px 0 10px}
+#panel .gist40-card{position:relative;margin:0;padding:10px 12px 9px;border-radius:3px;box-shadow:0 2px 5px rgba(0,0,0,.35);font-size:15px;line-height:1.42;color:#1E1E1E;background:#F3EEE0}
+#panel .gist40-card p{margin:0}
+#panel .gist40-card::before{content:'';position:absolute;top:-4px;left:50%;width:9px;height:9px;margin-left:-4px;border-radius:50%;background:#B33A2E;box-shadow:0 1px 1px rgba(0,0,0,.4)}
+/* Mrs. Oyelaran: neat blue block capitals, underlined, on lined paper (#1F3F8A on #F4F1E6, 9.3:1) */
+#panel .gist40-hand-o{background:#F4F1E6 repeating-linear-gradient(to bottom,transparent 0,transparent 20px,rgba(31,63,138,.16) 21px);color:#1F3F8A;text-transform:uppercase;letter-spacing:.04em;font-size:13.5px;font-weight:700}
+/* only her first word is underlined ("NOTICE.", "LOST:"; fix round, C16) */
+#panel .gist40-hand-o .gist40-u{text-decoration:underline;text-decoration-thickness:1px;text-underline-offset:3px}
+/* Tunde: quick slanted marker on the back of a wedding flyer (#1E1E1E on #EDE6D3, 14:1) */
+#panel .gist40-hand-t{background:#EDE6D3;color:#1E1E1E;font-style:italic;font-weight:800;transform:rotate(-0.6deg)}
+/* Ada: careful pencil capitals (#3E3E3E on #F1EDE2, 9.6:1); her small pencil sketch, a drawn box, only on the card that says "See sketch"
+   (gist40-sketch, board-v40.js; fix round, C16: the glyph read as a missing character) */
+#panel .gist40-hand-a{background:#F1EDE2;color:#3E3E3E;text-transform:uppercase;letter-spacing:.08em;font-size:13px;font-weight:600}
+#panel .gist40-sketch p:first-child::after{content:'';display:inline-block;width:26px;height:14px;margin-left:8px;vertical-align:-2px;border:1.5px solid #5A5A5A;border-radius:2px;transform:rotate(-3deg);background:linear-gradient(135deg,transparent 46%,rgba(90,90,90,.55) 47%,rgba(90,90,90,.55) 53%,transparent 54%)}
+/* Mama Nkechi: a big round hand on a page from her receipt pad (#6A2610 on #FFF6C9, 9.0:1) */
+#panel .gist40-hand-n{background:#FFF6C9;color:#6A2610;font-size:16.5px;font-weight:700;letter-spacing:.01em;border-top:3px dashed rgba(106,38,16,.25)}
+/* Mr. Bassey: joined-up, a letter's shape (#1B2C5A on #F3EEE0, 12:1) */
+#panel .gist40-hand-b{background:#F3EEE0;color:#1B2C5A;font-style:italic;font-weight:500;letter-spacing:.015em;padding-left:18px}
+/* a crossed-out card: a line through it and the owner's note under it */
+#panel .gist40-crossed{opacity:.92}
+#panel .gist40-crossed s{text-decoration-thickness:2px}
+#panel .gist40-card .gist40-note{margin-top:6px;font-style:normal;text-transform:none;letter-spacing:0;font-weight:800}
+#panel .gist40-card .gist40-still{margin-top:5px;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:#7A2E12}
+#panel .gist40-notice{border-left:4px solid #1F3F8A}
+#panel .gist40-foot{margin:4px 0 8px;font-size:12px;color:#CDBFA6}
+/* phones: the v40 blocks first and compact, so the newest card and Back are in the first screen; on a narrow screen (480 px or less) the
+   cards' text is the base cards' size (fix round, C16), on a short one (a phone on its side) a little smaller */
+@media (max-width:480px),(max-height:480px){#panel .gist40-board{gap:5px;margin:2px 0 6px}#panel .gist40-card{padding:7px 9px 6px;line-height:1.32}}
+@media (max-width:480px){#panel .gist40-card,#panel .gist40-hand-o,#panel .gist40-hand-a,#panel .gist40-hand-n{font-size:1rem}}
+@media (max-height:480px) and (min-width:481px){#panel .gist40-card{font-size:13.5px}#panel .gist40-hand-o,#panel .gist40-hand-a{font-size:12px}#panel .gist40-hand-n{font-size:14.5px}}
+#panel .gist40-board .gist40-back{display:none;margin:2px 0 0}
+@media (max-height:480px){#panel .gist40-board .gist40-card:nth-child(n+3){display:none}#panel .gist40-board .gist40-back{display:flex}#panel .gist40-board .gist40-back .btn{min-height:36px;padding:6px 16px}}
+/* the give panels (card things and the errand) on v38's return-panel frame */
+#panel .gist40-panel .gist40-kicker{margin:0 0 2px;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#F1C36B}
+#panel .gist40-panel h2{margin-top:0;line-height:1.3}
+#panel .gist40-panel > p{margin:8px 0 4px;font-size:15px;line-height:1.45;color:#F1E4CC}
+
+/* ---- A: Mallam's panels (mallam-v40.js): the order at half past ten, the first stick ---- */
+#panel .gist40-mallam .gist40-mallam-say{border-left-color:#C9A86A}
+#panel .gist40-mallam .actions .btn.block{margin-top:6px}
+/* a short screen (a phone on its side, fix round DOD-F6 and I1, v39's compact pattern for Aunty Bisi's panel): a smaller heading and lines, the
+   three choices in one row, so every choice is on screen without scrolling */
+@media (max-height:480px){#panel .gist40-mallam .gist40-kicker{margin:0}#panel .gist40-mallam h2{font-size:18px;margin:0 0 4px}
+ #panel .gist40-mallam .say{padding:6px 10px;margin:4px 0;font-size:14px;line-height:1.35}#panel .gist40-mallam > p{margin:4px 0 2px;font-size:14px;line-height:1.35}
+ #panel .gist40-mallam .actions{display:flex;flex-wrap:nowrap;gap:6px;margin:6px 0 0}#panel .gist40-mallam .actions .btn,#panel .gist40-mallam .actions .btn.block{flex:1 1 0;min-width:0;min-height:40px;margin:0;padding:6px 8px;width:auto}}
+
+/* ---- B: the children's pages, Mama Nkechi's panel, the hand row, the morning board line (gist-v40.js) ---- */
+/* Mama Nkechi's panel when Emeka's thing comes back to her shop: her two lines on v38's return-panel frame, her colour on the bubbles */
+#panel .gist40-nkechi .gist40-thanks{margin:6px 0 4px}
+#panel .gist40-nkechi .gist40-thanks .say + .say{margin-top:6px}
+@media (max-height:480px){#panel .gist40-nkechi h2{font-size:18px;margin:2px 0 6px}#panel .gist40-nkechi .gist40-thanks .say{padding:7px 10px;font-size:14px}#panel .gist40-nkechi .actions{margin:6px 0}}
+/* the hand on Today's gist card: its own row (no pocket row) reads like the pocket row; folded into it, it is plain text */
+.gist38-card .gist38-row[data-row="hand"]{font-style:normal}
+/* the morning board line, the children's line and Mallam's order (the integrator's v40 block in "THIS MORNING", daily-v40.js) */
+.gist40-today{margin:6px 0 0}
+.gist40-today p{margin:3px 0;line-height:1.4}
+/* (repair 4, R4-7) a touch-opened v40 panel holding its taps (daily-v40.js, 1.0 s of quiet): its buttons dimmed until the hold ends */
+#panel .gist40-panel .btn{transition:opacity .15s ease-out}
+#panel.gist40-held .gist40-panel .btn{opacity:.45}

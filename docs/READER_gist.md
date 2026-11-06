@@ -1,6 +1,6 @@
 # Evening gist and daily finds (v38): the Nigerian reader's sheet
 
-**v39 adds its own section at the end of this sheet** (“v39: Aunty Bisi, thanks at the rail and fuller afternoons”): read that first, the owner’s four items before the rest. Sections 1 to 5 below are v38’s and unchanged.
+**v40 adds its own section at the end of this sheet** (“v40: Notices, children's things and fresh evenings”): read that first, the owner’s pieces before the errand. v39’s section (“v39: Aunty Bisi, thanks at the rail and fuller afternoons”) comes before it. Sections 1 to 5 below are v38’s and unchanged.
 
 Build **v38** (the Menu shows the exact build). This sheet is for the owner's Nigerian reader (gist/SPEC.md §13.6). It lists every word the evening gist and the daily finds put in front of a player, taken straight from the game's own copy tables: `GIST38.LINES` and `GIST38.UI` at the top of `dist/src/gist-v38.js`, and `FOUND38.SPEECH`, `FOUND38.UI` and `FOUND38.LOST` at the top of `dist/src/found-v38.js`. **Section 3 is generated from those files by `node tools/reader-v38.cjs`**, so it is exactly what the game says today, every string once (regenerate it after any copy change). Rows are named by their id (for example `gs38-lost-lenscap`); the owner changes a line in that one place.
 
@@ -681,3 +681,652 @@ Retold by another guest: “{owner}’s {thing} went walking again, and came hom
 - The again round and the give-back say the thing as one item (“pair of glasses”, “packet of seed”, “tin of drawing pins”), so the sentences agree whatever the thing; the again thanks never count how often it happened.
 - Round two’s things are told by their owners the evening before they go missing; in the again round each owner has one tip and one thank-you, whatever the thing.
 - A gist carries at most two of these new lines (a thank-you, a treat line that replaces a reaction, and Tunde’s or Ada’s stool line take none): first the give-back, then an elder’s first stool line, the pot ask, the treat line, Aunty Bisi tomorrow.
+
+# v40: Notices, children's things and fresh evenings
+
+Build **v40** (the Menu shows the exact build). Spec: `v40/SPEC.md` §13. Everything new that v40 puts in front of a player is in section v40.3, generated from the game’s own tables by `node tools/reader-v40.cjs` (`BOARD40.CARDS`, `BOARD40.UI`, `BOARD40.THINGS`, `BOARD40.AREAS`, `BOARD40.WHERE` and `BOARD40.INITIAL` in `dist/src/board-v40.js`, `MALLAM40.LINES` and `MALLAM40.UI` in `dist/src/mallam-v40.js`, `GIST40.LINES` and `GIST40.UI` in `dist/src/gist-v40.js`), every string once, with its id, the question below it belongs to, and what ships if you flag it. The rule is the same as for v38 and v39: any line the reader flags is replaced by the reader’s wording or cut, never shipped as it is. Lines nobody flags ship. The harness `check/verify-gist-v40.cjs` (check 12) holds the same rules: no weekday or month names, British spelling, no digits or ₦ in speech (Mr. Bassey’s “1979” excepted), curly apostrophes, at most 160 characters for speech; cards are written notices in standard English, at most 200 characters, “Flat 3” the only digit, signed.
+
+**What the owner chose, in their own words.**
+1. “LOST:” cards: “One a day”: “A reason to cross the courtyard every late morning, which is the gap this build is aimed at.”
+2. A neighbour’s errand: “Add it”.
+3. Mallam’s day: “Morning order, evening coals”: “You order your suya at half past ten, help fan the coals from five, and he stays by his grill during the gist. He hands over your sticks afterwards.”
+4. His name: “He says it once”: “He becomes a neighbour with a name, but the compound still calls him Mallam.”
+
+**How to see it.** Play past day 4 (or day 8 if you never buy from Aunty Bisi) and read the noticeboard after half past ten: the first read with a new card shows the rest of v40. `?board=now` in the address puts the next card up at once; `?mallam=now` keeps Mallam at his grill with the coals to fan; `?gist40=playtest` has a child lose a thing after every match the household plays.
+
+**Where Mallam stands.** In the late morning he sits at the east end of his stall, threading sticks and facing the customer; from five he stands there by the grill (fix round: behind the stall, where he stood before, the desk camera cut him off at his own stall). **Mallam at the gist (question 18 below).** He sits by his grill, west of the stall, while the neighbours are at the rail. At 1280 × 800 and 844 × 390 he is out of the gist’s frame; at 390 × 844 he sits low on the left, below the caption, clear of the guests and the rail. Captures: `v40/build/board/browser/shots/Ad-mallam-27-gist-mallam-seated.png`, `Al-gist-31-gist-mallam-landscape.png`, `Ap-gist-31-gist-mallam-portrait.png`.
+
+## v40.1 Questions to answer first (the owner’s pieces first, then the errand)
+
+The questions that block v40’s copy most come first: Mallam’s name, how a child speaks to a grown-up whose gender the game does not know, and the earlier sheets’ questions on children’s lost things, the noticeboard and match gist (v39’s rows 15 and 16), which are this build now. Then the owner’s pieces in their order: the cards (culture question 1), the children (5, 6), the match gist (7), the seasons (4), Mallam (3), then the errand; then the two new questions (the picture of Mallam at the gist, and the hour of his fire).
+
+| # | Item | Question | Where it shows | If it is wrong |
+|---|---|---|---|---|
+| 1 | Mallam | **His name** (owner decision 4, “He says it once”: “He becomes a neighbour with a name, but the compound still calls him Mallam.”). He says once: “Sannu. My name is Sani. Everybody calls me Mallam.” (his greeting, then the two sentences the owner approved; the game still calls him Mallam everywhere). Is Sani right, and is it natural that the compound still says Mallam? | `gs40-ma-name` | The reader’s name or wording; the line ships and is changed if you object. |
+| 2 | The children | **Thanks without Aunty or Uncle.** The game does not know the player’s gender, so the children say “Thank you o!”, “Thank you very much!” and never “Aunty” or “Uncle”. Enough, or does it sound rude? | `gs40-kid-ty-*` | The reader’s gender-free form. |
+| 3 | The cards and the children | **Carried from v39 (rows 15 and 16).** Children’s lost things; formal “LOST:” cards signed with an initial and crossed out when found; grown-ups teasing grown-ups for losing to children. Now in the game: see rows 4–11. | v40.3 sections 1–3 | As in those rows. |
+| 4 | The cards | **The noticeboard.** Neighbours writing their own “LOST:” cards in their own hands (Mrs. Oyelaran’s blue capitals with her first word underlined, Tunde’s marker on a flyer, Ada’s pencil capitals with a small sketch on the card that says “See sketch”, Mama Nkechi’s big round hand on a receipt-pad page, Mr. Bassey’s joined-up “With thanks, Bassey”), crossed out with “Found. Thank you. — T.” or “FOUND. God bless Flat 3. — Mama N.”, the crossed card down two mornings later. True to a compound board? | `bd40-card-*`, `bd40-again-*`, `bd40-cross-*` | The reader’s wording or the hand’s style. |
+| 5 | The cards | **Mrs. Oyelaran changes the notices at half past ten** and tells passers-by “New notices. Kindly read them.” (her catchphrase “Ten-thirty.” stays her housewarming’s; the game says “half past ten”). Natural for the board’s keeper? | `bd40-oy-bubble`; Today’s board line | Her bubble goes; Today alone says it. |
+| 6 | The cards | **The ten things** (a radio’s volume knob, a watering can’s sprinkler head, a long wooden spoon, a receipt pad, a sanding block, a tin of wood oil, an old film canister, a wedding photograph in an envelope, a bag of clothes pegs, the compound meeting’s minutes book) and their thanks. Right for these neighbours? “Minutes book of the compound meeting” with “Somebody will say this was on purpose. It was not.”? | `bd40-card-*`, `bd40-ty-*` | The reader’s thing or line. |
+| 7 | The children | **What they lose:** Emeka his best marble (glass with a coloured twist) and a tin of flattened bottle tops; Kemi her hair band with two blue bobbles and her plastic whistle on a string. (Left out: a slipper, which is footwear and which football draws by the goal every match; the school cardigan, which is uniform.) Right for ten- and eleven-year-olds? | `GIST40.LINES.kid.items` | The reader’s things. |
+| 8 | The children | **Their calls and thanks:** “My best marble! It was in my pocket a minute ago.”, “My hair band! I looked everywhere except where it was. Thank you o!”, “Next game I am passing to you first. Maybe.”, “Next time we play, you can have first go with my best one.” Natural? | `gs40-kid-sh-*`, `gs40-kid-ty-*`, `gs40-kid-play-*`, `gs40-kid-ask-*` | The reader’s wording. |
+| 9 | The children | **Mama Nkechi’s loving scold** when Emeka’s thing comes back to her shop: “Chai! This boy. His feet came home and his marble stayed out to play. Thank you, my dear. I will hand it over with a speech.” (once Emeka has gone home; while he is still out at the pitch: “Chai! This boy. He is still out at the pitch and his marble is already at my shop. Thank you, my dear. He will hear about this at supper.”) and “That boy will lose his head one day if it is not tied on. Bless you, my dear, for bringing it back.” Loving, or too sharp? (No “nna” in this build.) | `gs40-kid-nk-*` | The reader’s wording. |
+| 10 | The children | **The fond mention at the gist** (Mama Nkechi of Emeka, Mr. Bassey of Kemi; the child is not at the gist): “Emeka came home with one marble fewer. He says it is resting on the sand by the pitch. I said: so am I, from you.” Warm, or telling tales? | `gs40-kid-mn-*` | The thing told only by the child and Today. |
+| 11 | The match | **Match gist** (culture question 7): Mr. Bassey’s “ball of rags tied with string”, “She will play for the country one day.” (no real team or player), Mrs. Oyelaran’s “Once is a game. Twice is a compound meeting.” (she is out from twelve to six and a match can be decided as late as twenty past six, so her match news is what the street tells her, with no hour: “The street has told me already: you won.”), Mama Nkechi’s “He says it like a lawyer.”, the grown-ups teased for losing to children, never the children. Fond and true? | `gs40-fb-*` | Cut the line; another or none takes the evening. |
+| 12 | The seasons | **The seasons** (culture question 4): “Bring in your clothes!”, pepper soup weather, cracked lips and cream in harmattan, a cardigan on a cold harmattan morning, Ada oiling wood against cracks, flat harmattan light, “the rain is resting” (never “the August break”, which would show the game’s short year). True for a Lagos-like waterside? | `gs40-se-*`, `gs40-ev-*` | The reader’s wording; a season line can be cut. |
+| 13 | The seasons | **The evening before a season changes** a neighbour says so (“Harmattan tomorrow. Cover what you love. Dust has no manners.”, “The rains come back tomorrow. My wood knows it already.”), and it comes true in the sky. No line ever promises rain itself. Natural to talk about the season turning? | `gs40-tr-*` | Plainer news. |
+| 14 | The seasons | **Other wordings for the information lines that came back most often**, used only so the same news does not come back night after night: the fish for the pot (“The rainy season wants soup, my dear. Tomorrow my pot needs two fish, and only ones caught after two o’clock.”), the “again” tips by season (said the evening before the thing goes missing again: “In this heat my patience goes first, then my tools. Next it will be my {thing}, I can feel it.”), Ada’s ask for a fish to carve by season, the wash tip and “Aunty Bisi passes tomorrow”. Each says the same news as v38’s or v39’s own line. | `gs40-pot-*`, `gs40-ag-*`, `gs40-ask-*`, `gs40-wash-*`, `gs40-tom-*` | v38’s or v39’s own lines stay. |
+| 15 | Mallam | **His day** (owner decision 3, “Morning order, evening coals”: “You order your suya at half past ten, help fan the coals from five, and he stays by his grill during the gist. He hands over your sticks afterwards.”). Threading sticks under his shade in the late morning; the household fanning the coals with a raffia fan and turning the sticks: one player fans while the other turns them (a player alone does both); the first stick shared by those who helped (no money changes hands). Natural? | `gs40-ma-*` | The reader’s wording. |
+| 16 | Mallam | **His voice and clothes.** “Sannu”, “Yauwa” (and “Na gode. Sai gobe.”, written but not used in this build), at most one Hausa word a line, no accent spelling, his father’s yaji, a dry humour; a plain kaftan and cap. Natural, or tokenistic? | `gs40-ma-*`, his figure | Plain English; the reader’s clothes. |
+| 17 | Mallam | **The goodbyes that nod to him** at the gist (“Mallam, keep one stick warm for me tomorrow.”), only on an evening he sits by his grill. | `gs40-ev-*-b2` | Cut: the other goodbye stays. |
+| 18 | Mallam (new) | **The picture of Mallam at the gist**: he sits by his grill, west of the stall, while the neighbours stand at the rail (captures above). Does that read as part of the compound’s evening, or set apart? | The gist, captures | He walks off for charcoal with “More charcoal. I am coming.” and walks back (built, not used). |
+| 19 | Mallam (new) | **The hour of his fire**: a suya man laying and lighting his charcoal at about five in the afternoon (after the order he says “Come back this evening”, never “at dusk”, because in the game dusk is half past seven). Does five read right, or would he light later? | His arrival at five, the fan beat | The time is a design choice for the late afternoon; the reader’s answer goes to the owner. |
+| 20 | The errand | **A neighbour’s errand** (owner decision 2, “Add it”): Mrs. Oyelaran’s notice (“NOTICE. Mama Nkechi has a covered plate of jollof for Ada. Kindly collect from the shop after half past twelve. — O.”), the household carrying it, the receiver’s thanks, and at the rail that night the receiver’s word (“The plate came this afternoon, still warm. Mama Nkechi knows I forget lunch.”). No money changes hands. Natural for neighbours, or a chore? | `bd40-er-*`, `gs40-er-*` | The reader’s wording. |
+
+## v40.2 What the copy avoids (spec §13.7)
+
+Poverty spectacle; religious caricature (no church card in this build); ethnic stereotypes (Mallam: no accent spelling, no costume, nothing made of his faith, never “aboki”, never the gateman); shaming notices (no named culprit, no “God is watching you”, no money reward); money disputes on the board; alcohol; brands and real people (no real team or player); weekday and month names; exotic framing; Pidgin as the punchline or on a card. Children: nothing about beatings, why Emeka lives with his aunt, Kemi being a girl, or comparisons between them; their things are small and cheap, and they give back play, never things of value. Seasons: no flooding as disaster, no illness, no water shortage, no power cuts as content, no festivals, no bush burning. Please flag anything that crosses one of these lines.
+
+## v40.3 Every v40 line, as the game ships it
+
+Generated by `node tools/reader-v40.cjs` from the copy tables in `dist/src/board-v40.js` (`BOARD40.CARDS`, `BOARD40.UI`, `BOARD40.THINGS`, `BOARD40.AREAS`, `BOARD40.WHERE`, `BOARD40.INITIAL`), `dist/src/mallam-v40.js` (`MALLAM40.LINES`, `MALLAM40.UI`) and `dist/src/gist-v40.js` (`GIST40.LINES`, `GIST40.UI`). Every string a player can see is below, once, with its id or key. **Q** is the question in v40.1 the row belongs to; **If it is wrong** is what ships if you flag it and give no wording. Rows follow the questions above: the owner’s pieces first (the cards, Kemi’s and Emeka’s things, the match gist, the seasons, Mallam), then the errand, then the interface. Cards are written notices (standard English, signed); everything a person says is speech.
+
+### 1. The “LOST:” cards (owner decision 1, “One a day”): each in its owner’s hand, past tense, pinned at half past ten
+
+| Id | Owner | The thing (first cycle’s area; again cycle’s area) | Card | Q | If it is wrong |
+|---|---|---|---|---|---|
+| bd40-card-knob | Tunde | the volume knob off his small radio (by the square’s stage; by the square’s garden bed) | LOST: the volume knob off my small radio. Black, round, very important. Somewhere by the stage. Now the radio only shouts. — T. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-rose | Tunde | the sprinkler head off his watering can (by the square’s garden bed; by the square’s stage) | LOST: the sprinkler head off my watering can. Green, full of small holes. By the garden bed in the square. My seedlings are drinking from a cup. — T. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-spoon | Mama Nkechi | her long wooden stirring spoon (on the waterfront sand by the bench; on Market Road, between the stalls) | LOST: my long wooden spoon. The good one. On the sand by the bench, I think. Bring it to the shop. I will know it is mine. — Mama N. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-pad | Mama Nkechi | her receipt pad (on Market Road, between the stalls; on the waterfront sand by the bench) | LOST: my receipt pad, the small yellow one. On Market Road, between the stalls. My sums are all in my head now, and my head is full. Return it to the shop. — Mama N. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-block | Ada | her sanding block (in the Makers’ Yard; near the rocks) | LOST: my sanding block. About the size of my hand. Somewhere in the Yard. See sketch. — A. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-oil | Ada | a small tin of wood oil (near the rocks; in the Makers’ Yard) | LOST: a small tin of wood oil, lid on, I hope. Near the rocks, where I was carving. The wood is thirsty. — A. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-film | Mr. Bassey | an old film canister (on the waterfront, east of the photo spot; on the waterfront, towards the square) | LOST: an old film canister, black, with a grey lid. On the waterfront past my corner. If found, kindly return. With thanks, Bassey. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-print | Mr. Bassey | a wedding photograph in a brown envelope (on the waterfront, towards the square; on the waterfront, east of the photo spot) | LOST: a wedding photograph in a brown envelope, an old one. On the waterfront, towards the square. If found, kindly return. With thanks, Bassey. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-pegs | Mrs. Oyelaran | a bag of clothes pegs (in the street, west of the gate; in the courtyard, by the noticeboard) | LOST: one bag of wooden clothes pegs, blue nylon. In the street, west of the gate. The washing is holding on by faith. Kindly return to the top flat. — O. | 4, 6 | The reader’s wording, or another thing for that owner. |
+| bd40-card-minutes | Mrs. Oyelaran | the compound meeting’s minutes book (in the courtyard, by the noticeboard; in the street, west of the gate) | LOST: the minutes book of the compound meeting. Somebody will say this was on purpose. It was not. In the courtyard, by this board. — O. | 4, 6 | The reader’s wording, or another thing for that owner. |
+
+After all ten have been back once, each card goes up “again”, in the owner’s own “again” words ({thing} is the thing, {area} its second place in the again form from the interface table below, such as “round the rocks” or “along Market Road, between the stalls”). The last column shows one as it reads on the board:
+
+| Id | Owner | Card | As it reads | Q | If it is wrong |
+|---|---|---|---|---|---|
+| bd40-again-tunde | Tunde | LOST AGAIN: my {thing}. Not where it went last time, of course. Look {area}. — T. | LOST AGAIN: my radio knob. Not where it went last time, of course. Look by the garden bed in the square. — T. | 4 | The reader’s wording. |
+| bd40-again-nkechi | Mama Nkechi | LOST AGAIN: my {thing}. I know. This time look {area}, and drop it at the shop. — Mama N. | LOST AGAIN: my wooden spoon. I know. This time look along Market Road, between the stalls, and drop it at the shop. — Mama N. | 4 | The reader’s wording. |
+| bd40-again-ada | Ada | LOST AGAIN: my {thing}. I blame the Yard. Try looking {area}. — A. | LOST AGAIN: my sanding block. I blame the Yard. Try looking round the rocks. — A. | 4 | The reader’s wording. |
+| bd40-again-bassey | Mr. Bassey | LOST AGAIN: my {thing}, I regret to say. This time {area}. With thanks, Bassey. | LOST AGAIN: my film canister, I regret to say. This time along the waterfront, towards the square. With thanks, Bassey. | 4 | The reader’s wording. |
+| bd40-again-oyelaran | Mrs. Oyelaran | LOST AGAIN: the {thing}. No comment. Look {area}. — O. | LOST AGAIN: the bag of clothes pegs. No comment. Look round the courtyard, by this board. — O. | 4 | The reader’s wording. |
+
+The card crossed out when the thing goes back (the owner’s note under it), and Mrs. Oyelaran’s bubble by the board:
+
+| Id | Who | Text | Q | If it is wrong |
+|---|---|---|---|---|
+| bd40-cross-tunde | Tunde | Found. Thank you. — T. | 4 | The reader’s wording. |
+| bd40-cross-nkechi | Mama Nkechi | FOUND. God bless Flat 3. — Mama N. | 4 | The reader’s wording. |
+| bd40-cross-ada | Ada | Found. Measured twice. — A. | 4 | The reader’s wording. |
+| bd40-cross-bassey | Mr. Bassey | Found and returned. With thanks, Bassey. | 4 | The reader’s wording. |
+| bd40-cross-oyelaran | Mrs. Oyelaran | Found, and returned by Flat 3. Noted. — O. | 4 | The reader’s wording. |
+| bd40-oy-bubble | Mrs. Oyelaran (spoken, a bubble) | New notices. Kindly read them. | 5 | Her bubble goes; Today alone says it. |
+
+Thanks in the give panel (spoken; no money, no keepsake: “Returns stay thanks and friendship, never cash.”):
+
+| Id | Who | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| bd40-ty-knob | Tunde | My knob! The radio has been shouting at me since yesterday. Now it can whisper again. Thank you o. | 6 | The reader’s wording. |
+| bd40-ty-rose | Tunde | My sprinkler head! Gardeners call it a rose, you know. My seedlings thank you, and they do not thank anybody. | 6 | The reader’s wording. |
+| bd40-ty-spoon | Mama Nkechi | My spoon! This one has stirred more stew than you have eaten. God bless you. | 6 | The reader’s wording. |
+| bd40-ty-pad | Mama Nkechi | My receipt pad! Now my sums will add up again. Bless you, my dear. | 6 | The reader’s wording. |
+| bd40-ty-block | Ada | My block. I have been sanding with a stone all day, and the stone is winning. Thank you, sha. | 6 | The reader’s wording. |
+| bd40-ty-oil | Ada | My oil. The iroko was starting to look at me. Thank you. | 6 | The reader’s wording. |
+| bd40-ty-film | Mr. Bassey | My canister. Empty, yes, but it has been with me since my first camera. Thank you, my friend. | 6 | The reader’s wording. |
+| bd40-ty-print | Mr. Bassey | The envelope. They were married in this compound, you know. Before your time. Thank you, my friend. | 6 | The reader’s wording. |
+| bd40-ty-pegs | Mrs. Oyelaran | My pegs. Thank you. The washing can stop holding on by itself. | 6 | The reader’s wording. |
+| bd40-ty-minutes | Mrs. Oyelaran | The minutes. Thank you. Everything this compound has ever agreed is in here. It is a short book. | 6 | The reader’s wording. |
+| bd40-againty-tunde | Tunde | Again! My {thing} likes you more than it likes me. Thank you o. | 6 | The reader’s wording. |
+| bd40-againty-nkechi | Mama Nkechi | Again, my dear? God bless you twice. | 6 | The reader’s wording. |
+| bd40-againty-ada | Ada | Again. Next time I will nail it down. | 6 | The reader’s wording. |
+| bd40-againty-bassey | Mr. Bassey | Again, my friend. A man of my age should not lose things twice. Thank you. | 6 | The reader’s wording. |
+| bd40-againty-oyelaran | Mrs. Oyelaran | Thank you. We will not mention this at the meeting. | 6 | The reader’s wording. |
+
+At the gist the evening a card thing went back, its owner may say (when a guest; one of three: the first not heard in the last thirteen evenings, else the one heard longest ago):
+
+| Id | Who | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| gs40-ret-tu1 | Tunde | You found my {thing}. I put a line through the card myself. With pleasure. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-tu2 | Tunde | My {thing} is back where it lives. I told the whole courtyard who found it. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-tu3 | Tunde | My {thing} came home. Thank you o. I will tell it off later. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-nk1 | Mama Nkechi | My {thing} is home, thanks to this house. I told every customer. Some of them clapped. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-nk2 | Mama Nkechi | You brought my {thing} back. I crossed it off the board with my best pen. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-nk3 | Mama Nkechi | My {thing} is back in the shop, my dear. I have told it to stay. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ad1 | Ada | My {thing} came back. I have put it where I can see it. That never works, but I try. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ad2 | Ada | Thank you again for my {thing}. I crossed the card out neatly. You would expect nothing less. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ad3 | Ada | My {thing} is back on my bench. This time I have measured where I put it. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ba1 | Mr. Bassey | My {thing} is safe in my bag again. I struck out the card in my best handwriting. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ba2 | Mr. Bassey | You found my {thing}. In my time a thing that was lost stayed lost. Things are better now. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-ba3 | Mr. Bassey | My {thing} is home again, my friend. Some things find their way back. With help. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-oy1 | Mrs. Oyelaran | The {thing} has come back to me. I crossed out the card myself. It is the best notice on the board. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-oy2 | Mrs. Oyelaran | Thank you for the {thing}. I have noted it. | 4 | Cut: the evening keeps the line it had. |
+| gs40-ret-oy3 | Mrs. Oyelaran | My {thing} is in its proper place again. The board is tidier for it. | 4 | Cut: the evening keeps the line it had. |
+
+### 2. Kemi’s and Emeka’s things: what they lose, their calls, their thanks, Mama Nkechi’s panel, the fond mention at the gist
+
+| Thing | Child | The thing (for the reader) | Its name in the game | The prompt | Q | If it is wrong |
+|---|---|---|---|---|---|---|
+| marble | Emeka | his best marble, glass with a coloured twist inside | best marble | Pick up a glass marble | 7 | The reader’s wording, or another thing for that owner. |
+| tops | Emeka | a small tin of flattened bottle tops | tin of bottle tops | Pick up a tin of bottle tops | 7 | The reader’s wording, or another thing for that owner. |
+| band | Kemi | her hair band with two blue bobbles | hair band | Pick up a hair band with blue bobbles | 7 | The reader’s wording, or another thing for that owner. |
+| whistle | Kemi | her plastic whistle on a string | whistle | Pick up a plastic whistle | 7 | The reader’s wording, or another thing for that owner. |
+
+| Id | Who and when | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| gs40-kid-sh-marble | Emeka, at the children’s exit after a match the household played | My best marble! It was in my pocket a minute ago. | 8 | The reader’s wording. |
+| gs40-kid-sh-tops | Emeka, at the children’s exit after a match the household played | Eh! My bottle tops! The tin was right here. | 8 | The reader’s wording. |
+| gs40-kid-sh-band | Kemi, at the children’s exit after a match the household played | My hair band! It was on my wrist. Who has seen it? | 8 | The reader’s wording. |
+| gs40-kid-sh-whistle | Kemi, at the children’s exit after a match the household played | My whistle! It fell somewhere. I will find it tomorrow. | 8 | The reader’s wording. |
+| gs40-kid-aft-kemi | Kemi, at two in the afternoon on a morning-match day ({thing} is the thing) | My {thing}! It was here. It was here! | 8 | The reader’s wording. |
+| gs40-kid-aft-emeka | Emeka, at two in the afternoon on a morning-match day ({thing} is the thing) | Where is my {thing}? I put it down for one minute! | 8 | The reader’s wording. |
+| gs40-kid-ty-marble | Emeka, given it back at the pitch (a bubble) | My best one! You found it. Thank you o! | 2, 8 | The reader’s wording. |
+| gs40-kid-ty-tops | Emeka, given it back at the pitch (a bubble) | My bottle tops! All of them? Thank you very much! | 2, 8 | The reader’s wording. |
+| gs40-kid-ty-band | Kemi, given it back at the pitch (a bubble) | My hair band! I looked everywhere except where it was. Thank you o! | 2, 8 | The reader’s wording. |
+| gs40-kid-ty-whistle | Kemi, given it back at the pitch (a bubble) | My whistle! Now the game can be fair again. Thank you! | 2, 8 | The reader’s wording. |
+| gs40-kid-play-kemi | Kemi, straight after (a line only: football never changes) | Next game I am passing to you first. Maybe. | 8 | Cut: the thanks alone. |
+| gs40-kid-play-emeka | Emeka, straight after (a line only: football never changes) | Next time we play, you can have first go with my best one. | 8 | Cut: the thanks alone. |
+| gs40-kid-ask-kemi | Kemi, once at the pitch on a later day while it is still lost | Did anybody see my {thing}? If you see it, it is mine. | 8 | The reader’s wording. |
+| gs40-kid-ask-emeka | Emeka, once at the pitch on a later day while it is still lost | Have you seen my {thing}? I have looked everywhere twice. | 8 | The reader’s wording. |
+
+Mama Nkechi when Emeka’s thing comes back to her shop (her panel: the thing’s line, then her closing line; from the second time, her “again” line in place of the first):
+
+| Id | When | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| gs40-kid-nk-marble | Emeka’s best marble, the first time, once he has gone home | Chai! This boy. His feet came home and his marble stayed out to play. Thank you, my dear. I will hand it over with a speech. | 9 | The reader’s wording. |
+| gs40-kid-nk-marble-out | Emeka’s best marble, the first time, while he is still out at the pitch | Chai! This boy. He is still out at the pitch and his marble is already at my shop. Thank you, my dear. He will hear about this at supper. | 9 | The reader’s wording. |
+| gs40-kid-nk-tops | Emeka’s tin of bottle tops | Eh! His bottle tops. He counts them every night, like me with my rice. Thank you, my dear. Tonight the count will be right. | 9 | The reader’s wording. |
+| gs40-kid-nk-close | her closing line, every time | That boy will lose his head one day if it is not tied on. Bless you, my dear, for bringing it back. | 9 | The reader’s wording. |
+| gs40-kid-nk-again | the second time and after ({thing} is the thing) | Again? This boy. His {thing} knows the way to my shop better than he does. Thank you, my dear. | 9 | The reader’s wording. |
+
+At the gist the evening a thing was lost, the adult who loves the child, when a guest (Mama Nkechi for Emeka, Mr. Bassey for Kemi): while it is still out (a tip: it is true, it lies on the sand), or once it is back:
+
+| Id | Who | When | Line | Q | If it is wrong |
+|---|---|---|---|---|---|
+| gs40-kid-mn-marble-out | Mama Nkechi | still out | Emeka came home with one marble fewer. He says it is resting on the sand by the pitch. I said: so am I, from you. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-marble-back | Mama Nkechi | already back | His marble came home before he did. I have not decided if that is a lesson. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-tops-out | Mama Nkechi | still out | Emeka left his tin of bottle tops on the sand by the pitch. He has counted his pockets three times since. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-tops-back | Mama Nkechi | already back | Emeka’s bottle tops are home. He counted them at the door, then he counted me. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-band-out | Mr. Bassey | still out | Kemi lost her hair band by the pitch today. Blue bobbles. She went home looking at the sand. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-band-back | Mr. Bassey | already back | Kemi got her hair band back before the light went. She tied it on like a captain’s armband. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-whistle-out | Mr. Bassey | still out | Kemi lost her whistle on the sand today. She says the next game cannot be fair without it. | 10 | Cut: the thing is told only by the child and Today. |
+| gs40-kid-mn-whistle-back | Mr. Bassey | already back | Kemi has her whistle again. The first thing she did was blow it at me. Fair enough. | 10 | Cut: the thing is told only by the child and Today. |
+
+### 3. Gist about the match (the evening of a match the household played; Mr. Bassey first, he watches from the touchline)
+
+| Id | Who | When | Line | Q | If it is wrong |
+|---|---|---|---|---|---|
+| gs40-fb-ba1 | Mr. Bassey | a win | I have told your goal three times today. Each time the ball goes further and the stones get closer together. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba2 | Mr. Bassey | a win, no photograph of a first win today | You won, and I was there with no camera. History will have to take my word for it. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba3 | Mr. Bassey | a win | A fine win. Kemi shook your hand like a referee. She is already planning the return match. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba4 | Mr. Bassey | a loss | In my time we played with a ball of rags tied with string. It did not bounce. Neither did we. The small ones bounce. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba5 | Mr. Bassey | a loss | The children beat you fair and square. I clapped for both sides. Mostly for theirs. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba6 | Mr. Bassey | unfinished, Emeka called in | Unfinished. In my time we also stopped when the mothers called. The mothers always won. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba7 | Mr. Bassey | last goal wins | Last goal wins. The whole street held its breath. So did I, and I am too old for it. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba8 | Mr. Bassey | Kemi scored most | Kemi sees the gap before the gap knows it is there. She will play for the country one day. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba9 | Mr. Bassey | Emeka scored most | Emeka scored and danced on the spot like a man who has won a prize. Barefoot, of course. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba10 | Mr. Bassey | the rain began before the match ended | Football in the wet. Mud to the knees and nobody minded. Mama Nkechi will mind. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba11 | Mr. Bassey | any match | I watched from the touchline today. My knees played every pass. They are tired now. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba12 | Mr. Bassey | harmattan | You played in this haze? From the touchline I could see only legs and dust and joy. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba13 | Mr. Bassey | a loss | I have seen many matches lost. Yours was lost with style. I would have photographed it. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ba14 | Mr. Bassey | any match | I stood at the touchline and gave advice. Nobody took it. That is football. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu1 | Tunde | a loss | Beaten by the children? Then it is official. You are in my club. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu2 | Tunde | a win | I am thinking of joining the children’s side. Not to win. To be on the winning side for once. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu3 | Tunde | unfinished | Nobody won? Then everybody will be talking about it tomorrow. That is the best result. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu4 | Tunde | dry season | Football in this heat. The ball was hotter than the pitch, and the pitch was hot. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu5 | Tunde | the match ended at noon or later | I heard the shouting from the courtyard. I turned my music down to listen. That never happens. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu6 | Tunde | Kemi scored most | Kemi scored the most, I hear. I am going to ask her to do my sound. She has the timing. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu7 | Tunde | an own goal by the household | An own goal, I hear. Do not worry. The ball does not know whose side it is on. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-tu8 | Tunde | any match | Next time you play, call me. I will stand at the side and shout useful things. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk1 | Mama Nkechi | any match | Emeka ate his food with one hand and played the match again with the other. The beans scored twice. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk2 | Mama Nkechi | unfinished | Emeka says the game is not finished, so nobody lost. He says it like a lawyer. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk3 | Mama Nkechi | a loss | Emeka is still celebrating. He told the whole match to my pepper. The pepper was not impressed. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk4 | Mama Nkechi | a win | Emeka says you were lucky. He says it with his mouth full, so I cannot argue. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk5 | Mama Nkechi | Emeka called in | I called Emeka in at the best part, he says. There is always a best part when it is time to eat. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk6 | Mama Nkechi | Emeka scored most | Emeka scored. I know because he told me before he said good evening. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk7 | Mama Nkechi | the rain began before the match ended | Mud from the knees down. Emeka played in the wet and came home a different colour. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-nk8 | Mama Nkechi | any match | Emeka washed his feet tonight without being told. The match must have been a good one. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad1 | Ada | any match | Kemi asked me for real goalposts. I said I would think about it. She has already measured the stones for them. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad2 | Ada | an own goal by the household | I heard there was an own goal. I will not ask whose. I will only look at you while I do not ask. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad3 | Ada | harmattan | You played in this dust? I could not see the far stones from the Yard. I could hear Kemi, though. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad4 | Ada | a win | Mr. Bassey says you played well. He says it loudly, so it must be true. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad5 | Ada | a loss | The children beat you. Good. It keeps the compound humble. Me most of all. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad6 | Ada | last goal wins | So it went to last goal wins. I would have made that goal myself, if I made goals. I make stools. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-ad7 | Ada | any match | The children were still arguing about the match outside the Yard. Both sides won, it seems. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy1 | Mrs. Oyelaran | any match | One day that ball will find my window. Once is a game. Twice is a compound meeting. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy2 | Mrs. Oyelaran | a win | The street has told me already: you won. Well done. Next time, win quietly. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy3 | Mrs. Oyelaran | a loss | So the children won. The whole street has been telling it. I let them enjoy it. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy4 | Mrs. Oyelaran | unfinished | I asked who won. Nobody, they said. That is how a good meeting ends too. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy5 | Mrs. Oyelaran | the rain began before the match ended | A wet pitch today, they tell me. Wipe your feet before you come up my stairs. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy6 | Mrs. Oyelaran | the first win | Your first win. Half the compound queued up to tell me. Well done. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-oy7 | Mrs. Oyelaran | any match | Football in the compound. Somebody always tells me all about it, whether I ask or not. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g1 | any guest (the second to arrive; never Mr. Bassey, who watched) | a win | So you won today. The children will not allow that twice. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g2 | any guest (the second to arrive; never Mr. Bassey, who watched) | a loss | The children beat you, I hear. They will be impossible tomorrow. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g3 | any guest (the second to arrive; never Mr. Bassey, who watched) | unfinished | Nobody won today, they say. The stones are still arguing about it. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g4 | any guest (the second to arrive; never Mr. Bassey, who watched) | any match | I heard there was football. The whole street knew by the noise. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g5 | any guest (the second to arrive; never Mr. Bassey, who watched) | any match | The children talked about the match all the way home. Every goal grows on the way. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g6 | any guest (the second to arrive; never Mr. Bassey, who watched) | last goal wins | Last goal wins, I am told. Those are the longest minutes in football. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g7 | any guest (the second to arrive; never Mr. Bassey, who watched) | Emeka called in, unfinished | Emeka was called in before the end. The end will have to wait for tomorrow. | 11 | Cut: another match line, or none, takes the evening. |
+| gs40-fb-g8 | any guest (the second to arrive; never Mr. Bassey, who watched) | any match | Football today, I hear. The sand by the pitch has more footprints than the market. | 11 | Cut: another match line, or none, takes the evening. |
+
+### 4. The seasons: season lines (by speaker and season; the role says where in the gist it may stand), the evening before a change, the evergreen lines
+
+| Id | Who | Season | Where | Line | Q | If it is wrong |
+|---|---|---|---|---|---|---|
+| gs40-se-tu-r1 | Tunde | the rains | a greeting | Evening o. The sky has been gathering all day, like a crowd waiting for music. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r2 | Tunde | the rains, only after rain that day | about today or any remark | The rain came through the courtyard today. My speakers are under three layers of nylon. They are drier than me. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r3 | Tunde | the rains, only after rain that day | about today or any remark | After rain like that my scent leaf stands up straight. It is showing off. I allow it. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r4 | Tunde | the rains | about today or any remark | In this season I cover my speakers before I cover my head. That tells you about my life. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r5 | Tunde | the rains | a goodbye | Let me go and check my nylon covers. Good night o. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r6 | Tunde | the rains, only on a day without rain | about today or any remark | No rain today. My plants are disappointed. I told them, patience. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r7 | Tunde | the rains, only after rain that day | a greeting | Good evening. The gutters sang all through the rain this afternoon. I stopped my work to listen. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-r8 | Tunde | the rains | about today or any remark | The square has a small lake in one corner in this season. The children call it the sea. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-d1 | Tunde | the dry season | about today or any remark | This heat. I watered my peppers twice today and they still looked at me like I owe them. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-d2 | Tunde | the dry season | a greeting | Good evening. I came out for the breeze. The breeze did not come, so here I am. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-d3 | Tunde | the dry season | a goodbye | Good night. I am going to sleep under my fan like a king under a palm tree. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-d4 | Tunde | the dry season | about today or any remark | The courtyard was so hot today the music came out slow. Even the drums were tired. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-d5 | Tunde | the dry season | a greeting | Evening o. The sun has finally gone to bed. I waited for it before coming out. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-h1 | Tunde | harmattan | about today or any remark | Harmattan has put dust inside my speakers. Every song now sounds like it is coming from the market. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-h2 | Tunde | harmattan | about today or any remark | New compound rule: in harmattan, nobody touches the gate without warning. It shocked me twice today. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-h3 | Tunde | harmattan | a greeting | Evening. My lips are cracking, so tonight I will talk less. I am joking. Good evening. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-h4 | Tunde | harmattan | a goodbye | Good night. Cover your speakers, if you have speakers. Cover your face, if you do not. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-tu-h5 | Tunde | harmattan | a greeting | Good evening. Everything in the courtyard is wearing a coat of dust. Even me. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r1 | Mama Nkechi | the rains, only after rain that day | about today or any remark | Pepper soup weather, my dear. When the rain comes like this, the whole road wants something hot. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r2 | Mama Nkechi | the rains, only after rain that day | about today or any remark | I shouted “Bring in your clothes!” from the shop and three compounds ran. I have a good voice for rain. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r3 | Mama Nkechi | the rains, only on a day without rain | about today or any remark | No rain today. The rain is resting small. It will come back when my washing is out. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r4 | Mama Nkechi | the rains | a greeting | Good evening, my dear. The road is all puddles. I came the long way, round the biggest one. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r5 | Mama Nkechi | the rains | a goodbye | Let me go before the mosquitoes find me. In this season they know my name. Good night. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r6 | Mama Nkechi | the rains | about today or any remark | In this season my customers come in wet and leave dry. My shop is a small hotel. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r7 | Mama Nkechi | the rains | a greeting | Ehen, good evening. The air is cool tonight. Gist keeps better in the cool. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r8 | Mama Nkechi | the rains | about today or any remark | My umbrella has a hole in it the size of a button. In this season it is more of a hat. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-r9 | Mama Nkechi | the rains | about today or any remark | Everything in the shop is damp in this season. The sugar sticks together like old friends. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-d1 | Mama Nkechi | the dry season | about today or any remark | This sun. I sold more cold water today than rice. My rice is offended. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-d2 | Mama Nkechi | the dry season | a greeting | Good evening o. The shop is too hot to sit in, so I came to sit in your breeze. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-d3 | Mama Nkechi | the dry season | a goodbye | Good night, my dear. Drink water before you sleep. This season takes it from you. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-d4 | Mama Nkechi | the dry season | about today or any remark | The heat today! My customers stood in the doorway to talk, so I sold them the doorway. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-d5 | Mama Nkechi | the dry season | a greeting | Good evening, my dear. I fanned myself all the way here. My arm is tired. My mouth is not. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-h1 | Mama Nkechi | harmattan | about today or any remark | The cold this morning! I opened the shop in my wrapper and a cardigan. Customers laughed. They were wearing two. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-h2 | Mama Nkechi | harmattan | about today or any remark | Harmattan don come. My lips are cracking like old paint. Pass me that cream before I speak again. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-h3 | Mama Nkechi | harmattan | a greeting | Good evening, my dear. Dust on everything, even on my gist. Let me shake it out. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-h4 | Mama Nkechi | harmattan | a goodbye | Good night. Rub cream on your hands before you sleep. This dust is not playing. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-nk-h5 | Mama Nkechi | harmattan | a greeting | Evening o. I put on my cardigan to come down the road. Do not laugh. The cold is catching me. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r1 | Ada | the rains | about today or any remark | The rain makes my wood swell. Every joint I cut these days is tight. Good for chairs, bad for my temper. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r2 | Ada | the rains, only after rain that day | about today or any remark | The rain caught me in the Yard today. I stood under the half-roof with three unfinished chairs. We waited together. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r3 | Ada | the rains | a greeting | Evening. Everything smells of wet wood. I like it. Nobody else does. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r4 | Ada | the rains | a goodbye | Good night. I must cover the Yard before the damp gets into the timber. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r5 | Ada | the rains, only on a day without rain | about today or any remark | No rain today, so the wood dried a little. I worked fast while it was in a good mood. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r6 | Ada | the rains | a greeting | Good evening. My sandals are full of the Yard’s mud. I left most of it at the gate. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r7 | Ada | the rains | about today or any remark | In this season I sand a chair in the morning and it swells again by evening. Wood has moods. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-r8 | Ada | the rains | about today or any remark | I moved my bench under the half-roof. In this season the Yard is half workshop, half pond. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-d1 | Ada | the dry season | about today or any remark | In this heat the glue sets before I have finished thinking. I must think faster. I will not. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-d2 | Ada | the dry season | a greeting | Evening. The Yard was an oven today. I am here to cool down, and to listen. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-d3 | Ada | the dry season | a goodbye | Good night. I start early tomorrow, before the sun gets serious. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-d4 | Ada | the dry season | about today or any remark | Everything in the Yard is dry and quick in this season. The shavings blow away before I can sweep them. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-d5 | Ada | the dry season | a greeting | Evening. I swept the Yard twice today. The dust came back once. I call that winning. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-h1 | Ada | harmattan | about today or any remark | Harmattan cracks wood. I oil every piece in the Yard each evening like I am putting children to bed. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-h2 | Ada | harmattan | about today or any remark | Dust on every chair in the Yard. I sanded one this morning and by noon it had a new layer. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-h3 | Ada | harmattan | a greeting | Evening. My hands are full of dust and oil. I washed them twice. They are still full of dust and oil. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-h4 | Ada | harmattan | a goodbye | Good night. The wood needs its oil, and so do my knuckles. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ad-h5 | Ada | harmattan | a greeting | Evening. I oiled a table today and the dust came to visit before the oil was dry. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r1 | Mr. Bassey | the rains | about today or any remark | Rain light is soft light. Nobody believes me. The wedding couples always wanted sun. The photographs wanted rain. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r2 | Mr. Bassey | the rains, only after rain that day | about today or any remark | I watched the rain come across the water today. Once I would have stood in it with a camera. Today I stood under a roof. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r3 | Mr. Bassey | the rains, only after rain that day | a greeting | Good evening, my friend. The air is washed. Everything looks the way it did in my old photographs. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r4 | Mr. Bassey | the rains | a goodbye | Good night. Keep your feet dry. That is advice from a man with old shoes. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r5 | Mr. Bassey | the rains, only on a day without rain | about today or any remark | No rain today. The clouds came, looked at us, and went to visit somebody else. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r6 | Mr. Bassey | the rains | a greeting | Good evening. The water is high and brown in this season. It has news from upstream. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r7 | Mr. Bassey | the rains, only after rain that day | about today or any remark | The fishermen were out early, before the sky turned. They read this water better than any radio. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-r8 | Mr. Bassey | the rains | about today or any remark | In this season the lagoon goes the colour of strong tea. I have a photograph of it from long ago. Same tea. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-d1 | Mr. Bassey | the dry season | about today or any remark | The light in this season is hard. Everybody squints in photographs. I tell them, look at me, not the sun. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-d2 | Mr. Bassey | the dry season | a greeting | Good evening. The heat has gone down with the sun, as a good guest should. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-d3 | Mr. Bassey | the dry season | a goodbye | Good night, my friend. Sleep with the window open. In this season the night is the only kindness. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-d4 | Mr. Bassey | the dry season | about today or any remark | The water was flat as glass today. A good day for a photograph, if your hands are steady. Mine are steady enough. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-d5 | Mr. Bassey | the dry season | a greeting | Good evening, my friend. The breeze off the water has come at last. I followed it here. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-h1 | Mr. Bassey | harmattan | about today or any remark | Harmattan light. Flat as a plate. The sun looks like the moon. Photographers rest. I am resting. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-h2 | Mr. Bassey | harmattan | a greeting | Good evening. I wore my old jacket for the morning cold. By noon I was carrying it like a baby. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-h3 | Mr. Bassey | harmattan | a goodbye | Good night. Wrap up. This harmattan pretends to be gentle. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-h4 | Mr. Bassey | harmattan | about today or any remark | The dust is on my lenses, on my shelves and on my opinions. I have stopped cleaning the opinions. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-ba-h5 | Mr. Bassey | harmattan | a greeting | Good evening. The sun went down tonight like a coin in milk. Harmattan sunsets are shy. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r1 | Mrs. Oyelaran | the rains | about today or any remark | My wrapper has been on the line two days and it is still thinking about drying. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r2 | Mrs. Oyelaran | the rains | a goodbye | Close your door tonight. The mosquitoes have been told about you. I did not tell them. Good night. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r3 | Mrs. Oyelaran | the rains | a greeting | Good evening. Mind the puddle by the gate. It has been there so long it deserves a name. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r4 | Mrs. Oyelaran | the rains, only after rain that day | about today or any remark | So much rain today. When I came back this evening, my radio was complaining about the damp. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r5 | Mrs. Oyelaran | the rains, only on a day without rain | about today or any remark | No rain today. The gutters have nothing to say. I enjoyed the quiet. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r6 | Mrs. Oyelaran | the rains | a greeting | Good evening. At this time of year my stairs are never quite dry, so I hold the rail all the way down. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r7 | Mrs. Oyelaran | the rains, only after rain that day | about today or any remark | Coming home, I found my stairs still wet and swept them. The stairs were grateful. My broom was not. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-r8 | Mrs. Oyelaran | the rains | about today or any remark | In this season I keep a cloth by the door for wet feet. Use it. I am watching. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-d1 | Mrs. Oyelaran | the dry season | about today or any remark | Fill your buckets in the evening. In this season the tank empties before the morning has finished yawning. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-d2 | Mrs. Oyelaran | the dry season | a greeting | Good evening. It is cooler down here than upstairs. That is the only reason I came. And the gist. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-d3 | Mrs. Oyelaran | the dry season | a goodbye | Good night. Leave your window open and your door shut. Both. I have said it. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-d4 | Mrs. Oyelaran | the dry season | about today or any remark | The courtyard was a frying pan today. I swept it at six in the morning, before it could fry me. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-d5 | Mrs. Oyelaran | the dry season | a greeting | Good evening. Upstairs is an oven tonight. Down here is merely a pot. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-h1 | Mrs. Oyelaran | harmattan | about today or any remark | Harmattan. I dusted the stairs at seven. By ten the dust had taken them back. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-h2 | Mrs. Oyelaran | harmattan | about today or any remark | In my day the harmattan was so thick you could not see the gate from the stairs. This is a rehearsal. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-h3 | Mrs. Oyelaran | harmattan | a greeting | Good evening. Mind the dust on the rail. I wiped it at six, when I came in. The harmattan did not agree. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-h4 | Mrs. Oyelaran | harmattan | a goodbye | Good night. Shut your window tight against the dust. It has opinions. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-se-oy-h5 | Mrs. Oyelaran | harmattan | a greeting | Good evening. I wore a shawl down the stairs. It is not for the cold. It is for the dust. Mostly. | 12 | Cut: another season line or an evergreen line takes its place. |
+
+The evening before a season changes (a tip that comes true in the Menu and the sky the next morning; the second of each pair is the same news as a greeting, when the evening has no room):
+
+| Id | Who | Tomorrow | Line | Q | If it is wrong |
+|---|---|---|---|---|---|
+| gs40-tr-dry-tu | Tunde | the dry season | The rain is packing its bags. From tomorrow, dry. My plants will sulk. | 13 | Plainer news. |
+| gs40-tr-dry-tu-o | Tunde | the dry season | Evening. The rains are leaving us. From tomorrow, the dry season. | 13 | Plainer news. |
+| gs40-tr-dry-nk | Mama Nkechi | the dry season | From tomorrow the dry season, my dear. Fill your water before the sun takes it. | 13 | Plainer news. |
+| gs40-tr-dry-nk-o | Mama Nkechi | the dry season | Good evening, my dear. The dry season starts tomorrow. I can feel it already. | 13 | Plainer news. |
+| gs40-tr-dry-ad | Ada | the dry season | The dry season starts tomorrow. My wood will be glad. My glue will not. | 13 | Plainer news. |
+| gs40-tr-dry-ad-o | Ada | the dry season | Evening. Tomorrow the dry season. The Yard is already thirsty. | 13 | Plainer news. |
+| gs40-tr-dry-ba | Mr. Bassey | the dry season | Tomorrow the dry season begins. Hard light again. I will squint for a few days. | 13 | Plainer news. |
+| gs40-tr-dry-ba-o | Mr. Bassey | the dry season | Good evening, my friend. The dry season comes tomorrow. | 13 | Plainer news. |
+| gs40-tr-dry-oy | Mrs. Oyelaran | the dry season | The rainy season ends tonight. Tomorrow, dry. Fetch your water early. | 13 | Plainer news. |
+| gs40-tr-dry-oy-o | Mrs. Oyelaran | the dry season | Good evening. The dry season from tomorrow. I have told the tank. | 13 | Plainer news. |
+| gs40-tr-har-nk | Mama Nkechi | harmattan | Harmattan is coming tomorrow. I can feel it in my lips already. Buy cream. | 13 | Plainer news. |
+| gs40-tr-har-nk-o | Mama Nkechi | harmattan | Good evening, my dear. Harmattan tomorrow. My lips know it already. | 13 | Plainer news. |
+| gs40-tr-har-oy | Mrs. Oyelaran | harmattan | Harmattan tomorrow. Cover what you love. Dust has no manners. | 13 | Plainer news. |
+| gs40-tr-har-oy-o | Mrs. Oyelaran | harmattan | Good evening. Harmattan tomorrow. I have covered the stairs. | 13 | Plainer news. |
+| gs40-tr-har-tu | Tunde | harmattan | Harmattan tomorrow. I am wrapping my speakers tonight like presents. | 13 | Plainer news. |
+| gs40-tr-har-tu-o | Tunde | harmattan | Evening o. Harmattan comes tomorrow. My speakers are already coughing. | 13 | Plainer news. |
+| gs40-tr-har-ad | Ada | harmattan | Harmattan comes tomorrow. I will oil the wood tonight, before the dust gets to it. | 13 | Plainer news. |
+| gs40-tr-har-ad-o | Ada | harmattan | Evening. Harmattan tomorrow. The wood is already nervous. | 13 | Plainer news. |
+| gs40-tr-har-ba | Mr. Bassey | harmattan | The harmattan arrives tomorrow. Flat light and cold mornings. Bring out your jackets. | 13 | Plainer news. |
+| gs40-tr-har-ba-o | Mr. Bassey | harmattan | Good evening, my friend. Harmattan tomorrow. I have found my jacket. | 13 | Plainer news. |
+| gs40-tr-rai-ad | Ada | the rains | The rains come back tomorrow. My wood knows it already. Listen, you can hear it drinking. | 13 | Plainer news. |
+| gs40-tr-rai-ad-o | Ada | the rains | Evening. The rains come back tomorrow. My wood is already thirsty for it. | 13 | Plainer news. |
+| gs40-tr-rai-ba | Mr. Bassey | the rains | The rainy season comes back tomorrow. Soft light again. I will dust off my patience. | 13 | Plainer news. |
+| gs40-tr-rai-ba-o | Mr. Bassey | the rains | Good evening, my friend. The rainy season comes back tomorrow. Soft light again. | 13 | Plainer news. |
+| gs40-tr-rai-tu | Tunde | the rains | The rainy season is back tomorrow. My plants are already standing up straight. | 13 | Plainer news. |
+| gs40-tr-rai-tu-o | Tunde | the rains | Evening o. The rains come back tomorrow. My nylon covers are ready. | 13 | Plainer news. |
+| gs40-tr-rai-nk | Mama Nkechi | the rains | The rains come back tomorrow, my dear. Pepper soup weather. My pot is ready. | 13 | Plainer news. |
+| gs40-tr-rai-nk-o | Mama Nkechi | the rains | Good evening, my dear. The rains come back tomorrow. Pepper soup weather. | 13 | Plainer news. |
+| gs40-tr-rai-oy | Mrs. Oyelaran | the rains | The rainy season returns tomorrow. Clear your gutters. I will be checking. | 13 | Plainer news. |
+| gs40-tr-rai-oy-o | Mrs. Oyelaran | the rains | Good evening. The rainy season returns tomorrow. Mind the gutters. | 13 | Plainer news. |
+
+Evergreen lines (no season), the floor under the season lines; the second goodbye nods to Mallam, only on an evening he sits by his grill:
+
+| Id | Who | Where | Line | Q | If it is wrong |
+|---|---|---|---|---|---|
+| gs40-ev-tu-o1 | Tunde | a greeting | Evening, everyone. The day has finished with me, so I came here. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-tu-o2 | Tunde | a greeting | Good evening o. I bring greetings from my plants. My plants say hello. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-tu-b1 | Tunde | a goodbye | Right, I am off before I start a new story. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-tu-b2 | Tunde | a goodbye | Mallam, keep one stick warm for me tomorrow. Good night, all. | 17 | Cut: the other goodbye stays. |
+| gs40-ev-tu-a1 | Tunde | any remark | Somebody in the square asked me to play something slow. I played it fast. Nobody complained. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-tu-a2 | Tunde | any remark | My plants have names now. Their names stay with me. They are shy. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-nk-o1 | Mama Nkechi | a greeting | Good evening, my dear. I locked the shop and the shop let me go. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-nk-o2 | Mama Nkechi | a greeting | Ehen, good evening. My legs said sit, my mouth said gist. My mouth won. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-nk-b1 | Mama Nkechi | a goodbye | Good night, my dear. Tomorrow the shop opens early, and so do I. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-nk-b2 | Mama Nkechi | a goodbye | Mallam, I can smell your fire from here. Save me a stick tomorrow. Good night. | 17 | Cut: the other goodbye stays. |
+| gs40-ev-nk-a1 | Mama Nkechi | any remark | A small boy came to the shop for one sweet and stayed to tell me his whole day. I gave him two. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-nk-a2 | Mama Nkechi | any remark | My radio and Mrs. Oyelaran’s radio play different stations. In the courtyard they meet and argue. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ad-o1 | Ada | a greeting | Evening. I left a chair half-finished. It will wait. Chairs are patient. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ad-o2 | Ada | a greeting | Good evening. Sawdust in my hair, gist in my mouth. I am ready. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ad-b1 | Ada | a goodbye | Good night. The chair will not finish itself, more is the pity. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ad-b2 | Ada | a goodbye | Mallam, the smoke says your fire is good tonight. Good night, everyone. | 17 | Cut: the other goodbye stays. |
+| gs40-ev-ad-a1 | Ada | any remark | A man asked for a chair that would last for ever. I said yes. Then I added: if you sit gently. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ad-a2 | Ada | any remark | I found a nail in my pocket that I do not remember putting there. The Yard is generous like that. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ba-o1 | Mr. Bassey | a greeting | Good evening, my friend. I came slowly, so I would arrive at the right time. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ba-o2 | Mr. Bassey | a greeting | Good evening. I have walked the waterfront twice and now my legs are ready for a rail. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ba-b1 | Mr. Bassey | a goodbye | Good night, my friend. The evening was well spent. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ba-b2 | Mr. Bassey | a goodbye | Good night. Mallam, I will come for my usual tomorrow. Do not give it away. | 17 | Cut: the other goodbye stays. |
+| gs40-ev-ba-a1 | Mr. Bassey | any remark | I cleaned my old camera today. It has no film, but it likes to be cleaned. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-ba-a2 | Mr. Bassey | any remark | A young man asked me how to take a good photograph. I said: wait. He did not like the answer. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-oy-o1 | Mrs. Oyelaran | a greeting | Good evening. The stairs are long tonight, so the gist had better be good. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-oy-o2 | Mrs. Oyelaran | a greeting | Good evening. I have nothing to report, which is itself news. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-oy-b1 | Mrs. Oyelaran | a goodbye | Good night. Lock your door, then check it. I check twice. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-oy-b2 | Mrs. Oyelaran | a goodbye | Mallam, keep the pepper gentle on mine tomorrow. Good night, everyone. | 17 | Cut: the other goodbye stays. |
+| gs40-ev-oy-a1 | Mrs. Oyelaran | any remark | The noticeboard has many handwritings and one opinion. Mine. | 12 | Cut: another season line or an evergreen line takes its place. |
+| gs40-ev-oy-a2 | Mrs. Oyelaran | any remark | I counted the steps on the stairs today. The same number as yesterday. Good. | 12 | Cut: another season line or an evergreen line takes its place. |
+
+Other wordings for the information lines that came back most often in the long run of evenings, each used only in place of v38’s or v39’s own line when that line was heard in the last thirteen evenings (and only while it was not heard itself): v39’s pot ask ({n} is said “two” or “three”), v39’s “again” tip ({thing} as one item), v38’s Ada’s ask ({thing} is the fish: tilapia, mullet, bonga, croaker, red snapper, catfish), v38’s wash tip and v39’s “Aunty Bisi passes tomorrow”. The pot ask, the again tip and Ada’s ask speak of tomorrow, so their season wordings are used only when tomorrow is in the same season; on the evening before a season changes, the any-season wording (or the line’s own):
+
+| Id | Who | When | Line | Q | If it is wrong |
+|---|---|---|---|---|---|
+| gs40-pot-nk-r | Mama Nkechi | the pot ask, the rains, when tomorrow is too | The rainy season wants soup, my dear. Tomorrow my pot needs {n} fish, and only ones caught after two o’clock. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-nk-d | Mama Nkechi | the pot ask, the dry season, when tomorrow is too | In this heat fish does not wait. {n} for my pot tomorrow, caught after two o’clock, and bring them quickly. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-nk-h | Mama Nkechi | the pot ask, harmattan, when tomorrow is too | Cold mornings want hot soup. Tomorrow, {n} fish caught after two o’clock, my dear. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-ba-r | Mr. Bassey | the pot ask, the rains, when tomorrow is too | Tomorrow my sister arrives with an umbrella and complaints, as she does in this season. I need {n} fish after two. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-ba-d | Mr. Bassey | the pot ask, the dry season, when tomorrow is too | The heat makes my sister sharper, and she visits tomorrow. Bring me {n} fresh fish, caught after two, to soften her. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-ba-h | Mr. Bassey | the pot ask, harmattan, when tomorrow is too | Tomorrow my sister again, in her harmattan shawl. {n} fish after two, please. Hot stew wins every argument. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-nk-2 | Mama Nkechi | the pot ask, any season | My pot is asking for fish again, my dear. {n} tomorrow, caught after two o’clock. Not one minute before. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-pot-ba-2 | Mr. Bassey | the pot ask, any season | My sister is back tomorrow. Bring {n} fish, caught after two, please. She cannot complain with her mouth full. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-tunde | Tunde | the again tip, the evening before the thing goes missing again, any season | I give my {thing} one more day before it goes missing again. I have stopped being surprised. Keep an eye out for me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-nkechi | Mama Nkechi | the again tip, the evening before the thing goes missing again, any season | My {thing} is planning to run away from me again, my dear, I can feel it. Bring it home if you see it. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ada | Ada | the again tip, the evening before the thing goes missing again, any season | My {thing} is restless again. If I look away for one minute tomorrow, it will take the minute and leave. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-bassey | Mr. Bassey | the again tip, the evening before the thing goes missing again, any season | My {thing} will wander off again, I fear. At my age, things wander more than I do. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-oyelaran | Mrs. Oyelaran | the again tip, the evening before the thing goes missing again, any season | My {thing} is due to go missing again. When it does, look, and say nothing. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-tu-r | Tunde | the again tip, the evening before the thing goes missing again, the rains, when tomorrow is too | My {thing} is next to go, I am sure of it. In this season I blame the rain for everything, but that one will be my own fault. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-tu-d | Tunde | the again tip, the evening before the thing goes missing again, the dry season, when tomorrow is too | In this heat my {thing} will slip away from me again, and the sun is too strong for a proper search. If you see it, call me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-tu-h | Tunde | the again tip, the evening before the thing goes missing again, harmattan, when tomorrow is too | My {thing} is ready to vanish again. With all this dust it could end up anywhere. Keep your eyes open for me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-nk-r | Mama Nkechi | the again tip, the evening before the thing goes missing again, the rains, when tomorrow is too | Between the damp and the customers I cannot keep anything, my dear. Next to go will be my {thing}. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-nk-d | Mama Nkechi | the again tip, the evening before the thing goes missing again, the dry season, when tomorrow is too | This heat makes me forget my own hands, my dear. Watch, my {thing} will go walking again. Bring it if you see it. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-nk-h | Mama Nkechi | the again tip, the evening before the thing goes missing again, harmattan, when tomorrow is too | In this dust I can hardly find my own shop, my dear. My {thing} will disappear on me again, I know it. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ad-r | Ada | the again tip, the evening before the thing goes missing again, the rains, when tomorrow is too | Wet wood, wet hands. My {thing} will slide out of them again before long. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ad-d | Ada | the again tip, the evening before the thing goes missing again, the dry season, when tomorrow is too | In this heat my patience goes first, then my tools. Next it will be my {thing}, I can feel it. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ad-h | Ada | the again tip, the evening before the thing goes missing again, harmattan, when tomorrow is too | I suspect the dust has its eye on my {thing} again. The dust says nothing. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ba-r | Mr. Bassey | the again tip, the evening before the thing goes missing again, the rains, when tomorrow is too | In my time I lost umbrellas, my friend. Now I lose everything, and tomorrow, I am sure, my {thing} will join the list. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ba-d | Mr. Bassey | the again tip, the evening before the thing goes missing again, the dry season, when tomorrow is too | The heat will take my {thing} again, I think, along with my memory. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-ba-h | Mr. Bassey | the again tip, the evening before the thing goes missing again, harmattan, when tomorrow is too | Soon my {thing} will be somewhere under the dust again. My eyes are not what they were. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-oy-r | Mrs. Oyelaran | the again tip, the evening before the thing goes missing again, the rains, when tomorrow is too | My {thing} has that look again, the look of a thing about to go missing. I have warned it. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-oy-d | Mrs. Oyelaran | the again tip, the evening before the thing goes missing again, the dry season, when tomorrow is too | My {thing} is about to stray again. I mention it once, and I will not mention it again. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ag-oy-h | Mrs. Oyelaran | the again tip, the evening before the thing goes missing again, harmattan, when tomorrow is too | If the dust takes my {thing} again, it will answer to me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-r1 | Ada | her ask for a day fish, the rains, when tomorrow is too | In this season the wood is soft and willing. Tomorrow, a {thing}. They bite after midday. Bring me one and my knife does the rest. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-r2 | Ada | her ask for a day fish, the rains, when tomorrow is too | Tomorrow I want a {thing} to carve. Fish after midday, before the clouds make up their minds. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-d1 | Ada | her ask for a day fish, the dry season, when tomorrow is too | Dry wood, ready and waiting. A {thing} is what I want tomorrow, heat or no heat. Look for them in the early afternoon. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-d2 | Ada | her ask for a day fish, the dry season, when tomorrow is too | My hands are restless in this heat. A {thing} would settle them, caught tomorrow after midday. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-h1 | Ada | her ask for a day fish, harmattan, when tomorrow is too | The harmattan has dried my wood just right for a {thing}. Tomorrow, try for one in the early afternoon, when they bite, and leave it with me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-h2 | Ada | her ask for a day fish, harmattan, when tomorrow is too | If the dust lets you see the water tomorrow after midday, catch me a {thing}. It goes under my knife the same night. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-cat-r | Ada | her ask for a catfish, the rains, when tomorrow is too | Catfish like the dark, and the rains make the evenings darker. Tomorrow after six, catch one and carry it to the courtyard for me. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-cat-d | Ada | her ask for a catfish, the dry season, when tomorrow is too | Catfish wait for the cool of the evening, like everybody in this season. Fish for one tomorrow after six. The courtyard is where I will be. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-ask-cat-h | Ada | her ask for a catfish, harmattan, when tomorrow is too | A catfish for my next carving. They come out after six, when the dust settles. Catch one tomorrow; I will meet you in the courtyard. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-tu-r | Tunde | the wash tip, the rains | The lagoon is fat with all this rain, and it climbs again tonight. By tomorrow afternoon the sand will be covered in shells. Music for the eyes. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-tu-d | Tunde | the wash tip, the dry season or harmattan | The water climbs tonight. When it pulls back tomorrow afternoon, there are shells for everybody. I am going early. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-nk-r | Mama Nkechi | the wash tip, the rains | The water is coming up big tonight, my dear. Tomorrow after midday, shells all along the edge. Take a nylon. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-nk-d | Mama Nkechi | the wash tip, the dry season or harmattan | My dear, the lagoon will swell in the night. By tomorrow afternoon you will find shells right by the water. Bring me a pretty one for the shop. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-ad-r | Ada | the wash tip, the rains | The lagoon is rising tonight. Tomorrow afternoon, go and see what it leaves on the sand. Some of the shells are better made than my chairs. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-ad-d | Ada | the wash tip, the dry season or harmattan | Tonight the lagoon swells. After midday tomorrow, shells at the edge, flat ones and curly ones. I use the flat ones for inlay. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-ba-r | Mr. Bassey | the wash tip, the rains | My friend, the lagoon will stand high tonight, and tomorrow afternoon its edge will be white with shells. A fine picture. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-ba-d | Mr. Bassey | the wash tip, the dry season or harmattan | The lagoon comes up in the night, my friend. Tomorrow after midday its edge will glitter with shells. In my day we threaded them into necklaces. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-oy-r | Mrs. Oyelaran | the wash tip, the rains | The rains have filled the lagoon, and it climbs higher tonight. I am told there will be shells tomorrow afternoon. Wipe your feet when you come back. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-wash-oy-d | Mrs. Oyelaran | the wash tip, the dry season or harmattan | The water will be high tonight. Shells after midday tomorrow, for those who go and look. Do not bring sand up my stairs. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-tom-r | any guest (the second to arrive) | Aunty Bisi passes tomorrow, the rains | Aunty Bisi comes round tomorrow evening. Rain or shine, she comes. | 14 | Cut: v38’s or v39’s own line stays. |
+| gs40-tom-d | any guest (the second to arrive) | Aunty Bisi passes tomorrow, the dry season or harmattan | Tomorrow evening Aunty Bisi passes this side. Hot puff-puff, they say. | 14 | Cut: v38’s or v39’s own line stays. |
+
+### 5. Mallam (owner decisions 3, “Morning order, evening coals”, and 4, “He says it once”)
+
+| Id | When | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| gs40-ma-name | his name, said once to the household | Sannu. My name is Sani. Everybody calls me Mallam. | 1 | The reader’s name or wording; the line ships and is changed if you object. |
+| gs40-ma-yaji | the late-morning order panel | This yaji is my father’s own. Groundnut, pepper, ginger, and one more thing I will not tell you. | 15, 16 | The reader’s wording. |
+| gs40-ma-ordered | after the order ({choice}: pepper or onion) | More {choice}. Come back this evening. I will remember. | 15, 19 | The reader’s wording. |
+| gs40-ma-tomorrow | the morning after an order lapsed | Tomorrow, then. | 15 | The reader’s wording. |
+| gs40-ma-charcoal | at five, laying the charcoal | Sannu da zuwa. The charcoal is laid. Fan it small for me? | 16, 19 | The reader’s wording. |
+| gs40-ma-shy | the fan beat, the glow past a third | Gently. The fire is shy at first. | 15 | The reader’s wording. |
+| gs40-ma-yauwa | the fan beat, the glow past three fifths | Yauwa. | 16 | The reader’s wording. |
+| gs40-ma-going | when the fan beat ends and the coals are lit (his bubble); also the prompt at the stand that does nothing, from the beat’s end and for two seconds after the taste panel closes, where the taste is not offered | The coals are going. | 15 | The reader’s wording. |
+| gs40-ma-stick | the first stick (a panel) | The first stick is for whoever fanned. Taste. Then tell me the truth. | 15 | The reader’s wording. |
+| gs40-ma-self | at half past five when nobody fanned | The fire came on its own in the end. It usually does. | 15 | The reader’s wording. |
+| gs40-ma-kept | the collection after the gist (“Collect your two sticks, ₦2,000”), or his bubble on a base round bought after the gist, while an order waits (the order is handed over only after the gist) | Two sticks, as I promised. More {choice} on yours, as you said. I told you I would remember. | 15 | The reader’s wording. |
+| gs40-ma-ready | after the gist, once, to a player within 4 m when Mallam is on that player’s screen, while an order waits | Your two sticks are ready. | 15 | The reader’s wording. |
+| gs40-ma-regular | his bubble on the base round, a regular | You again. Good. Same as before? I have already started. | 15 | The reader’s wording. |
+| gs40-ma-rains | his bubble on the base round, the rains | In the rains the charcoal sulks. Give it time. Everybody sulks a little in the rains. | 15 | The reader’s wording. |
+| gs40-ma-dry | his bubble on the base round, the dry season | Dry season. The fire is quick and the onions are sweet. | 15 | The reader’s wording. |
+| gs40-ma-harmattan | his bubble on the base round, harmattan | Harmattan is good for suya. The fire burns clean and people want something hot. | 15 | The reader’s wording. |
+| gs40-ma-away | if he ever walks off for charcoal at a gist (not used in this build: he sits by his grill) | More charcoal. I am coming. | 18 | Not used in this build. |
+| gs40-ma-bye | his goodbye (not used in this build) | Na gode. Sai gobe. | 16 | Not used in this build. |
+
+His panels and prompts (plain English, `MALLAM40.UI`):
+
+| Key | Text | Q | If it is wrong |
+|---|---|---|---|
+| MALLAM40.UI.name | Mallam | 15 | Plain wording from the reader. |
+| MALLAM40.UI.kicker | MALLAM | 15 | Plain wording from the reader. |
+| MALLAM40.UI.order | Order two sticks for tonight | 15 | Plain wording from the reader. |
+| MALLAM40.UI.orderText | Two sticks for tonight. Which do you want more of, pepper or onion? You pay when you collect them. | 15 | Plain wording from the reader. |
+| MALLAM40.UI.pepper | Extra pepper | 15 | Plain wording from the reader. |
+| MALLAM40.UI.onion | Extra onion | 15 | Plain wording from the reader. |
+| MALLAM40.UI.notToday | Not today | 15 | Plain wording from the reader. |
+| MALLAM40.UI.fan | Fan the coals | 15 | Plain wording from the reader. |
+| MALLAM40.UI.turn | Turn the sticks | 15 | Plain wording from the reader. |
+| MALLAM40.UI.taste | Taste the first stick | 15 | Plain wording from the reader. |
+| MALLAM40.UI.tasteBtn | Taste | 15 | Plain wording from the reader. |
+| MALLAM40.UI.collect | Collect your two sticks, ₦2,000 | 15 | Plain wording from the reader. |
+| MALLAM40.UI.tasteText | One stick to share. He will not take money for it. | 15 | Plain wording from the reader. |
+| MALLAM40.UI.tasteToast | A taste of the first stick. | 15 | Plain wording from the reader. |
+| MALLAM40.UI.close | Close | 15 | Plain wording from the reader. |
+| MALLAM40.UI.tonight | Mallam is keeping two sticks for you tonight. | 15 | Plain wording from the reader. |
+| MALLAM40.UI.choice.pepper | pepper | 15 | Plain wording from the reader. |
+| MALLAM40.UI.choice.onion | onion | 15 | Plain wording from the reader. |
+
+### 6. A neighbour’s errand (owner decision 2, “Add it”): Mrs. Oyelaran’s notice, the sender’s word, the receiver’s thanks and mention
+
+| Pair | Sender → receiver | Item | Collect from | Q | If it is wrong |
+|---|---|---|---|---|---|
+| plate | Mama Nkechi → Ada | a covered plate of jollof | the shop | 20 | The reader’s wording. |
+| frame | Ada → Mr. Bassey | a mended picture frame | the Makers’ Yard | 20 | The reader’s wording. |
+| tape | Mr. Bassey → Tunde | an old highlife cassette | the waterfront | 20 | The reader’s wording. |
+| seedlings | Tunde → Mama Nkechi | a tray of pepper seedlings | the courtyard | 20 | The reader’s wording. |
+| bread | Mama Nkechi → Mr. Bassey | a warm loaf of bread | the shop | 20 | The reader’s wording. |
+| box | Ada → Tunde | a small wooden box | the Makers’ Yard | 20 | The reader’s wording. |
+| photo | Mr. Bassey → Ada | an old photograph of the Yard | the waterfront | 20 | The reader’s wording. |
+| lead | Tunde → Ada | an extension lead | the courtyard | 20 | The reader’s wording. |
+
+| Id | Who | Text | Q | If it is wrong |
+|---|---|---|---|---|
+| bd40-er-notice | Mrs. Oyelaran’s notice (a card; {sender}, {item}, {receiver}, {place}) | NOTICE. {sender} has {item} for {receiver}. Kindly collect from {place} after half past twelve. — O. | 20 | The reader’s wording. |
+| bd40-er-take-nkechi | Mama Nkechi, handing it over (a bubble) | Take it carefully, my dear. And do not open it on the way. | 20 | The reader’s wording. |
+| bd40-er-take-ada | Ada, handing it over (a bubble) | Mind it. I have only just made it right. | 20 | The reader’s wording. |
+| bd40-er-take-bassey | Mr. Bassey, handing it over (a bubble) | Carefully, my friend. That one is older than you. | 20 | The reader’s wording. |
+| bd40-er-take-tunde | Tunde, handing it over (a bubble) | Thank you o. Tell them it is from me, with respect. | 20 | The reader’s wording. |
+| bd40-er-ty-plate | the receiver, given it (the panel) | Jollof from Mama Nkechi. She knows I forget lunch. Thank you for carrying it. | 20 | The reader’s wording. |
+| bd40-er-ty-frame | the receiver, given it (the panel) | My frame. Ada has made it straighter than it ever was. Thank you, my friend. | 20 | The reader’s wording. |
+| bd40-er-ty-tape | the receiver, given it (the panel) | Highlife from Mr. Bassey’s own box! I will copy it and give it back before he misses it. | 20 | The reader’s wording. |
+| bd40-er-ty-seedlings | the receiver, given it (the panel) | Pepper seedlings from Tunde. By the rains I will have my own pepper. Thank you, my dear. | 20 | The reader’s wording. |
+| bd40-er-ty-bread | the receiver, given it (the panel) | Still warm. Mama Nkechi takes care of all of us. Thank you, my friend. | 20 | The reader’s wording. |
+| bd40-er-ty-box | the receiver, given it (the panel) | A box for my speaker! Ada measured it with her eyes and it fits. Thank you o. | 20 | The reader’s wording. |
+| bd40-er-ty-photo | the receiver, given it (the panel) | The Yard, before me. Look at that bench. Thank you for bringing it. | 20 | The reader’s wording. |
+| bd40-er-ty-lead | the receiver, given it (the panel) | My extension lead. Tunde borrowed it for one evening, a long time ago. Thank you. | 20 | The reader’s wording. |
+
+At that night’s gist, the receiver, when a guest (information; one of two):
+
+| Id | Who | Line | Q | If it is wrong |
+|---|---|---|---|---|
+| gs40-er-plate1 | Ada | The plate came this afternoon, still warm. Mama Nkechi knows I forget lunch. | 20 | The reader’s wording. |
+| gs40-er-plate2 | Ada | Mama Nkechi’s jollof came across today. I ate it standing at the bench, like a carpenter. | 20 | The reader’s wording. |
+| gs40-er-frame1 | Mr. Bassey | Ada mended my frame. It hangs straighter than I do. | 20 | The reader’s wording. |
+| gs40-er-frame2 | Mr. Bassey | My old frame is back on the wall. Ada fixed it, and you carried it. A whole compound’s work. | 20 | The reader’s wording. |
+| gs40-er-tape1 | Tunde | Mr. Bassey’s highlife tape came today. I have played it four times. The courtyard is learning to dance. | 20 | The reader’s wording. |
+| gs40-er-tape2 | Tunde | That cassette from Mr. Bassey is older than my speakers. It still sounds better. | 20 | The reader’s wording. |
+| gs40-er-seedlings1 | Mama Nkechi | Tunde’s seedlings are on my counter. If they grow, I will sell him the pepper. | 20 | The reader’s wording. |
+| gs40-er-seedlings2 | Mama Nkechi | Pepper seedlings from Tunde. Customers ask if they are for sale. I say: not yet. | 20 | The reader’s wording. |
+| gs40-er-bread1 | Mr. Bassey | Mama Nkechi sent bread today, still warm. I ate half before I remembered my manners. | 20 | The reader’s wording. |
+| gs40-er-bread2 | Mr. Bassey | Warm bread, carried all the way to the water. I have not been looked after like this in years. | 20 | The reader’s wording. |
+| gs40-er-box1 | Tunde | Ada’s box fits my speaker like it was born there. | 20 | The reader’s wording. |
+| gs40-er-box2 | Tunde | My speaker has a house now. Ada made it, you brought it, and I take the credit. | 20 | The reader’s wording. |
+| gs40-er-photo1 | Ada | Mr. Bassey sent a photograph of the Yard before my time. The bench in it is still there. I checked. | 20 | The reader’s wording. |
+| gs40-er-photo2 | Ada | An old photograph of the Yard came today. Same trees, younger wood. | 20 | The reader’s wording. |
+| gs40-er-lead1 | Ada | My extension lead came home today. Tunde sends his apologies, by you. | 20 | The reader’s wording. |
+| gs40-er-lead2 | Ada | Tunde returned my extension lead. Through you. He is brave, but not that brave. | 20 | The reader’s wording. |
+
+### The interface (plain English): every string in `BOARD40.UI` and `GIST40.UI`, by its key
+
+| Key | Text | Q | If it is wrong |
+|---|---|---|---|
+| BOARD40.UI.kicker | ON THE NOTICEBOARD | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.still | Still lost. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.close | Close | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.givenBack | Given back | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.pick | Pick up {label} | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.pickToast | {owner}’s {name}. {where} | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.take | Take the {short} for {receiver} | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.giveErr | Give {receiver} the {short} | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.takeToast | The {short}, for {receiver}. Give it by six. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.errKicker | An errand | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.lapse | {sender} took it over {self} in the end. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.todayBefore | The noticeboard: Mrs. Oyelaran changes the notices at half past ten. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.todayNew | New notices are up. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.todayRead | On the noticeboard: {owner} lost {pron} {name} {area}. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.todayHand | {owner}’s {name} is with you. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.todayBack | {owner}’s {name} is back. {sub} crossed it off {self}. | 4, 5 | Plain wording from the reader. |
+| BOARD40.UI.playtest | Lines heard in the last fortnight: {n}. | 4, 5 | Plain wording from the reader. |
+| GIST40.UI.pick | Pick up {label} | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.give | Give {child} {pron} {name} | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.shop | Give Mama Nkechi Emeka’s {name} | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.pickToast.emeka | Emeka’s {name}. He plays at the pitch in the afternoons, or Mama Nkechi will take it at her shop. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.pickToast.kemi | Kemi’s {name}. She plays at the pitch in the afternoons. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.pickToastSat.emeka | Emeka’s {name}. He is at the pitch today, or Mama Nkechi will take it at her shop. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.pickToastSat.kemi | Kemi’s {name}. She is at the pitch today. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.where.emeka | Emeka plays at the pitch in the afternoons, or Mama Nkechi at her shop | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.where.kemi | Kemi plays at the pitch in the afternoons | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.kicker | Given back | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.close | Close | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.todayHeard | Heard at the pitch: {child} lost {pron} {name}. It is on the sand by the pitch. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.todayStill | {child}’s {name} is still on the sand by the pitch. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.todayAft | {child} is looking for {pron} {name} by the pitch. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.handAlso | Also with you: {list}. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.handRow | With you: {list}. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.recap.kid | {child} has {pron} {name} back. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.recap.card | {owner} has {pron} {name} back. | 7, 8 | Plain wording from the reader. |
+| GIST40.UI.recap.errand | {receiver} has the {short}. | 7, 8 | Plain wording from the reader. |
+
+The card things as the game names them (culture C6): the name (in the pickup toast, Today and the again card), the prompt to pick one up, the prompt to give it back:
+
+| Thing | Owner | Name | Pick-up prompt | Give prompt | Q | If it is wrong |
+|---|---|---|---|---|---|---|
+| knob | Tunde | radio knob | Pick up a radio knob | Give Tunde his radio knob | 6 | The reader’s wording, or another thing for that owner. |
+| rose | Tunde | sprinkler head | Pick up a sprinkler head | Give Tunde his sprinkler head | 6 | The reader’s wording, or another thing for that owner. |
+| spoon | Mama Nkechi | wooden spoon | Pick up a long wooden spoon | Give Mama Nkechi her spoon | 6 | The reader’s wording, or another thing for that owner. |
+| pad | Mama Nkechi | receipt pad | Pick up a receipt pad | Give Mama Nkechi her receipt pad | 6 | The reader’s wording, or another thing for that owner. |
+| block | Ada | sanding block | Pick up a sanding block | Give Ada her sanding block | 6 | The reader’s wording, or another thing for that owner. |
+| oil | Ada | tin of wood oil | Pick up a small tin of wood oil | Give Ada her wood oil | 6 | The reader’s wording, or another thing for that owner. |
+| film | Mr. Bassey | film canister | Pick up a film canister | Give Mr. Bassey his film canister | 6 | The reader’s wording, or another thing for that owner. |
+| print | Mr. Bassey | old wedding print | Pick up a brown envelope | Give Mr. Bassey his photograph | 6 | The reader’s wording, or another thing for that owner. |
+| pegs | Mrs. Oyelaran | bag of clothes pegs | Pick up a bag of clothes pegs | Give Mrs. Oyelaran her pegs | 6 | The reader’s wording, or another thing for that owner. |
+| minutes | Mrs. Oyelaran | minutes book | Pick up a minutes book | Give Mrs. Oyelaran her minutes book | 6 | The reader’s wording, or another thing for that owner. |
+
+The places (`BOARD40.AREAS`): **say** finishes Today’s line (“Tunde lost his radio knob by the square’s stage.”) and the pickup toast; **look** finishes the again cards (“Look by the stage in the square.”, “Try looking round the rocks.”); **where** is the same place as a heading (not shown in this build):
+
+| Area | Say | Look (again cards) | Where | Q | If it is wrong |
+|---|---|---|---|---|---|
+| stage | by the square’s stage | by the stage in the square | By the square’s stage | 4, 6 | Plain wording from the reader. |
+| garden | by the square’s garden bed | by the garden bed in the square | By the square’s garden bed | 4, 6 | Plain wording from the reader. |
+| bench | on the waterfront sand by the bench | on the sand by the waterfront bench | On the waterfront sand by the bench | 4, 6 | Plain wording from the reader. |
+| market | on Market Road, between the stalls | along Market Road, between the stalls | On Market Road, between the stalls | 4, 6 | Plain wording from the reader. |
+| yard | in the Makers’ Yard | round the Makers’ Yard | In the Makers’ Yard | 4, 6 | Plain wording from the reader. |
+| rocks | near the rocks | round the rocks | Near the rocks | 4, 6 | Plain wording from the reader. |
+| photo | on the waterfront, east of the photo spot | along the waterfront, east of the photo spot | On the waterfront, east of the photo spot | 4, 6 | Plain wording from the reader. |
+| waterW | on the waterfront, towards the square | along the waterfront, towards the square | On the waterfront, towards the square | 4, 6 | Plain wording from the reader. |
+| street | in the street, west of the gate | along the street, west of the gate | In the street, west of the gate | 4, 6 | Plain wording from the reader. |
+| court | in the courtyard, by the noticeboard | round the courtyard, by this board | In the courtyard, by the noticeboard | 4, 6 | Plain wording from the reader. |
+
+Where each owner is, in the pickup toast and Today’s hand row (`BOARD40.WHERE`; by the hour), and the signature drawn on each owner’s card in the world (`BOARD40.INITIAL`):
+
+| Key | Text | Q | If it is wrong |
+|---|---|---|---|
+| BOARD40.WHERE.tunde[0] | He is at the garden corner until noon, then in the courtyard. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.tunde[1] | He is in the courtyard. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.nkechi[0] | She is at her shop. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.nkechi[1] | She is at her shop. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.ada[0] | She is at the Makers’ Yard until six. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.ada[1] | She is in the courtyard after six. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.bassey[0] | He is at the photo corner this morning. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.bassey[1] | He is on the waterfront this afternoon. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.bassey[2] | He is in the courtyard this evening. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.oyelaran[0] | She is in the courtyard this morning. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.oyelaran[1] | She is out until six, then in the courtyard. | 4, 6 | Plain wording from the reader. |
+| BOARD40.WHERE.oyelaran[2] | She is in the courtyard. | 4, 6 | Plain wording from the reader. |
+| BOARD40.INITIAL.tunde | — T. | 4 | Plain wording from the reader. |
+| BOARD40.INITIAL.nkechi | — Mama N. | 4 | Plain wording from the reader. |
+| BOARD40.INITIAL.ada | — A. | 4 | Plain wording from the reader. |
+| BOARD40.INITIAL.bassey | Bassey | 4 | Plain wording from the reader. |
+| BOARD40.INITIAL.oyelaran | — O. | 4 | Plain wording from the reader. |
+
+## v40.4 How the v40 lines are chosen
+
+- A card goes up at half past ten when the last card’s thing is back; it is crossed out in its owner’s hand the moment the thing goes back and comes down at the second change after. After all ten, each card comes back in its owner’s “again” words, the thing in a second place.
+- A child loses a thing after about one match in three that the household plays (never within two days of the last), and on a morning-match day at two in the afternoon. Emeka and Kemi take turns, each through their two things. The child calls out once; the thing lies on the sand by the pitch until somebody picks it up. A child asks about it once on a later day if it is still lost.
+- At the gist, nothing changes the guests, the tips or the timing. In order each evening: the transition tip the evening before a season changes, first of all (a promise the game keeps the next morning, so it comes before the news: on such an evening the match line or the children’s mention may go unsaid); the children’s mention (the evening of the loss, by the fond adult when a guest; it takes the line about today, the night’s one added line or a free reaction; otherwise it is not said that night); the line about today (a match line, a card thing’s return by its owner, the errand by its receiver; the match line has the first claim on the night’s one added line, and a return or the errand’s mention takes a free reaction; otherwise it is not said that night); then the repeat guard. A greeting, goodbye, reaction, plain line or line about today heard on any of the last thirteen evenings gives way to another of that neighbour’s own lines not heard in that time: first another of their v38 lines of the same kind, then a season line, then an evergreen line. Tips, asks and first-time retellings are never replaced, except that v39’s pot ask and “again” tip, v38’s Ada’s ask and wash tip, and v39’s “Aunty Bisi passes tomorrow” take another wording (the same news) when their own line was heard in the last thirteen evenings. The pot ask, the again tip and Ada’s ask speak of tomorrow, so their season wordings are used only when tomorrow is in the same season; on the evening before a change, the any-season wording.
+- A match line’s facts are only what football saved (the result, last goal wins, Emeka called in, who scored, the first win and its photograph), the hour the match ended (read from football’s own end of the match and kept in v40’s record), and the season. A line about a wet match needs the rain to have begun before the match ended (a Saturday-morning match before the afternoon rain is not one); Tunde hears the shouting from the courtyard only for a match that ended at noon or later; Mrs. Oyelaran, out from twelve to six, has her match news from others and names no hour. Mr. Bassey speaks first when he is a guest and has a line not heard in the last thirteen evenings; then the other guest; then a general line by the second guest, never by Mr. Bassey, who watched from the touchline.
+- “It rained today” lines come only after rain that day, “the rain is resting” only on a rainy-season day without it. Nothing promises tomorrow’s rain; the season turning (“the rains come back tomorrow”) is said only the evening before it does.
+- Mallam’s lines are his own: the name once, the order in the late morning, two bubbles as the fire catches, the first stick, and his line on the round. A kept order is handed over only after the gist: “Your two sticks are ready.” once to a player near the stand whose screen shows him, and the kept order’s line when the household collects them (“Collect your two sticks, ₦2,000”), even after a round bought before the gist; a household that skips the gist collects them from ten. With an order waiting he stays at his grill until half past ten, or until half an hour after the gist ends if that is later, however late; a reload in the middle of a gist counts as the gist’s end, and the half hour runs from then. He stays seated through any gist, however late; with no order waiting he stays at his grill until ten, or, after a gist that runs past ten, goes when it ends, after a moment at his grill. The first stick is offered as “Taste the first stick”, never as a panel that opens by itself.
