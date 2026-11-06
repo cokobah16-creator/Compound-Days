@@ -1,5 +1,5 @@
 {
-  "build": "v42-64f03d0b",
+  "build": "v43-fe9d541b",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v42-64f03d0b"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v43-fe9d541b"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v42-64f03d0b"
+        "build": "v43-fe9d541b"
       }
     }
   ],
