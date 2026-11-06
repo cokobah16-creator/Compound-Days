@@ -1,5 +1,5 @@
 {
- "build": "v40-5f9ef4d7",
+ "build": "v41-c92afe85",
  "passed": true,
  "checks": [
   {
@@ -52,8 +52,8 @@
     },
     "waits": "none before discovery",
     "withoutV39": {
-     "dayThree": "fd991538:14224",
-     "dayFive": "f5944db1:35955"
+     "dayThree": "42ceed97:15330",
+     "dayFive": "6678c7b6:39231"
     }
    }
   },
@@ -1055,7 +1055,7 @@
    "name": "M32 (DOD-2, I1, S6) Mr. Bassey never asks in his talk",
    "check": 9,
    "result": "red",
-   "first": "his ask in his talk:  Mr. Bassey  Retired photographer, learning to host workshops.   Mr. Bassey Good afternoon. Okon Bassey. Thirty-one years of weddings and three presidents. Now I teach, slowly.   Later  "
+   "first": "his ask in his talk:  Mr. Bassey  Retired photographer, learning to host workshops.   Mr. Bassey Good afternoon. Okon Bassey. Thirty-one years of weddings and three presidents. Now I teach, slowly.    Mr. Bassey The light this morning! I took nine photographs of one wall.   Mr. Bassey · New face              “This eveni"
   },
   {
    "name": "M33 (S5) the pot's count follows the day's parity",

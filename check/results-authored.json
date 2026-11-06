@@ -1,5 +1,5 @@
 {
-  "build": "v40-5f9ef4d7",
+  "build": "v41-c92afe85",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v40-5f9ef4d7"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v41-c92afe85"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v40-5f9ef4d7"
+        "build": "v41-c92afe85"
       }
     }
   ],
