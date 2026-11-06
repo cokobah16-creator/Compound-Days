@@ -154,10 +154,10 @@ function subsetDir35(last){const root=process.env.COMPOUND_GAME_DIR||path.resolv
   // the real press
   run("globalThis.DSP=[];{const d=dispatch;globalThis.DSP0=d;dispatch=function(n,x){DSP.push(n);return d.apply(this,arguments);};}");
   at(...ROCKS);run("closePanel();T35+=1000;doFish(0);");assert.equal(run('actPrimary35()'),false,'within 300 ms of the panel opening');assert.deepEqual(J('DSP'),[]);
+  const fishHTML=run('panel.innerHTML');
   run('T35+=300');assert.equal(run('actPrimary35()'),true);assert.deepEqual(J('DSP'),['lifeCast']);assert.equal(run('LIFE34.fish.phase'),'waiting');
   // refusals: a fresh close, a text field, another tab
-  const fishHTML=run('panel.innerHTML');run("T35+=1000;closePanel();");run(`ov.classList.add('on');panel.innerHTML=${JSON.stringify(fishHTML)};LIFE34.tab='fish';LIFE34.fish={i:0,phase:'ready',elapsed:0,biteAt:0};DSP.length=0;`);
-  run(`panel.innerHTML=panel.innerHTML.replace(/<button class="btn block" disabled>[^<]*<\\/button>/,'<button class="btn primary block" data-act="lifeCast">Cast your line</button>');`);
+  run("T35+=1000;closePanel();");run(`ov.classList.add('on');panel.innerHTML=${JSON.stringify(fishHTML)};LIFE34.tab='fish';LIFE34.fish={i:0,phase:'ready',elapsed:0,biteAt:0};DSP.length=0;`);
   assert.equal(run('actPrimary35()'),false,'within 300 ms of a close');run('T35+=300;document.activeElement={tagName:"INPUT"};');assert.equal(run('actPrimary35()'),false,'not in a text field');
   run('delete document.activeElement;LIFE34.tab="today";');assert.equal(run('actPrimary35()'),false,'not on another journal tab');assert.deepEqual(J('DSP'),[]);run("LIFE34.tab='fish';");assert.equal(run('actPrimary35()'),true,'the same panel on the fish tab');
   // the whole loop on one button: Cast, Reel in, Keep, Cast again

@@ -1,0 +1,224 @@
+/* Shared shell for journal pages, activities, shops and conversations. */
+#ov {
+  --panel-gutter: clamp(16px, 4vw, 28px);
+  --panel-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  padding: max(12px, env(safe-area-inset-top, 0px)) env(safe-area-inset-right, 0px) 0 env(safe-area-inset-left, 0px);
+  background: #14272280;
+  -webkit-backdrop-filter: blur(2px);
+  backdrop-filter: blur(2px);
+}
+
+#panel {
+  max-height: 100%;
+  min-height: 0;
+  padding: 22px var(--panel-gutter) var(--panel-bottom);
+  border-radius: 24px 24px 0 0;
+  background: linear-gradient(160deg, #433326, #2a211a 72%);
+  box-shadow: 0 16px 52px #14251d66;
+  overscroll-behavior: contain;
+  touch-action: pan-y;
+}
+
+#panel::before {
+  inset: 8px auto auto calc(50% - 18px);
+  width: 36px;
+  height: 4px;
+  border-radius: 999px;
+  background: #c5a37b;
+  pointer-events: none;
+}
+
+#panel .btn {
+  min-height: 44px;
+  border-radius: 12px;
+  text-wrap: balance;
+}
+
+#panel .btn.primary {
+  font-family: inherit;
+  font-size: 1rem;
+  line-height: 1.25;
+  padding: 10px 16px;
+  box-shadow: none;
+}
+
+#panel.life-panel34 {
+  padding: 22px var(--panel-gutter) var(--panel-bottom);
+  background: linear-gradient(160deg, #fbf7eb, #f0ebd9);
+  border-color: #d8d9c5;
+  box-shadow: 0 16px 52px #14251d66;
+}
+
+#panel.life-panel34::before { background: #789282; }
+#panel.studio31::before { height: 4px; }
+#panel.life-panel34 h2 {
+  margin: 4px 0 10px;
+  font-size: clamp(25px, 4.5vw, 34px);
+  line-height: 1.1;
+}
+
+#panel.life-panel34 .btn.primary {
+  background: #285743;
+  border-color: #285743;
+  color: #fffaf0;
+}
+
+#panel .life-tabs34 {
+  gap: 4px;
+  margin-bottom: 14px;
+  padding-bottom: 10px;
+  touch-action: pan-x pan-y;
+}
+
+#panel .storage34 { touch-action: pan-x pan-y; }
+#panel .life-tabs34 button { color: #526350; }
+#panel .life-tabs34 button.selected { background: #dce6d4; color: #234b38; }
+#panel .life-footer34 {
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px 12px;
+  margin-top: 17px;
+  padding-top: 12px;
+}
+
+#panel .life-footer34 > .btn { flex: 0 0 auto; margin: 0; }
+#panel .life-footer34 > span { flex: 1 1 118px; color: #596b5d; }
+#panel .life-note34 > [data-act="lifeGo"][data-v="market"] { display: table; margin: 8px 0 0; }
+
+#panel .garden-art34 {
+  width: min(100%, 220px);
+  height: 132px;
+  border-radius: 20px;
+  padding: 12px;
+  background: #e1e8ce;
+}
+
+#panel .growth34 { flex-wrap: wrap; margin: 12px 0; }
+#panel .growth34 span { color: #596054; }
+#panel .growth34 .grown { color: #3b5e42; }
+
+/* The panel owns the tap targets while the world is paused. */
+body:has(#ov.on) #touch { visibility: hidden; }
+
+#panel:has(.fish-sheet34, .fish-result34) { max-width: 560px; }
+.fish-sheet34, .fish-result34 { display: grid; gap: 12px; }
+#panel .fish-sheet34 h2, #panel .fish-result34 h2,
+#panel .fish-sheet34 .life-kicker, #panel .fish-result34 .life-kicker { margin: 0; }
+#panel .fish-sheet34 .life-kicker, #panel .fish-result34 .life-kicker { margin-bottom: 5px; }
+
+.fish-sheet34 .fishing34 {
+  height: clamp(112px, 34vw, 166px);
+  margin: 0;
+  border: 1px solid #38796b45;
+  border-radius: 16px;
+  background: #5c9e99 url("fishing-waterfront.svg") center / cover no-repeat;
+}
+
+.fish-sheet34 .fishing34.bite { box-shadow: inset 0 0 0 2px #f9dc8c; }
+.fish-sheet34 .ripple34 { left: 58%; top: 69%; border: 1px solid #e9f7dfbc; }
+.fish-sheet34 .ripple34.second { width: 100px; height: 22px; opacity: .52; }
+.fish-sheet34 .float34 {
+  left: 58%;
+  top: 62%;
+  width: 13px;
+  height: 21px;
+  border: 1px solid #fffae2ad;
+  background: linear-gradient(#fff6d6 0 46%, #bb5039 48%);
+  box-shadow: 0 4px 8px #184c5366;
+}
+
+.fish-sheet34 .float34::before {
+  content: "";
+  position: absolute;
+  bottom: 100%;
+  left: 50%;
+  width: 1px;
+  height: 42px;
+  transform: rotate(32deg);
+  transform-origin: bottom;
+  background: linear-gradient(transparent, #fff4d5cc);
+}
+
+#panel .fish-status34 {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 0;
+  padding: 8px 11px;
+  border-radius: 10px;
+  background: #e2eadb;
+  color: #294d3d;
+  font-size: .92rem;
+  line-height: 1.35;
+}
+
+.fish-status34 > span {
+  flex: 0 0 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #457763;
+}
+
+.waiting .fish-status34 > span { animation: fish-wait 1.8s ease-in-out infinite; }
+@keyframes fish-wait { 50% { opacity: .45; } }
+#panel .bite .fish-status34 { background: #f5e2ad; color: #493316; }
+.bite .fish-status34 > span { background: #9d591f; }
+
+#panel .fish-actions34, #panel .fish-result34 .life-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin: 0;
+}
+
+#panel .fish-actions34 .btn, #panel .fish-result34 .life-options .btn {
+  flex: 1 1 auto;
+  margin: 0;
+  padding: 9px 12px;
+  text-align: center;
+}
+
+#panel .fish-actions34 .btn.primary { flex-grow: 2; }
+.fish-result34 .catch34 {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 6px 12px;
+  border-radius: 16px;
+  background: #dce9df;
+}
+
+.fish-result34 .catch34 svg { width: min(48%, 184px); height: 96px; }
+.fish-result34 .catch34 b { white-space: nowrap; }
+#panel .fish-result34 > p { margin: 0; }
+
+@media (min-width: 700px) {
+  #ov {
+    padding: max(14px, env(safe-area-inset-top, 0px)) max(14px, env(safe-area-inset-right, 0px))
+      max(14px, env(safe-area-inset-bottom, 0px)) max(14px, env(safe-area-inset-left, 0px));
+    --panel-bottom: 20px;
+  }
+  #panel { border-radius: 22px; }
+}
+
+@media (min-width: 620px) and (max-height: 480px) {
+  .fish-sheet34, .fish-result34 {
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    gap: 8px 14px;
+  }
+  .fish-sheet34 .fishing34, .fish-result34 .catch34 {
+    grid-area: 1 / 1 / span 3;
+    height: 100%;
+    min-height: 136px;
+  }
+  #panel .fish-result34 .life-options .btn { flex-basis: 100%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .waiting .fish-status34 > span { animation: none; }
+}
