@@ -1,5 +1,5 @@
 {
-  "build": "v48-02b8f7d4",
+  "build": "v49-bec6941f",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v48-02b8f7d4"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v49-bec6941f"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v48-02b8f7d4"
+        "build": "v49-bec6941f"
       }
     }
   ],

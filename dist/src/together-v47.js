@@ -23,7 +23,7 @@ const TOGETHER47={
  creating:null,          // the code this phone just generated with "Start a household"
  room:null,              // the live room, for the browser check
  photoKeep:12,           // photos kept per household on each phone
- silentMs:30000,         // a side silent this long is gone (v48: was 15 s, too short while a phone builds the world)
+ silentMs:30000,         // a side silent this long is gone (v49: was 15 s, too short while a phone builds the world)
  log:[]
 };
 function together47Log(s){ const L=TOGETHER47.log; L.push(s); if(L.length>60) L.shift(); }

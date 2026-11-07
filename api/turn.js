@@ -1,4 +1,4 @@
-// Two-phone play (dist/src/turn-v48.js) asks here for short-lived TURN relay credentials, so phones on mobile data
+// Two-phone play (dist/src/turn-v49.js) asks here for short-lived TURN relay credentials, so phones on mobile data
 // can reach each other through Cloudflare's TURN service when a direct link cannot get through.
 // The long-lived key stays in the Vercel project's environment (CF_TURN_KEY_ID, CF_TURN_API_TOKEN) and never
 // reaches the page; each answer is valid for six hours. Without the two variables it answers 204 and the game keeps
