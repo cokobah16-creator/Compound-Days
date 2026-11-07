@@ -1,5 +1,5 @@
 {
-  "build": "v44-ae364427",
+  "build": "v45-2365f454",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v44-ae364427"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v45-2365f454"
       }
     },
     {
@@ -291,7 +291,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v44-ae364427"
+        "build": "v45-2365f454"
       }
     }
   ],
