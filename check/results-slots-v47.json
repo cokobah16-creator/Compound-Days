@@ -1,5 +1,5 @@
 {
- "build": "v47-f6498568",
+ "build": "v47-89906f7e",
  "passed": true,
  "checks": [
   {
@@ -47,7 +47,7 @@
    }
   },
   {
-   "name": "5. The Menu: Start a new household opens the slot list (the current household is marked, not replaced); the slot actions are never sent online",
+   "name": "5. The Menu: Start a new household opens the slot list (the current household is marked, not replaced); switching to another slot from the world saves this household first and the unload saves that follow never write it into the other slot; the slot actions are never sent online",
    "passed": true
   },
   {
