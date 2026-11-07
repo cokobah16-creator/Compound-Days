@@ -8,12 +8,15 @@
    function), for short-lived Cloudflare TURN credentials, and gives them to every Peer as its ICE servers. The long-
    lived key stays in the Vercel project's environment. If the endpoint is not configured or cannot be reached within
    five seconds, the Peer keeps PeerJS's defaults, exactly as in v47. A failed link now says what to try. */
-const TURN48={url:'api/turn',servers:null,at:0,maxAge:12*3600*1000,waitMs:5000};
+const TURN48={url:'api/turn',servers:null,until:0,margin:30*60*1000,waitMs:5000};
+// the relay servers while their credentials are still good (half an hour of margin), otherwise none
+function turn48Valid(){ return TURN48.servers&&Date.now()<TURN48.until-TURN48.margin?TURN48.servers:null; }
 async function turn48Fetch(){
- if(TURN48.servers&&Date.now()-TURN48.at<TURN48.maxAge) return TURN48.servers;
+ if(turn48Valid()) return TURN48.servers;
+ TURN48.servers=null; // expired credentials are never handed to a Peer, even when the refresh below fails
  try{ const r=await fetch(TURN48.url,{cache:'no-store'}); if(r.status===200){ const j=await r.json();
-   if(j&&Array.isArray(j.iceServers)&&j.iceServers.length){ TURN48.servers=j.iceServers; TURN48.at=Date.now(); } } }catch(e){}
- return TURN48.servers;
+   if(j&&Array.isArray(j.iceServers)&&j.iceServers.length&&j.ttl>0){ TURN48.servers=j.iceServers; TURN48.until=Date.now()+j.ttl*1000; } } }catch(e){}
+ return turn48Valid();
 }
 function turn48Message(e){
  const m=String(e&&e.message||e||'');
@@ -27,7 +30,7 @@ if(typeof together47PeerLib==='function'&&typeof together47PeerOpts==='function'
  // wrap: every Peer gets the relay servers when there are any
  const together47PeerOpts48base=together47PeerOpts;
  together47PeerOpts=function(){ const o=together47PeerOpts48base.apply(this,arguments);
-  if(TURN48.servers) o.config={iceServers:[{urls:'stun:stun.l.google.com:19302'}].concat(TURN48.servers)}; return o; };
+  const sv=turn48Valid(); if(sv) o.config={iceServers:[{urls:'stun:stun.l.google.com:19302'}].concat(sv)}; return o; };
  // wrap: a link that cannot get through says what to try (NET.roomNs.join holds the function, so wrap it there)
  if(typeof NET!=='undefined'&&NET.roomNs&&NET.roomNs.join===together47Join){
   NET.roomNs.join=function(code){ return together47Join(code).catch(e=>{ throw turn48Message(e); }); };

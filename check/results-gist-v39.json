@@ -1,5 +1,5 @@
 {
- "build": "v48-7fbf42d6",
+ "build": "v48-02b8f7d4",
  "passed": true,
  "checks": [
   {
@@ -52,7 +52,7 @@
     },
     "waits": "none before discovery",
     "withoutV39": {
-     "dayThree": "c9e3e2f3:16713",
+     "dayThree": "d21afd5:16713",
      "dayFive": "cfbf42fc:43569"
     }
    }
