@@ -1,0 +1,62 @@
+{
+ "build": "v47-f6498568",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Slot 1 is the old key: with no slot chosen, a household moving in is saved under compound-days-3d-v1 and nowhere else, so a save from before v47 is slot 1",
+   "passed": true,
+   "info": {
+    "keys": [
+     1,
+     0,
+     0
+    ]
+   }
+  },
+  {
+   "name": "2. Slot 2: saves and loads go to compound-days-3d-v1-slot2 and slot 1 is left exactly as it was; switching back loads slot 1",
+   "passed": true,
+   "info": {
+    "keys": [
+     1,
+     1,
+     0
+    ]
+   }
+  },
+  {
+   "name": "3. The slot list: filled slots give the household, day and mode, a household still in setup counts as empty, and the first empty slot is picked for a new household",
+   "passed": true,
+   "info": {
+    "labels": [
+     "Efe House 1",
+     "Ngozi House 4",
+     "empty"
+    ]
+   }
+  },
+  {
+   "name": "4. Replacing or deleting asks first: New in a filled slot and Delete open a question and change nothing; Delete with the answer empties only that slot",
+   "passed": true,
+   "info": {
+    "keys": [
+     1,
+     0,
+     1
+    ]
+   }
+  },
+  {
+   "name": "5. The Menu: Start a new household opens the slot list (the current household is marked, not replaced); the slot actions are never sent online",
+   "passed": true
+  },
+  {
+   "name": "6. The room stays off without WebRTC (NET.capable false, no room); the room panels' Back button has an action",
+   "passed": true
+  },
+  {
+   "name": "7. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}

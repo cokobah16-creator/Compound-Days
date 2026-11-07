@@ -1,0 +1,10 @@
+/* v47 slots: three saved households on the title and in the Menu */
+.slots47{display:flex;flex-direction:column;gap:8px}
+.slots47 .card.slot47{margin:0;padding:10px 12px}
+.slots47 .slot47-name{display:block;margin:2px 0 6px;line-height:1.25}
+.slots47 .slot47.empty .slot47-name{opacity:.6;font-weight:600}
+.slots47 .slot47.now{outline:2px solid rgba(46,82,56,.35)}
+.slots47 .row{display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+.slots47 .row .btn{flex:0 1 auto}
+#panel .slots47 .row .btn{padding:7px 14px;font-size:.92rem;min-height:0;box-shadow:none}
+#panel .slots47 .row{gap:6px;margin-top:2px}
