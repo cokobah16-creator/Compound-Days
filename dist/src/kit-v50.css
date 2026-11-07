@@ -1,0 +1,22 @@
+/* v50 "Kit": the shoes and accessories wardrobe and Dayo's table */
+#panel .kit50-who{margin:6px 0 10px}
+#panel .kit50-slots{display:grid;grid-template-columns:repeat(auto-fill,minmax(92px,1fr));gap:6px;margin:6px 0 12px}
+#panel .kit50-slot{display:flex;flex-direction:column;align-items:center;text-align:center;font-size:12px;line-height:1.25;padding:6px 4px;border-radius:12px;border:1px dashed rgba(47,107,79,.35);color:#6b6256;min-height:58px}
+#panel .kit50-slot.on{border-style:solid;background:#FCF7EE;color:#2A1F17}
+#panel .kit50-slot b{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#2F6B4F}
+#panel .kit50-slot img{width:40px;height:40px;border-radius:8px}
+#panel .kit50-h{margin:12px 0 6px}
+#panel .kit50-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:8px}
+#panel .kit50-tile{display:flex;flex-direction:column;align-items:center;gap:2px;padding:6px 6px 8px;border-radius:14px;border:1.5px solid rgba(47,107,79,.25);background:#FCF7EE;cursor:pointer;font:inherit;color:#2A1F17;min-height:44px}
+#panel .kit50-tile img{width:100%;max-width:120px;aspect-ratio:1;border-radius:10px;display:block}
+#panel .kit50-tile.picked{border-color:#2F6B4F;box-shadow:0 0 0 2px #2F6B4F inset;background:#EEF4EF}
+#panel .kit50-tile.kit50-locked{cursor:default;opacity:.55}
+#panel .kit50-tile.kit50-locked img{filter:grayscale(.85) brightness(1.05)}
+#panel .kit50-tile:focus-visible{outline:3px solid #C9A24A;outline-offset:2px}
+#panel .kit50-name{font-weight:700;font-size:13px;text-align:center;line-height:1.2}
+#panel .kit50-sub{font-size:11.5px;color:#6b6256;text-align:center}
+#panel .kit50-tile.picked .kit50-sub{color:#2F6B4F;font-weight:700}
+#panel .kit50-stall{margin:12px 0 8px;padding-top:10px;border-top:1px solid rgba(42,31,23,.12)}
+#panel .kit50-buy{display:flex;gap:10px;align-items:center;margin:6px 0;padding:8px 10px}
+#panel .kit50-buy img{width:72px;height:72px;border-radius:10px;flex:none}
+#panel .kit50-sold{color:#2F6B4F;font-weight:700}

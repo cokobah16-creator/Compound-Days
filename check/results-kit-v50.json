@@ -1,0 +1,119 @@
+{
+ "build": "v51-c8deb323",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Twenty pieces from the two render sheets, seven slots, an icon for every piece; a new household owns the Compound slides only, wears nothing, and its save has no kit key until the wardrobe is used",
+   "passed": true,
+   "info": {
+    "items": [
+     "F01:feet",
+     "F02:feet",
+     "F03:feet",
+     "F04:feet",
+     "F05:feet",
+     "F06:feet",
+     "F07:feet",
+     "F08:feet",
+     "A01:bag",
+     "A02:head",
+     "A03:head",
+     "A04:head",
+     "A05:face",
+     "A06:face",
+     "A07:head",
+     "A08:ears",
+     "A09:neck",
+     "A10:wrists",
+     "A11:wrists",
+     "A12:bag"
+    ]
+   }
+  },
+  {
+   "name": "2. An avatar without kit is built exactly as before: same mesh count and no kit meshes, on the hero rig and the built-in avatar",
+   "passed": true,
+   "info": {
+    "hero": [
+     42,
+     0
+    ],
+    "built": [
+     65,
+     0
+    ]
+   }
+  },
+  {
+   "name": "3. Dayo's table: the same pieces all day, four on a weekday and six on market day (Saturday), nothing collected before today; a piece bought today stays on the table as sold, the purse pays, and a piece not on the table or too dear is refused",
+   "passed": true,
+   "info": {
+    "weekday": [
+     "F04",
+     "F06",
+     "A09",
+     "A02"
+    ],
+    "saturday": 1
+   }
+  },
+  {
+   "name": "4. Wearing: one piece per slot per player, tapping again takes it off, a piece not collected cannot be worn, and taking everything off clears the slot list; wearing is per player online and the panel actions stay local",
+   "passed": true
+  },
+  {
+   "name": "5. Every piece dresses both rigs: footwear replaces the outfit's own shoes, the rest mounts on the head, neck, wrist, hand or torso",
+   "passed": true,
+   "info": {
+    "F01/hero": "16 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F01/built": "16 kit50_feet@footL,kit50_feet@footR",
+    "F02/hero": "24 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F02/built": "24 kit50_feet@footL,kit50_feet@footR",
+    "F03/hero": "18 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F03/built": "18 kit50_feet@footL,kit50_feet@footR",
+    "F04/hero": "44 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F04/built": "44 kit50_feet@footL,kit50_feet@footR",
+    "F05/hero": "34 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F05/built": "34 kit50_feet@footL,kit50_feet@footR",
+    "F06/hero": "14 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F06/built": "14 kit50_feet@footL,kit50_feet@footR",
+    "F07/hero": "26 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F07/built": "26 kit50_feet@footL,kit50_feet@footR",
+    "F08/hero": "26 kit50_feet@LeftFoot,kit50_feet@RightFoot",
+    "F08/built": "26 kit50_feet@footL,kit50_feet@footR",
+    "A01/hero": "10 kit50_bag@Spine",
+    "A01/built": "10 kit50_bag@spine",
+    "A02/hero": "4 kit50_head@Head",
+    "A02/built": "4 kit50_head@head",
+    "A03/hero": "5 kit50_head@Head",
+    "A03/built": "5 kit50_head@head",
+    "A04/hero": "7 kit50_head@Head",
+    "A04/built": "7 kit50_head@head",
+    "A05/hero": "7 kit50_head@Head",
+    "A05/built": "7 kit50_head@head",
+    "A06/hero": "7 kit50_head@Head",
+    "A06/built": "7 kit50_head@head",
+    "A07/hero": "5 kit50_head@Head",
+    "A07/built": "5 kit50_head@head",
+    "A08/hero": "2 kit50_head@Head",
+    "A08/built": "2 kit50_head@head",
+    "A09/hero": "3 kit50_neck@Neck",
+    "A09/built": "3 kit50_neck@neck",
+    "A10/hero": "3 kit50_wrist@LeftHand",
+    "A10/built": "3 kit50_wrist@elbowR",
+    "A11/hero": "32 kit50_wrist@LeftHand",
+    "A11/built": "32 kit50_wrist@elbowR",
+    "A12/hero": "5 kit50_bag@LeftHand",
+    "A12/built": "5 kit50_bag@elbowR"
+   }
+  },
+  {
+   "name": "6. The panels: the Menu card counts the collection and opens the wardrobe, which shows twenty tiles in seven groups and marks what is worn",
+   "passed": true
+  },
+  {
+   "name": "7. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}
