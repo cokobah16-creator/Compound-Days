@@ -23,6 +23,7 @@ const TOGETHER47={
  creating:null,          // the code this phone just generated with "Start a household"
  room:null,              // the live room, for the browser check
  photoKeep:12,           // photos kept per household on each phone
+ silentMs:30000,         // a side silent this long is gone (v48: was 15 s, too short while a phone builds the world)
  log:[]
 };
 function together47Log(s){ const L=TOGETHER47.log; L.push(s); if(L.length>60) L.shift(); }
@@ -123,10 +124,10 @@ function together47Room(code){
   R.retryT=setTimeout(async()=>{ R.retryT=null; if(R.closed) return;
    try{ await R.connect(); }catch(e){ if(R.closed) return; try{ await R.claim(); }catch(e2){ R.rejoin(); } } },wait); };
  // a phone that closes or sleeps does not always close its channel: ping every two seconds, and count a side
- // silent for fifteen seconds as gone (a phone building the 3D world can stall for several)
+ // silent for TOGETHER47.silentMs as gone (a phone building the 3D world can stall for many seconds)
  R.beat=setInterval(()=>{ if(R.closed) return; const now=Date.now();
-  if(R.role==='hub') R.conns.forEach(c=>{ if(now-(c.seen47||now)>15000){ together47Log('guest silent'); c.gone47&&c.gone47(); } else send(c,{t:'ping'}); });
-  else if(R.role==='guest'&&R.hubConn){ if(now-(R.hubSeen||now)>15000){ together47Log('hub silent'); R.hubConn.lost47&&R.hubConn.lost47(); } else send(R.hubConn,{t:'ping'}); } },2000);
+  if(R.role==='hub') R.conns.forEach(c=>{ if(now-(c.seen47||now)>TOGETHER47.silentMs){ together47Log('guest silent'); c.gone47&&c.gone47(); } else send(c,{t:'ping'}); });
+  else if(R.role==='guest'&&R.hubConn){ if(now-(R.hubSeen||now)>TOGETHER47.silentMs){ together47Log('hub silent'); R.hubConn.lost47&&R.hubConn.lost47(); } else send(R.hubConn,{t:'ping'}); } },2000);
  /* the two objects NET expects */
  R.api={
   emit(type,data){ const m={t:'ev',type,data,from:R.myId}; if(R.role==='hub') toGuests(m); else send(R.hubConn,m); return Promise.resolve(); },
