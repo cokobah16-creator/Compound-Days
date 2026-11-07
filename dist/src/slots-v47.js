@@ -13,7 +13,7 @@
    a household always asks first. The Menu's "Start a new household" opens the same list; switching households from
    inside the world saves, then reloads the page into the chosen slot. Online households are separate: each phone
    keeps those under their own code (together-v47.js). */
-const SLOTS47={n:3,active:1,raw:null,nextKey:'cd3-slot-next'};
+const SLOTS47={n:3,active:1,raw:null,nextKey:'cd3-slot-next',leaving:false};
 function slots47Key(k){ return k===1?KEY:KEY+'-slot'+k; }
 (function slots47Install(){
  if(typeof localStorage==='undefined'||!localStorage) return;
@@ -24,7 +24,8 @@ function slots47Key(k){ return k===1?KEY:KEY+'-slot'+k; }
  const map=(st,k)=>(st===localStorage&&k===KEY&&SLOTS47.active!==1)?slots47Key(SLOTS47.active):k;
  // wrap: localStorage reads and writes of KEY go to the active slot's key (slot 1 is KEY itself)
  host.getItem=function(k){ return g.call(this,map(this,k)); };
- host.setItem=function(k,v){ return s.call(this,map(this,k),v); };
+ // while the page reloads into another slot, the pagehide/visibilitychange saves of the household being left are dropped
+ host.setItem=function(k,v){ if(SLOTS47.leaving&&this===localStorage&&k===KEY) return; return s.call(this,map(this,k),v); };
  host.removeItem=function(k){ return r.call(this,map(this,k)); };
  try{ const a=+SLOTS47.raw.get('cd3-slot'); if(a>=1&&a<=SLOTS47.n) SLOTS47.active=a; }catch(e){}
 })();
@@ -69,7 +70,7 @@ function slots47Pending(){
 }
 // switch to slot k and do act ('continue' | 'ai' | 'pair'); from inside the world, save first and reload
 function slots47Switch(k,act){
- if(slots47InWorld()){ try{ save(); }catch(e){} slots47SetActive(k);
+ if(slots47InWorld()){ try{ save(); }catch(e){} SLOTS47.leaving=true; slots47SetActive(k);
   try{ sessionStorage.setItem(SLOTS47.nextKey,JSON.stringify({act})); }catch(e){} location.reload(); return; }
  slots47SetActive(k);
  if(act==='continue') ACTIONS.continue(); else if(act==='ai') ACTIONS.aiStart(); else ACTIONS.newgame();

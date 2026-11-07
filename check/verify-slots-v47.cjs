@@ -10,7 +10,7 @@ const NAMES=[
  '2. Slot 2: saves and loads go to compound-days-3d-v1-slot2 and slot 1 is left exactly as it was; switching back loads slot 1',
  '3. The slot list: filled slots give the household, day and mode, a household still in setup counts as empty, and the first empty slot is picked for a new household',
  '4. Replacing or deleting asks first: New in a filled slot and Delete open a question and change nothing; Delete with the answer empties only that slot',
- '5. The Menu: Start a new household opens the slot list (the current household is marked, not replaced); the slot actions are never sent online',
+ '5. The Menu: Start a new household opens the slot list (the current household is marked, not replaced); switching to another slot from the world saves this household first and the unload saves that follow never write it into the other slot; the slot actions are never sent online',
  '6. The room stays off without WebRTC (NET.capable false, no room); the room panels\' Back button has an action',
  '7. Determinism: two runs give identical reports'];
 
@@ -51,6 +51,11 @@ function inner(){
   step(4,()=>{run("dispatch('slot47go',{k:1});");assert.equal(run("S&&S.household"),'Efe House');
    run("dispatch('newconfirm');");const h=run('PH47');assert.match(h,/<h2>Households<\/h2>/);assert.match(h,/Playing now/);assert.match(h,/saved in slot 1/);
    assert.equal(raw('compound-days-3d-v1')!==null,true);
+   run("SLOTS47.raw.set('compound-days-3d-v1-slot2',JSON.stringify({phase:'play',household:'Other',day:9,p:[{name:'a'},{name:'b'}]}));");
+   const other=raw('compound-days-3d-v1-slot2');run("S.day=6;var RELOADS47=0;location.reload=()=>{RELOADS47++;};dispatch('slot47go',{k:2});save();save();");
+   assert.equal(run('RELOADS47'),1);assert.equal(run('SLOTS47.active'),2);assert.equal(raw('compound-days-3d-v1-slot2'),other,'slot 2 untouched by unload saves');
+   assert.equal(JSON.parse(raw('compound-days-3d-v1')).day,6,'slot 1 saved before leaving');
+   run("SLOTS47.leaving=false;slots47SetActive(1);");
    for(const n of ['slot47go','slot47new','slot47ask','slot47pick','slot47del','slot47back'])assert.equal(run(`LOCAL_ONLY.has('${n}')`),true,n);});
   step(5,()=>{assert.equal(run('NET.capable'),false);assert.equal(run('together47Supported()'),false);assert.equal(run('TOGETHER47.room'),null);
    assert.equal(run("typeof ACTIONS.title"),'function');assert.equal(run("typeof Peer"),'undefined');});
