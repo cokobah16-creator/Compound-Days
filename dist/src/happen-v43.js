@@ -141,7 +141,9 @@ function happenDone43(H,def){const D=H.day;D.done=true;D.c=def.goal.n;const firs
 function happenToast43(t){if(happenSilent43())return;try{toast(t);}catch(e){}}
 
 /* ---------- the clock: the neighbour calls it out at its hour; the festival; watched counters ---------- */
-function happenCounters43(){const c=typeof needsCounters42==='function'?needsCounters42():{day:S.day};const l=S.life;c.catch=(l&&l.metrics&&l.metrics.caught)|0;c.day=S.day;return c;}
+function happenCounters43(){const c=typeof needsCounters42==='function'?needsCounters42():{day:S.day};const l=S.life;c.catch=(l&&l.metrics&&l.metrics.caught)|0;
+ // a neighbour's own request (their little stories) counts as help too, read without creating the day's record
+ const dl=l&&l.daily&&l.daily[String(S.day)];c.help=(c.help|0)+((dl&&dl.helped)|0);c.day=S.day;return c;}
 function happenWatch43(){const now=happenCounters43(),was=HAPPEN43.state.snap;HAPPEN43.state.snap=now;if(!was||was.day!==now.day)return;
  for(const k of ['cooked','football','gist','harvest','decorate','buy','help','photo','catch']){const d=(now[k]|0)-(was[k]|0);if(d>0)for(let j=0;j<Math.min(d,3);j++)happenEvent43(k==='cooked'?'cook':k);}
  if((now.shell|0)>(was.shell|0))happenEvent43('shell');}

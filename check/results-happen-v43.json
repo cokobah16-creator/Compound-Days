@@ -1,5 +1,5 @@
 {
- "build": "v43-fe9d541b",
+ "build": "v43-7b96737b",
  "passed": true,
  "checks": [
   {
@@ -38,13 +38,14 @@
    }
   },
   {
-   "name": "4. Doing it: the day's goal is met by the household's own counters (a dish for the wedding), a neighbour's talk (the goat) or three different neighbours (the news); a keepsake, an album memory and friendship, never cash or the base mood",
+   "name": "4. Doing it: the day's goal is met by the household's own counters (a dish for the wedding), a neighbour's talk (the goat), three different neighbours (the news) or a neighbour's own request (school out early); a keepsake, an album memory and friendship, never cash or the base mood",
    "passed": true,
    "info": {
     "keepsakes": [
      "wedding",
      "goat",
-     "gossip"
+     "gossip",
+     "school"
     ]
    }
   },

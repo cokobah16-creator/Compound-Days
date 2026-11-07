@@ -10,7 +10,7 @@ const NAMES=[
  '1. Off until a new morning: frames on day 1 write no S.happen43, nothing online; the first Sleep rolls a happening and opens the season\'s festival preparations',
  '2. Variety: over 36 days no pool happening comes back within 8 days, Saturdays are market day, each season\'s last day is its festival, one-season happenings only come in their season, and at least 15 different happenings turn up',
  '3. The world starts it, once Today has shown it: nothing before the happening\'s hour, the neighbour calls it out at the hour (a toast with their name), it waits while a panel is open, and the storm brings rain to the shore',
- '4. Doing it: the day\'s goal is met by the household\'s own counters (a dish for the wedding), a neighbour\'s talk (the goat) or three different neighbours (the news); a keepsake, an album memory and friendship, never cash or the base mood',
+ '4. Doing it: the day\'s goal is met by the household\'s own counters (a dish for the wedding), a neighbour\'s talk (the goat), three different neighbours (the news) or a neighbour\'s own request (school out early); a keepsake, an album memory and friendship, never cash or the base mood',
  '5. The neighbour talks about the day\'s happening once a day for each player',
  '6. Festivals: preparations add up across the season (catches, dishes, all five neighbours), the festival opens by itself at half past six when nothing else is on screen, once; full preparations give a gold keepsake and every neighbour friendship, and fill v42\'s fun and social',
  '7. Today\'s card shows the happening, its hour, its goal and keepsake, and the festival countdown and preparations; the Almanac lists the keepsakes',
@@ -60,6 +60,7 @@ function inner(){
    assert.deepEqual(J('[S.p[0].mood,S.p[1].mood]'),m0,'the base mood is untouched');assert.equal(J('S.money'),c0,'no cash');assert(run("TOASTS43.some(t=>/^New keepsake: /.test(t))"));
    next();force('goat');talkTo(0,'ada');assert.equal(J('S.happen43.day.done'),false);talkTo(1,'tunde');assert.equal(J('S.happen43.day.done'),true,'either player');
    next();force('gossip');talkTo(0,'tunde');talkTo(0,'tunde');talkTo(1,'ada');assert.equal(J('S.happen43.day.c'),2);talkTo(0,'bassey');assert.equal(J('S.happen43.day.done'),true,'three different');
+   next();force('school');run("life34();day34().helped++;");settle();assert.equal(J('S.happen43.day.done'),true,'a neighbour\u2019s own request counts as help');
    return {keepsakes:J('Object.keys(S.happen43.book)')};});
 
   step(4,()=>{fresh();next();force('parrot');run("PH43='';");run("{const n=npcs.bassey;n.g.visible=true;players[0].g.position.set(n.g.position.x+1,0,n.g.position.z);}openTalk(0,'bassey');");
