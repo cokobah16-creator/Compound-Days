@@ -1,0 +1,107 @@
+/* v44 "Sleek": every panel takes the waterfront look. A painted scene fills the screen (sleek-v44.js picks it),
+   and the panel is a cream card: small-caps place label, dark green serif headline, rounded inset art,
+   a pale gold hint bar, a solid green primary button and outlined green secondary buttons.
+   Loaded last, so it restyles the base page and every module's panels without touching their markup. */
+:root{
+ --cream44:#F8F2E4; --cream44-2:#F1E9D6; --line44:#DDD3BC; --ink44:#2B3A30; --muted44:#5C6A5E;
+ --green44:#1E4D33; --green44-2:#163B27; --green44-soft:#E2EBDD; --gold44:#F1DDA4; --gold44-ink:#3A3415;
+ --serif44:"Fraunces","Iowan Old Style",Georgia,serif; --sans44:"Figtree",system-ui,-apple-system,"Segoe UI",sans-serif;
+}
+
+/* ---- the scene behind the card ---- */
+#ov{background-color:rgba(24,20,12,.30);background-image:var(--scene44,none);background-size:cover;background-position:center 35%;background-repeat:no-repeat;
+ -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+#ov.scene44{background-color:#2A2318;-webkit-backdrop-filter:none;backdrop-filter:none}
+/* on a tall screen the card covers the lower half, so the painting only needs to fill the top: keep it sharp and keep its subject in view */
+@media (max-aspect-ratio:1/1){#ov.scene44{background-size:max(100%,calc(66vh * 1.8)) auto;background-position:22% 0}}
+#ov.scene44::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(20,14,6,.10),rgba(20,14,6,0) 30%,rgba(20,14,6,.18))}
+@media (min-width:700px){#ov.scene44{align-items:flex-end;padding-bottom:0}#ov.scene44 #panel{border-radius:30px 30px 0 0;max-height:72vh}}
+
+/* ---- the card ---- */
+#panel,#panel.life-panel34,#panel.studio31{background:var(--cream44);color:var(--ink44);border:0;border-radius:30px 30px 0 0;
+ box-shadow:0 -14px 44px rgba(20,14,6,.32);padding:24px clamp(18px,5vw,30px) calc(22px + env(safe-area-inset-bottom,0px));font-family:var(--sans44)}
+#panel::before,#panel.life-panel34::before{content:"";left:calc(50% - 20px);right:auto;top:9px;width:40px;height:4px;border-radius:999px;background:#CFC5AC;opacity:1}
+@media (min-width:700px){#panel,#panel.life-panel34,#panel.studio31{border-radius:30px}}
+
+/* headline and place label */
+#panel h1,#panel h2,#panel h3,#panel.life-panel34 h2,#panel.life-panel34 h3{color:var(--green44);font-family:var(--serif44)}
+#panel h2,#panel.life-panel34 h2{font-weight:800;font-size:clamp(1.65rem,6.4vw,2.35rem);line-height:1.08;letter-spacing:-.02em;margin:6px 0 12px}
+#panel h3{font-size:1.12rem;margin:12px 0 6px}
+#panel h2.brush::after{background:linear-gradient(90deg,#C9A24A,#E3B95C 70%,transparent)}
+#panel .life-kicker,#panel .life-label34,#panel .evening-kicker,#panel .gist38-kicker,#panel .gist40-kicker,#panel .recap35-kicker,
+#panel .gist38-panel .gist38-kicker,#panel .gist40-panel .gist40-kicker,#panel .gist39-bisi .life-kicker,#panel .gist39-pot .life-kicker,
+#panel .life-note34 .life-kicker,#panel .smallcaps{font-family:var(--sans44);font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--green44-2);margin:0 0 4px}
+
+/* text */
+#panel p,#panel li,#panel label,#panel .field label{color:var(--ink44)}
+#panel .muted,#panel .tiny,#panel.life-panel34 .muted,#panel.life-panel34 .tiny,#panel .strength-note,#panel .prole{color:var(--muted44)}
+#panel .ok{color:#2E6B47} #panel .warn{color:#A2421F}
+#panel .hand,#panel .portrait .hand{color:#9A6A1C}
+#panel .wordmark,#panel .ovhead .wordmark{color:var(--green44)} #panel .tagline,#panel .title-wrap .tag{color:var(--muted44)}
+#panel b,#panel strong{color:inherit}
+
+/* the hint bar: status lines, hints, tips */
+#panel p[role=status],#panel .fish-status34,#panel .gist39-bisi p.gist39-tip,#panel .bench36-note{
+ background:var(--gold44);color:var(--gold44-ink);border:0;border-radius:14px;padding:10px 14px;margin:12px 0;text-align:center;font-weight:600;line-height:1.35}
+#panel p[role=status]:empty{display:none}
+#panel .hint{background:var(--gold44);color:var(--gold44-ink);border:0;border-radius:14px;padding:10px 14px;margin:12px 0;line-height:1.4}
+
+/* inset art */
+#panel .fishing34,#panel .catch34,#panel .garden-art34,#panel .photo svg,#panel .portrait,#panel .creator30-stage{border-radius:20px;overflow:hidden}
+#panel .fishing34{height:auto;aspect-ratio:1035/352;margin:6px 0 4px;border:0;
+ background:#5c9e99 var(--inset44,none) center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(30,77,51,.12)}
+#panel .fishing34 .water-line34{display:none}
+#panel .fishing34 .float34{left:54.8%;top:66%;width:4.6%;height:auto;aspect-ratio:2/3;border-radius:45% 45% 50% 50%;
+ background:radial-gradient(circle at 35% 30%,#ff8c6e,#d12f1f 46%,#f4ead4 48%,#efe3c8);border:0;box-shadow:0 3px 6px rgba(10,30,30,.35)}
+#panel .fishing34.ready .float34{opacity:0}
+#panel .fishing34 .ripple34{left:54.8%;top:73%;border-color:rgba(255,246,214,.75)}
+#panel .fishing34.bite{box-shadow:inset 0 0 0 3px #F1DDA4}
+
+/* cards and quotes inside the panel */
+#panel .card,#panel .cat,#panel .side,#panel .shared,#panel .life-note34,#panel .gist38-keep,#panel .env-card,#panel .pr,#panel .ocard{
+ background:#FFFBF1;color:var(--ink44);border:1px solid var(--line44);border-radius:16px}
+#panel .card.say{border-left:5px solid #C9A24A}
+#panel .say .name,#panel .cat .nm{color:var(--green44)}
+#panel .cat .pr,#panel .cat .un,#panel .album .mem .d{color:var(--muted44)}
+#panel .album .mem{border-bottom-color:var(--line44)}
+#panel .side.p0{border-top:5px solid #2E4A8F} #panel .side.p1{border-top:5px solid #C9A24A}
+
+/* buttons: solid green primary, outlined green secondary */
+#panel .btn,#panel.life-panel34 .btn,#panel .opt,#panel .aspire,#panel .roundbtn{
+ font-family:var(--sans44);background:transparent;color:var(--green44);border:2px solid var(--green44);border-radius:16px;
+ font-weight:700;font-size:1.02rem;line-height:1.25;min-height:50px;padding:12px 18px;text-align:center;box-shadow:none;text-wrap:balance}
+#panel .btn .sub{color:var(--muted44);font-weight:500}
+#panel .btn.primary,#panel.life-panel34 .btn.primary,#panel.studio31 .btn.primary{
+ background:var(--green44);border-color:var(--green44);color:#FFFBF0;font-family:var(--sans44);font-weight:700;font-size:1.12rem;box-shadow:0 4px 0 var(--green44-2)}
+#panel .btn.primary .sub{color:#DCE8DA}
+#panel .btn.primary:hover{background:var(--green44-2)}
+#panel .btn.quiet,#panel.life-panel34 .btn.quiet{border-color:var(--green44);color:var(--green44);background:transparent;font-weight:700}
+#panel .btn:hover:not(:disabled):not(.primary),#panel .opt:hover:not(:disabled){background:var(--green44-soft)}
+#panel .btn.picked,#panel .opt.picked,#panel .aspire.picked,#panel .side.p0 .btn.picked,#panel .side.p1 .btn.picked{background:var(--green44-soft);color:var(--green44-2);border-color:var(--green44)}
+#panel .roundbtn{width:44px;height:44px;min-height:0;padding:0;border-radius:50%}
+#panel .btn:focus-visible,#panel .opt:focus-visible,#panel .roundbtn:focus-visible,#panel .aspire:focus-visible{outline:3px solid #C9A24A;outline-offset:2px}
+#panel .actions,#panel .life-options,#panel .fish-actions34{display:flex;flex-wrap:wrap;gap:10px;margin-top:14px}
+#panel .actions>.btn,#panel .life-options>.btn{flex:1 1 150px;margin:0;width:auto}
+#panel .actions>.btn.block{flex-basis:100%}
+#panel .sw.picked{border-color:var(--green44);box-shadow:0 0 0 2px var(--cream44),0 0 0 4px rgba(30,77,51,.4)}
+#panel input[type=text]{background:#FFFBF1;color:var(--ink44);border:1.5px solid var(--line44);border-radius:14px}
+#panel input[type=text]::placeholder{color:#8F978B}
+#panel input[type=text]:focus{outline:2px solid var(--green44);border-color:var(--green44)}
+
+/* journal tabs */
+#panel .life-tabs34 button{color:var(--muted44);font-weight:700}
+#panel .life-tabs34 button.selected{background:var(--green44-soft);color:var(--green44)}
+
+/* the dark-panel modules: their own light text now sits on cream */
+#panel .gist38-panel>p,#panel .gist40-panel>p,#panel .gist39-bisi>p,#panel section.gist39-pot>p,#panel .gist38-shelf p.gist39-returned,
+#panel .gist38-shelf .gist38-set b,#panel .gist38-shelf .gist38-set span,#panel .gist38-shelf .gist38-foot,#panel .gist40-foot,
+#panel .recap35 p,#panel .prompts35 label,#panel .rate35-face,#panel .bench36-pick,#panel .bench36-pick .b36,#panel .bench36-pick .sel .nm36,
+#panel .creator30-tab,#panel .creator30-view button,#panel .creator30-loading{color:var(--ink44)}
+#panel .gist38-shelf .gist38-set .gist38-done,#panel .evening33 .finished,#panel .bench36-pick .ticks span.on{color:#2E6B47}
+#panel .recap35{background:var(--cream44-2);border-color:var(--line44);color:var(--ink44)}
+#panel .creator30-tab.picked{color:#FFFBF0}
+#panel .rate35-face,#panel.life-panel34 .morning35 .rate35-face{background:#FFFBF1;color:var(--green44);border:2px solid var(--green44);border-radius:16px}
+#panel .rate35-face.chosen,#panel.life-panel34 .morning35 .rate35-face.chosen{background:var(--green44);color:#FFFBF0;border-color:var(--green44)}
+#panel .prompts35 input{border:1.5px solid var(--line44);background:#FFFBF1;color:var(--ink44)}
+
+@media (prefers-reduced-motion:reduce){#ov.scene44{transition:none}}
