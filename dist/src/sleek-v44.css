@@ -12,8 +12,8 @@
 #ov{background-color:rgba(24,20,12,.30);background-image:var(--scene44,none);background-size:cover;background-position:center 35%;background-repeat:no-repeat;
  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
 #ov.scene44{background-color:#2A2318;-webkit-backdrop-filter:none;backdrop-filter:none}
-/* on a tall screen the card covers the lower half, so the painting only needs to fill the top: keep it sharp and keep its subject in view */
-@media (max-aspect-ratio:1/1){#ov.scene44{background-size:max(100%,calc(66vh * 1.8)) auto;background-position:22% 0}}
+/* on a tall screen the card covers the lower part, so the painting is scaled to the space above the card (sleekFit44 sets --sceneh44) and anchored at the top */
+@media (max-aspect-ratio:1/1){#ov.scene44{background-size:max(100%,calc(var(--sceneh44,100vh) * 1.778)) auto;background-position:50% 0}}
 #ov.scene44::before{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(20,14,6,.10),rgba(20,14,6,0) 30%,rgba(20,14,6,.18))}
 @media (min-width:700px){#ov.scene44{align-items:flex-end;padding-bottom:0}#ov.scene44 #panel{border-radius:30px 30px 0 0;max-height:72vh}}
 
@@ -48,13 +48,14 @@
 
 /* inset art */
 #panel .fishing34,#panel .catch34,#panel .garden-art34,#panel .photo svg,#panel .portrait,#panel .creator30-stage{border-radius:20px;overflow:hidden}
-#panel .fishing34{height:auto;aspect-ratio:1035/352;margin:6px 0 4px;border:0;
+#panel .fishing34{height:auto;aspect-ratio:3/1;margin:6px 0 4px;border:0;
  background:#5c9e99 var(--inset44,none) center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(30,77,51,.12)}
 #panel .fishing34 .water-line34{display:none}
-#panel .fishing34 .float34{left:54.8%;top:66%;width:4.6%;height:auto;aspect-ratio:2/3;border-radius:45% 45% 50% 50%;
+#panel .fishing34 .float34{left:58%;top:65%;width:3.6%;height:auto;aspect-ratio:2/3;border-radius:45% 45% 50% 50%;
  background:radial-gradient(circle at 35% 30%,#ff8c6e,#d12f1f 46%,#f4ead4 48%,#efe3c8);border:0;box-shadow:0 3px 6px rgba(10,30,30,.35)}
 #panel .fishing34.ready .float34{opacity:0}
-#panel .fishing34 .ripple34{left:54.8%;top:73%;border-color:rgba(255,246,214,.75)}
+#panel .fishing34 .ripple34{left:58%;top:70%;border-color:rgba(255,246,214,.75)}
+#panel .inset44{aspect-ratio:3/1;width:100%;border-radius:20px;margin:6px 0 12px;background:#d9c9a3 center/cover no-repeat;box-shadow:inset 0 0 0 1px rgba(30,77,51,.12)}
 #panel .fishing34.bite{box-shadow:inset 0 0 0 3px #F1DDA4}
 
 /* cards and quotes inside the panel */

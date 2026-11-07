@@ -25,19 +25,43 @@ behind a soft scrim, so nothing breaks while pictures are missing.
 
 ## The scenes
 
-| # | File | Shows behind | Status |
-|---|------|--------------|--------|
-| 1 | `waterfront.webp` | Fishing, the shells on the beach, the sunset crab, the almanac catch | Done (cut from your fishing screenshot; regenerate at full size when you can) |
-| 2 | `title.webp` | The title screen and making your household | Needed |
-| 3 | `courtyard.webp` | Talking to neighbours, tasks, the noticeboard, the gist, People and Garden pages, the Menu (the default) | Needed |
-| 4 | `flat.webp` | Inside Flat 3: home, kitchen and cooking, building and furnishing, the sofa | Needed |
-| 5 | `market.webp` | Market Road: Palm Court Finds, Aunty Bisi, Mallam's suya, the pop-up stall | Needed |
-| 6 | `yard.webp` | The Makers' Yard and the Aso-Ebi Atelier | Needed |
-| 7 | `roof.webp` | The roof terrace | Needed |
-| 8 | `pitch.webp` | Street football | Needed |
-| 9 | `morning.webp` | The Today page each morning | Needed |
-| 10 | `night.webp` | Sleep, the end-of-day recap, past midnight | Needed |
-| 11 | `festival.webp` | Seasonal festivals, the housewarming, the square's stage | Needed |
+All scenes have a painting now (v45, from the owner's two batches).
+
+| File | Shows behind |
+|------|--------------|
+| `title.webp` | The title screen and making your household (the gate with the keke) |
+| `courtyard.webp` | The default by day: talking to neighbours, tasks, People and Garden pages, the Menu (the mango courtyard) |
+| `evening.webp` | The same panels from six in the evening (the mango courtyard at dusk) |
+| `morning.webp` | The Today page (the veranda rail by day) |
+| `veranda.webp` | The evening gist at the rail, Ada's bench, Nkechi's and the pot panels (neighbours at the rail at dusk) |
+| `board.webp` | The Palm Court noticeboard and its cards |
+| `flat.webp` | Inside Flat 3: home, building and furnishing, the sofa (the living room) |
+| `kitchen.webp` | The kitchen, cooking and dishes |
+| `waterfront.webp` | Fishing, shells, the crab and the catch before five (the pier by day) |
+| `waterfront-dusk.webp` | The same from five in the evening (the sunset shore) |
+| `market.webp` | Market Road and the pop-up stall (the umbrella stalls) |
+| `finds.webp` | Palm Court Finds, the Finds page (the furniture stall) |
+| `grill.webp` | Aunty Bisi and Mallam (the gate with the grill) |
+| `yard.webp` | The Makers' Yard |
+| `atelier.webp` | The Aso-Ebi Atelier: fabric, fit check, the cuts |
+| `roof.webp` | The roof terrace |
+| `pitch.webp` | Street football |
+| `night.webp` | Sleep, the end-of-day recap, past midnight (the gate under the moon) |
+| `festival.webp` | Seasonal festivals, the housewarming, the square's stage (the square with bunting) |
+
+### Strips inside the card (3:1, shown under the headline)
+
+| File | Panel |
+|------|-------|
+| `waterfront-inset.webp` | Fishing, after the cast (the float sits over the painted one) |
+| `inset-fishing-ready.webp` | Fishing, before the cast |
+| `inset-catch.webp` | The catch |
+| `inset-board.webp` | The Palm Court noticeboard |
+| `inset-board-yard.webp` | A neighbour's errand and a thing given back (board cards) |
+| `inset-suya.webp` | Mallam at the grill |
+| `inset-carving.webp` | Talking to Ada, and a carving for Ada |
+| `inset-polish.webp` | Ada's shelf |
+| `inset-gist.webp` | The evening gist at the rail |
 
 ### 1. waterfront.webp (regenerate at full size)
 > [shared style] Golden-hour sunset over a wide lagoon. In the left foreground, a boy in a green-and-gold
