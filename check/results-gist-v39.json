@@ -1,5 +1,5 @@
 {
- "build": "v47-89906f7e",
+ "build": "v48-54d0801d",
  "passed": true,
  "checks": [
   {
@@ -52,7 +52,7 @@
     },
     "waits": "none before discovery",
     "withoutV39": {
-     "dayThree": "d9558847:16713",
+     "dayThree": "fa98bae6:16713",
      "dayFive": "cfbf42fc:43569"
     }
    }
@@ -779,7 +779,7 @@
      "steps": true
     },
     "sceneCount": {
-     "objects": 2080,
+     "objects": 2311,
      "sameAsWithout": true
     }
    }
@@ -1137,7 +1137,7 @@
  "withoutV38": {
   "error": null,
   "same": true,
-  "scene": 2079,
+  "scene": 2310,
   "random": 0,
   "hooks": "6,6,17,object",
   "hooksNone": "6,6,17,undefined",

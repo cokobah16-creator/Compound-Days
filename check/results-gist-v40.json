@@ -1,5 +1,5 @@
 {
- "build": "v47-89906f7e",
+ "build": "v48-54d0801d",
  "passed": true,
  "checks": [
   {
@@ -1140,7 +1140,7 @@
      "cardUp": "0 blocked, 0 levelAt, no rebuild"
     },
     "sceneCount": {
-     "objects": 2081,
+     "objects": 2312,
      "sameAsWithout": true
     }
    }
@@ -1812,7 +1812,7 @@
  },
  "withoutV39": {
   "error": null,
-  "scene": 2079,
+  "scene": 2310,
   "random": 0,
   "hooks": "7,7,17,false,false",
   "hooksRef": "7,7,17,false,false",
@@ -1820,7 +1820,7 @@
  },
  "withoutV38": {
   "error": null,
-  "scene": 2079,
+  "scene": 2310,
   "random": 0,
   "hooks": "6,6,17,false,false",
   "hooksRef": "6,6,17,false,false",
