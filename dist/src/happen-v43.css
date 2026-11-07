@@ -1,0 +1,19 @@
+/* v43 Happenings and festivals: Today's happening, festival preparations, the festival panel and the keepsakes */
+.happen43{margin:12px 0}
+.happen43-card{margin-top:8px;border-left:4px solid #CC9A4D}
+.happen43-card h3{margin:4px 0 6px}
+.happen43-card.market{border-left-color:#628675}
+.happen43-card.fest{border-left-color:#B5512C;background:linear-gradient(180deg,rgba(204,154,77,.12),transparent)}
+.happen43-card.prep{border-left-color:#7B6AA8}
+.happen43-done{color:#2F6B4F}
+.happen43-prep{list-style:none;padding:0;margin:6px 0 0;font-size:.85rem}
+.happen43-prep li{margin:3px 0}
+.happen43-prep li.done{color:#2F6B4F}
+.happen43-fest h2{margin-top:2px}
+.happen43-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;margin-top:8px}
+.happen43-keep{border-radius:10px;padding:8px 10px;background:rgba(60,45,30,.06);border:1px dashed rgba(60,45,30,.2);font-size:.8rem}
+.happen43-keep b{display:block;color:#8a7f72}
+.happen43-keep span{display:block;color:#8a7f72;margin-top:3px;font-size:.72rem}
+.happen43-keep.got{background:#FFF8EA;border-style:solid;border-color:rgba(204,154,77,.5)}
+.happen43-keep.got b{color:#3d3428}
+.happen43-keep.gold{border-color:#C79A2C;box-shadow:inset 0 0 0 1px #E8C66A}

@@ -1,0 +1,83 @@
+{
+ "build": "v43-7b96737b",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Off until a new morning: frames on day 1 write no S.happen43, nothing online; the first Sleep rolls a happening and opens the season's festival preparations",
+   "passed": true,
+   "info": {
+    "day2": "camera"
+   }
+  },
+  {
+   "name": "2. Variety: over 36 days no pool happening comes back within 8 days, Saturdays are market day, each season's last day is its festival, one-season happenings only come in their season, and at least 15 different happenings turn up",
+   "passed": true,
+   "info": {
+    "kinds": 18,
+    "first12": [
+     "camera",
+     "storm",
+     "birthday",
+     "naming",
+     "fest:rains",
+     "tide",
+     "market",
+     "fest:dry",
+     "bonfire",
+     "dust",
+     "fest:harmattan",
+     "storm"
+    ]
+   }
+  },
+  {
+   "name": "3. The world starts it, once Today has shown it: nothing before the happening's hour, the neighbour calls it out at the hour (a toast with their name), it waits while a panel is open, and the storm brings rain to the shore",
+   "passed": true,
+   "info": {
+    "rainAt": 15.2
+   }
+  },
+  {
+   "name": "4. Doing it: the day's goal is met by the household's own counters (a dish for the wedding), a neighbour's talk (the goat), three different neighbours (the news) or a neighbour's own request (school out early); a keepsake, an album memory and friendship, never cash or the base mood",
+   "passed": true,
+   "info": {
+    "keepsakes": [
+     "wedding",
+     "goat",
+     "gossip",
+     "school"
+    ]
+   }
+  },
+  {
+   "name": "5. The neighbour talks about the day's happening once a day for each player",
+   "passed": true
+  },
+  {
+   "name": "6. Festivals: preparations add up across the season (catches, dishes, all five neighbours), the festival opens by itself at half past six when nothing else is on screen, once; full preparations give a gold keepsake and every neighbour friendship, and fill v42's fun and social",
+   "passed": true,
+   "info": {
+    "rains": [
+     3,
+     2,
+     5
+    ]
+   }
+  },
+  {
+   "name": "7. Today's card shows the happening, its hour, its goal and keepsake, and the festival countdown and preparations; the Almanac lists the keepsakes",
+   "passed": true,
+   "info": {
+    "total": 22
+   }
+  },
+  {
+   "name": "8. The pinned hooks hold: TICK_HOOKS 17, the bridge's openTalk outermost, talk still wrapped by the v35 lines, and v41's ladder and v42's talk wants still count the talk",
+   "passed": true
+  },
+  {
+   "name": "9. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}
