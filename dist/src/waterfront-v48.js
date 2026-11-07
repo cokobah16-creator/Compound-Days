@@ -1,4 +1,4 @@
-/* v46 Waterfront: the waterfront and the suya grill rebuilt to the owner's renderings. A brick-paved promenade with a
+/* v48 Waterfront (written as v46): the waterfront and the suya grill rebuilt to the owner's renderings. A brick-paved promenade with a
    sandstone quay edge; Mallam's grill as a slatted wooden cabinet carrying an open charcoal grill box with suya skewers,
    a pepper jar, a cup and a striped cloth; the two fishing tables as blue-framed plank tables with a basket, a rope coil,
    a cooler and a net on the lower shelf. Visual only: every collider, hotspot and sign stays where the base game put it,
