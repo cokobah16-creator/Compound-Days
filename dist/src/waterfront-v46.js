@@ -164,9 +164,10 @@ function wfHideOld46(){
  // the base blocks this replaces: the suya box and its black top, and the two blue fishing blocks (colliders stay)
  const near=(v,x,y,z)=>Math.abs(v.x-x)<.01&&Math.abs(v.y-y)<.01&&Math.abs(v.z-z)<.01;
  for(const o of scene.children){
-  if(o.isMesh&&o.geometry&&o.geometry.type==='BoxGeometry'){const P=o.geometry.parameters;
-   if(near(o.position,-3,.45,12.3)&&P.width===1.6&&P.height===.9)o.visible=false;
-   if(near(o.position,-3,1.05,12.3)&&P.width===1.2&&P.height===.3)o.visible=false;}
+  // matched by position and size, not geometry type: environment-v31 swaps the wooden block for a bevelled BufferGeometry
+  if(o.isMesh&&o.geometry){const g=o.geometry;if(!g.boundingBox)g.computeBoundingBox();const z=new THREE.Vector3();g.boundingBox.getSize(z);
+   if(near(o.position,-3,.45,12.3)&&Math.abs(z.x-1.6)<.05&&Math.abs(z.y-.9)<.05)o.visible=false;
+   if(near(o.position,-3,1.05,12.3)&&Math.abs(z.x-1.2)<.05&&Math.abs(z.y-.3)<.05)o.visible=false;}
   else if(o.isGroup&&!o.name&&o.children.length===3&&(near(o.position,-8,0,14.6)||near(o.position,9,0,15.1)))o.visible=false;
  }
 }
