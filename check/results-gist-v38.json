@@ -1,5 +1,5 @@
 {
- "build": "v45-2365f454",
+ "build": "v46-a056783b",
  "passed": true,
  "checks": [
   {
@@ -47,7 +47,7 @@
       true
      ]
     },
-    "digest": "ae4dc1fe:16730",
+    "digest": "afa42034:16730",
     "lines": [
      "te04",
      "ne04",
@@ -66,7 +66,7 @@
     },
     "glasses": "out at 12:00, no record",
     "withoutModules": {
-     "digest": "ae4dc1fe:16730",
+     "digest": "afa42034:16730",
      "lines": [
       "te04",
       "ne04",
@@ -1076,7 +1076,7 @@
      "stepRan": true
     },
     "sceneCount": {
-     "objects": 2079,
+     "objects": 2310,
      "sameAsWithout": true
     }
    }

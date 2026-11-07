@@ -1,5 +1,5 @@
 {
-  "build": "v45-2365f454",
+  "build": "v46-a056783b",
   "passed": true,
   "checks": [
     {
@@ -64,7 +64,7 @@
       "name": "7. Nothing per frame beyond a cheap state check: 300 real frames with nothing changing rebuild nothing, change no visibility and create no object or material; the check changes the scene once when 18:00 comes and once when the neighbours arrive",
       "passed": true,
       "info": {
-        "objectsVisible": "1810 objects, furniture 76/72 visible",
+        "objectsVisible": "2041 objects, furniture 76/72 visible",
         "frames": 300,
         "attachCalls": 0,
         "stateChanges": 2
