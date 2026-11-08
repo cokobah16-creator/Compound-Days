@@ -295,8 +295,8 @@ def nostrils(S):
     for s in (1,-1):
         d=decal(S,(s*0.0115,1.545,0.199),(0,1,-0.3),0.0058,0.0032)
         if d is None: continue
-        Ps.append(d[0]); Fs.append(d[1]+o); o+=len(d[0])
-    return np.concatenate(Ps),np.concatenate(Fs)
+        Ps.append(d[0]); Fs.append(d[1][:len(d[1])//2]+o); o+=len(d[0])
+    Ff=np.concatenate(Fs); return np.concatenate(Ps),np.concatenate([Ff,flipF(Ff)])
 
 # ---- brows ------------------------------------------------------------
 BROW=dict(path=[(0.028,1.669),(0.050,1.680),(0.078,1.686),(0.102,1.681),(0.120,1.670)],thick=(0.0105,0.0075,0.003),n=240,len=(0.005,0.0085),w=0.0011,seed=7)
@@ -529,7 +529,14 @@ def tolocal(Pw,Nw=None):
 MAT={}
 for i,m in enumerate(g['materials']): MAT.setdefault(m['name'],i)
 def part(Pw,F,mat,UV=None):
-    Pl=tolocal(Pw); Nl=weld_normals(Pl,F) if mat!='hair' else vnormals(Pl,F)
+    Pl=tolocal(Pw); F3=np.asarray(F).reshape(-1,3); h=len(F3)//2
+    # two-sided cards (brows, lashes, nostrils, mouth line) carry each triangle twice, once reversed: take the normals
+    # from the front half only (the two halves would cancel), then point them away from the head centre
+    two=len(F3)%2==0 and h>0 and np.array_equal(F3[h:],F3[:h,::-1])
+    Fn=F3[:h].ravel() if two else F
+    Nl=weld_normals(Pl,Fn) if mat!='hair' else vnormals(Pl,Fn)
+    if two:
+        out=np.sign(((Pl-np.array([0,0.2,0]))*Nl).sum(1,keepdims=True)); Nl=Nl*np.where(out==0,1,out)
     d={'P':Pl,'N':Nl,'F':F,'mat':mat if isinstance(mat,int) else MAT[mat]}
     if UV is not None: d['UV']=UV
     return d

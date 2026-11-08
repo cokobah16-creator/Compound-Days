@@ -1,5 +1,5 @@
 {
-  "build": "v53-640de307",
+  "build": "v54-bd2fb07e",
   "passed": true,
   "checks": [
     {
@@ -83,11 +83,11 @@
         "stages": [
           "move@0s",
           "shop@18.5s",
-          "cook@24.9s",
-          "host@44s",
-          "gift@50.2s",
-          "tomorrow@50.2s",
-          "complete@50.2s"
+          "cook@24.8s",
+          "host@43.9s",
+          "gift@50.1s",
+          "tomorrow@50.1s",
+          "complete@50.1s"
         ]
       }
     },

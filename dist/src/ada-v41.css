@@ -1,0 +1,67 @@
+/* v41 Ada's commissions. Engineer A's rules (ada-v41.js): the slate panel, the collection panel's steps, the shop block on the Finds page and
+   Dayo's stall. B adds the neighbour blocks, the integrator Today's v41 block. The panels sit on the base's dark panel (#panel) and carry
+   v40's class gist40-panel, so its kicker, heading, touch hold and dimmed buttons apply. Every ink on its ground is at least 4.5:1. */
+
+/* the slate's own words: chalk on a dark board (#EDEBE2 on #2B2F2C, 12:1), framed in wood */
+#panel .gist41-slate-board{margin:6px 0 10px;padding:10px 12px;border:5px solid #7A5230;border-radius:4px;background:#2B2F2C;color:#EDEBE2;font-family:Georgia,serif;font-size:15px;line-height:1.45;letter-spacing:.01em}
+#panel .gist41-slate-board p{margin:0}
+/* the offers: one card each, the price and what to bring under the name */
+#panel .gist41-offer{margin:8px 0;padding:8px 10px;border-radius:6px;background:rgba(241,228,204,.08);border-left:4px solid #E3A72F;color:#F1E4CC;font-size:15px;line-height:1.4}
+#panel .gist41-offer p{margin:2px 0}
+#panel .gist41-offer-nb{border-left-color:#7FB28F}
+#panel .gist41-offer .gist41-orderbtn{margin-top:6px}
+#panel .gist41-offer .small,#panel .gist41-short{color:#E8D9BC}
+#panel .gist41-open{margin:8px 0;font-weight:700;color:#F1E4CC}
+#panel .gist41-say{margin:8px 0;border-left-color:#B5512C}
+/* the collection: Back lower left, the one money button lower right; later steps put their buttons where no money button was */
+#panel .gist41-collect .gist41-steps{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px}
+#panel .gist41-collect .gist41-gap{flex:1}
+#panel .gist41-step2 .gist41-next{max-height:none}
+#panel .gist41-step2 .gist41-offer .gist41-orderbtn{width:100%}
+/* (fix round, DOD-2 and S3) the collection panel is held to the top of the screen at every width (the base centres a panel, or sits it on the
+   bottom edge under 700 px), so a taller step never moves the rows above it. Step 2 puts "Later" in the row where "Pay the rest" was and the
+   offers below that row; adaAlign41 pads them so they start below step 1's row. */
+#ov:has(> #panel > .gist41-collect){align-items:flex-start;padding-top:max(10px,5vh)}
+#panel .gist41-step2 .gist41-steps{margin-top:12px}
+#panel .gist41-step2 .gist41-offers{margin-top:6px}
+/* (fix round, S8) a piece just ordered: its own card with its own heading, the shells button inside it */
+#panel .gist41-ordered{margin:12px 0 4px;padding:8px 10px;border-radius:6px;background:rgba(241,228,204,.08);border-left:4px solid #E3A72F;color:#F1E4CC}
+#panel .gist41-ordered-nb{border-left-color:#7FB28F}
+#panel .gist41-ordered .gist41-ordered-head{margin:0 0 4px;font-size:15px}
+#panel .gist41-ordered .gist41-say{margin:6px 0}
+#panel .gist41-ordered .gist41-shellsbtn{margin-top:6px}
+#panel .gist41-actions{margin-top:10px}
+/* the shop block above Finds' cards and Dayo's fabrics */
+#panel .gist41-shop{border-left:4px solid #E3A72F;margin:8px 0}
+#panel .gist41-shop b{display:block;margin-bottom:6px}
+/* on Dayo's stall the block sits on the dark stall panel, not Finds' pale page: chalk-pale ink on a dark card (#F1E4CC on #3A2A1F, 11:1) */
+#panel .gist41-shop[data-shop41="dayo"]{background:rgba(241,228,204,.08);color:#F1E4CC;padding:10px 12px;border-radius:8px}
+/* phones: compact under 480 px wide or 480 px tall, Back reachable without scrolling at 844 x 390 */
+@media (max-width:480px),(max-height:480px){
+ #panel .gist41-slate-board{padding:6px 9px;font-size:13.5px;margin:4px 0 6px;border-width:4px}
+ #panel .gist41-offer{margin:5px 0;padding:6px 8px;font-size:14px}
+ #panel .gist41-say{margin:5px 0;font-size:14px}
+ #panel .gist40-panel.gist41-slate h2,#panel .gist40-panel.gist41-collect h2{font-size:18px;margin:0 0 4px}
+ #panel .gist41-collect .gist41-steps{margin-top:8px}
+ #panel .gist41-offer p{margin:1px 0}
+ #panel .gist41-offer .gist41-orderbtn{margin-top:4px;padding:6px 10px;min-height:0;font-size:15px}
+ /* Back stays in view without scrolling: held to the bottom of the scrolling panel (the hand-over panels, and the slate under 480 px wide) */
+ #panel .gist41-actions{position:sticky;bottom:-1px;z-index:2;margin-bottom:0;padding:6px 0 2px;background:linear-gradient(to bottom,rgba(38,28,21,0),#261C15 30%)}
+ /* (fix round) the collection's rows stay where they are laid out: never floating over an offer or the ordered piece's card */
+ #panel .gist41-collect .gist41-steps{position:static;margin-bottom:0}
+ #panel .gist41-ordered{margin:8px 0 2px;padding:6px 8px;font-size:14px}}
+/* (fix round, DOD-11 and S14) under 480 px of height (844 x 390): a wider panel, the two offers side by side with their Order buttons level,
+   so every Order button is in view without scrolling; the slate's Back moves to the top right, beside its title, where it covers no offer */
+@media (max-height:480px) and (min-width:600px){
+ #panel:has(> .gist41-slate),#panel:has(> .gist41-collect){max-width:min(800px,calc(100vw - 32px));padding-bottom:calc(12px + env(safe-area-inset-bottom,0px))}
+ #panel .gist41-offers{display:flex;gap:8px;align-items:stretch}
+ #panel .gist41-offers>.gist41-offer{flex:1 1 0;min-width:0;margin:4px 0;display:flex;flex-direction:column}
+ #panel .gist41-offers>.gist41-offer .gist41-orderbtn{margin-top:auto}
+ #panel .gist41-slate{position:relative}
+ #panel .gist41-slate>.gist41-actions{position:absolute;top:-6px;right:0;margin:0;padding:0;background:none}
+ #panel .gist41-slate>.gist41-actions .btn{padding:6px 14px;min-height:0}}
+/* (the integrator, daily-v41.js) Today's v41 block, after v40's: the same small lines; one line at 480 px or less (the block's own cap) */
+.gist41-today{margin:6px 0 0}
+.gist41-today p{margin:3px 0;line-height:1.4}
+/* (the integrator, daily-v41.js) after "Buy it" in a shop block the panel holds its taps for a second: its buttons dimmed while the hold runs */
+#panel.gist41-held .btn{opacity:.45}

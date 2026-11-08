@@ -1,0 +1,4 @@
+/* v54 neighbour portraits in panel titles and card labels (the renders carry transparent padding: zoom onto the face) */
+#panel .face54{display:inline-block;vertical-align:middle;flex:none;background:#efe6d6 no-repeat 50% 30%/150%;border-radius:50%;box-shadow:inset 0 0 0 1px rgba(60,40,20,.12)}
+#panel .face54-title{width:64px;height:64px;margin:-6px 12px -6px 0}
+#panel .face54-label{width:30px;height:30px;margin:-4px 8px -4px 0;background-size:190%;background-position:50% 32%}

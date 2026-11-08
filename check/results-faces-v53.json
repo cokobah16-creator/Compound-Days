@@ -1,9 +1,9 @@
 {
- "build": "v53-640de307",
+ "build": "v54-bd2fb07e",
  "passed": true,
  "checks": [
   {
-   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint",
+   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint, every face normal lit (none zero-length)",
    "passed": true,
    "info": {
     "materials": {
@@ -19,7 +19,8 @@
      "lip_top": 1,
      "lip": 1,
      "beard": 2
-    }
+    },
+    "zeroNormals": 0
    }
   },
   {
@@ -91,6 +92,19 @@
     "skin": "371609",
     "top": "310e05",
     "low": "3b1107"
+   }
+  },
+  {
+   "name": "4. (v54) Each neighbour's name maps to a shipped face-revision portrait, and other titles get none",
+   "passed": true,
+   "info": {
+    "Mama Nkechi": "market_auntie",
+    "Aunty Bisi": "market_auntie",
+    "Mallam": "suya_vendor",
+    "Tunde": "neighbour_locs",
+    "Ada": "utility_artisan",
+    "Mr. Bassey": "compound_elder",
+    "Mrs. Oyelaran": "neighbour_linen"
    }
   }
  ]
