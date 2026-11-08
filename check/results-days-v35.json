@@ -1,5 +1,5 @@
 {
-  "build": "v54-bd2fb07e",
+  "build": "v55-873d3eb3",
   "passed": true,
   "checks": [
     {
@@ -58,9 +58,9 @@
       "passed": true,
       "info": {
         "first": {
-          "bite": 2.6,
-          "steps": 13,
-          "fish": "mullet",
+          "bite": 2.8,
+          "steps": 14,
+          "fish": "snapper",
           "how": "keep"
         }
       }
@@ -77,11 +77,11 @@
       "passed": true,
       "info": {
         "sold": 2,
-        "purse": 9700,
+        "purse": 9900,
         "bites": [
-          2.6,
-          2.4,
-          2.4
+          2.8,
+          3.6,
+          3.8
         ]
       }
     },
@@ -90,7 +90,7 @@
       "passed": true,
       "info": {
         "toast": "Woven armchair is in Build storage. Ola: “That one is correct. The flat will thank us.”",
-        "purse": 700
+        "purse": 900
       }
     },
     {
@@ -141,7 +141,7 @@
           2000,
           1500
         ],
-        "purse": 5700
+        "purse": 5900
       }
     },
     {
@@ -229,7 +229,7 @@
             "at-rocks",
             "cast",
             "bite",
-            "catch mullet",
+            "catch snapper",
             "request nkechi:1",
             "cast",
             "bite",
@@ -237,8 +237,8 @@
             "sell catch:mullet",
             "cast",
             "bite",
-            "catch bonga",
-            "sell catch:bonga",
+            "catch tilapia",
+            "sell catch:tilapia",
             "buy armchair",
             "place armchair:veranda",
             "place armchair:veranda",
@@ -304,11 +304,11 @@
         "sold": 5,
         "bites": [
           3.6,
-          3.4,
-          2.6,
-          4.4,
-          3.6,
-          3
+          2.4,
+          2.4,
+          3.2,
+          2.4,
+          4.4
         ],
         "cell": [
           5,

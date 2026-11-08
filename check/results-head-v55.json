@@ -1,0 +1,266 @@
+{
+ "build": "v55-873d3eb3",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. The rig contract is kept: 27 joints in hero order with the same inverse binds, 8 clips, the five Body primitives, and the new head, lashes, brows and beards are skinned meshes on the same bones with the four shape keys",
+   "passed": true,
+   "info": {
+    "inverseBindSha": "a0658cd22403",
+    "clips": 8,
+    "parts": {
+     "HeadSkin": {
+      "vertices": 4268,
+      "triangles": 8484
+     },
+     "face_lash": {
+      "vertices": 256,
+      "triangles": 744
+     },
+     "face_brow": {
+      "vertices": 3040,
+      "triangles": 4560
+     },
+     "face_beard_stubble": {
+      "vertices": 3162,
+      "triangles": 6021
+     },
+     "face_beard_boxed": {
+      "vertices": 3162,
+      "triangles": 6021
+     }
+    }
+   }
+  },
+  {
+   "name": "2. The old head is gone and the new one is adult-sized by its geometry: no Body skin above 1.40 m, chin 1.475 m, crown 1.775 m (0.30 m, about six heads to the figure), and the Head joint drawn at scale 1 for players and the cast",
+   "passed": true,
+   "info": {
+    "bodySkinTop": 1.21,
+    "chin": 1.4766,
+    "crown": 1.775,
+    "headHeight": 0.2984,
+    "headsTall": 5.95,
+    "headScale": {
+     "player": 1,
+     "tunde": 1,
+     "bassey": 1,
+     "mallam": 1
+    }
+   }
+  },
+  {
+   "name": "3. The neck is clean: its open end sits inside every collar (radius at most 0.058 m below 1.41 m), it is weighted Spine2 -> Neck -> Head with rows summing to 1, the face is fully on the Head joint, and no normal is zero-length",
+   "passed": true,
+   "info": {
+    "neckEnd": 1.3235,
+    "verticesBelow141": 79,
+    "maxRadiusBelow141": 0.056,
+    "joints": [
+     "Spine2",
+     "Neck",
+     "Head"
+    ]
+   }
+  },
+  {
+   "name": "4. The eyes sit in the sockets under wrapping lids: two of each eye part on the Head joint, each iris inside its eyeball, the upper lid (the lash roots) overlapping the top of the iris, and a relaxed opening",
+   "passed": true,
+   "info": {
+    "l": {
+     "irisTop": 1.6314,
+     "lidAtCentre": 1.6293,
+     "lidCoversIris": 0.0021,
+     "irisHeight": 0.0124
+    },
+    "r": {
+     "irisTop": 1.6314,
+     "lidAtCentre": 1.6293,
+     "lidCoversIris": 0.002,
+     "irisHeight": 0.014
+    }
+   }
+  },
+  {
+   "name": "5. The face paint follows any skin: lips, liner and brows are COLOR_0 multipliers on HeadSkin (top lip darker than the lower), and for three swatches the head is painted the same skin as the body with vertex colours and shape keys switched on",
+   "passed": true,
+   "info": {
+    "lipTop": 0.579,
+    "lipLower": 0.858,
+    "cheek": 1,
+    "skin": {
+     "#F2D3B1": "b08157",
+     "#905F3F": "371609",
+     "#4F3122": "0f0603"
+    }
+   }
+  },
+  {
+   "name": "6. The shape keys do what they say and the cast wears them: blink closes the upper lid over the eye, smile lifts the mouth corners, masc and old keep the eyes still, and the men and elders get their shapes",
+   "passed": true,
+   "info": {
+    "lashBlinkDrop": -0.0072,
+    "cornerLift": 0.0035,
+    "eyeSurroundMove": 0.0051,
+    "cast": {
+     "tunde": {
+      "masc": 1,
+      "old": 0
+     },
+     "bassey": {
+      "masc": 1,
+      "old": 0.8
+     },
+     "nkechi": {
+      "masc": 0,
+      "old": 0.35
+     },
+     "ada": {
+      "masc": 0,
+      "old": 0
+     },
+     "mallam": {
+      "masc": 1,
+      "old": 0.25
+     },
+     "bisi": {
+      "masc": 0,
+      "old": 0.2
+     },
+     "player": {
+      "masc": 0,
+      "old": 0
+     }
+    },
+    "blinkPeak": 0.99
+   }
+  },
+  {
+   "name": "7. The orange wrap and every hairstyle were moved onto the new skull: no hair is pushed into the skin by the refit (strand roots buried in the old scalp stay buried), and the wrap comes down to just above the brows",
+   "passed": true,
+   "info": {
+    "low": {
+     "vertices": 1728,
+     "insidePct": 0,
+     "buriedInOldScalpPct": 0,
+     "newlyInside": 0
+    },
+    "braids": {
+     "vertices": 18069,
+     "insidePct": 3.05,
+     "buriedInOldScalpPct": 8.2,
+     "newlyInside": 2
+    },
+    "locs": {
+     "vertices": 16113,
+     "insidePct": 4.1,
+     "buriedInOldScalpPct": 6.19,
+     "newlyInside": 1
+    },
+    "wrap": {
+     "vertices": 3101,
+     "insidePct": 1.32,
+     "buriedInOldScalpPct": 3.22,
+     "newlyInside": 0
+    },
+    "afro": {
+     "vertices": 12000,
+     "insidePct": 0,
+     "buriedInOldScalpPct": 0,
+     "newlyInside": 0
+    },
+    "twists": {
+     "vertices": 16028,
+     "insidePct": 0,
+     "buriedInOldScalpPct": 0,
+     "newlyInside": 0
+    },
+    "wig": {
+     "vertices": 19724,
+     "insidePct": 0,
+     "buriedInOldScalpPct": 0.84,
+     "newlyInside": 0
+    },
+    "wrapFrontAboveBrows": 0.0378,
+    "hairMount": {
+     "x": 0,
+     "y": 0.2734,
+     "z": 0.0261,
+     "scale": 0.4301,
+     "headR": 0.3
+    }
+   }
+  },
+  {
+   "name": "8. Every clip deforms the neck and face cleanly: over 8 frames of all 8 clips no HeadSkin edge stretches past 1.6 times or shrinks below 0.6 times its bind length",
+   "passed": true,
+   "info": {
+    "clips": {
+     "idle": {
+      "minRatio": 0.924,
+      "maxRatio": 1.095
+     },
+     "walk": {
+      "minRatio": 0.955,
+      "maxRatio": 1.046
+     },
+     "carry": {
+      "minRatio": 0.945,
+      "maxRatio": 1.067
+     },
+     "carryLow": {
+      "minRatio": 0.958,
+      "maxRatio": 1.036
+     },
+     "walkCarry": {
+      "minRatio": 0.955,
+      "maxRatio": 1.046
+     },
+     "walkCarryLow": {
+      "minRatio": 0.955,
+      "maxRatio": 1.046
+     },
+     "pick": {
+      "minRatio": 0.804,
+      "maxRatio": 1.322
+     },
+     "wave": {
+      "minRatio": 0.897,
+      "maxRatio": 1.124
+     }
+    },
+    "neckAndJawEdges": 890
+   }
+  },
+  {
+   "name": "9. It costs less than the v54 head: fewer draw calls and triangles per avatar (wrap and overalls), and the hero asset stays under 6 MB",
+   "passed": true,
+   "info": {
+    "drawCalls": 26,
+    "triangles": 80532,
+    "headTriangles": 14872,
+    "heroBytes": 5471615,
+    "v54": {
+     "drawCalls": 35,
+     "triangles": 102740,
+     "heroBytes": 5193880
+    }
+   }
+  },
+  {
+   "name": "10. The head is rebuilt by its tool from the licensed source and nothing restores the old one: extras name tools/hero_head.py and MakeHuman CC0, the licence files ship beside the source, and the v53 face tool refuses to run over this hero",
+   "passed": true,
+   "info": {
+    "tool": "tools/hero_head.py",
+    "source": "MakeHuman core assets CC0 (makehumancommunity/makehuman a8bc2d5)",
+    "shapes": [
+     "masc",
+     "old",
+     "smile",
+     "blink"
+    ],
+    "headTriangles": 8484
+   }
+  }
+ ]
+}

@@ -1,5 +1,5 @@
 {
-  "build": "v54-bd2fb07e",
+  "build": "v55-873d3eb3",
   "passed": true,
   "checks": [
     {
@@ -39,7 +39,7 @@
       "info": {
         "biteSeconds": 3.4,
         "callsAt5fps": 17,
-        "dtOnlyCalls": 28
+        "dtOnlyCalls": 40
       }
     },
     {
@@ -120,7 +120,7 @@
       "passed": true,
       "info": {
         "item": "tomato",
-        "price": 1400
+        "price": 1700
       }
     },
     {

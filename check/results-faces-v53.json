@@ -1,24 +1,18 @@
 {
- "build": "v54-bd2fb07e",
+ "build": "v55-873d3eb3",
  "passed": true,
  "checks": [
   {
-   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint, every face normal lit (none zero-length)",
+   "name": "1. (v55) The face parts keep the names the colour passes read: two of each eye part on the Head joint, strand brows (face_brow, material hair), lashes, two beard shells and a second hoop, every face normal lit (none zero-length); the v53 lid, lip, mouth and nostril cards are gone (painted into the v55 head)",
    "passed": true,
    "info": {
     "materials": {
+     "gold": 3,
+     "hair": 2,
      "eye_white": 2,
      "iris": 2,
      "pupil": 2,
-     "eye_hi": 2,
-     "skin": 2,
-     "hair": 6,
-     "skin_dark": 2,
-     "gold": 3,
-     "tongue": 2,
-     "lip_top": 1,
-     "lip": 1,
-     "beard": 2
+     "eye_hi": 2
     },
     "zeroNormals": 0
    }
@@ -32,66 +26,66 @@
      "boxed": false,
      "hoop": true,
      "earring": true,
-     "scale": 0.9
+     "scale": 1
     },
     "tunde": {
      "stubble": true,
      "boxed": false,
      "hoop": false,
      "earring": false,
-     "scale": 0.9
+     "scale": 1
     },
     "ada": {
      "stubble": false,
      "boxed": false,
      "hoop": true,
      "earring": true,
-     "scale": 0.9
+     "scale": 1
     },
     "bassey": {
      "stubble": true,
      "boxed": false,
      "hoop": false,
      "earring": false,
-     "scale": 0.9
+     "scale": 1
     },
     "oyelaran": {
      "stubble": false,
      "boxed": false,
      "hoop": true,
      "earring": true,
-     "scale": 0.9
+     "scale": 1
     },
     "mallam": {
      "stubble": false,
      "boxed": true,
      "hoop": false,
      "earring": false,
-     "scale": 0.9
+     "scale": 1
     },
     "bisi": {
      "stubble": false,
      "boxed": false,
      "hoop": true,
      "earring": true,
-     "scale": 0.9
+     "scale": 1
     },
     "player": {
      "stubble": false,
      "boxed": false,
      "hoop": false,
      "earring": true,
-     "scale": 0.9
+     "scale": 1
     }
    }
   },
   {
-   "name": "3. Lips take the wearer's skin, darker on the top lip",
+   "name": "3. (v55) Lips are painted into the head as multipliers of the wearer's skin, darker on the top lip",
    "passed": true,
    "info": {
-    "skin": "371609",
-    "top": "310e05",
-    "low": "3b1107"
+    "topLip": 0.579,
+    "lowerLip": 0.858,
+    "skin": "371609"
    }
   },
   {

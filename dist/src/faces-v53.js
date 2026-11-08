@@ -15,7 +15,7 @@
    everything else on the Head joint scale with it. Nothing is saved: the face follows the look. */
 'use strict';
 const FACES53={
- headScale:0.9,
+ headScale:1,   // v55: the anatomical head is sized by its geometry (tools/hero_head.py); the joint is no longer scaled
  // the sheet's six concepts
  FACES:{
   plain:{hoops:'one'},

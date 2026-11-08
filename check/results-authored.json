@@ -1,5 +1,5 @@
 {
-  "build": "v54-bd2fb07e",
+  "build": "v55-873d3eb3",
   "passed": true,
   "checks": [
     {
@@ -20,17 +20,17 @@
         "inverseBindSha": "a0658cd22403",
         "hairMount": {
           "x": 0,
-          "y": 0.215,
-          "z": 0,
-          "scale": 0.6767,
+          "y": 0.2734,
+          "z": 0.0261,
+          "scale": 0.4301,
           "headR": 0.3
         },
         "headCentre": [
           0,
-          1.645,
-          0
+          1.7034,
+          0.0261
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v54-bd2fb07e"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v55-873d3eb3"
       }
     },
     {
@@ -47,8 +47,8 @@
       "passed": true,
       "details": {
         "meshes": [
-          43,
-          43
+          34,
+          34
         ],
         "looks": [
           [
@@ -64,7 +64,7 @@
         "hairColour": "#17110C",
         "colours": {
           "#905F3F": {
-            "skinMaterials": 7,
+            "skinMaterials": 4,
             "hairMaterials": 2,
             "skinLinear": [
               0.2175,
@@ -73,7 +73,7 @@
             ]
           },
           "#C9926A": {
-            "skinMaterials": 8,
+            "skinMaterials": 5,
             "hairMaterials": 1,
             "skinLinear": [
               0.4556,
@@ -308,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v54-bd2fb07e"
+        "build": "v55-873d3eb3"
       }
     }
   ],

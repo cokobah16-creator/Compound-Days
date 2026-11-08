@@ -1,5 +1,5 @@
 {
- "build": "v54-bd2fb07e",
+ "build": "v55-873d3eb3",
  "passed": true,
  "checks": [
   {
@@ -80,9 +80,9 @@
     },
     "tune12": "Compound meeting this week.",
     "withoutV40": {
-     "dayThree": "e916fe4a:16830",
-     "closed": "7a9ce458:89861",
-     "layer2": "1bc80491:186171"
+     "dayThree": "9206c97d:16831",
+     "closed": "1f9a2cb9:89663",
+     "layer2": "4a33a509:186156"
     }
    }
   },
@@ -442,9 +442,9 @@
     },
     "stool": 18,
     "matchFirst": {
-     "insert": "gs40-fb-ba3",
+     "insert": "gs40-fb-ba7",
      "withReaction": [
-      "gs40-fb-ba3",
+      "gs40-fb-ba7",
       "gs40-ret-ad1"
      ]
     },
@@ -819,8 +819,8 @@
      "poolDry": {},
      "swapsByTier": {
       "mallam": 6,
-      "season": 63,
-      "evergreen": 5,
+      "season": 64,
+      "evergreen": 4,
       "v38": 23
      },
      "mallamBye": [
@@ -854,25 +854,25 @@
      "morning": [
       [
        [
-        0.296,
-        -0.509,
+        0.297,
+        -0.502,
         0.75
        ],
        [
         -0.205,
-        -0.325,
+        -0.318,
         0.75
        ]
       ],
       [
        [
-        -0.204,
-        -0.324,
+        -0.205,
+        -0.316,
         0.75
        ],
        [
         0.297,
-        -0.508,
+        -0.5,
         0.75
        ]
       ]
@@ -880,25 +880,25 @@
      "five": [
       [
        [
-        0.331,
-        -0.364,
+        0.332,
+        -0.356,
         0.75
        ],
        [
         -0.186,
-        -0.184,
+        -0.176,
         0.75
        ]
       ],
       [
        [
-        -0.184,
-        -0.182,
+        -0.185,
+        -0.174,
         0.75
        ],
        [
-        0.331,
-        -0.362,
+        0.332,
+        -0.354,
         0.75
        ]
       ]
@@ -1140,7 +1140,7 @@
      "cardUp": "0 blocked, 0 levelAt, no rebuild"
     },
     "sceneCount": {
-     "objects": 2347,
+     "objects": 2221,
      "sameAsWithout": true
     }
    }
@@ -1539,7 +1539,7 @@
    "name": "M45 Mallam back behind his stall at (-3, 13.2), out of the desk cameras (S3)",
    "check": 8,
    "result": "red",
-   "first": "his head on screen in desk camera 1 in the morning (P(0) at (-3,10.9)): NDC [-1.199,-0.405,0.75]"
+   "first": "his head on screen in desk camera 1 in the morning (P(0) at (-3,10.9)): NDC [-1.201,-0.397,0.75]"
   },
   {
    "name": "M50 his name line with a sentence the owner did not see (C4)",
@@ -1812,16 +1812,16 @@
  },
  "withoutV39": {
   "error": null,
-  "scene": 2345,
-  "random": 0,
+  "scene": 2219,
+  "random": 68,
   "hooks": "7,7,17,false,false",
   "hooksRef": "7,7,17,false,false",
   "passed": true
  },
  "withoutV38": {
   "error": null,
-  "scene": 2345,
-  "random": 0,
+  "scene": 2219,
+  "random": 68,
   "hooks": "6,6,17,false,false",
   "hooksRef": "6,6,17,false,false",
   "passed": true
