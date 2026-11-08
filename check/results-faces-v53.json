@@ -1,0 +1,97 @@
+{
+ "build": "v53-640de307",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint",
+   "passed": true,
+   "info": {
+    "materials": {
+     "eye_white": 2,
+     "iris": 2,
+     "pupil": 2,
+     "eye_hi": 2,
+     "skin": 2,
+     "hair": 6,
+     "skin_dark": 2,
+     "gold": 3,
+     "tongue": 2,
+     "lip_top": 1,
+     "lip": 1,
+     "beard": 2
+    }
+   }
+  },
+  {
+   "name": "2. Each neighbour on the sheet wears their face: beards on the suya vendor, Tunde and the elder only, hoops on the women, grey brows and hair on Mr. Bassey",
+   "passed": true,
+   "info": {
+    "nkechi": {
+     "stubble": false,
+     "boxed": false,
+     "hoop": true,
+     "earring": true,
+     "scale": 0.9
+    },
+    "tunde": {
+     "stubble": true,
+     "boxed": false,
+     "hoop": false,
+     "earring": false,
+     "scale": 0.9
+    },
+    "ada": {
+     "stubble": false,
+     "boxed": false,
+     "hoop": true,
+     "earring": true,
+     "scale": 0.9
+    },
+    "bassey": {
+     "stubble": true,
+     "boxed": false,
+     "hoop": false,
+     "earring": false,
+     "scale": 0.9
+    },
+    "oyelaran": {
+     "stubble": false,
+     "boxed": false,
+     "hoop": true,
+     "earring": true,
+     "scale": 0.9
+    },
+    "mallam": {
+     "stubble": false,
+     "boxed": true,
+     "hoop": false,
+     "earring": false,
+     "scale": 0.9
+    },
+    "bisi": {
+     "stubble": false,
+     "boxed": false,
+     "hoop": true,
+     "earring": true,
+     "scale": 0.9
+    },
+    "player": {
+     "stubble": false,
+     "boxed": false,
+     "hoop": false,
+     "earring": true,
+     "scale": 0.9
+    }
+   }
+  },
+  {
+   "name": "3. Lips take the wearer's skin, darker on the top lip",
+   "passed": true,
+   "info": {
+    "skin": "371609",
+    "top": "310e05",
+    "low": "3b1107"
+   }
+  }
+ ]
+}

@@ -1,5 +1,5 @@
 {
-  "build": "v52-6f2c9eec",
+  "build": "v53-640de307",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v52-6f2c9eec"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v53-640de307"
       }
     },
     {
@@ -64,7 +64,7 @@
         "hairColour": "#17110C",
         "colours": {
           "#905F3F": {
-            "skinMaterials": 9,
+            "skinMaterials": 7,
             "hairMaterials": 2,
             "skinLinear": [
               0.2175,
@@ -73,7 +73,7 @@
             ]
           },
           "#C9926A": {
-            "skinMaterials": 10,
+            "skinMaterials": 8,
             "hairMaterials": 1,
             "skinLinear": [
               0.4556,
@@ -308,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v52-6f2c9eec"
+        "build": "v53-640de307"
       }
     }
   ],
