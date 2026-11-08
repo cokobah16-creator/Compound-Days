@@ -1,5 +1,5 @@
 {
-  "build": "v52-6f2c9eec",
+  "build": "v53-640de307",
   "passed": true,
   "checks": [
     {
@@ -37,9 +37,9 @@
       "name": "5. Wall-clock bite: 2.2–4.4 s of real time at 5 fps; nibble before bite; dt-only loops still bite; none behind the Menu; one catch cue",
       "passed": true,
       "info": {
-        "biteSeconds": 2.8,
-        "callsAt5fps": 14,
-        "dtOnlyCalls": 34
+        "biteSeconds": 3.4,
+        "callsAt5fps": 17,
+        "dtOnlyCalls": 28
       }
     },
     {
@@ -120,7 +120,7 @@
       "passed": true,
       "info": {
         "item": "tomato",
-        "price": 1600
+        "price": 1400
       }
     },
     {
