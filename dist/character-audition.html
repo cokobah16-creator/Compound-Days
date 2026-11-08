@@ -121,7 +121,7 @@ function inspect(root,clips){
  if(o.isSkinnedMesh){skins++;if(o.skeleton)o.skeleton.bones.forEach(b=>bones.add(b.name));}
  if(o.morphTargetDictionary)Object.keys(o.morphTargetDictionary).forEach(n=>morphs.add(n));
  if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m.name||'unnamed'));}}});
- return 'Meshes: '+meshes+'  Triangles: '+tris.toLocaleString()+'  Skinned: '+skins+'\nBones: '+bones.size+'  Clips: '+clips.map(c=>c.name).join(', ').slice(0,100)+'\nExpressions: '+([...'blinkLeft','blinkRight','smile','concerned'].filter(n=>morphs.has(n)).join(', ')||'not detected')+'\nMaterials: '+mats.size;
+ return 'Meshes: '+meshes+'  Triangles: '+tris.toLocaleString()+'  Skinned: '+skins+'\nBones: '+bones.size+'  Clips: '+clips.map(c=>c.name).join(', ').slice(0,100)+'\nExpressions: '+(['blinkLeft','blinkRight','smile','concerned'].filter(n=>morphs.has(n)).join(', ')||'not detected')+'\nMaterials: '+mats.size;
 }
 function setAnimation(w,name){if(!w.mixer||!w.animations.length)return;w.mixer.stopAllAction();const c=w.animations.find(c=>c.name.toLowerCase().includes(name.toLowerCase()));if(name==='none'||!c){w.clip=null;return;}w.clip=w.mixer.clipAction(c);w.clip.play();}
 function setExpression(w,expr){if(!w.object)return;w.object.traverse(o=>{if(!o.isMesh||!o.morphTargetDictionary||!o.morphTargetInfluences)return;const d=o.morphTargetDictionary,a=o.morphTargetInfluences;for(const k of Object.keys(d))if(/blink|smile|concern/i.test(k))a[d[k]]=0;
