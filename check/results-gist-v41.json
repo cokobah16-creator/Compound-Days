@@ -1,0 +1,1527 @@
+{
+ "build": "v54-e02e0f68",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. inert: (a) on day 3 at 10:00 before v38 is discovered the save, the keys of S and S.life, 600 frames of cameras and prompts, the Menu, Today and the pins (TICK_HOOKS 17, cue hooks 2, the audio recipes, LINES35, WHEN35, DAYS35.rows, FINDS34, ITEMS and PROP_FURN keys, the five pinned sources) are as without v41; (b) v40 discovered on day 5, days 6 and 7 (layer 2 closed): every digest as without v41, no v41 object, no G.b41; (c) layer 2 open, v41 not discovered (days 8-10 of a pair, day 9 a visit day, day 8 of a companion household, a walk past the station at 09:00): every digest as without v41 apart from the station's mesh and prompt, which show at the Yard and on the veranda; no G.b41; one HOTSPOT_HOOKS and one ACT_HOOKS entry, no ITEMS key",
+   "passed": true,
+   "info": {
+    "pins": {
+     "tick": 17,
+     "cue": 2,
+     "when": 31,
+     "rows": 12,
+     "finds": 15
+    },
+    "items": 23,
+    "withoutV41": {
+     "dayThree": "c691bda8:17333",
+     "closed": "e6958d86:99136",
+     "layer2": "689a6222:217342"
+    }
+   }
+  },
+  {
+   "name": "2. station-and-order: (fix round, DOD-11, S14) the slate’s offers side by side and Back at the top right under 480 px of height; (DOD-8, C3) the veranda hand-over says Ada’s night line; no station on day 7 (G.b40 present), before 08:00, at 18:00 on a bench day or online; at the Yard's probed point from 08:00 on day 8; the failing probe (the point 2.2 m from every Yard prompt and spot, free and level; over a 3 m grid round the station the station's prompt top within its reach and every prompt as without v41 outside it; no v41 prompt round Ada; her talk and \"Join Ada’s bench\" top at their own points) with nothing open, a thing in the pocket, a piece ready and during the beat; discovery on the first read (G.b41, commission read), the two offers with their prices and things to bring; refused with \"When you have it.\" when short; the deposit once through spend() for a double tap; Ada's terms, wood and ask; one at a time; on a visit day the station on the veranda from Ada's live chair in each of her five columns (none with the balcony full), discovery there, still there after six, gone once the gist begins; (fix round) Aunty Bisi due: the veranda station 2.2 m clear of her stop (S7), from 17:00 to 18:15 the station's prompt top at its point while she passes and round her at 17:20 her buy top wherever a player is nearer her (DOD-9); during the beat the polish top within its standing points' reach (S4)",
+   "passed": true,
+   "info": {
+    "grid": 147,
+    "html390": true,
+    "veranda": {
+     "0": {
+      "ada": [
+       -7.55,
+       6.3
+      ],
+      "station": [
+       -7.55,
+       8.8
+      ]
+     },
+     "1": {
+      "ada": [
+       -6.65,
+       6.3
+      ],
+      "station": [
+       -6.65,
+       8.8
+      ]
+     },
+     "3": {
+      "ada": [
+       -4.85,
+       6.3
+      ],
+      "station": [
+       -6.65,
+       8.8
+      ]
+     },
+     "4": {
+      "ada": [
+       -3.95,
+       6.3
+      ],
+      "station": null,
+      "bisi": "none clear of her stop"
+     },
+     "5": {
+      "ada": [
+       -3.05,
+       6.3
+      ],
+      "station": [
+       -1.25,
+       8.8
+      ]
+     },
+     "full": {
+      "ada": [
+       -4.5,
+       6.3
+      ],
+      "station": null
+     }
+    },
+    "bisi": {
+     "shown": 386,
+     "near": 0,
+     "grid": 493
+    },
+    "verandaHand": true,
+    "checked": {
+     "day7": true,
+     "yard": true,
+     "veranda": true
+    }
+   }
+  },
+  {
+   "name": "3. making-and-collection: (fix round, DOD-2, S3) step 2 puts \"Later\" in the row where \"Pay the rest\" was and the offers below it, the panel held to the top; (S8) the new order in its own card; a piece waits for its thing (nothing on the trestle); cut the evening it is handed over, not ready that day, ready after Sleep before six, a reload and a jump, and two days on; no station after six on a bench day and no v41 prompt by Ada in the courtyard; a short purse: Ada's line, no pay button, nothing taken, the cloth, still there tomorrow; the balance through spend() with \"Pay the rest\" lower right; the next piece in the same panel with \"Later\" where \"Pay the rest\" was; the polish step with no money button lower right; \"Later\" recorded; no write to S.home.items or S.home.storage in any step; ITEMS and PROP_FURN keys, CARVE_PRICE 0 and the shelf's ₦5,000 unchanged; (fix round, S2) Mallam's order kept tonight and the next deposit would leave less: step 2 says so plainly and \"Later\" is the default, and the deposit is paid at the slate later that day",
+   "passed": true,
+   "info": {
+    "keep": {
+     "bal": 4500,
+     "dep": 4000
+    }
+   }
+  },
+  {
+   "name": "4. polish: the sheen rises with presses and sinks without them; Ada's bubble at 0.3; the prompt \"Polish the …\" with the sheen bar; away 4 m pauses with the sheen kept; a reload restarts it from 0 with the piece paid for; rubbed to 0.75 with both turns, standing still does not finish it; the four runs (a lone human, a pair, a pair where only one presses, a companion household) at the cap rate and at the bot's rate each finish in 10-15 s with Ada's friendship +1, a pair where both rub in 10-12 s and a lone player in 13-15 s (fix round, DOD-3); the standing points beside the trestle and Ada's polish words over it, each bubble's anchor in view, none drawn where its anchor is not (S4); a lone player not rubbing for 1 s is offered the turn with Polish hidden; the hush after the beat and after \"Leave it to Ada\" (taps open no panel and spend no talk; four taps a second for 3 s from two points, the hush started again by each tap, DOD-1); on the veranda the gist begun during the polish finishes it as \"Leave it to Ada\" (DOD-7); at 390 x 844 and 844 x 390 the SCREEN-1 shape presses nothing and pays nothing, and a double tap on \"Pay the rest\" pays once and orders nothing; from a keyboard-opened panel the same",
+   "passed": true,
+   "info": {
+    "lengths": {
+     "lone-cap": 13.63,
+     "pair-cap": 11.7,
+     "one-presser-cap": 12.7,
+     "companion-cap": 13.63,
+     "both-rub-cap": 11.5,
+     "lone-bot": 13.63,
+     "pair-bot": 12.23,
+     "one-presser-bot": 12.7,
+     "companion-bot": 13.63,
+     "both-rub-bot": 11.5
+    },
+    "bubbles": {
+     "1280x800": [
+      [
+       0,
+       true,
+       0.43,
+       -0.13
+      ],
+      [
+       1,
+       true,
+       -0.35,
+       0.05
+      ]
+     ],
+     "390x844": [
+      [
+       0,
+       true,
+       0.38,
+       -0.13
+      ],
+      [
+       1,
+       true,
+       -0.2,
+       0.16
+      ]
+     ],
+     "844x390": [
+      [
+       0,
+       true,
+       0.24,
+       -0.04
+      ],
+      [
+       1,
+       true,
+       -0.18,
+       0.18
+      ]
+     ]
+    },
+    "veranda": "shelf",
+    "thumb": {
+     "390x844": {
+      "taps": 12
+     },
+     "844x390": {
+      "taps": 12
+     }
+    },
+    "corners": {
+     "at": [
+      0,
+      1
+     ],
+     "views": {
+      "1280x800": [
+       {
+        "i": 0,
+        "c": [
+         0.43,
+         -0.13
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       },
+       {
+        "i": 1,
+        "c": [
+         -0.36,
+         0.05
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       }
+      ],
+      "844x390": [
+       {
+        "i": 0,
+        "c": [
+         0.24,
+         0.07
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       },
+       {
+        "i": 1,
+        "c": [
+         -0.21,
+         0.2
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       }
+      ],
+      "390x844": [
+       {
+        "i": 0,
+        "c": [
+         0.38,
+         -0.14
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       },
+       {
+        "i": 1,
+        "c": [
+         -0.2,
+         0.41
+        ],
+        "inside": true,
+        "cov": [
+         false,
+         false
+        ]
+       }
+      ]
+     }
+    },
+    "noon": {
+     "secs": 11.5,
+     "near": 0.09
+    },
+    "yardSix": false,
+    "tomorrow": true
+   }
+  },
+  {
+   "name": "5. bring-and-carry: (fix round, S9) the toast names the back wall and the piece just taken in is framed in the half of the player who took it in, then the framing ends; (C7, S12) the door plate’s own toast; (DOD-10, C10) the frame, name board and café sign models and the bundle’s size by model; the Finds block only while a thing sold there is wanted (the cards, paints and Bisi's tip unchanged below it), bought through spend(), gone once bought, never on the catch card; the bundle drawn while carried and hidden online; a flat piece drawn only once taken inside, in its place, with its toast, log and the first album memory; the mirror's shells button only with three kept, three taken once; the clock (Finds), the box (Dayo's block), the door plate (Finds) and the panel (Mr. Bassey's photograph); all six home with the sixth's memory, the slate's flat list ended; the box hidden with the fridge in storage; after a reload; none online, back offline",
+   "passed": true,
+   "info": {
+    "framed": [
+     [
+      516.571,
+      222.864,
+      640,
+      100,
+      704
+     ],
+     [
+      537.196,
+      255.984,
+      640,
+      100,
+      704
+     ]
+    ],
+    "boxUnder": true,
+    "models": {
+     "frame": [
+      "BoxGeometry",
+      "PlaneGeometry+map"
+     ],
+     "nboard": [
+      "BoxGeometry",
+      "PlaneGeometry+map"
+     ],
+     "nsign": [
+      "BoxGeometry",
+      "PlaneGeometry+map"
+     ],
+     "mirror": [
+      "BoxGeometry",
+      "BoxGeometry",
+      "SphereGeometry",
+      "SphereGeometry",
+      "SphereGeometry"
+     ],
+     "plate": [
+      "BoxGeometry",
+      "PlaneGeometry+map"
+     ],
+     "size": [
+      "small",
+      "small",
+      "small",
+      "small",
+      "small",
+      "medium"
+     ],
+     "frameModel": "frame"
+    },
+    "home": 6
+   }
+  },
+  {
+   "name": "10. save-modes-and-cost: the scene after a new household as without v41; stripState has no life.gist38; online no v41 object, back offline; \"No, keep it\" changes nothing; none after an enterWorld into day 2 or newgame; no Math.random call inside v41's builds and no performance.now, Date.now or Math.random read by ada-v41.js; an inert frame: 0 blocked, 0 levelAt, 0 builds over 600 frames; v38-v40 saves keep the keys of S and S.life and gain no G.b41; a v41 save with all six pieces home, and one with a piece in the hands, load in the v40 build (a copy without the v41 tags) with no error through a visit day's reroute and the storage list, b41 kept",
+   "passed": true,
+   "info": {
+    "count": 2349,
+    "sceneCount": {
+     "objects": 2349,
+     "sameAsWithout": true
+    },
+    "v40build": {
+     "six": {
+      "error": null,
+      "b41kept": true,
+      "storageList": true
+     },
+     "hand": {
+      "error": null,
+      "b41kept": true,
+      "storageList": true
+     }
+    }
+   }
+  },
+  {
+   "name": "6. gifts: the neighbour list in its order (the frame only once the print is back, the table once the minutes book is back); each neighbour's thing asked at their live place by the hour (Mrs. Oyelaran never 12:00-18:00, never during the gist), passed to A, handed over at the station; Mama Nkechi's ask only after the first flat piece, her bubble within 6 m by day, her message at the station, her stool free; gives at the live place by the hour with lead 1.0 (every earlier give wins a tie), friendship +1, no money; \"one like yours\" to over sixty pieces, never the same neighbour twice running, each pair once, then the woods again; the weekly option; the puff-puff at most once in fourteen days; (fix round) her stool by her name at the collection, the owner's sentence whole and the neighbour's follow-on (C2), no photo line for it (C4), no puff-puff for it (C8); \"like yours\" in no panel, prompt, toast or Today but the slate's offer (C1); never the same piece twice running in \"one like yours\" (S10)",
+   "passed": true,
+   "info": {
+    "today": "Ada needs Tunde’s lettering. He is at the garden corner until noon, then in the courtyard.",
+    "noAskAtGist": {
+     "day": 8,
+     "state": "arriving"
+    },
+    "board": {
+     "id": "board",
+     "for": "tunde",
+     "at": "yard",
+     "place": "yard",
+     "time": 10.2128,
+     "ag": false
+    },
+    "stool": {
+     "money": "unchanged",
+     "place": "shop"
+    },
+    "ask-frame": {
+     "k": "bassey",
+     "t": 10.608
+    },
+    "frame": {
+     "k": "bassey",
+     "place": "waterfront",
+     "t": 15.154
+    },
+    "ask-table": {
+     "k": "oyelaran",
+     "t": 18.062
+    },
+    "table": {
+     "k": "oyelaran",
+     "place": "courtyard",
+     "t": 18.081
+    },
+    "ask-sign": {
+     "k": "nkechi",
+     "t": 10.608
+    },
+    "sign": {
+     "k": "nkechi",
+     "place": "shop",
+     "t": 10.307
+    },
+    "likeYours": 0,
+    "likeTypes": {
+     "shelf": 9,
+     "mirror": 9,
+     "clock": 9,
+     "box": 9,
+     "plate": 6,
+     "panel": 9
+    },
+    "loop": {
+     "days": 57,
+     "pieces": 62,
+     "likes": 51,
+     "cycles": 3,
+     "woods": {
+      "day": 58,
+      "name": "mahogany door plate like yours"
+     },
+     "backs": 4
+    },
+    "weekly": {
+     "gifts": 7
+    }
+   }
+  },
+  {
+   "name": "7. gist: the plan pure, the same as without v41 before discovery; after it at most one v41 line a night, never an insert (the gist as long as v40's plan), script.g39 and script.g40 kept, only the v41 line differs, the entry info:1 with v41k its id and no cat, today, v39 or v40k; v39's stool line kept; one save() per gist, the v41 id booked in G.b41.said before v40's one save; (fix round, DOD-4) never in a guest's opener or goodbye",
+   "passed": true,
+   "info": {
+    "nights": 13,
+    "placed": 7,
+    "rules": {
+     "1": 6,
+     "2": 1
+    },
+    "saves": [
+     1
+    ]
+   }
+  },
+  {
+   "name": "8. sweep: an eager pair and a companion household, inviting Ada daily and never, nights 8-40 (8-16 with GIST41_SHORT), discovery on the household's first walk to the station: a piece about every day, both lists advancing, the purse never negative, every v41 line true when said (who, where they were at the hour, where the piece is, where and when it was given), each id at most once in fourteen evenings, the said record pruned at 28 days; the receivers' mention rate recorded; the set pieces, each on a night its speaker has a free place: a piece collected on the veranda (no photo line), Tunde's board given after noon (it goes up in the morning) and at the garden corner with Ada a guest (no hearsay), Mama Nkechi's stool cut (Ada's own line) and a piece waiting for its thing (nothing about the morning); (fix round) no v41 line in an opener or goodbye (DOD-4), a free place never one, and \"making something for your flat\" only while it is cut (C14a)",
+   "passed": true,
+   "info": {
+    "households": {
+     "pair": {
+      "nights": 33,
+      "withLine": 13,
+      "pieces": 26,
+      "flat": 6,
+      "nb": 20,
+      "rate": {
+       "1": {
+        "eligible": 6,
+        "placed": 4
+       },
+       "2": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "4": {
+        "eligible": 14,
+        "placed": 3
+       },
+       "5": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "6": {
+        "eligible": 12,
+        "placed": 3
+       },
+       "7": {
+        "eligible": 4,
+        "placed": 1
+       }
+      }
+     },
+     "pair-invites": {
+      "nights": 33,
+      "withLine": 12,
+      "pieces": 26,
+      "flat": 6,
+      "nb": 20,
+      "rate": {
+       "1": {
+        "eligible": 5,
+        "placed": 4
+       },
+       "2": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "4": {
+        "eligible": 14,
+        "placed": 4
+       },
+       "6": {
+        "eligible": 12,
+        "placed": 3
+       },
+       "7": {
+        "eligible": 4,
+        "placed": 1
+       }
+      },
+      "veranda": "veranda"
+     },
+     "companion": {
+      "nights": 33,
+      "withLine": 12,
+      "pieces": 26,
+      "flat": 6,
+      "nb": 20,
+      "rate": {
+       "1": {
+        "eligible": 6,
+        "placed": 4
+       },
+       "2": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "4": {
+        "eligible": 14,
+        "placed": 4
+       },
+       "5": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "6": {
+        "eligible": 12,
+        "placed": 3
+       },
+       "7": {
+        "eligible": 4,
+        "placed": 1
+       }
+      }
+     },
+     "companion-invites": {
+      "nights": 33,
+      "withLine": 12,
+      "pieces": 26,
+      "flat": 6,
+      "nb": 20,
+      "rate": {
+       "1": {
+        "eligible": 7,
+        "placed": 4
+       },
+       "2": {
+        "eligible": 1,
+        "placed": 0
+       },
+       "4": {
+        "eligible": 14,
+        "placed": 4
+       },
+       "6": {
+        "eligible": 12,
+        "placed": 3
+       },
+       "7": {
+        "eligible": 4,
+        "placed": 1
+       }
+      },
+      "veranda": "veranda"
+     }
+    },
+    "rate": {
+     "1": {
+      "eligible": 24,
+      "placed": 16,
+      "share": "67%"
+     },
+     "2": {
+      "eligible": 4,
+      "placed": 0,
+      "share": "0%"
+     },
+     "4": {
+      "eligible": 56,
+      "placed": 15,
+      "share": "27%"
+     },
+     "5": {
+      "eligible": 2,
+      "placed": 0,
+      "share": "0%"
+     },
+     "6": {
+      "eligible": 48,
+      "placed": 12,
+      "share": "25%"
+     },
+     "7": {
+      "eligible": 16,
+      "placed": 4,
+      "share": "25%"
+     }
+    },
+    "lines": {
+     "gs41-ad-gift": 1,
+     "gs41-ad-gift2": 1,
+     "gs41-ad-ninth": 7,
+     "gs41-ad-open": 8,
+     "gs41-ba-gen": 4,
+     "gs41-nk-gen": 4,
+     "gs41-nk-open2": 4,
+     "gs41-nk-sign": 4,
+     "gs41-nk-stool": 4,
+     "gs41-oy-saw": 8,
+     "gs41-oy-saw2": 4
+    },
+    "setPieces": {
+     "ba-photo-veranda": {
+      "day": 11,
+      "guests": [
+       "ada",
+       "bassey"
+      ],
+      "shown": []
+     },
+     "tu-board-pm": {
+      "day": 16,
+      "t": 15.141,
+      "guests": [
+       "ada",
+       "tunde"
+      ],
+      "shown": [
+       "gs41-tu-board-am"
+      ]
+     },
+     "ad-gift-yard": {
+      "day": 14,
+      "guests": [
+       "oyelaran",
+       "ada"
+      ],
+      "shown": []
+     },
+     "ad-nk-and-wait": {
+      "nk": {
+       "day": 14,
+       "guests": [
+        "oyelaran",
+        "ada"
+       ],
+       "shown": [
+        "gs41-ad-nk"
+       ]
+      },
+      "wait": {
+       "day": 19,
+       "guests": [
+        "nkechi",
+        "ada"
+       ],
+       "shown": []
+      }
+     }
+    }
+   }
+  },
+  {
+   "name": "9. today-and-log: v41's Today block (data-today41) straight after v40's block, outside the gist card, never before v41's discovery or online, Today otherwise exactly as without it; its six states in §14.1's order (a piece ready, a piece on the trestle, a piece in the hands, a thing to bring by place and hour, Mama Nkechi's word, a piece being made, the slate's offers), A's and B's own words, a neighbour's piece by the neighbour's name; Mrs. Oyelaran after noon \"easiest in the morning\"; at most two lines, one at 390 px; a busy day at 390 px (a thing lying out, then in the pocket, the wash, the pot, Aunty Bisi, v40's three lines, a piece ready and a piece in the hands): v40's block with its three lines, Bisi's sentence and v41's first line all there; the touch guard: the slate re-rendered by Order this holds a second tap, and Buy it in a shop block holds the shop panel's clicks for a second (dimmed); the log kinds commission and gift once each and the gates tool reading them with no warning; (fix round) the thing in the pocket and the shells still owed on Today (DOD-6), the glass handed over with the shells owed (DOD-5), and at 390 x 844 a touch Act at the rocks leaves the fishing panel open (S1)",
+   "passed": true,
+   "info": {
+    "states": {
+     "v38 found, v40 not yet": "none",
+     "layer 2, the slate not read": "none",
+     "6 nothing open": [
+      "slate: Ada’s slate: a kitchen shelf for your flat, or a name board for the garden corner, for Tunde."
+     ],
+     "3 a thing to buy": [
+      "bring: Ada needs four cup hooks from Palm Court Finds."
+     ],
+     "the thing in the pocket": [
+      "pocket: With you for Ada: four cup hooks, to hand over at her slate."
+     ],
+     "5 being made": [
+      "cut: Ada is making your kitchen shelf tonight. Ready in the morning."
+     ],
+     "1 ready": [
+      "ready: Ada’s kitchen shelf is ready at her bench. To pay on collection: ₦4,500."
+     ],
+     "2 a flat piece in the hands, 3 a neighbour’s thing": [
+      "hand: With you: the kitchen shelf. It goes in at your door.",
+      "ask: Ada needs Tunde’s lettering. He is at the garden corner until noon, then in the courtyard."
+     ],
+     "2+3 (390 px)": [
+      "hand: With you: the kitchen shelf. It goes in at your door."
+     ],
+     "3 asked, 4 Mama Nkechi": [
+      "ask: Ada needs Tunde’s lettering. He is at the garden corner until noon, then in the courtyard.",
+      "nk: Mama Nkechi wants a word at her shop."
+     ],
+     "3 in the afternoon": [
+      "ask: Ada needs Tunde’s lettering. He is in the courtyard.",
+      "nk: Mama Nkechi wants a word at her shop."
+     ],
+     "4 her message": [
+      "ask: Ada needs Tunde’s lettering. He is at the garden corner until noon, then in the courtyard.",
+      "msg: Mama Nkechi’s word for Ada: give it at Ada’s slate."
+     ],
+     "the lettering in the pocket": [
+      "pocket: With you for Ada: Tunde’s lettering, to hand over at her slate.",
+      "msg: Mama Nkechi’s word for Ada: give it at Ada’s slate."
+     ],
+     "5 with her message": [
+      "msg: Mama Nkechi’s word for Ada: give it at Ada’s slate.",
+      "cut: Tunde’s name board for the garden corner is on Ada’s bench tonight, done by morning."
+     ],
+     "her message given (her stool next)": [
+      "cut: Tunde’s name board for the garden corner is on Ada’s bench tonight, done by morning."
+     ],
+     "1 the board ready": [
+      "ready: Tunde’s name board for the garden corner is ready at Ada’s bench. To pay on collection: ₦4,000."
+     ],
+     "2 a neighbour’s piece in the hands, 5 her stool": [
+      "nbhand: With you: Tunde’s name board for the garden corner. He is at the garden corner until noon, then in the courtyard.",
+      "cut: Mama Nkechi’s counter stool is on Ada’s bench tonight, done by morning."
+     ],
+     "given": [
+      "cut: Mama Nkechi’s counter stool is on Ada’s bench tonight, done by morning."
+     ],
+     "1 on the trestle for its last polish": [
+      "coll: The last polish is still to do on Mama Nkechi’s counter stool, at Ada’s trestle."
+     ],
+     "3 Mrs. Oyelaran after noon": "Ada needs a paper with the minutes book’s size from Mrs. Oyelaran. She is easiest to find in the morning, in the courtyard.",
+     "2 Mrs. Oyelaran after noon": "With you: Mrs. Oyelaran’s kitchen shelf. She is easiest to find in the morning, in the courtyard.",
+     "the shells still owed": [
+      "shells: Ada still needs three smooth shells for the shells mirror.",
+      "nk: Mama Nkechi wants a word at her shop."
+     ]
+    },
+    "busy390": {
+     "day": 71,
+     "wash": true,
+     "lost": {
+      "rows": [
+       "lost",
+       "wash",
+       "bisi",
+       "pot"
+      ],
+      "v40": 3,
+      "v41": [
+       "ready"
+      ]
+     },
+     "pocket": {
+      "rows": [
+       "pocket",
+       "wash",
+       "bisi",
+       "pot"
+      ],
+      "v40": 3,
+      "v41": [
+       "ready"
+      ]
+     }
+    },
+    "touch": {
+     "order": "held",
+     "shop": "held",
+     "fish": "held",
+     "mirror": "shells"
+    },
+    "purse": "Mallam is keeping two sticks for you tonight. They are ₦2,000; the purse holds ₦600.",
+    "mouse": {
+     "open": true,
+     "held": false,
+     "touch": true
+    },
+    "gates": {
+     "warnings": 0,
+     "grades": [
+      "FAIL",
+      "NOT YET",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "FAIL",
+      "NOT YET"
+     ]
+    }
+   }
+  },
+  {
+   "name": "11. copy: (fix round, C5, C6, C7, C9, C11, C13, C14, S11) every row of the reader sheet’s v41.3 reads the game’s own text, every id listed once, the questions numbered as v41.1; no thing “in your pocket” and none an abstraction; no money idiom at the rail; every v41 string (ADA41.LINES and GIFT41.LINES, B's wording where it has the id): ids gs41-/ad41-/gf41-/ui41-, no weekday or month, curly apostrophes, British spelling, no digit or ₦ in speech and at most 160 characters, \"Flat 3\" the only digit in UI and at most 200, no money word at the rail, no debt word in speech, no Pidgin in the slate's written words; every gist line in one family; no run of five words shared with any shipped string or another v41 string",
+   "passed": true,
+   "info": {
+    "strings": 203,
+    "gift41": 89,
+    "sheetRows": 203,
+    "longestRunShipped": 4,
+    "longestRunWithin": 4,
+    "shipped": 6479
+   }
+  },
+  {
+   "name": "12. companion-and-interplay: the AI's trace over day 8 as without v41; aiGoal and aiThink carry no v41 code; no v41 prompt for the AI player over three days of a companion household (beside each neighbour, the station and the flat door); none at Mallam's stand or Aunty Bisi's stop; Finds' page and Dayo's stall unchanged with no thing wanted",
+   "passed": true,
+   "info": {
+    "days": 3,
+    "bisi": true,
+    "aiTrace": {
+     "day8": "b53baf28:20",
+     "sameAsWithout": true
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 gistSave41(true) without a read (in the step)",
+   "check": 1,
+   "result": "red",
+   "first": "no G.b41 in layer 2 without a read"
+  },
+  {
+   "name": "M2 the station shown with layer 2 closed (G.b40 present, day 7)",
+   "check": 1,
+   "result": "red",
+   "first": "no station at the Yard at 09:00 on days 6 and 7: [\"null|0\",\"{\\\"at\\\":\\\"yard\\\",\\\"x\\\":-2.5,\\\"z\\\":-17.5}|9\"]"
+  },
+  {
+   "name": "M3 a v41 hook pushed when v40 is not installed (the copy without v39)",
+   "check": 1,
+   "result": "red",
+   "first": "the copy without v39 with this change: {\"hooks\":\"8,7,17,false\",\"ref\":\"7,7,17,false\",\"error\":null}"
+  },
+  {
+   "name": "M4 a key added to ITEMS by v41",
+   "check": 1,
+   "result": "red",
+   "first": "no v41 key in ITEMS or PROP_FURN"
+  },
+  {
+   "name": "M5 a v41 global created inside the guard (the subset's otherNew)",
+   "check": 1,
+   "result": "red",
+   "first": "otherNew [\"adaStation\"]"
+  },
+  {
+   "name": "M6 the station at every hour (a read and discovery at 19:00)",
+   "check": 2,
+   "result": "red",
+   "first": "no station at 07:57 (the Yard closed)"
+  },
+  {
+   "name": "M7 a v41 prompt pushed at Ada's NPC (covers \"Talk to Ada\")",
+   "check": 2,
+   "result": "red",
+   "first": "the probe (nothing open): nothing open: (-5.5, -15.5) outside the reach: slate41read against ws:ada; nothing open: (-5.5, -15) outside the reach: slate41read against ws:ada; nothing open: (-5.5, -14.5) outside the reach: slate41read against ws:ada; nothing open: (-5, -15.5) outside the reach: slate41read against talk:ada"
+  },
+  {
+   "name": "M8 the deposit written to S.money without spend()",
+   "check": 2,
+   "result": "red",
+   "first": "through spend()"
+  },
+  {
+   "name": "M9 a second order while a piece is open",
+   "check": 2,
+   "result": "red",
+   "first": "one deposit of ₦4,500"
+  },
+  {
+   "name": "M10 the station's point 1.2 m from \"Talk to Ada\"",
+   "check": 2,
+   "result": "red",
+   "first": "at the probed point"
+  },
+  {
+   "name": "M11 the station left at the Yard on a visit day (none on the veranda)",
+   "check": 2,
+   "result": "red",
+   "first": "the station on the veranda on a visit day"
+  },
+  {
+   "name": "M12 a piece cut at the order, without its thing",
+   "check": 3,
+   "result": "red",
+   "first": "still waiting the next day"
+  },
+  {
+   "name": "M13 a piece ready on the day it is cut",
+   "check": 3,
+   "result": "red",
+   "first": "not ready the same day"
+  },
+  {
+   "name": "M14 a cut piece lost on Sleep before six",
+   "check": 3,
+   "result": "red",
+   "first": "ready after Sleep before six"
+  },
+  {
+   "name": "M15 the collection offered after six on a day without a visit",
+   "check": 3,
+   "result": "red",
+   "first": "no station after the gist"
+  },
+  {
+   "name": "M16 the balance taken when the purse is short (no refusal)",
+   "check": 3,
+   "result": "red",
+   "first": "Ada’s short line at the Yard"
+  },
+  {
+   "name": "M17 a v41 write to S.home.storage",
+   "check": 3,
+   "result": "red",
+   "first": "no write to S.home through the collection"
+  },
+  {
+   "name": "M18 the polish calls passTime",
+   "check": 4,
+   "result": "red",
+   "first": "lone-cap: 97.63 s"
+  },
+  {
+   "name": "M19 the sheen does not sink between rubs",
+   "check": 4,
+   "result": "red",
+   "first": "and sinks: 0.6300000000000001 -> 0.6300000000000001"
+  },
+  {
+   "name": "M20 \"Polish\" kept ahead of \"Turn it over\" after the first turn (the first draft's lone-player bug)",
+   "check": 4,
+   "result": "red",
+   "first": "rubbed to 0.75 with both turns"
+  },
+  {
+   "name": "M21 the pair's 2.0 s rule dropped (a pair where only one presses cannot finish)",
+   "check": 4,
+   "result": "red",
+   "first": "one-presser-cap: finished ({\"done\":false,\"secs\":50,\"frames\":1500})"
+  },
+  {
+   "name": "M22 the polish prompt offered to the AI player",
+   "check": 4,
+   "result": "red",
+   "first": "companion-cap: no v41 prompt for the AI player: ada41hush"
+  },
+  {
+   "name": "M23 the collection panel without the class gist40-panel (the touch hold lost)",
+   "check": 4,
+   "result": "red",
+   "first": "(repair 2) the veranda kicker: Ada I brought it with me. It was coming this way anyway, and"
+  },
+  {
+   "name": "M24 the hold not re-armed on a step change (a double tap on \"Pay the rest\" orders)",
+   "check": 4,
+   "result": "red",
+   "first": "390x844: the second tap is held: ada41Order"
+  },
+  {
+   "name": "M25 the hush dropped (a tap just after the beat opens a panel)",
+   "check": 4,
+   "result": "red",
+   "first": "no panel opened by taps during the hush"
+  },
+  {
+   "name": "M26 the Finds block shown with no thing wanted (with M26b)",
+   "check": 5,
+   "result": "red",
+   "first": "no Finds block before an order"
+  },
+  {
+   "name": "M27 the shop block on the catch card (with M27b)",
+   "check": 5,
+   "result": "red",
+   "first": "never on the catch card (a thing wanted)"
+  },
+  {
+   "name": "M28 the mirror's shells taken with fewer than three kept (with M28b)",
+   "check": 5,
+   "result": "red",
+   "first": "the shells button waits"
+  },
+  {
+   "name": "M29 a flat piece drawn in the flat before it is taken inside",
+   "check": 5,
+   "result": "red",
+   "first": "not drawn before it is taken inside"
+  },
+  {
+   "name": "M30 the veranda station at a fixed point, not worked out from Ada's live seat",
+   "check": 2,
+   "result": "red",
+   "first": "the veranda rule: column 5: the station not worked out from Ada’s chair (-6.65, 8.8 for Ada at -3.05, 6.3); column 4: the station not worked out from Ada’s chair (-6.65, 8.8 for Ada at -3.95, 6.3)"
+  },
+  {
+   "name": "M53 the station built outside quiet41",
+   "check": 10,
+   "result": "red",
+   "first": "no Math.random call inside v41’s builds"
+  },
+  {
+   "name": "M31 a neighbour's piece given to Mrs. Oyelaran at 14:00 (her seat read, not her live figure) (with M31b)",
+   "check": 6,
+   "result": "red",
+   "first": "no give to Mrs. Oyelaran at 14:00 (she is out until six)"
+  },
+  {
+   "name": "M32 the frame offered before Mr. Bassey's print is back",
+   "check": 6,
+   "result": "red",
+   "first": "the neighbour piece due: Tunde’s name board (the frame waits for the print, the table for the minutes book): {\"id\":\"frame\",\"for\":\"bassey\",\"msg\":false,\"name\":\"frame for the wedding print\"}"
+  },
+  {
+   "name": "M33 the same neighbour twice running in \"one like yours\"",
+   "check": 6,
+   "result": "red",
+   "first": "never the same neighbour twice running: like-mirror-oyelaran-0 then like-box-oyelaran-0"
+  },
+  {
+   "name": "M34 Mama Nkechi's stool charges the household",
+   "check": 6,
+   "result": "red",
+   "first": "her stool cut tonight, nothing to pay: {\"id\":\"nkstool\",\"list\":\"nb\",\"for\":\"nkechi\",\"name\":\"counter stool\",\"state\":\"cut\",\"price\":8000,\"dep\":0,\"bal\":8000,\"bring\":{\"kind\":\"message\",\"thing\":\"Mama Nkechi’s message\",\"from\":\"nkechi\",\"got\":12,\"handed\":12},\"cutDay\":12,\"paid\":false}"
+  },
+  {
+   "name": "M35 a gift adds money to the purse",
+   "check": 6,
+   "result": "red",
+   "first": "no money changes hands at a gift"
+  },
+  {
+   "name": "M36 the gift's give at lead 1.25 (beats v38's give)",
+   "check": 6,
+   "result": "red",
+   "first": "the give’s lead is 1.0 (every earlier give at a neighbour, 1.05 to 1.2, wins a tie): 1.25"
+  },
+  {
+   "name": "M37 no \"woods again\" (the neighbour list runs dry)",
+   "check": 6,
+   "result": "red",
+   "first": "over 62 pieces in 120 days: {\"day\":153,\"flat\":[\"shelf\",\"mirror\",\"clock\",\"box\",\"plate\",\"panel\"],\"nb\":26,\"piece\":null,\"hand\":null,\"coll\":null,\"offers\":{\"flat\":null,\"nb\":null}}"
+  },
+  {
+   "name": "M38 a neighbour's ask offered while the gist runs",
+   "check": 6,
+   "result": "red",
+   "first": "no ask during the gist: gift41ask"
+  },
+  {
+   "name": "M39 the plan wrapper inserts the v41 line",
+   "check": 7,
+   "result": "red",
+   "first": "day 10: the gist no longer than v40’s plan (never an insert)"
+  },
+  {
+   "name": "M40 the plan wrapper drops script.g40",
+   "check": 7,
+   "result": "red",
+   "first": "day 10: script.g40 kept (today, inserted, moved, trans)"
+  },
+  {
+   "name": "M41 the v41 entry without info:1 (v40's guard may swap it)",
+   "check": 7,
+   "result": "red",
+   "first": "the v41 entry carries info:1 (v40’s guard never swaps it)"
+  },
+  {
+   "name": "M42 the plan wrapper writes G.b41.said",
+   "check": 7,
+   "result": "red",
+   "first": "day 10: the plan is pure (called twice, the state unchanged)"
+  },
+  {
+   "name": "M43 the done wrapper calls save() itself",
+   "check": 7,
+   "result": "red",
+   "first": "day 8: one save() per gist, in the done wrappers (2)"
+  },
+  {
+   "name": "M44 gs41-ba-photo after a collection on the veranda",
+   "check": 8,
+   "result": "red",
+   "first": "no photo line after a veranda collection: [\"gs41-ba-photo\"]"
+  },
+  {
+   "name": "M45 gs41-ad-open while the piece waits for its thing",
+   "check": 8,
+   "result": "red",
+   "first": "nothing about the morning while the piece waits for its thing: [\"gs41-ad-open\"]"
+  },
+  {
+   "name": "M46 gs41-tu-board for a board given after noon",
+   "check": 8,
+   "result": "red",
+   "first": "Tunde’s board goes up in the morning: [\"gs41-tu-board\"]"
+  },
+  {
+   "name": "M47 gs41-ad-gift for a gift at the photo corner",
+   "check": 8,
+   "result": "red",
+   "first": "no hearsay for a gift beside Ada’s bench: [\"gs41-ad-gift\"]"
+  },
+  {
+   "name": "M48 gs41-ad-open for Mama Nkechi's stool",
+   "check": 8,
+   "result": "red",
+   "first": "Ada’s own line for Mama Nkechi’s stool: [\"gs41-ad-open\"]"
+  },
+  {
+   "name": "M50 a gist line that names paying",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: a money word at the rail: gs41-ad-gift (paid); the sheet’s text differs from the game’s: gs41-ad-gift"
+  },
+  {
+   "name": "M51 a v41 line sharing five words with a shipped line",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: five words shared with a shipped line: gs41-ad-gift2; the sheet’s text differs from the game’s: gs41-ad-gift2"
+  },
+  {
+   "name": "M52 an aiGoal wrapper that walks the companion to the station",
+   "check": 12,
+   "result": "red",
+   "first": "aiGoal and aiThink carry no v41 code"
+  },
+  {
+   "name": "M49 Today's v41 line pushed into the gist card's rows",
+   "check": 9,
+   "result": "red",
+   "first": "6 nothing open: straight after v40’s block"
+  },
+  {
+   "name": "M54 two v41 lines at 390 px (the narrow cap dropped)",
+   "check": 9,
+   "result": "red",
+   "first": "2+3 (390 px): one line at 480 px or less"
+  },
+  {
+   "name": "M55 the lines not in §14.1's order of urgency",
+   "check": 9,
+   "result": "red",
+   "first": "5 with her message: the lines [\"cut\",\"msg\"] against [\"msg\",\"cut\"] <p class=\"small gist41-today-cut\">Tunde’s name board for the garden corner is on Ada’s bench tonight, done by morning.</p><p class=\"small gist41-today-msg\">Mama Nkechi’s word for Ada: give it at Ada’s slate.</p>"
+  },
+  {
+   "name": "M56 a neighbour's piece called \"your\" piece on Today (Mama Nkechi's stool)",
+   "check": 9,
+   "result": "red",
+   "first": "5 with her message: a neighbour’s piece by the neighbour’s name, never \"your\": Ada is making your name board for the garden corner tonight. Ready in the morning."
+  },
+  {
+   "name": "M57 the slate re-rendered by \"Order this\" without the hold re-armed (a double tap lands on Back)",
+   "check": 9,
+   "result": "red",
+   "first": "the second click lands on nothing: ada41Close"
+  },
+  {
+   "name": "M58 no hold after \"Buy it\" (a double tap on the shop block buys a Finds card)",
+   "check": 9,
+   "result": "red",
+   "first": "a second tap at once lands on nothing: lifeTab"
+  },
+  {
+   "name": "M59 Today creates G.b41 (v41 discovered, and its block shown, before the slate is read)",
+   "check": 9,
+   "result": "red",
+   "first": "layer 2, the slate not read: no v41 block <p class=\"small gist41-today-slate\">Ada’s slate: a kitchen shelf for your flat, or a name board for the garden corner, for Tunde.</p>"
+  },
+  {
+   "name": "M60 a v41 line in a guest's opener or goodbye (DOD-4, S13)",
+   "check": 7,
+   "result": "red",
+   "first": "day 11: the v41 line in an opener or goodbye: {\"k\":0,\"id\":\"gs41-ad-open\",\"open\":true,\"cat\":\"|o:ada|o:ada\"}"
+  },
+  {
+   "name": "M61 Mr. Bassey's photo line for Mama Nkechi's stool (C4)",
+   "check": 6,
+   "result": "red",
+   "first": "(R2-5) no photo line for Tunde’s name board"
+  },
+  {
+   "name": "M62 the puff-puff armed by Mama Nkechi's own stool (C8)",
+   "check": 6,
+   "result": "red",
+   "first": "no puff-puff armed by her own stool: {\"due\":15,\"piece\":\"counter stool\",\"given\":false}"
+  },
+  {
+   "name": "M63 a neighbour's piece called the household's own at the collection (C2) (with M63b, M63c)",
+   "check": 6,
+   "result": "red",
+   "first": "the collect prompt by her name: Collect your counter stool"
+  },
+  {
+   "name": "M64 a copy named by its slate label everywhere (\"<piece> like yours\", C1)",
+   "check": 6,
+   "result": "red",
+   "first": "\"like yours\" nowhere but the slate’s offer (477)"
+  },
+  {
+   "name": "M65 \"one like yours\" by hash38 alone (the same piece twice running, S10)",
+   "check": 6,
+   "result": "red",
+   "first": "\"one like yours\": never the same piece twice running: shelf,shelf"
+  },
+  {
+   "name": "M66 \"That is all I was waiting for\" with the shells still owed (DOD-5)",
+   "check": 9,
+   "result": "red",
+   "first": "the glass handed over, the shells still owed: ADA’S BENCH Shells mirror Ada Good. That is all I was waiting for. Give Ada three smooth shells When you have it. Back"
+  },
+  {
+   "name": "M67 Today silent with the thing for Ada in the pocket (DOD-6)",
+   "check": 9,
+   "result": "red",
+   "first": "the thing in the pocket: the v41 block in Today"
+  },
+  {
+   "name": "M68 the next order's deposit taken with nothing said about tonight's sellers (S2)",
+   "check": 3,
+   "result": "red",
+   "first": "step 2 says so plainly:   ADA’S BENCH  Your clock surround    Ada And the next one? Choose now, or come back to my slate later.      Later      For your flat: box with a lid.   (obeche)   ₦8,000 · half now ₦4,000  Bring: a small piece of lining cloth, from Dayo’s fabrics.  Order this · ₦4,000 now     For a neighbour: name "
+  },
+  {
+   "name": "M69 the hush not started again by a tap (DOD-1, S5)",
+   "check": 4,
+   "result": "red",
+   "first": "tap 3 at (-2.5, -17.5), 4 a second for 3 s: nothing opens:   ADA’S SLATE  Pieces to order   PIECES TO ORDER. Only one on my bench at once. "
+  },
+  {
+   "name": "M70 two rubbers each at their own rate (the household's slot dropped, DOD-3, S6)",
+   "check": 4,
+   "result": "red",
+   "first": "both-rub-cap: 7.13 s"
+  },
+  {
+   "name": "M71 the paid piece left on the veranda's trestle when the gist begins (DOD-7)",
+   "check": 4,
+   "result": "red",
+   "first": "the paid piece in the hands once the gist begins: null"
+  },
+  {
+   "name": "M72 Ada's polish bubbles over Ada at her bench, not the trestle (S4)",
+   "check": 4,
+   "result": "red",
+   "first": "1280 x 800: every bubble’s anchor inside each half: [[0,false,-1.29,-0.4],[1,false,-2.12,-0.15]]"
+  },
+  {
+   "name": "M73 a bubble drawn for a camera that cannot see its anchor (S4)",
+   "check": 4,
+   "result": "red",
+   "first": "a bubble whose anchor no camera can see draws nothing: [0.7096014939187474,0,0.7096014939187468,0]"
+  },
+  {
+   "name": "M74 Aunty Bisi's buy ahead of the station within its reach (DOD-9)",
+   "check": 2,
+   "result": "red",
+   "first": "the station’s prompt top at its point while Aunty Bisi passes: 17.317: bisi39buy; 17.32: bisi39buy; 17.323: bisi39buy; 17.327: bisi39buy"
+  },
+  {
+   "name": "M75 the veranda station beside Aunty Bisi's stop (S7)",
+   "check": 2,
+   "result": "red",
+   "first": "the veranda rule: column 5: the station 0.95 m from Aunty Bisi’s stop; column 3: the station 0.85 m from Aunty Bisi’s stop; column 4: the station 0.05 m from Aunty Bisi’s stop"
+  },
+  {
+   "name": "M76 the fishing panel closed by the touchend's own click (S1)",
+   "check": 9,
+   "result": "red",
+   "first": "the touchend’s click lands on nothing: {\"open\":true,\"fishing\":true,\"c1\":false,\"c2\":false,\"still\":true}"
+  },
+  {
+   "name": "M77 \"making something for your flat\" while the piece waits for its thing (C14a)",
+   "check": 8,
+   "result": "red",
+   "first": "pair: every v41 line true when said"
+  },
+  {
+   "name": "M78 step 2's offers above \"Later\" again (an Order button where \"Pay the rest\" was, DOD-2, S3)",
+   "check": 3,
+   "result": "red",
+   "first": "\"Later\" where \"Pay the rest\" was (first, in its row)"
+  },
+  {
+   "name": "M79 the collection panel centred again (a taller step moves the rows, DOD-2)",
+   "check": 3,
+   "result": "red",
+   "first": "(DOD-2, S3) the collection panel held to the top of the screen at every width"
+  },
+  {
+   "name": "M80 the slate's Back held to the bottom under 480 px of height (over the offers, DOD-11, S14)",
+   "check": 2,
+   "result": "red",
+   "first": "(DOD-11, S14) under 480 px of height the slate’s Back at the top right, over no offer"
+  },
+  {
+   "name": "M81 the new order's lines under the collected piece's heading (S8)",
+   "check": 3,
+   "result": "red",
+   "first": "(S8) the polish line first, then the order’s own card “Ordered: shells mirror” with the terms and the shells button: 875,-1,-1,187,684"
+  },
+  {
+   "name": "M82 \"We can choose here\" at the veranda hand-over (DOD-8, C3)",
+   "check": 2,
+   "result": "red",
+   "first": "(DOD-8, C3) the veranda hand-over says Ada’s night line:  ADA ON THE VERANDA Kitchen shelf Ada Good. That is all I was waiting for. We can choose here. Back "
+  },
+  {
+   "name": "M83 the piece taken in not framed (off the half from the door, S9)",
+   "check": 5,
+   "result": "red",
+   "first": "(S9) the piece framed after it is taken in"
+  },
+  {
+   "name": "M84 the door plate \"inside\" (C7, S12)",
+   "check": 5,
+   "result": "red",
+   "first": "(C7, S12) the door plate’s own toast: The door plate is inside. You will find it on your door."
+  },
+  {
+   "name": "M85 the frame built as the shells mirror (DOD-10, C10)",
+   "check": 5,
+   "result": "red",
+   "first": "(DOD-10) the frame’s own model"
+  },
+  {
+   "name": "M86 the name board and the café sign a plain plank (DOD-10, C10)",
+   "check": 5,
+   "result": "red",
+   "first": "(DOD-10, C10) the nboard built as the door plate with its own lettering: BoxGeometry"
+  },
+  {
+   "name": "M87 the bundle's size by the piece's id only (DOD-10)",
+   "check": 5,
+   "result": "red",
+   "first": "(DOD-10) the bundle’s size by id or model"
+  },
+  {
+   "name": "M88 a shipped line changed and the reader sheet not regenerated (C5)",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: the sheet’s text differs from the game’s: gf41-nk-words"
+  },
+  {
+   "name": "M89 a clock \"in your pocket\" (C9)",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: a thing “in your pocket”: ui41-got; the sheet’s text differs from the game’s: ui41-got"
+  },
+  {
+   "name": "M90 the sign's words handed over as an abstraction (C14 c)",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: an abstraction to hand over: the sign’s words"
+  },
+  {
+   "name": "M91 no walk to the standing points when the beat begins (R2-1)",
+   "check": 4,
+   "result": "red",
+   "first": "(R2-1) each player walked to a standing point of their own: [[-2.492,-17.334],[-2.05,-17.15]] against [[-3.3,-17.95],[-1.7,-17.95]]"
+  },
+  {
+   "name": "M92 the players let go at the standing points (the idle turn towards the camera, R2-1)",
+   "check": 4,
+   "result": "red",
+   "first": "(R2-1) player 0 faces the trestle 2.5 s on: 0.474 against 1.695"
+  },
+  {
+   "name": "M93 the standing points back at 0.6 m and 0.25 m (a player's body over the piece, R2-1)",
+   "check": 4,
+   "result": "red",
+   "first": "(R2-1) 1280 x 800: the piece clear of every player’s body in camera 1: {\"i\":1,\"c\":[-0.23,0.06],\"inside\":true,\"cov\":[false,true]}"
+  },
+  {
+   "name": "M94 a lone player walked to the farther standing point (R2-1)",
+   "check": 4,
+   "result": "red",
+   "first": "(R2-1) a lone player walks to the nearer standing point (from 0.3 m): [-3.3,-17.95,1.695]"
+  },
+  {
+   "name": "M95 a passing neighbour's talk ahead of the polish (R2-2)",
+   "check": 4,
+   "result": "red",
+   "first": "(R2-2) the station’s prompt top at every tap through the beat and the hush: 1:talk:bassey@12.028,1:talk:bassey@12.282"
+  },
+  {
+   "name": "M96 the polish left on the Yard's trestle at six (repair 2, DOD-7 at the Yard)",
+   "check": 4,
+   "result": "red",
+   "first": "(repair 2) the Yard closed at six: the piece in the hands, left to Ada: null"
+  },
+  {
+   "name": "M97 the slate \"Waiting for its mirror glass\" with only the shells owed (R2-3)",
+   "check": 5,
+   "result": "red",
+   "first": "(R2-3) the slate waits for the shells: ADA’S SLATE Pieces to order PIECES TO ORDER. Only one on my bench at once. Half when you order, the rest when you collect. I work at night; collect in the morning. — A. Waiting for its mirror glass: t"
+  },
+  {
+   "name": "M98 \"Four cup hooks for Ada: you have it with you.\" (R2-4)",
+   "check": 11,
+   "result": "red",
+   "first": "the copy rules: a pronoun in ui41-got (plural things); the sheet’s text differs from the game’s: ui41-got"
+  },
+  {
+   "name": "M99 Mr. Bassey's \"your piece\" for Tunde's name board (R2-5)",
+   "check": 6,
+   "result": "red",
+   "first": "(R2-5) no photo line for Tunde’s name board"
+  },
+  {
+   "name": "M100 Today silent on a purse short of Mallam's price (the purse reminder)",
+   "check": 9,
+   "result": "red",
+   "first": "(the purse) Today’s Mallam line says the price and the purse"
+  },
+  {
+   "name": "M101 a mouse click before a key press taken for a touch (repair 2)",
+   "check": 9,
+   "result": "red",
+   "first": "(repair 2) a mouse click just before a key press: the fishing panel open (v38’s timing says touch), its clicks not held: {\"open\":true,\"held\":true,\"touch\":true}"
+  }
+ ],
+ "withoutV41": {
+  "allRed": true,
+  "findings": [
+   {
+    "checks": [
+     1
+    ],
+    "first": "v41 installed (v40 is)"
+   },
+   {
+    "checks": [
+     2,
+     3,
+     4,
+     5,
+     10,
+     6,
+     8
+    ],
+    "first": "ada41Station is not defined"
+   },
+   {
+    "checks": [
+     7
+    ],
+    "first": "GIFT41 is not defined"
+   },
+   {
+    "checks": [
+     9
+    ],
+    "first": "daily-v41.js installed (v41 is)"
+   },
+   {
+    "checks": [
+     11
+    ],
+    "first": "ADA41 is not defined"
+   },
+   {
+    "checks": [
+     12
+    ],
+    "first": "gifts-v41 installed"
+   }
+  ]
+ },
+ "withoutV40": {
+  "error": null,
+  "scene": 2346,
+  "random": 12,
+  "hooks": "9,9,17,false",
+  "hooksRef": "9,9,17,false",
+  "passed": true
+ },
+ "withoutV39": {
+  "error": null,
+  "scene": 2346,
+  "random": 12,
+  "hooks": "7,7,17,false",
+  "hooksRef": "7,7,17,false",
+  "passed": true
+ },
+ "withoutV38": {
+  "error": null,
+  "scene": 2346,
+  "random": 12,
+  "hooks": "6,6,17,false",
+  "hooksRef": "6,6,17,false",
+  "passed": true
+ },
+ "subsets": {
+  "lines": {
+   "loads": true,
+   "v41Names": 220,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "log": {
+   "loads": true,
+   "v41Names": 220,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  },
+  "tune": {
+   "loads": true,
+   "v41Names": 220,
+   "otherNew": [],
+   "gone": [],
+   "warn": 0,
+   "error": null
+  }
+ },
+ "determinism": "identical"
+}

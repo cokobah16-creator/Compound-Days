@@ -37,6 +37,10 @@ function check(name,fn){try{const info=fn();checks.push({name,passed:true,info})
   const g=run('makeHeroAvatar')(Object.assign({},run('CAST.bassey.look'),{rig:'hero'}));let top=null,low=null,skin=null;
   g.traverse(o=>{if(!o.isMesh)return;const m=o.material;if(m.name==='lip_top')top=m.color;if(m.name==='lip')low=m.color;if(o.isSkinnedMesh&&m.name==='skin'&&!skin)skin=m.color;});
   assert(top&&low&&skin);const info={skin:skin.getHexString(),top:top.getHexString(),low:low.getHexString()};assert(top.r<low.r&&top.g<low.g,JSON.stringify(info));return {skin:skin.getHexString(),top:top.getHexString(),low:low.getHexString()};});
+ check('4. (v54) Each neighbour\'s name maps to a shipped face-revision portrait, and other titles get none',()=>{
+  const map={};for(const n of ['Mama Nkechi','Aunty Bisi','Mallam','Tunde','Ada','Mr. Bassey','Mrs. Oyelaran']){const id=run('PORTRAITS54.of('+JSON.stringify(n+' \u00b7 Friendly')+')');assert(id,n);assert(fs.existsSync(path.join(__dirname,'..','dist','assets','faces',id+'.webp')),id);map[n]=id;}
+  for(const t of ['The sofa','Adaeze','Make yourself','Market Road'])assert.equal(run('PORTRAITS54.of('+JSON.stringify(t)+')'),null,t);
+  return map;});
  const build=(fs.readFileSync(path.resolve(__dirname,'..','dist','index.html'),'utf8').match(/const BUILD_ID='([^']+)';/)||[])[1];
  for(const c of checks)console.log((c.passed?'PASS ':'FAIL ')+c.name+(c.failure?'\n     '+c.failure:''));
  fs.writeFileSync(OUT,JSON.stringify({build,passed:checks.every(c=>c.passed),checks},null,1)+'\n');

@@ -1,5 +1,5 @@
 {
- "build": "v53-81af751f",
+ "build": "v54-e02e0f68",
  "passed": true,
  "checks": [
   {
@@ -92,6 +92,19 @@
     "skin": "371609",
     "top": "310e05",
     "low": "3b1107"
+   }
+  },
+  {
+   "name": "4. (v54) Each neighbour's name maps to a shipped face-revision portrait, and other titles get none",
+   "passed": true,
+   "info": {
+    "Mama Nkechi": "market_auntie",
+    "Aunty Bisi": "market_auntie",
+    "Mallam": "suya_vendor",
+    "Tunde": "neighbour_locs",
+    "Ada": "utility_artisan",
+    "Mr. Bassey": "compound_elder",
+    "Mrs. Oyelaran": "neighbour_linen"
    }
   }
  ]
