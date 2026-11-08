@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Compound Days · Character Audition</title>
+<style>
+:root{font-family:system-ui,-apple-system,sans-serif;background:#f5f0e3;color:#1f4539}
+*{box-sizing:border-box}body{margin:0;padding:24px max(16px,env(safe-area-inset-right)) 36px;background:linear-gradient(#f7f2e7,#e7ebdc);min-height:100vh}
+main{max-width:1220px;margin:auto}.muted{color:#66776b}.intro{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+h1{font:700 clamp(27px,4vw,44px) Georgia,serif;margin:0}h2{font:700 22px Georgia,serif;margin:0 0 5px}
+p{line-height:1.5}.tag{background:#dbe6d7;padding:6px 10px;border-radius:20px;font-weight:700;font-size:12px}
+.toolbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:20px 0}
+button,.fileLabel,select{border:1px solid #aebaae;border-radius:12px;padding:11px 14px;cursor:pointer;background:#fffdf6;color:#164533;font:inherit}
+button[aria-pressed=true]{background:#1c513f;color:#fff}button:hover,.fileLabel:hover{border-color:#28694d}
+.fileLabel{background:#1c513f;color:white;display:inline-flex;gap:7px;align-items:center;font-weight:700}
+.fileLabel input{display:none}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.viewer{background:#fffdf8;border:1px solid #dadacb;border-radius:20px;overflow:hidden;min-width:0}
+.viewerHead{display:flex;align-items:center;justify-content:space-between;padding:15px 16px 7px;gap:6px}
+.stage{height:clamp(345px,43vw,540px);position:relative;background:radial-gradient(circle at 50% 25%,#fff 0,#ede8dc 90%);touch-action:none}
+.stage canvas{display:block;width:100%;height:100%}
+.stage .hint{position:absolute;bottom:13px;left:13px;color:#607366;background:#fff9;border-radius:20px;padding:5px 10px;font-size:12px;pointer-events:none}
+.metrics{font:12px/1.6 ui-monospace,monospace;color:#425f53;min-height:90px;margin:0;padding:12px 16px;border-top:1px solid #e1e4db;white-space:pre-wrap;overflow-wrap:anywhere}
+.status{color:#9a432b}.info{background:#fff9e6;border:1px solid #ddcba3;padding:13px 16px;border-radius:14px;margin:18px 0;font-size:14px}
+.actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.rule{height:1px;background:#d2d8c9;margin:20px 0}
+.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+.checks label{display:flex;align-items:center;gap:8px;background:#fffefa;border-radius:9px;padding:9px;font-size:14px}
+footer{font-size:13px;color:#617265;margin-top:20px}
+@media(max-width:670px){body{padding:15px 10px 30px}.grid{grid-template-columns:1fr}.stage{height:430px}h2{font-size:18px}.checks{grid-template-columns:1fr}}
+</style></head>
+<body><main>
+<div class="intro"><div style="font-size:37px">🏠</div><div><div class="tag" style="display:inline-block;margin-bottom:6px">COMPOUND DAYS · ART REVIEW ONLY</div><h1>Character Audition</h1><p style="margin:5px 0 0" class="muted">Compare the shipped V55 hero against an artist-authored replacement — before merging it into gameplay.</p></div></div>
+<div class="info"><strong>Quality gate:</strong> These are independent studio previews, <em>not</em> the live mobile creator or proof of rig compatibility. The current game's clothes, materials, animations and lighting may differ. Keep V55 in production until the candidate passes both views and a real phone playtest.</div>
+<div class="toolbar">
+<label class="fileLabel">📁 Choose candidate GLB<input type="file" id="file" accept=".glb,.gltf,.json"></label>
+<button data-angle="0" aria-pressed="true">Front</button>
+<button data-angle="35" aria-pressed="false">3/4</button>
+<button data-angle="90" aria-pressed="false">Profile</button>
+<button data-angle="180" aria-pressed="false">Back</button>
+<button id="frameFace" aria-pressed="false">Face close-up</button>
+<button id="frameFull" aria-pressed="true">Full body</button>
+<button id="capture">Save comparison PNG</button>
+</div>
+<div class="grid">
+<section class="viewer"><div class="viewerHead"><div><h2>Currently shipped · V55</h2><small class="muted">Game's original 27-joint hero, read-only</small></div><span class="tag">BASELINE</span></div><div id="original" class="stage"><div class="hint">Drag to rotate · pinch/scroll to zoom</div></div><pre id="oldInfo" class="metrics">Loading current hero…</pre></section>
+<section class="viewer"><div class="viewerHead"><div><h2 id="candidateTitle">New sculpt · candidate</h2><small class="muted">Load one glTF/GLB to audition</small></div><span class="tag">REVIEW</span></div><div id="candidate" class="stage"><div class="hint">Drop a .glb model here</div></div><pre id="newInfo" class="metrics">No candidate loaded. Drag a .glb file into this panel or use Choose candidate GLB.</pre></section>
+</div>
+<div class="toolbar"><label for="expression"><strong>Expression test</strong></label><select id="expression"><option value="neutral">Neutral</option><option value="smile">Smile</option><option value="concerned">Concerned</option><option value="blink">Blink</option></select><label for="animation"><strong>Animation</strong></label><select id="animation"><option value="idle">Idle</option><option value="walk">Walk</option><option value="wave">Wave</option><option value="none">None</option></select></div>
+<div class="rule"></div>
+<h2>Human art review — do not auto-approve</h2>
+<p class="muted">Inspect front, three-quarter and profile at face size, then return to full-body for clip and wardrobe review.</p>
+<div class="checks">
+<label><input type="checkbox"> Upper lids sit naturally on iris; no permanently startled gaze</label>
+<label><input type="checkbox"> Integrated lips, nose, chin, ears and neck (all angles)</label>
+<label><input type="checkbox"> Beautiful textured braids / folded fabric; no floating tubes</label>
+<label><input type="checkbox"> Adult proportions and natural shoulder, hand and finger shapes</label>
+<label><input type="checkbox"> No skirt/trouser crotch clipping or exposed shoulder gaps</label>
+<label><input type="checkbox"> Real mobile creator and in-world walking screenshots approved</label>
+</div>
+<footer><strong>Asset loading:</strong> only local files selected on this page are parsed; nothing is uploaded. The comparison is temporary and does not write to the game or save your character. A standalone GLB may have a different skeleton and cannot be dropped into the V55 gameplay rig without retargeting. For full accuracy, run from an HTTP server inside the <code>dist</code> folder. All inputs remain on-device.</footer>
+</main>
+<script src="assets/vendor/three-r128.min.js"></script>
+<script src="src/character-audition-loader-r128.js"></script>
+<script>
+(function(){
+'use strict';
+const THREE3=window.THREE; if(!THREE3||!THREE3.GLTFLoader){document.getElementById('oldInfo').textContent='Missing shipped Three.js or GLTFLoader; serve this file from the dist folder.';return;}
+const clock=new THREE3.Clock();
+let angle=0, face=false, zoom=1, activeExpr='neutral', activeAnim='idle';
+const views=[];
+function view(host,id){
+ const w={id,host,object:null,animations:[],mixer:null,clip:null,angles:{yaw:0},normHeight:1.75,targetY:.85,baseRadius:3.6};
+ const scene=new THREE3.Scene();scene.background=new THREE3.Color('#ede9dc');
+ const camera=new THREE3.PerspectiveCamera(32,1,.02,200);
+ const renderer=new THREE3.WebGLRenderer({antialias:true,alpha:false,preserveDrawingBuffer:true});
+ renderer.setPixelRatio(Math.min(window.devicePixelRatio||1,2));
+ renderer.outputEncoding=THREE3.sRGBEncoding;
+ renderer.toneMapping=THREE3.ACESFilmicToneMapping;
+ renderer.toneMappingExposure=1.1;
+ const hemi=new THREE3.HemisphereLight(0xfff5e6,0x8e9c91,1.1);scene.add(hemi);
+ const key=new THREE3.DirectionalLight(0xffedcf,1.7);key.position.set(2,5,4);scene.add(key);
+ const rim=new THREE3.DirectionalLight(0xf5fbff,.65);rim.position.set(-3,3,-2);scene.add(rim);
+ const floor=new THREE3.Mesh(new THREE3.CircleGeometry(1.0,72),new THREE3.MeshLambertMaterial({color:0xdbdacc}));
+ floor.rotation.x=-Math.PI/2;scene.add(floor);
+ const grid=new THREE3.GridHelper(3,12,0xc9d1c8,0xd8ded4);grid.position.y=.003;scene.add(grid);
+ const modelGroup=new THREE3.Group();scene.add(modelGroup);
+ host.insertBefore(renderer.domElement,host.firstChild);
+ Object.assign(w,{scene,camera,renderer,modelGroup,floor,grid});
+ function onResize(){const b=host.getBoundingClientRect(),width=Math.max(b.width,1),height=Math.max(b.height,1);camera.aspect=width/height;camera.updateProjectionMatrix();renderer.setSize(width,height,false)}
+ const ro=new ResizeObserver(onResize);ro.observe(host);onResize();
+ let drag=null;
+ host.addEventListener('pointerdown',e=>{if(e.target.tagName==='CANVAS'){drag={x:e.clientX,y:e.clientY,a:angle};host.setPointerCapture(e.pointerId)}});
+ host.addEventListener('pointermove',e=>{if(drag){angle=drag.a+(e.clientX-drag.x)*.55;syncCameras()}});
+ host.addEventListener('pointerup',()=>drag=null);host.addEventListener('pointercancel',()=>drag=null);
+ host.addEventListener('wheel',e=>{e.preventDefault();zoom=Math.max(.65,Math.min(2.5,zoom*Math.exp(e.deltaY*.001)));syncCameras()},{passive:false});
+ w.frame=function(){const target=new THREE3.Vector3(0,face?1.54:.9,0), rad=face?1.35:3.8;const a=angle*Math.PI/180;
+  camera.position.set(Math.sin(a)*rad*zoom,target.y+(face?.05:.24),Math.cos(a)*rad*zoom);
+  camera.lookAt(target);camera.near=.01;camera.far=100;camera.updateProjectionMatrix();
+ };
+ w.setModel=function(gltf){
+  while(modelGroup.children.length)modelGroup.remove(modelGroup.children[0]);
+  const root=gltf.scene;modelGroup.add(root);
+  // Align the mesh to the ground and normalize scale without changing the imported skeleton.
+  root.updateMatrixWorld(true);
+  let box=new THREE3.Box3().setFromObject(root);
+  const h=Math.max(.01,box.max.y-box.min.y), s=Math.min(100,1.75/h);
+  root.scale.multiplyScalar(s);root.updateMatrixWorld(true);box=new THREE3.Box3().setFromObject(root);
+  root.position.x-=.5*(box.min.x+box.max.x);
+  root.position.y-=box.min.y;
+  root.position.z-=.5*(box.min.z+box.max.z);
+  w.object=root;w.animations=gltf.animations||[];
+  if(w.mixer)w.mixer.stopAllAction();w.mixer=new THREE3.AnimationMixer(root);w.clip=null;
+  setAnimation(w,activeAnim);setExpression(w,activeExpr);
+  const audit=inspect(root,w.animations);
+  document.getElementById(id==='original'?'oldInfo':'newInfo').textContent=audit;
+ };
+ w.frame();views.push(w);return w;
+}
+function inspect(root,clips){
+ let meshes=0,tris=0,skins=0,morphs=new Set(),bones=new Set(),mats=new Set();
+ root.traverse(o=>{if(o.isMesh){meshes++;const geo=o.geometry;if(geo&&geo.attributes.position){const n=geo.index?geo.index.count:geo.attributes.position.count;tris+=Math.floor(n/3);}
+ if(o.isSkinnedMesh){skins++;if(o.skeleton)o.skeleton.bones.forEach(b=>bones.add(b.name));}
+ if(o.morphTargetDictionary)Object.keys(o.morphTargetDictionary).forEach(n=>morphs.add(n));
+ if(o.material){(Array.isArray(o.material)?o.material:[o.material]).forEach(m=>mats.add(m.name||'unnamed'));}}});
+ return 'Meshes: '+meshes+'  Triangles: '+tris.toLocaleString()+'  Skinned: '+skins+'\nBones: '+bones.size+'  Clips: '+clips.map(c=>c.name).join(', ').slice(0,100)+'\nExpressions: '+([...'blinkLeft','blinkRight','smile','concerned'].filter(n=>morphs.has(n)).join(', ')||'not detected')+'\nMaterials: '+mats.size;
+}
+function setAnimation(w,name){if(!w.mixer||!w.animations.length)return;w.mixer.stopAllAction();const c=w.animations.find(c=>c.name.toLowerCase().includes(name.toLowerCase()));if(name==='none'||!c){w.clip=null;return;}w.clip=w.mixer.clipAction(c);w.clip.play();}
+function setExpression(w,expr){if(!w.object)return;w.object.traverse(o=>{if(!o.isMesh||!o.morphTargetDictionary||!o.morphTargetInfluences)return;const d=o.morphTargetDictionary,a=o.morphTargetInfluences;for(const k of Object.keys(d))if(/blink|smile|concern/i.test(k))a[d[k]]=0;
+ const set=(k,v)=>{if(d[k]!==undefined)a[d[k]]=v;};
+ if(expr==='smile'){set('smile',1);set('mouthSmileLeft',.8);set('mouthSmileRight',.8)}
+ else if(expr==='concerned'){set('concerned',1);set('browInnerUp',.55)}
+ else if(expr==='blink'){set('blinkLeft',1);set('blinkRight',1);set('eyeBlinkLeft',1);set('eyeBlinkRight',1)}
+});}
+function syncCameras(){views.forEach(v=>v.frame());document.querySelectorAll('[data-angle]').forEach(b=>b.setAttribute('aria-pressed',Math.abs(angle-(+b.dataset.angle))<.001?'true':'false'))}
+const original=view(document.getElementById('original'),'original');
+const candidate=view(document.getElementById('candidate'),'candidate');
+const loader=new THREE3.GLTFLoader();
+loader.load('assets/characters/efe.gltf.json',g=>original.setModel(g),undefined,e=>document.getElementById('oldInfo').textContent='Cannot load the shipped V55 model. Use a local HTTP server under dist. '+e.message);
+function handle(file){if(!file)return;document.getElementById('candidateTitle').textContent=file.name;document.getElementById('newInfo').textContent='Reading '+file.name+'…';
+ if(file.size>90*1024*1024){document.getElementById('newInfo').textContent='File over 90 MB: please optimize and try again.';return;}
+ file.arrayBuffer().then(buffer=>{loader.parse(buffer,'',g=>{candidate.setModel(g)},e=>{document.getElementById('newInfo').textContent='Could not parse candidate: '+(e&&e.message||e)})}).catch(e=>document.getElementById('newInfo').textContent=e.message);
+}
+document.getElementById('file').addEventListener('change',e=>handle(e.target.files[0]));
+const drop=document.getElementById('candidate');drop.addEventListener('dragover',e=>{e.preventDefault();drop.style.outline='3px dashed #a98d48'});drop.addEventListener('dragleave',()=>drop.style.outline='none');drop.addEventListener('drop',e=>{e.preventDefault();drop.style.outline='none';handle(e.dataTransfer.files[0])});
+document.querySelectorAll('[data-angle]').forEach(b=>b.addEventListener('click',()=>{angle=+b.dataset.angle;syncCameras()}));
+document.getElementById('frameFace').addEventListener('click',()=>{face=true;document.getElementById('frameFace').setAttribute('aria-pressed','true');document.getElementById('frameFull').setAttribute('aria-pressed','false');syncCameras()});
+document.getElementById('frameFull').addEventListener('click',()=>{face=false;document.getElementById('frameFace').setAttribute('aria-pressed','false');document.getElementById('frameFull').setAttribute('aria-pressed','true');syncCameras()});
+document.getElementById('expression').addEventListener('change',e=>{activeExpr=e.target.value;views.forEach(v=>setExpression(v,activeExpr))});
+document.getElementById('animation').addEventListener('change',e=>{activeAnim=e.target.value;views.forEach(v=>setAnimation(v,activeAnim))});
+document.getElementById('capture').addEventListener('click',()=>{const a=original.renderer.domElement,b=candidate.renderer.domElement;const W=1200,H=670,canvas=document.createElement('canvas');canvas.width=W;canvas.height=H;const c=canvas.getContext('2d');c.fillStyle='#f5f0e3';c.fillRect(0,0,W,H);c.drawImage(a,0,50,600,580);c.drawImage(b,600,50,600,580);c.fillStyle='#1f4539';c.font='bold 24px Georgia';c.fillText('CURRENT V55',25,35);c.fillText('NEW CANDIDATE',630,35);c.font='15px system-ui';c.fillText('Compound Days · Studio audition (not an in-game capture)',20,H-15);const link=document.createElement('a');link.download='compound-days-character-audition.png';link.href=canvas.toDataURL('image/png');link.click()});
+function tick(){requestAnimationFrame(tick);const dt=Math.min(clock.getDelta(),.05);views.forEach(v=>{if(v.mixer)v.mixer.update(dt);v.renderer.render(v.scene,v.camera)})}tick();
+})();
+</script></body></html>
