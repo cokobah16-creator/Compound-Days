@@ -1,5 +1,5 @@
 {
- "build": "v54-bd2fb07e",
+ "build": "v55-64d0feab",
  "passed": true,
  "checks": [
   {
@@ -15,9 +15,9 @@
     },
     "items": 23,
     "withoutV41": {
-     "dayThree": "c691bda8:17333",
-     "closed": "e6958d86:99136",
-     "layer2": "689a6222:217342"
+     "dayThree": "9a2ecc15:17334",
+     "closed": "237d6ae5:98974",
+     "layer2": "838b5c77:217342"
     }
    }
   },
@@ -332,9 +332,9 @@
    "name": "10. save-modes-and-cost: the scene after a new household as without v41; stripState has no life.gist38; online no v41 object, back offline; \"No, keep it\" changes nothing; none after an enterWorld into day 2 or newgame; no Math.random call inside v41's builds and no performance.now, Date.now or Math.random read by ada-v41.js; an inert frame: 0 blocked, 0 levelAt, 0 builds over 600 frames; v38-v40 saves keep the keys of S and S.life and gain no G.b41; a v41 save with all six pieces home, and one with a piece in the hands, load in the v40 build (a copy without the v41 tags) with no error through a visit day's reroute and the storage list, b41 kept",
    "passed": true,
    "info": {
-    "count": 2349,
+    "count": 2223,
     "sceneCount": {
-     "objects": 2349,
+     "objects": 2223,
      "sameAsWithout": true
     },
     "v40build": {
@@ -802,7 +802,7 @@
     "sheetRows": 203,
     "longestRunShipped": 4,
     "longestRunWithin": 4,
-    "shipped": 6479
+    "shipped": 6488
    }
   },
   {
@@ -1475,24 +1475,24 @@
  },
  "withoutV40": {
   "error": null,
-  "scene": 2346,
-  "random": 12,
+  "scene": 2220,
+  "random": 81,
   "hooks": "9,9,17,false",
   "hooksRef": "9,9,17,false",
   "passed": true
  },
  "withoutV39": {
   "error": null,
-  "scene": 2346,
-  "random": 12,
+  "scene": 2220,
+  "random": 81,
   "hooks": "7,7,17,false",
   "hooksRef": "7,7,17,false",
   "passed": true
  },
  "withoutV38": {
   "error": null,
-  "scene": 2346,
-  "random": 12,
+  "scene": 2220,
+  "random": 81,
   "hooks": "6,6,17,false",
   "hooksRef": "6,6,17,false",
   "passed": true

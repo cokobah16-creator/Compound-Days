@@ -1,5 +1,5 @@
 {
- "build": "v54-bd2fb07e",
+ "build": "v55-64d0feab",
  "passed": true,
  "checks": [
   {
@@ -35,7 +35,7 @@
    "passed": true,
    "info": {
     "hero": [
-     43,
+     34,
      0
     ],
     "built": [

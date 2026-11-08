@@ -27,7 +27,9 @@ function union(a,b){a=find(a);b=find(b);if(a!==b)parent[a]=b}
 for(let t=0;t<idx.length;t+=3){union(idx[t],idx[t+1]);union(idx[t],idx[t+2]);}
 const groups=new Map();
 for(let i=0;i<verts.length;i++){const root=find(i);if(!groups.has(root))groups.set(root,[]);groups.get(root).push(i);}
-const lobes=[...groups.values()].filter(ids=>ids.length===135&&ids.every(i=>verts[i][0]>.10&&verts[i][1]>.32));
+// v55 head: the wrap is refit onto the smaller anatomical skull (tools/hero_head.py), which brings the lobes in and down
+// (about x 0.08-0.16, y 0.28-0.32), so they are found on the wearer's left above 0.25 m rather than x 0.10 / y 0.32
+const lobes=[...groups.values()].filter(ids=>ids.length===135&&ids.every(i=>verts[i][0]>.05&&verts[i][1]>.25));
 assert.equal(lobes.length,2,'expect two isolated knot lobes');
 for(const ids of lobes){
  const high=Math.max(...ids.map(i=>verts[i][1]));

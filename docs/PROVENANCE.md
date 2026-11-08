@@ -64,3 +64,8 @@ The v37 review's fixes to the bench (build v37-d30ea49c) are our own too: the be
 ## v54: face revision portraits (the owner's renders, MakeHuman CC0 anatomy)
 
 `dist/assets/faces/*.webp` are the owner's Blender 4.0.2 / Cycles renders from `Compound_Days_Face_Revision_Game_Images.zip`. Per the package's own provenance, the head mesh, target morphs, eye geometry and skin and eye textures behind them come from MakeHuman Community's core assets, released under CC0 1.0 (https://github.com/makehumancommunity/makehuman, LICENSE.ASSETS.md). The package's license files are kept unchanged in `docs/licenses/`.
+
+## v55: the anatomical head (MakeHuman CC0 anatomy, rebuilt for the game)
+
+The hero's head and neck (`HeadSkin` in `dist/assets/characters/efe.gltf.json`), its eyes, and the head shape keys are built by `tools/hero_head.py` from MakeHuman Community's official core assets, released under CC0 1.0: the hm08 base mesh, the macro, face and expression targets and the high-poly eye proxy with its brown eye texture, vendored unchanged in `source/makehuman/` from https://github.com/makehumancommunity/makehuman at commit a8bc2d54ff0ac92e78ff71431b1023eda42bf482, with the repository's `LICENSE.md` and `LICENSE.ASSETS.md` beside them and every file's own CC0 header kept. The face recipe, the placement on the rig, the lip, liner and brow paint, the strand brows, the lashes, the stubble textures and the hair refit are our own. `source/hero_head_v55.blend` is the editable Blender scene the tool writes. The owner's own face-revision source archive (its `anatomical_mesh.py`, `cd_heads.py` and Blender scenes) was not available for this build; the head starts from the same MakeHuman assets its provenance names.
+

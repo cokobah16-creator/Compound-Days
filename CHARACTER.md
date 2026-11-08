@@ -38,19 +38,21 @@ Attributes: `POSITION`, `NORMAL`, `TEXCOORD_0`, `COLOR_0`, `JOINTS_0`, `WEIGHTS_
 
 ### Head
 
-The `Head` joint carries rigid, unskinned modelled face parts in Head-joint space: `eye_white`, `iris`, `pupil`, `eye_hi` (both sides), `face_lash`, `face_brow`, ears (`skin_dark`), `lip_top`, `lip`, tongue, `hair_scalp`, `hair_locs`, `hair_band`, `earring` and an empty `face_beard` attachment. Material names matter: `color-v28.js` recolours `skin`, `skin_dark`, `eye_white`, `iris`, `lip_top`, `lip` and the `hair` material of `face_brow*` nodes. The built-in locs and scalp are hidden whenever a wardrobe hairstyle is equipped (`heroIsHairMesh` matches node names containing hair/locs/braid/twist/afro/scalp/wig/wrap or a material named `hair*`).
+From v55 the visible head is its own skinned mesh, `HeadSkin` (material `skin`, child of the root `Efe` beside `Body`, bound to the same skin): MakeHuman's CC0 head and neck built by `tools/hero_head.py`, chin at 1.475 m and crown at 1.775 m, the open end of the neck at 1.335 m inside every collar (radius at most 0.058 m below 1.41 m), weighted Spine2 -> Neck -> Head. The old head and neck pieces of the `skin` primitive are deleted, so the `skin` primitive now ends below 1.40 m. `HeadSkin` carries `COLOR_0`: lips, liner, brow shadow and nostrils painted as multipliers of the skin colour, so every skin swatch keeps them (`head-v55.js` turns vertex colours and morph targets back on after `heroLambert`). The lashes (`face_lash`, material `lash`), the strand brows (`face_brow`, material `hair`) and the two beard shells (`face_beard_stubble`, `face_beard_boxed`) are skinned meshes too. All five carry the same four shape keys, named in `mesh.extras.targetNames`: `masc`, `old`, `smile`, `blinkLeft`, `blinkRight`, `concerned`.
+
+The `Head` joint carries the rigid parts in Head-joint space: the fitted eyes (`eye_l`, `eye_r`, each with `eye_white`, `iris`, `pupil`, `eye_hi`), the `earring` and its mirror `face_hoop` on the new lobes, `hair_scalp`, `hair_locs`, `hair_band` (refitted to the new skull) and the empty `face_beard` attachment. Material names matter: `color-v28.js` recolours `skin`, `skin_dark`, `eye_white`, `iris` and the `hair` material of `face_brow*`. The Head joint is drawn at scale 1: the head is sized by its geometry.
 
 ### Root extras
 
 The root node `Efe` carries:
 
 ```json
-"extras": {"hairMount": {"x": 0, "y": 0.215, "z": 0, "scale": 0.6767, "headR": 0.3},
-           "headCentre": [0, 1.645, 0], "version": 5, "visualRevision": "..."}
+"extras": {"hairMount": {"x": 0, "y": 0.2734, "z": 0.0261, "scale": 0.4301, "headR": 0.3},
+           "headCentre": [0, 1.7034, 0.0261], "version": 5, "visualRevision": "...", "head55": {...}}
 ```
 
 - `hairMount` places the game's built-in procedural hairstyles (`hairOnto`) when a wardrobe hair file is not loaded yet: `x,y,z` is the head centre in Head-joint space, `headR` the radius the built-in styles were modelled around, `scale` the factor that maps them onto this skull. With the wardrobe files present it is only the loading fallback, but it must stay.
-- `headCentre` is the head centre in model space (1.645 m; the skull is about 0.35 m wide). The creator face camera (`polish-v30.js`) and the hair/headwear thumbnails (`environment-v31.js`) frame this point.
+- `headCentre` is the head centre in model space (v55: 1.70 m; the skull is about 0.22 m wide, it was 0.35 m before v55). The creator face camera (`polish-v30.js`) and the hair/headwear thumbnails (`environment-v31.js`) frame this point.
 
 ### Animation
 
@@ -97,7 +99,7 @@ The verifiable form of (2) is that the piece's inverse bind matrices are **byte-
 
 ### Hair
 
-Hair and headwear files are rigid: no skin, `POSITION`/`NORMAL` (optionally `TEXCOORD_0` and textures), authored in **Head-joint space** (origin at the `Head` joint, Y up, +Z toward the face). `wardrobeEquip` copies each node's world transform, parents the meshes under the Head bone in a `wardrobeHair` group and names them `wearhair_<node>`. Materials whose names start with `hair` take the hair colour (`visual-v21.js` darkens them and `authored-v34.js` then sets the final managed-path colour `AUTHORED34.hairColour`); `beard*` a lighter shade; anything else (`gold` cuffs, `scalp_parts`, `wrap_print`, `hair_detail`) keeps its authored colour. The pieces are sized for the hero skull: the scalp boundary comes from `hair_lowtaper`, the skull is about 0.35 m wide, the crown about 0.43 m above the Head joint and the head centre 0.215 m above it, as `hairMount.y` and `headCentre` state.
+Hair and headwear files are rigid: no skin, `POSITION`/`NORMAL` (optionally `TEXCOORD_0` and textures), authored in **Head-joint space** (origin at the `Head` joint, Y up, +Z toward the face). `wardrobeEquip` copies each node's world transform, parents the meshes under the Head bone in a `wardrobeHair` group and names them `wearhair_<node>`. Materials whose names start with `hair` take the hair colour (`visual-v21.js` darkens them and `authored-v34.js` then sets the final managed-path colour `AUTHORED34.hairColour`); `beard*` a lighter shade; anything else (`gold` cuffs, `scalp_parts`, `wrap_print`, `hair_detail`) keeps its authored colour. The pieces are sized for the hero skull. From v55 `tools/hero_head.py` moves every hair file (and the head-borne vertices of the jewellery files) from the v21 skull to the anatomical one, keeping each point's height above the skin; it always starts from the files as shipped in v54 (commit cb762f9), and each file records the fit in its extras (`fit55`: vertices, roots buried in the old scalp, vertices inside the new skin, and vertices the refit newly pushed inside, which must be about zero).
 
 ## Delivering a new authored base mesh
 

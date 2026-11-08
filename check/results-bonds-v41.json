@@ -1,5 +1,5 @@
 {
- "build": "v54-bd2fb07e",
+ "build": "v55-64d0feab",
  "passed": true,
  "checks": [
   {
@@ -31,8 +31,8 @@
      "pepper": 28
     },
     "moods": {
-     "bright": 53,
-     "worried": 41,
+     "bright": 46,
+     "worried": 48,
      "tired": 44,
      "easy": 62
     }

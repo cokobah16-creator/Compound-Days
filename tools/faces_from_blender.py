@@ -24,6 +24,13 @@ from mathutils import Vector
 from mathutils.bvhtree import BVHTree
 from PIL import Image
 
+# v55: the hero's head is now built by tools/hero_head.py (MakeHuman anatomy). This v53 tool resculpts the pre-v53 head
+# from 61dcd87 and would silently put that head back, so it refuses to run over a v55 hero unless asked explicitly.
+_dst=Path(__file__).resolve().parents[1]/'dist/assets/characters/efe.gltf.json'
+if _dst.exists() and '"head55"' in _dst.read_text()[:4000000] and '--restore-v53-head' not in sys.argv:
+    sys.exit('faces_from_blender.py (v53) would replace the v55 anatomical head with the old one. Run tools/hero_head.py '
+             'instead, or pass --restore-v53-head if that is really what you want.')
+
 # ---- gl ------------------------------------------------------------
 def load(path):
     g=json.load(open(path)); buf=base64.b64decode(g['buffers'][0]['uri'].split(',')[1]); return g,buf

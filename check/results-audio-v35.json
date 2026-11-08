@@ -1,5 +1,5 @@
 {
-  "build": "v54-bd2fb07e",
+  "build": "v55-64d0feab",
   "passed": true,
   "checks": [
     {
@@ -56,7 +56,7 @@
           "catch",
           "water"
         ],
-        "biteAfterSeconds": 3.2
+        "biteAfterSeconds": 4
       }
     },
     {
