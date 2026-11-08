@@ -4,7 +4,7 @@
   "files": {
     "CHARACTER.md": "70b69ff8056b98cc6590dbae761a422b7fb69ca069b51cf30175b9b85b55b5de",
     "CONTRIBUTING.md": "7299185a49f58b2c08322b9206398cf217d708bbb2d3724dc2fe0acc30942e93",
-    "README.md": "d6dc376cadc36d3e20d7008c5dbf2bf1cdd7ed9575a6e831a34a885169daf9fa",
+    "README.md": "e90f6bc270f8e19a2c08a495e6bd59f388b572806e7f1607894d5295627672e9",
     "START_HERE.txt": "4399605481bb82ec3dabf49b26186f24331aae7d803f54a55b7f4ecd1c9c2d0e",
     "api/turn.js": "af5f4d0c446b7e356b912cb306ddb3e30bc0d5f171a1979bdd568ef3fa7ebf1f",
     "check/bench-route-v36.json": "735c61e9fbe8a8022b84db877d3bbe70de35fa63b08686e092feac874a10e606",
@@ -281,7 +281,6 @@
     "docs/TESTING_football.md": "94e4230cda82d78a37eeb10ef84a66e308c860711d22149d4a21f4b3e3716177",
     "docs/TESTING_gist.md": "0aa257be489364741d644defd272ca46e50e1e4109921d20a8ba6b8bb1f64c83",
     "docs/TESTING_v35.md": "38b8aee78ddc757156384cad6434a2111b5b010980ca1354e439ccc8c3910e88",
-    "tools/__pycache__/wardrobe_from_blend.cpython-313.pyc": "1dd90fbdaa9cded0202975686dfd6686a4edb684ae49c12097f7fc1748f098a5",
     "tools/bench-route-v36.cjs": "5636fb4a59696a3a280d789ee78bc8415b40d7a7590c8b7bf8001223fbcbc7f8",
     "tools/build-materials-v31.py": "a68f4aea6840a4f8b0209ef58a8a7afa8253d1a5e61b74ef128344a86af2a27f",
     "tools/build_hair.py": "0a51651b98c6bf79472fa074e89cc07d79e78ee2d278b48a9a6e09df1c4f498e",
