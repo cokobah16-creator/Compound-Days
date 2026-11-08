@@ -41,7 +41,8 @@ function head55Tick(g,dt){ const F=g&&g.hero&&g.hero.face55; if(!F||!g.hero.morp
  F.t+=Math.min(dt||0.016,0.1); let b=0;
  if(F.t>F.next){ const k=(F.t-F.next)/HEAD55.blinkLen; b=k<1?Math.sin(Math.PI*k):0; if(k>=1){ F.t=0; F.next=HEAD55.blinkEvery[0]+Math.random()*(HEAD55.blinkEvery[1]-HEAD55.blinkEvery[0]); } }
  head55Set(g,'blinkLeft',b); head55Set(g,'blinkRight',b);
- const waving=g.current==='wave';
+ // the wave clip is started as a one-shot action (football celebrations, the creator pose) without changing g.current
+ const W=g.actions&&g.actions.wave, waving=g.current==='wave'||!!(W&&W.isRunning()&&W.getEffectiveWeight()>0.1);
  F.smile=(F.smile||0)+((waving?0.8:0)-(F.smile||0))*Math.min(1,(dt||0.016)*6); head55Set(g,'smile',F.smile);
 }
 if(typeof animAvatar==='function'){ const head55Anim=animAvatar;

@@ -1,5 +1,5 @@
 {
- "build": "v55-cc9409a3",
+ "build": "v55-64d0feab",
  "passed": true,
  "checks": [
   {
@@ -134,7 +134,8 @@
       "old": 0
      }
     },
-    "blinkPeak": 0.99
+    "blinkPeak": 0.99,
+    "waveSmile": 0.7
    }
   },
   {

@@ -119,7 +119,12 @@ const r4=x=>Math.round(x*1e4)/1e4;
   // blink in the per-frame animation call
   const g=mk(Object.assign({},looks.player,{rig:'hero'}));g.hero.face55.next=0.01;let peak=0;const anim=run('animAvatar');for(let f=0;f<20;f++){anim(g,f/60,false,false,0,1/60);peak=Math.max(peak,Math.min(g.hero.morph55[0].morphTargetInfluences[d.blinkLeft],g.hero.morph55[0].morphTargetInfluences[d.blinkRight]));}
   assert(peak>0.9,'blink plays '+peak);
-  return {lashBlinkDrop:r4(lb),oneEyeCross:r4(cross),innerBrowLift:r4(bu/bn),cornerLift:r4(cs/cn),eyeSurroundMove:r4(eyeMove),cast,blinkPeak:+peak.toFixed(2)};});
+  // the smile follows the wave clip when it is started as a one-shot action (as the football celebration does)
+  const gw=mk(Object.assign({},looks.player,{rig:'hero'}));let smile=0;
+  if(gw.actions&&gw.actions.wave){const A=gw.actions.wave;A.reset();A.setLoop(THREE.LoopOnce,1);A.setEffectiveWeight(1);A.play();}
+  for(let f=0;f<20;f++){anim(gw,f/60,false,false,0,1/60);smile=Math.max(smile,gw.hero.morph55[0].morphTargetInfluences[d.smile]);}
+  assert(smile>0.5,'a one-shot wave smiles '+smile);
+  return {lashBlinkDrop:r4(lb),oneEyeCross:r4(cross),innerBrowLift:r4(bu/bn),cornerLift:r4(cs/cn),eyeSurroundMove:r4(eyeMove),cast,blinkPeak:+peak.toFixed(2),waveSmile:+smile.toFixed(2)};});
 
  check('7. The orange wrap and every hairstyle were moved onto the new skull: no hair is pushed into the skin by the refit (strand roots buried in the old scalp stay buried), and the wrap comes down to just above the brows',()=>{
   // nearest HeadSkin vertex (3 cm grid) and its normal: a hair point more than 2 mm behind it is inside
