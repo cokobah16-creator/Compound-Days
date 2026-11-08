@@ -1,7 +1,7 @@
 /* v55 "Character rebuild": the anatomical head (tools/hero_head.py, MakeHuman CC0 anatomy) in the game.
 
    The hero asset now carries the head as its own skinned mesh, HeadSkin, beside the five Body primitives, with the
-   lashes and the two beard shells as skinned meshes too. All of them share four shape keys: masc, old, smile, blink.
+   lashes and the two beard shells as skinned meshes too. All of them share six shape keys: masc, old, smile, blinkLeft, blinkRight, concerned.
    heroLambert (index.html) rebuilds every material without vertex colours or morph targets, so this pass turns them
    back on where the geometry has them: HeadSkin's COLOR_0 holds the painted lips, lash line, brows and nostrils as
    multipliers of the skin colour, so any skin swatch keeps them.
@@ -29,7 +29,7 @@ function head55Apply(g,look){
  for(const o of ms){ const mats=Array.isArray(o.material)?o.material:[o.material];
   for(const m of mats){ if(!m) continue; m.morphTargets=true; if(o.geometry.attributes.color) m.vertexColors=true; m.needsUpdate=true; } }
  if(g.hero.bones&&g.hero.bones.head) g.hero.bones.head.scale.setScalar(1);
- const f=(look&&look.face55)||{}; head55Set(g,'masc',+f.masc||0); head55Set(g,'old',+f.old||0); head55Set(g,'smile',0); head55Set(g,'blink',0);
+ const f=(look&&look.face55)||{}; head55Set(g,'masc',+f.masc||0); head55Set(g,'old',+f.old||0); head55Set(g,'smile',0); head55Set(g,'blinkLeft',0); head55Set(g,'blinkRight',0); head55Set(g,'concerned',0);
  g.hero.face55={masc:+f.masc||0,old:+f.old||0,next:HEAD55.blinkEvery[0]+Math.random()*(HEAD55.blinkEvery[1]-HEAD55.blinkEvery[0]),t:0};
  return g;
 }
@@ -40,7 +40,7 @@ if(typeof makeHeroAvatar==='function'){ const head55Make=makeHeroAvatar;
 function head55Tick(g,dt){ const F=g&&g.hero&&g.hero.face55; if(!F||!g.hero.morph55||!g.hero.morph55.length) return;
  F.t+=Math.min(dt||0.016,0.1); let b=0;
  if(F.t>F.next){ const k=(F.t-F.next)/HEAD55.blinkLen; b=k<1?Math.sin(Math.PI*k):0; if(k>=1){ F.t=0; F.next=HEAD55.blinkEvery[0]+Math.random()*(HEAD55.blinkEvery[1]-HEAD55.blinkEvery[0]); } }
- head55Set(g,'blink',b);
+ head55Set(g,'blinkLeft',b); head55Set(g,'blinkRight',b);
  const waving=g.current==='wave';
  F.smile=(F.smile||0)+((waving?0.8:0)-(F.smile||0))*Math.min(1,(dt||0.016)*6); head55Set(g,'smile',F.smile);
 }

@@ -6,7 +6,7 @@ are kept beside them). The rig, bind pose, clips and the five Body primitives st
 
   1. MakeHuman head: the hm08 base mesh with the African female young macro target and the face recipe below (cheeks,
      jaw, chin, nose, lips, eyes), cut at the base of the neck. Shape keys for the cast and the expression are the
-     differences of further targets: masc (African male young), old (African female old), smile and blink.
+     differences of further targets: masc (African male young), old (African female old), smile, blinkLeft, blinkRight and concerned.
   2. Proportions: the head is scaled to 0.30 m chin to crown (about six heads to the figure instead of 4.3) and the
      neck is lengthened so the chin sits at 1.475 m and the open end of the neck sits inside every collar (radius held
      under 0.058 m below 1.41 m). Nothing is done with the Head joint's scale.
@@ -39,6 +39,8 @@ MHD=ROOT/'source/makehuman'
 DST=ROOT/'dist/assets/characters/efe.gltf.json'
 WARD=ROOT/'dist/assets/wardrobe'
 WARD_PIN='cb762f9'   # the wardrobe as shipped in v54, before any v55 refit: reruns always start from these files
+# except where a later master commit changed a wardrobe file itself: PR #23 lowered the wrap's two knot lobes
+WARD_PIN_FILE={'headwrap_everyday.gltf.json':'1786b4c'}
 
 # ============================================================== glTF helpers
 def load(path):
@@ -240,7 +242,11 @@ RECIPE={'macrodetails/african-female-young':1.0,
 SHAPES={'masc':{'macrodetails/african-male-young':1.0,'macrodetails/african-female-young':-1.0},
         'old':{'macrodetails/african-female-old':1.0,'macrodetails/african-female-young':-1.0},
         'smile':{'expression/mouth-corner-puller':0.55,'expression/mouth-elevation':0.15,'expression/eye-left-slit':0.2,'expression/eye-right-slit':0.2},
-        'blink':{'expression/eye-left-closure':1.0,'expression/eye-right-closure':1.0}}
+        # the expression set named in docs/PLAYER1_CHARACTER_ART_V55.md: each eye on its own, and a concerned look
+        # (inner brows raised, a little frown at the mouth)
+        'blinkLeft':{'expression/eye-left-closure':1.0},'blinkRight':{'expression/eye-right-closure':1.0},
+        'concerned':{'expression/eyebrows-left-inner-up':0.8,'expression/eyebrows-right-inner-up':0.8,'expression/mouth-depression':0.3,
+                     'expression/mouth-corner-puller':-0.25}}
 YCUT=6.05     # MakeHuman height where the neck is cut (below it the shoulders flare)
 
 # ============================================================== placement on the hero
@@ -441,7 +447,7 @@ def build(write_blend=False):
     top=P[:,1].max(); cen=L['centre']
     ex['hairMount']={'x':0,'y':round(float(cen[1]-HEADY),4),'z':round(float(cen[2]),4),'scale':round(0.6767*L['skullR']/0.175,4),'headR':0.3}
     ex['headCentre']=[0,round(float(cen[1]),4),round(float(cen[2]),4)]
-    ex['visualRevision']='v55 anatomical head: MakeHuman CC0 head and neck at adult proportions, fitted eyes, painted lips and lash line, shape keys masc/old/smile/blink.'
+    ex['visualRevision']='v55 anatomical head: MakeHuman CC0 head and neck at adult proportions, fitted eyes, painted lips and lash line, shape keys masc/old/smile/blinkLeft/blinkRight/concerned.'
     ex['head55']={'tool':'tools/hero_head.py','source':'MakeHuman core assets CC0 (makehumancommunity/makehuman a8bc2d5)','recipe':RECIPE_JSON(),
                   'shapes':list(SHAPES),'chin':Y_CHIN,'crown':round(float(top),4),'skullR':round(float(L['skullR']),4),'tris':int(len(Ft)),
                   'browY':round(float(L['brow_y']),4),'mouthY':round(float(L['mouth'][1]),4),'eyes':[np.round(L['eye_r'],4).tolist(),np.round(L['eye_l'],4).tolist()],'eyeR':round(float(L['eyeR_l']),4)}
@@ -713,7 +719,7 @@ def refit_wardrobe(R):
     HEADY=1.43; report={}
     for f in sorted(WARD.glob('*.gltf.json')):
         name=f.name[:-10]
-        tmp=ROOT/('tools/.ward-'+f.name); tmp.write_bytes(subprocess.check_output(['git','-C',str(ROOT),'show',WARD_PIN+':dist/assets/wardrobe/'+f.name]))
+        tmp=ROOT/('tools/.ward-'+f.name); tmp.write_bytes(subprocess.check_output(['git','-C',str(ROOT),'show',WARD_PIN_FILE.get(f.name,WARD_PIN)+':dist/assets/wardrobe/'+f.name]))
         g,buf=load(tmp); tmp.unlink(); doc=Doc(g,buf); changed=False; stats=[0,0,0,0]
         kind=next((n['extras']['kind'] for n in g['nodes'] if 'extras' in n and 'kind' in n['extras']),None)
         W,par=world_mats(g)

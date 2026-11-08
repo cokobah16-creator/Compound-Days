@@ -6,7 +6,7 @@ const assert=require('assert/strict'),fs=require('fs'),path=require('path'),cryp
 const harness=require('./runtime-harness.cjs');
 const OUT=path.join(__dirname,'results-head-v55.json');
 const HERO_ORDER=['Hips','Spine','Spine1','Spine2','Neck','Head','HeadTop_End','LeftShoulder','LeftArm','LeftForeArm','LeftHand','LeftHandEnd','RightShoulder','RightArm','RightForeArm','RightHand','RightHandEnd','LeftUpLeg','LeftLeg','LeftFoot','LeftToeBase','LeftToe_End','RightUpLeg','RightLeg','RightFoot','RightToeBase','RightToe_End'];
-const SHAPES=['masc','old','smile','blink'];
+const SHAPES=['masc','old','smile','blinkLeft','blinkRight','concerned'];
 // v54 (build v54-bd2fb07e) with the wrap and the overalls, measured with the same code: the new head must not cost more
 const V54={drawCalls:35,triangles:102740,heroBytes:5193880};
 const checks=[];
@@ -22,7 +22,7 @@ const r4=x=>Math.round(x*1e4)/1e4;
  const HP=head&&head.geometry.attributes.position, HN=head&&head.geometry.attributes.normal, HC=head&&head.geometry.attributes.color;
  const vtx=(A,i)=>[A.getX(i),A.getY(i),A.getZ(i)];
 
- check('1. The rig contract is kept: 27 joints in hero order with the same inverse binds, 8 clips, the five Body primitives, and the new head, lashes, brows and beards are skinned meshes on the same bones with the four shape keys',()=>{
+ check('1. The rig contract is kept: 27 joints in hero order with the same inverse binds, 8 clips, the five Body primitives, and the new head, lashes, brows and beards are skinned meshes on the same bones with the six shape keys',()=>{
   const body=meshOf('Body'); assert(body&&body.isSkinnedMesh);
   assert.deepEqual(JSON.parse(JSON.stringify(body.skeleton.bones.map(b=>b.name))),HERO_ORDER);
   const bodyPrims=body.parent.children.filter(o=>o.isSkinnedMesh).map(o=>o.material.name);
@@ -95,12 +95,16 @@ const r4=x=>Math.round(x*1e4)/1e4;
    out[s]=hs.material.color.getHexString();}
   return {lipTop:r4(T),lipLower:r4(Lo),cheek:r4(C),skin:out};});
 
- check('6. The shape keys do what they say and the cast wears them: blink closes the upper lid over the eye, smile lifts the mouth corners, masc and old keep the eyes still, and the men and elders get their shapes',()=>{
+ check('6. The shape keys do what they say and the cast wears them: blinkLeft and blinkRight each close one upper lid, smile lifts the mouth corners, concerned raises the inner brows, masc and old keep the eyes still, and the men and elders get their shapes',()=>{
   const d=head.morphTargetDictionary,M=head.geometry.morphAttributes.position;
   const my=ex.head55.mouthY,eyes=ex.head55.eyes;
-  const L=meshOf('face_lash'),LM=L.geometry.morphAttributes.position[L.morphTargetDictionary.blink];let lb=0,n=0;
-  for(let i=0;i<LM.count;i++){lb+=LM.getY(i);n++;} lb/=n;
-  assert(lb<-0.006,'blink moves the lashes down '+lb);
+  const L=meshOf('face_lash'),LP=L.geometry.attributes.position;let lb=0,n=0,cross=0;
+  for(const [k,sd] of [['blinkLeft',1],['blinkRight',-1]]){const LM=L.geometry.morphAttributes.position[L.morphTargetDictionary[k]];
+   for(let i=0;i<LM.count;i++){if(Math.sign(LP.getX(i))===sd){lb+=LM.getY(i);n++;}else cross=Math.max(cross,Math.abs(LM.getY(i)));}}
+  lb/=n;
+  assert(lb<-0.006,'each blink moves its lashes down '+lb);assert(cross<0.0005,'a one-eye blink moves the other eye '+cross);
+  const CM=M[d.concerned];let bu=0,bn=0;for(let i=0;i<HP.count;i++){const [x,y,z]=vtx(HP,i);if(Math.abs(x)<0.03&&Math.abs(y-ex.head55.browY)<0.01&&z>0.12){bu+=CM.getY(i);bn++;}}
+  assert(bn>0&&bu/bn>0.0008,'concerned raises the inner brows '+bu/bn);
   const S=M[d.smile];let cs=0,cn=0,ms=0,mn=0,eyeMove=0;
   for(let i=0;i<HP.count;i++){const [x,y,z]=vtx(HP,i);
    if(Math.abs(Math.abs(x)-0.026)<0.004&&Math.abs(y-my)<0.004&&z>0.14){cs+=S.getY(i);cn++;}
@@ -113,9 +117,9 @@ const r4=x=>Math.round(x*1e4)/1e4;
   for(const k of ['tunde','bassey','mallam'])assert.equal(cast[k].masc,1,k); for(const k of ['nkechi','ada','bisi','player'])assert.equal(cast[k].masc,0,k);
   assert(cast.bassey.old>0.5);
   // blink in the per-frame animation call
-  const g=mk(Object.assign({},looks.player,{rig:'hero'}));g.hero.face55.next=0.01;let peak=0;const anim=run('animAvatar');for(let f=0;f<20;f++){anim(g,f/60,false,false,0,1/60);peak=Math.max(peak,g.hero.morph55[0].morphTargetInfluences[d.blink]);}
+  const g=mk(Object.assign({},looks.player,{rig:'hero'}));g.hero.face55.next=0.01;let peak=0;const anim=run('animAvatar');for(let f=0;f<20;f++){anim(g,f/60,false,false,0,1/60);peak=Math.max(peak,Math.min(g.hero.morph55[0].morphTargetInfluences[d.blinkLeft],g.hero.morph55[0].morphTargetInfluences[d.blinkRight]));}
   assert(peak>0.9,'blink plays '+peak);
-  return {lashBlinkDrop:r4(lb),cornerLift:r4(cs/cn),eyeSurroundMove:r4(eyeMove),cast,blinkPeak:+peak.toFixed(2)};});
+  return {lashBlinkDrop:r4(lb),oneEyeCross:r4(cross),innerBrowLift:r4(bu/bn),cornerLift:r4(cs/cn),eyeSurroundMove:r4(eyeMove),cast,blinkPeak:+peak.toFixed(2)};});
 
  check('7. The orange wrap and every hairstyle were moved onto the new skull: no hair is pushed into the skin by the refit (strand roots buried in the old scalp stay buried), and the wrap comes down to just above the brows',()=>{
   // nearest HeadSkin vertex (3 cm grid) and its normal: a hair point more than 2 mm behind it is inside

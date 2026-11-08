@@ -1,9 +1,9 @@
 {
- "build": "v55-873d3eb3",
+ "build": "v55-cc9409a3",
  "passed": true,
  "checks": [
   {
-   "name": "1. The rig contract is kept: 27 joints in hero order with the same inverse binds, 8 clips, the five Body primitives, and the new head, lashes, brows and beards are skinned meshes on the same bones with the four shape keys",
+   "name": "1. The rig contract is kept: 27 joints in hero order with the same inverse binds, 8 clips, the five Body primitives, and the new head, lashes, brows and beards are skinned meshes on the same bones with the six shape keys",
    "passed": true,
    "info": {
     "inverseBindSha": "a0658cd22403",
@@ -96,10 +96,12 @@
    }
   },
   {
-   "name": "6. The shape keys do what they say and the cast wears them: blink closes the upper lid over the eye, smile lifts the mouth corners, masc and old keep the eyes still, and the men and elders get their shapes",
+   "name": "6. The shape keys do what they say and the cast wears them: blinkLeft and blinkRight each close one upper lid, smile lifts the mouth corners, concerned raises the inner brows, masc and old keep the eyes still, and the men and elders get their shapes",
    "passed": true,
    "info": {
     "lashBlinkDrop": -0.0072,
+    "oneEyeCross": 0,
+    "innerBrowLift": 0.0025,
     "cornerLift": 0.0035,
     "eyeSurroundMove": 0.0051,
     "cast": {
@@ -239,7 +241,7 @@
     "drawCalls": 26,
     "triangles": 80532,
     "headTriangles": 14872,
-    "heroBytes": 5471615,
+    "heroBytes": 5918403,
     "v54": {
      "drawCalls": 35,
      "triangles": 102740,
@@ -257,7 +259,9 @@
      "masc",
      "old",
      "smile",
-     "blink"
+     "blinkLeft",
+     "blinkRight",
+     "concerned"
     ],
     "headTriangles": 8484
    }
