@@ -6,7 +6,11 @@ const harness=require('./runtime-harness.cjs');
 const HERO_ORDER=['Hips','Spine','Spine1','Spine2','Neck','Head','HeadTop_End','LeftShoulder','LeftArm','LeftForeArm','LeftHand','LeftHandEnd','RightShoulder','RightArm','RightForeArm','RightHand','RightHandEnd','LeftUpLeg','LeftLeg','LeftFoot','LeftToeBase','LeftToe_End','RightUpLeg','RightLeg','RightFoot','RightToeBase','RightToe_End'];
 const CLIPS=['idle','walk','carry','carryLow','walkCarry','walkCarryLow','pick','wave'];
 const BODY_SLOTS=['skin','top','bottom','shoe','sole'];
-const V21_WARDROBE=['ankara_shirt','ankara_trousers','hair_afro','hair_boxbraids','hair_locs','hair_lowtaper','hair_twists','hair_wig','headwrap_everyday','jeans','kaftan_trousers','kaftan_tunic','leather_sandals','sandals','sneakers','tee'];
+// v52: the six everyday outfits and six new ones wear the owner's modelled wardrobe (cd_*); the hair pieces are v21's
+const V21_WARDROBE=['hair_afro','hair_boxbraids','hair_locs','hair_lowtaper','hair_twists','hair_wig','headwrap_everyday'].concat(
+ ['tee','office','ankara','track','kaftan','lounge','skirtset','overalls','jumpsuit','linen','utility','wrapdress'].map(o=>'cd_'+o),
+ ['office','kaftan','skirtset','jumpsuit','linen','wrapdress'].map(o=>'cd_'+o+'_jewellery'),
+ ['sneakers','loafers','sandals','runners','slides','maryjanes','heels'].map(s=>'cd_shoes_'+s)).sort();
 const CAST_SCALE={ada:.98,tunde:1.035,bassey:1.01,nkechi:.97,oyelaran:.95},AMBIENT_SCALES=[1,.97,1.025,.99];
 const SEAT_HIP=.10,SEAT_FOOT=.10; // polish-v30 seatPose constants for the v21 rig
 const SOLE_TOL=.01; // a sole mesh rests within 1 cm of the floor
@@ -49,7 +53,7 @@ let build=null;const checks=[];
  assert.equal(heroUrl,'assets/characters/efe.gltf.json?v='+run('BUILD_ID'));assert.equal(run('HERO.url'),'assets/characters/efe.gltf.json');assert.equal(run('AUTHORED34.installed'),true);
  pass('Hero loads from efe.gltf.json (fetched with the build revision query) with 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras',{joints:27,clips:CLIPS,inverseBindSha:heroSha,hairMount:extras.hairMount,headCentre:extras.headCentre,requestUrl:heroUrl});
 
- // 2. The 16 authored wardrobe pieces, bound exactly like the hero.
+ // 2. The authored wardrobe pieces (v21 hair, v52 outfits), bound exactly like the hero.
  same(Object.keys(run('WARDROBE.cache')).sort(),V21_WARDROBE); // the harness parses the files itself; the in-page loader (WARDROBE.failed) is a browser matter
  same([...new Set(run("[...Object.values(WARDROBE.hair),...Object.values(WARDROBE.outfits).flat()]"))].sort(),V21_WARDROBE);
  const heroInv=heroBody.skeleton.boneInverses.map(m=>m.elements);let skins=0,rigid=0;
@@ -64,7 +68,7 @@ let build=null;const checks=[];
    const ex=run('wardrobeExtras(WARDROBE.cache[wardrobeId])');assert(['garment','feet','hair'].includes(ex.kind),id+' kind');assert(Array.isArray(ex.slots),id+' slots');
    for(const s of ex.slots)assert(BODY_SLOTS.includes(s),id+' slot '+s);
  }
- pass('Exactly the 16 v21 wardrobe pieces are referenced and parse, and every skinned piece carries the hero inverse bind matrices byte for byte',{pieces:V21_WARDROBE.length,skins,rigidMeshes:rigid});
+ pass('Exactly the '+V21_WARDROBE.length+' wardrobe pieces (v21 hair, v52 outfits) are referenced and parse, and every skinned piece carries the hero inverse bind matrices byte for byte',{pieces:V21_WARDROBE.length,skins,rigidMeshes:rigid});
 
  // 3. Both players on the hero rig.
  const players=[0,1].map(i=>{const look=run('lookFor('+i+')');assert.equal(look.rig,'hero');const g=run('makeHeroAvatar(lookFor('+i+'))');assert(g&&g.hero&&g.hero.body);
@@ -103,8 +107,8 @@ let build=null;const checks=[];
    for(const o of g.hero.body.parent.children)if(o.isSkinnedMesh&&['top','bottom','shoe','sole'].includes(o.material.name))assert.equal(o.visible,true,outfit+' hides '+o.material.name);
    equipped.painted.push(outfit);
  }
- same(equipped.painted.sort(),['lounge','office','track']);run("S.p[1].outfit='ankara';");
- pass('Every hair id equips rigid Head-space meshes, every outfit equips bound wear_ meshes and hides its slots; office, track and lounge build as painted slots',equipped);
+ same(equipped.painted.sort(),[]); // v52: every outfit is modelledrun("S.p[1].outfit='ankara';");
+ pass('Every hair id equips rigid Head-space meshes, every outfit equips bound wear_ meshes and hides its slots; since v52 no outfit is left as painted slots',equipped);
 
  // 5. Legacy look migration.
  assert.equal(run('typeof migrateLook34'),'function');assert.equal(run('typeof migrateLooks34'),'function');
@@ -171,12 +175,12 @@ let build=null;const checks=[];
      const m=run(`(()=>{const g=players[${i}].g;g.updateMatrixWorld(true);const seat=g.userData.seat,b=g.hero.bones,W=o=>o.getWorldPosition(new THREE.Vector3());const cushion=seatPoint(seat,seat.x,seat.height,seat.depth);
        return {scale:g.scale.y,hips:W(b.hips).y-cushion.y,feet:[W(b.leftfoot).y-seat.floorY,W(b.rightfoot).y-seat.floorY],hands:[W(b.lefthand).y-cushion.y,W(b.righthand).y-cushion.y],knees:[W(b.leftleg).y-seat.floorY,W(b.rightleg).y-seat.floorY]};})()`);
      close(m.hips,SEAT_HIP*m.scale);for(const f of m.feet)close(f,SEAT_FOOT*m.scale);for(const h of m.hands)assert(h>.12);for(const k of m.knees)assert(k>SEAT_FOOT*m.scale&&k<.7);
-     // Independent of the constants: the skinned sole meshes rest on the floor, and the trousers' thigh band (rest y >= .60, the part that
+     // Independent of the constants: the skinned sole meshes (v52: the modelled shoes, whose lowest point is the sole) rest on the floor, and the trousers' thigh band (rest y >= .60, the part that
      // should follow the thighs) sinks no deeper below the cushion top than the documented v21 weighting limit.
      const mesh=run(`(()=>{const g=players[${i}].g;g.updateMatrixWorld(true);const seat=g.userData.seat;const cushion=seatPoint(seat,seat.x,seat.height,seat.depth);const soles=[],sink=[];const v=new THREE.Vector3();
-       g.traverse(o=>{if(!o.isMesh||!o.visible)return;const mn=(o.material&&o.material.name)||'';const sole=/^sole/.test(mn),bottom=/^wear_.*(trousers|jeans)/.test(o.name)||(!/^wear_/.test(o.name)&&mn==='bottom');if(!sole&&!bottom)return;
+       g.traverse(o=>{if(!o.isMesh||!o.visible)return;const mn=(o.material&&o.material.name)||'';const sole=/^sole/.test(mn)||/^wear_cd_shoes_/.test(o.name),bottom=/^wear_.*(trousers|jeans)/.test(o.name)||/^wear_cd_(?!shoes_)[a-z]+_CD/.test(o.name)||(!/^wear_/.test(o.name)&&mn==='bottom');if(!sole&&!bottom)return;
          const P=o.geometry.attributes.position;let min=1e9,deep=-1e9;for(let k=0;k<P.count;k++){const rest=P.getY(k);v.fromBufferAttribute(P,k);if(o.isSkinnedMesh)o.boneTransform(k,v);v.applyMatrix4(o.matrixWorld);if(v.y<min)min=v.y;if(bottom&&rest>=.60&&cushion.y-v.y>deep)deep=cushion.y-v.y;}
-         if(sole)soles.push({name:o.name,aboveFloor:min-seat.floorY});else sink.push({name:o.name,belowCushion:deep});});return {soles,sink};})()`);
+         if(sole)soles.push({name:o.name,aboveFloor:min-seat.floorY});else sink.push({name:o.name,belowCushion:deep});});const cd=soles.filter(s=>/^wear_cd_shoes_/.test(s.name));const out=soles.filter(s=>!/^wear_cd_shoes_/.test(s.name));if(cd.length)out.push(cd.reduce((a,b)=>a.aboveFloor<b.aboveFloor?a:b));return {soles:out,sink};})()`);
      assert(mesh.soles.length>0,'no sole mesh');for(const s of mesh.soles)assert(Math.abs(s.aboveFloor)<=SOLE_TOL*m.scale,s.name+' sole '+s.aboveFloor.toFixed(3)+' from the floor');
      assert(mesh.sink.length>0,'no trouser or bottom mesh');for(const s of mesh.sink)assert(s.belowCushion<=SEAT_SINK_LIMIT*m.scale,s.name+' thigh band '+s.belowCushion.toFixed(3)+' below the cushion');
      seated.push({rotation:+rotation.toFixed(2),player:i,hips:+m.hips.toFixed(3),feet:m.feet.map(v=>+v.toFixed(3)),soleAboveFloor:mesh.soles.map(s=>+s.aboveFloor.toFixed(3)),thighBandBelowCushion:mesh.sink.map(s=>+s.belowCushion.toFixed(3))});

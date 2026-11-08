@@ -105,8 +105,8 @@ const checks=[];let runFn=null;
 
  // 12. Parallel wardrobe prefetch: every piece requested at once, the players' pieces first, callbacks and the one spawnNPCs preserved.
  run("const realLoad=wardrobeLoad,realSpawn=spawnNPCs,realRefresh=refreshAvatar;globalThis.PF={calls:[],cbs:[],spawn:0,refresh:[]};wardrobeLoad=function(n,cb){PF.calls.push(n);PF.cbs.push([n,cb]);};spawnNPCs=function(){PF.spawn++;};refreshAvatar=function(i){PF.refresh.push(i);};wardrobePrefetch();");
- const calls=J('PF.calls');assert.equal(calls.length,16);assert.equal(new Set(calls).size,16);assert.deepEqual(calls.slice(0,4),J('wardrobeNames(lookFor(0))'));assert.equal(J('FEEL34.prefetch.total'),16);assert.equal(run('PF.spawn'),0);
- run("PF.cbs.forEach(([n,cb])=>cb(WARDROBE.cache[n]));");assert.equal(run('PF.spawn'),1);assert.equal(J('FEEL34.prefetch.done'),16);assert(J('PF.refresh').includes(0)&&J('PF.refresh').includes(1));
+ const PIECES=J('[...new Set([...Object.values(WARDROBE.hair),...Object.values(WARDROBE.outfits).flat()])].length'),mine=J('wardrobeNames(lookFor(0))');const calls=J('PF.calls');assert.equal(calls.length,PIECES);assert.equal(new Set(calls).size,PIECES);assert.deepEqual(calls.slice(0,mine.length),mine);assert.equal(J('FEEL34.prefetch.total'),PIECES);assert.equal(run('PF.spawn'),0);
+ run("PF.cbs.forEach(([n,cb])=>cb(WARDROBE.cache[n]));");assert.equal(run('PF.spawn'),1);assert.equal(J('FEEL34.prefetch.done'),PIECES);assert(J('PF.refresh').includes(0)&&J('PF.refresh').includes(1));
  run("wardrobeLoad=realLoad;spawnNPCs=realSpawn;refreshAvatar=realRefresh;");
  pass('Wardrobe prefetch is parallel, player-first, and keeps the per-piece callbacks',{first:calls.slice(0,4)});
 

@@ -1,5 +1,5 @@
 {
-  "build": "v50-39b3966d",
+  "build": "v52-27204397",
   "passed": true,
   "checks": [
     {
@@ -30,15 +30,15 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v50-39b3966d"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v52-27204397"
       }
     },
     {
-      "name": "Exactly the 16 v21 wardrobe pieces are referenced and parse, and every skinned piece carries the hero inverse bind matrices byte for byte",
+      "name": "Exactly the 32 wardrobe pieces (v21 hair, v52 outfits) are referenced and parse, and every skinned piece carries the hero inverse bind matrices byte for byte",
       "passed": true,
       "details": {
-        "pieces": 16,
-        "skins": 14,
+        "pieces": 32,
+        "skins": 25,
         "rigidMeshes": 14
       }
     },
@@ -47,8 +47,8 @@
       "passed": true,
       "details": {
         "meshes": [
-          42,
-          45
+          43,
+          43
         ],
         "looks": [
           [
@@ -64,7 +64,7 @@
         "hairColour": "#17110C",
         "colours": {
           "#905F3F": {
-            "skinMaterials": 7,
+            "skinMaterials": 9,
             "hairMaterials": 2,
             "skinLinear": [
               0.2175,
@@ -73,7 +73,7 @@
             ]
           },
           "#C9926A": {
-            "skinMaterials": 8,
+            "skinMaterials": 10,
             "hairMaterials": 1,
             "skinLinear": [
               0.4556,
@@ -85,7 +85,7 @@
       }
     },
     {
-      "name": "Every hair id equips rigid Head-space meshes, every outfit equips bound wear_ meshes and hides its slots; office, track and lounge build as painted slots",
+      "name": "Every hair id equips rigid Head-space meshes, every outfit equips bound wear_ meshes and hides its slots; since v52 no outfit is left as painted slots",
       "passed": true,
       "details": {
         "hair": {
@@ -98,15 +98,20 @@
           "wig": 3
         },
         "outfits": {
-          "tee": 6,
-          "ankara": 8,
-          "kaftan": 7
+          "tee": 7,
+          "ankara": 6,
+          "kaftan": 9,
+          "office": 10,
+          "track": 8,
+          "lounge": 5,
+          "skirtset": 6,
+          "overalls": 8,
+          "jumpsuit": 6,
+          "linen": 5,
+          "utility": 8,
+          "wrapdress": 7
         },
-        "painted": [
-          "lounge",
-          "office",
-          "track"
-        ]
+        "painted": []
       }
     },
     {
@@ -158,7 +163,7 @@
         "soleTolerance": 0.01,
         "thighBandSinkLimit": 0.2,
         "cases": 8,
-        "maxThighBandSink": 0.113,
+        "maxThighBandSink": 0.116,
         "seated": [
           {
             "rotation": 0,
@@ -169,11 +174,12 @@
               0.1
             ],
             "soleAboveFloor": [
-              -0.002
+              0
             ],
             "thighBandBelowCushion": [
-              -0.063,
-              0.104
+              -0.142,
+              0.116,
+              -1000000000
             ]
           },
           {
@@ -188,7 +194,9 @@
               0
             ],
             "thighBandBelowCushion": [
-              0.113
+              -0.133,
+              -0.187,
+              0.116
             ]
           },
           {
@@ -200,11 +208,12 @@
               0.1
             ],
             "soleAboveFloor": [
-              -0.002
+              0
             ],
             "thighBandBelowCushion": [
-              -0.063,
-              0.104
+              -0.142,
+              0.116,
+              -1000000000
             ]
           },
           {
@@ -219,7 +228,9 @@
               0
             ],
             "thighBandBelowCushion": [
-              0.113
+              -0.133,
+              -0.187,
+              0.116
             ]
           },
           {
@@ -231,11 +242,12 @@
               0.1
             ],
             "soleAboveFloor": [
-              -0.002
+              0
             ],
             "thighBandBelowCushion": [
-              -0.063,
-              0.104
+              -0.142,
+              0.116,
+              -1000000000
             ]
           },
           {
@@ -250,7 +262,9 @@
               0
             ],
             "thighBandBelowCushion": [
-              0.113
+              -0.133,
+              -0.187,
+              0.116
             ]
           },
           {
@@ -262,11 +276,12 @@
               0.1
             ],
             "soleAboveFloor": [
-              -0.002
+              0
             ],
             "thighBandBelowCushion": [
-              -0.063,
-              0.104
+              -0.142,
+              0.116,
+              -1000000000
             ]
           },
           {
@@ -281,7 +296,9 @@
               0
             ],
             "thighBandBelowCushion": [
-              0.113
+              -0.133,
+              -0.187,
+              0.116
             ]
           }
         ]
@@ -291,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v50-39b3966d"
+        "build": "v52-27204397"
       }
     }
   ],

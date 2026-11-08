@@ -1,5 +1,5 @@
 {
-  "build": "v50-39b3966d",
+  "build": "v52-27204397",
   "passed": true,
   "checks": [
     {
@@ -56,7 +56,7 @@
           "catch",
           "water"
         ],
-        "biteAfterSeconds": 4
+        "biteAfterSeconds": 3.8
       }
     },
     {

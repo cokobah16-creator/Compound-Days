@@ -1,5 +1,5 @@
 {
- "build": "v50-39b3966d",
+ "build": "v52-27204397",
  "passed": true,
  "checks": [
   {
@@ -47,7 +47,7 @@
       true
      ]
     },
-    "digest": "73477a60:16921",
+    "digest": "ee7f6726:16855",
     "lines": [
      "te04",
      "ne04",
@@ -66,7 +66,7 @@
     },
     "glasses": "out at 12:00, no record",
     "withoutModules": {
-     "digest": "73477a60:16921",
+     "digest": "ee7f6726:16855",
      "lines": [
       "te04",
       "ne04",
@@ -1076,7 +1076,7 @@
      "stepRan": true
     },
     "sceneCount": {
-     "objects": 2310,
+     "objects": 2323,
      "sameAsWithout": true
     }
    }
@@ -1100,12 +1100,12 @@
     "afternoon": {
      "casts": 4,
      "seen": [
-      "snapper",
-      "mullet",
-      "mullet",
+      "bonga",
+      "bonga",
+      "bonga",
       "croaker"
      ],
-     "at": 13.33
+     "at": 13.34
     },
     "shelfRow": "Your shelf: 1 of 10. Ada’s carvings: 1 of 6.",
     "carved": {
@@ -1250,7 +1250,7 @@
    "name": "M17 Keep it for Ada clears the catch itself (not through Let it swim)",
    "check": 11,
    "result": "red",
-   "first": "kept for Ada through Let it swim: [null,{\"i\":0,\"phase\":\"caught\",\"elapsed\":3.466666666666157,\"biteAt\":3.441998312016949,\"wall35\":null,\"nib35\":true},false,{\"id\":\"croaker\",\"day\":4}]"
+   "first": "kept for Ada through Let it swim: [null,{\"i\":0,\"phase\":\"caught\",\"elapsed\":2.3999999999996504,\"biteAt\":2.397856251243502,\"wall35\":null,\"nib35\":true},false,{\"id\":\"croaker\",\"day\":4}]"
   },
   {
    "name": "M18 the gist plan records Ada's ask (not pure)",

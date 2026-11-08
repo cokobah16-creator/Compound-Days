@@ -15,6 +15,16 @@ Choose **Play on two phones** to share one household across two phones (one star
 
 Two-phone play goes phone to phone over WebRTC (see v47 below). Companion and same-screen play work offline.
 
+## v52 — Wardrobe
+
+The owner sent `Compound_Days_Wardrobe.blend`: twelve outfits, each on a posed character with its own footwear and jewellery. They are on the players now. The six everyday outfits the creator already had (oversized tee, office shirt, Ankara two-piece, tracksuit, kaftan, lounge set) wear the modelled versions, and six new ones join the creator: Ankara skirt set, denim overalls, evening jumpsuit, linen co-ord, utility layers and wrap dress. Neighbours who wear one of the six get it too.
+
+- **Fitting.** `tools/wardrobe_from_blend.py` (run with Blender's Python module, `pip install bpy`) reads every outfit scene with its modifiers applied, decimates dense meshes for phones, and retargets the garments from the source body (about 3.4 units tall, A-pose) onto the hero: the trunk by a height map and slice-by-slice body widths (the body inside the cloth is scaled to the hero's, the cloth's looseness beyond it is kept at about a third), arms and legs along their own axes, with sleeves below the waist following the arm only when they are nearest the source arm. Cloth is pushed a few millimetres outside the hero body and takes its skin weights from the nearest hero vertices, so it bends with the existing 27-joint skeleton. Earrings hang from the hero's ear lobes. Footwear is mapped by the sole's box onto the hero's shoe box and weighted to the foot and toe bones. Pieces of one material are merged into one mesh.
+- **Assets.** `dist/assets/wardrobe/cd_<outfit>.gltf.json` (clothes), `cd_<outfit>_jewellery` (six outfits) and `cd_shoes_<style>` (sneakers, loafers, sandals, runners, slides, Mary Janes, heels; the open ones carry a skin-coloured foot): about 10 MB in all.
+- **In the game.** `dist/src/wardrobe-v52.js` (object `WARD52`) lists the outfits and their pieces in `WARDROBE.outfits` and wraps `wardrobeEquip`: under the clothes the base body's own top and bottom stay on in the wearer's skin, drawn a little inside the body (`extras.skinUnder`), so short sleeves, shorts and skirts show arms and legs. The outfits keep the colours they were made in. A kit shoe from v50 still replaces the outfit's footwear. Random looks keep picking from the original six, and a save stores only the outfit id, as before.
+
+Two older harnesses named the v21 wardrobe pieces and are updated to the new list: `verify-authored.cjs` (the piece list, no outfit left as painted slots, and the seated sole check now finds the modelled shoe's lowest point) and `verify-feel.cjs` (the prefetch count). `check/verify-wardrobe-v52.cjs` checks the outfit lists and files, that every asset is skinned to the hero's joints, that every outfit dresses the hero, the fallback before the wardrobe arrives, random looks and the creator, the kit shoe, and determinism.
+
 ## v50 — Kit
 
 The owner sent two Blender render sheets, a Footwear collection (F01–F08) and an Accessories collection (A01–A12, six slots), both for either player. They are in the game as one collection of twenty pieces in seven slots: feet, head, face, ears, neck, wrists and bag.
