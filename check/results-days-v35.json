@@ -1,5 +1,5 @@
 {
-  "build": "v50-39b3966d",
+  "build": "v52-6f2c9eec",
   "passed": true,
   "checks": [
     {
@@ -58,9 +58,9 @@
       "passed": true,
       "info": {
         "first": {
-          "bite": 4,
-          "steps": 20,
-          "fish": "croaker",
+          "bite": 4.2,
+          "steps": 21,
+          "fish": "snapper",
           "how": "keep"
         }
       }
@@ -76,11 +76,12 @@
       "name": "A9. Path A day 2: catches sold from the catch card until the purse reaches ₦9,000 (one or two)",
       "passed": true,
       "info": {
-        "sold": 1,
+        "sold": 2,
         "purse": 9600,
         "bites": [
-          4,
-          3.2
+          4.2,
+          2.8,
+          3.4
         ]
       }
     },
@@ -228,12 +229,16 @@
             "at-rocks",
             "cast",
             "bite",
-            "catch croaker",
+            "catch snapper",
             "request nkechi:1",
             "cast",
             "bite",
-            "catch snapper",
-            "sell catch:snapper",
+            "catch tilapia",
+            "sell catch:tilapia",
+            "cast",
+            "bite",
+            "catch tilapia",
+            "sell catch:tilapia",
             "buy armchair",
             "place armchair:veranda",
             "place armchair:veranda",
@@ -296,14 +301,13 @@
       "passed": true,
       "info": {
         "purseAfterErrand": 2700,
-        "sold": 5,
+        "sold": 4,
         "bites": [
-          4,
-          3.8,
-          3.4,
+          4.4,
+          2.8,
           3.6,
           3.2,
-          4
+          2.4
         ],
         "cell": [
           5,

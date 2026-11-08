@@ -1,5 +1,5 @@
 {
- "build": "v50-39b3966d",
+ "build": "v52-6f2c9eec",
  "passed": true,
  "checks": [
   {
@@ -438,11 +438,11 @@
       0.749
      ],
      "heights": [
-      1.449,
+      1.448,
       1.39
      ],
      "lowest": [
-      -0.021,
+      -0.018,
       -0.001
      ],
      "mixers": 2,
@@ -732,7 +732,7 @@
      "walkFrames": 600,
      "blockedPoints": 3000,
      "boxesNow": "c5bb00c9:175",
-     "digest": "eecf08f",
+     "digest": "7d8fb916",
      "sameAsWithout": true,
      "worldSignature": "f27b15e:175"
     },
