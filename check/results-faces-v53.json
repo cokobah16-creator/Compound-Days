@@ -1,9 +1,9 @@
 {
- "build": "v53-640de307",
+ "build": "v53-81af751f",
  "passed": true,
  "checks": [
   {
-   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint",
+   "name": "1. The rebuilt face keeps the names the colour passes read: two of each eye part, lids, lashes, strand brows, both lips, mouth line, nostrils, two beard shells and a second hoop, all on the Head joint, every face normal lit (none zero-length)",
    "passed": true,
    "info": {
     "materials": {
@@ -19,7 +19,8 @@
      "lip_top": 1,
      "lip": 1,
      "beard": 2
-    }
+    },
+    "zeroNormals": 0
    }
   },
   {

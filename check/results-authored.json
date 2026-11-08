@@ -1,5 +1,5 @@
 {
-  "build": "v53-640de307",
+  "build": "v53-81af751f",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v53-640de307"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v53-81af751f"
       }
     },
     {
@@ -308,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v53-640de307"
+        "build": "v53-81af751f"
       }
     }
   ],
