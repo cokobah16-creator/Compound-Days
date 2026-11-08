@@ -411,7 +411,7 @@ function adaSyncBundle41(){const W=ADA41.world,b=gistSave41(false),h=b&&b.hand;c
 // Ada's pieces in the flat: built into the base's furnGroup in their own places (after the base and every earlier wrapper built the flat)
 function homePieces41(){const W=ADA41.world;adaDropHome41();const b=gistSave41(false);if(!b||adaOnline41()||typeof furnGroup==='undefined'||!furnGroup)return;
  const H=ADA41.HOME;for(const f of ADA41.FLAT){if(!b.home[f.id])continue;const m=adaClone41(f.id,f.wood,'home');let pos=H[f.id];
-  if(f.id==='box'){const it=S.home&&Array.isArray(S.home.items)?S.home.items.find(x=>x.type==='fridge'):null;if(!it)continue;const [cx,cz]=cellToWorld(it.x,it.y);pos=[cx,1.7+0.09,2.30];m.position.set(pos[0],pos[1],pos[2]);}
+  if(f.id==='box'){const it=S.home&&Array.isArray(S.home.items)?S.home.items.find(x=>x.type==='fridge'):null;if(!it)continue;const [cx,cz]=cellToWorld(it.x,it.y);pos=[cx,1.7+0.09,cz-0.15];m.position.set(pos[0],pos[1],pos[2]);}
   else if(f.id==='plate'){m.position.set(pos[0],pos[1],pos[2]);}
   else m.position.set(pos[0],pos[1],pos[2]);
   furnGroup.add(m);W.home.push(m);}}

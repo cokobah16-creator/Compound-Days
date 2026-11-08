@@ -1,5 +1,5 @@
 {
-  "build": "v54-e02e0f68",
+  "build": "v54-bd2fb07e",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.645,
           0
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v54-e02e0f68"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v54-bd2fb07e"
       }
     },
     {
@@ -308,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v54-e02e0f68"
+        "build": "v54-bd2fb07e"
       }
     }
   ],
