@@ -13,7 +13,8 @@ const NAMES=[
  '4. A look still built before the wardrobe arrives (or without it) falls back to the painted body as before',
  '5. Random looks keep the original six outfits, and the creator offers all twelve',
  '6. A worn kit shoe still replaces the outfit\'s modelled footwear',
- '7. Determinism: two runs give identical reports'];
+ '7. Bisi keeps her plum and gold on the modelled Ankara two-piece',
+ '8. Determinism: two runs give identical reports'];
 
 function inner(){
  const {load}=require('./runtime-harness.cjs');const checks=[];
@@ -66,6 +67,9 @@ function inner(){
   step(5,()=>{run("S.p[0].outfit='wrapdress';S.kit50={owned:KIT50.ITEMS.map(x=>x.id),got:[]};S.p[0].kit={feet:'F03'};");
    const r=J(`(()=>{const g=makeAvatar(lookFor(0));let real=0,kit=0;g.traverse(o=>{if(o.isMesh&&o.visible&&/^wear_cd_shoes/.test(o.name))real++;if(o.isMesh&&o.userData.kit50)kit++;});return {real,kit};})()`);
    assert.equal(r.real,0,'modelled shoes hidden');assert.ok(r.kit>0,'kit shoes on');run("S.p[0].kit=undefined;");});
+  step(6,()=>{const r=J(`(()=>{const g=makeAvatar(Object.assign({},BISI39.LOOK,{rig:'hero'}));bisiCloth39(g);const out={};g.traverse(o=>{if(o.isMesh&&/^wear_cd_ankara_/.test(o.name))out[o.material.name]={hex:o.material.color.getHexString(),map:!!o.material.map};});return out;})()`);
+   const c=k=>J(`new THREE.Color(BISI39.CLOTH.${k}).getHexString()`);
+   assert.equal(r.CD_navy.hex,c('c1'));assert.equal(r.CD_cream.hex,c('c2'));assert.equal(r.CD_ankara.map,true);return r;});
   process.stdout.write(JSON.stringify(checks));
  })().catch(e=>{process.stdout.write(JSON.stringify([{name:'harness',passed:false,failure:String(e&&e.stack||e)}]));});
 }
@@ -74,7 +78,7 @@ if(process.argv[2]==='--inner'){inner();}
 else{
  const runOnce=()=>JSON.parse(cp.execFileSync(process.execPath,[__filename,'--inner'],{maxBuffer:1<<26,encoding:'utf8'}));
  const a=runOnce(),b=runOnce();const same=JSON.stringify(a)===JSON.stringify(b);
- const checks=a.concat([{name:NAMES[6],passed:same}]);
+ const checks=a.concat([{name:NAMES[7],passed:same}]);
  const build=(fs.readFileSync(path.resolve(__dirname,'..','dist','index.html'),'utf8').match(/const BUILD_ID='([^']+)';/)||[])[1];
  for(const c of checks)console.log((c.passed?'PASS ':'FAIL ')+c.name+(c.failure?'\n     '+c.failure:''));
  fs.writeFileSync(OUT,JSON.stringify({build,passed:checks.every(c=>c.passed),checks},null,1)+'\n');

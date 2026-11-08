@@ -51,3 +51,9 @@ const ward52Equip=wardrobeEquip;
 // modelled cloth is drawn from both sides, so a gap the fitting opened (at a shoulder) shows the cloth's inside, not the skin
 function ward52TwoSided(g){ g.traverse(o=>{ if(o.isMesh&&/^wear_cd_/.test(o.name)&&!/^wear_cd_shoes/.test(o.name)) (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{ if(m) m.side=THREE.DoubleSide; }); }); }
 wardrobeEquip=function(g,look,fit,skin,hairC){ const r=ward52Equip.apply(this,arguments); ward52SkinUnder(g,r,skin); ward52TwoSided(g); return r; };
+
+// Bisi (v39) wears the Ankara two-piece in her own plum and gold: her recolouring knew the v21 pieces' material names,
+// so the modelled Ankara's print, navy and cream take her colours too (the base top and bottom are skin under it)
+if(typeof bisiCloth39==='function'){ const ward52Bisi=bisiCloth39; bisiCloth39=function(g){ ward52Bisi.apply(this,arguments); const C=BISI39.CLOTH; let tex=null; try{ tex=typeof clothTexture==='function'?clothTexture(C.kind,C.c1,C.c2):null; }catch(e){ tex=null; }
+ g.traverse(o=>{ if(!o.isMesh||!/^wear_cd_ankara_/.test(o.name)) return; (Array.isArray(o.material)?o.material:[o.material]).forEach(m=>{ if(!m||!m.color) return;
+  if(m.name==='CD_ankara'){ m.color.set(tex?'#ffffff':C.c1); if(tex) m.map=tex; m.needsUpdate=true; } else if(m.name==='CD_navy'){ m.color.set(C.c1); } else if(m.name==='CD_cream'){ m.color.set(C.c2); } }); }); }; }

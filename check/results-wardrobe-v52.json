@@ -1,5 +1,5 @@
 {
- "build": "v52-27204397",
+ "build": "v52-6f2c9eec",
  "passed": true,
  "checks": [
   {
@@ -94,7 +94,25 @@
    "passed": true
   },
   {
-   "name": "7. Determinism: two runs give identical reports",
+   "name": "7. Bisi keeps her plum and gold on the modelled Ankara two-piece",
+   "passed": true,
+   "info": {
+    "CD_navy": {
+     "hex": "25061b",
+     "map": false
+    },
+    "CD_cream": {
+     "hex": "e28907",
+     "map": false
+    },
+    "CD_ankara": {
+     "hex": "ffffff",
+     "map": true
+    }
+   }
+  },
+  {
+   "name": "8. Determinism: two runs give identical reports",
    "passed": true
   }
  ]
