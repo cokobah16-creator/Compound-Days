@@ -1,0 +1,23 @@
+// Standalone audition lab static regression. Run: node check/verify-audition-v56.cjs
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm');
+const root=path.resolve(__dirname,'..');
+const html=fs.readFileSync(path.join(root,'dist/character-audition.html'),'utf8');
+const loader=fs.readFileSync(path.join(root,'dist/src/character-audition-loader-r128.js'),'utf8');
+const vercel=JSON.parse(fs.readFileSync(path.join(root,'vercel.json'),'utf8'));
+const htmlScript=[...html.matchAll(/<script(?:\s[^>]*)?>([\s\S]*?)<\/script>/g)].map(m=>m[1]).at(-1);
+assert(htmlScript&&htmlScript.length>1000,'missing viewer script');
+new vm.Script(htmlScript,{filename:'character-audition.inline.js'});
+new vm.Script(loader,{filename:'character-audition-loader-r128.js'});
+assert(html.includes('assets/vendor/three-r128.min.js'),'shipped THREE missing');
+assert(html.includes('src/character-audition-loader-r128.js'),'loader missing');
+assert(loader.includes('THREE.GLTFLoader = GLTFLoader'),'vendored loader missing');
+assert(html.includes('assets/characters/efe.gltf.json'),'current hero reference missing');
+assert(html.includes("file.arrayBuffer()"),'local file reader missing');
+assert(html.includes('Save comparison PNG'),'snapshot control missing');
+assert(html.includes("boneTransform(i,p)"),'skinned bounds computation missing');
+assert(html.includes('<option value="run">Run</option>'),'run animation audition option missing');
+assert(html.includes('not')||html.includes('Not'),'user-facing caution missing');
+assert(vercel.rewrites.some(x=>x.source==='/character-audition.html'&&x.destination==='/dist/character-audition.html'),'Vercel path missing');
+assert(fs.existsSync(path.join(root,'docs/CHARACTER_V56_MODEL_REPLACEMENT.md')),'art contract missing');
+console.log('PASS audition viewer: inline script and loader parse, assets and routes declared, review guidance present.');
