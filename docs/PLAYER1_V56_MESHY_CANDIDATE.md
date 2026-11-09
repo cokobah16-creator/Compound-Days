@@ -1,7 +1,7 @@
 # Player 1 V56 — Meshy candidate inspection (9 Nov 2026)
 
 ## Status
-**Generated, animated, structurally validated; NOT art-approved, merged or deployed.**
+**In the game from build v56 as Player 1's default model (the owner's decision, 9 Nov 2026).** See README “v56 — Player 1 V56” for what was repaired (shirt patches, mobile mesh, clips, skeleton) and what is still open below (face detail, separate hair and clothing meshes, expression shape keys).
 
 Owner uploaded actual full-resolution Meshy 7.1 source files: an unrigged model, rigged character, walking GLB and running GLB. A combined production experiment is stored in the *conversation asset pack*, not this GitHub repository (the available GitHub connector cannot upload binary GLBs). Upload it to a review-only asset route before any live test.
 

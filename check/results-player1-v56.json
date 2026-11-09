@@ -1,0 +1,111 @@
+{
+ "build": "v56-e7802f6e",
+ "passed": 7,
+ "total": 7,
+ "checks": [
+  {
+   "name": "1. The asset is a mobile build of the V56 pack: one skinned mesh of at most 35k triangles, WebP textures, under 3 MB, and the run is reproducible from the committed source",
+   "passed": true,
+   "info": {
+    "triangles": 31161,
+    "vertices": 29264,
+    "bytes": 2566884,
+    "sha256": "32b7d2af9841"
+   }
+  },
+  {
+   "name": "2. The skeleton follows the hero convention: 24 joints with the hero names, identity rest rotations, metres (head joint 1.40-1.48 m, crown 1.65-1.75 m), inverse binds that are pure translations",
+   "passed": true,
+   "info": {
+    "headJoint": 1.439,
+    "crown": 1.7,
+    "hairMount": {
+     "x": 0,
+     "y": 0.1894,
+     "z": 0.0261,
+     "scale": 0.4301,
+     "headR": 0.3
+    }
+   }
+  },
+  {
+   "name": "3. Every game clip is there, the walks loop, and one walk loop is the game stride (the pack walk measured 1.47 m per loop)",
+   "passed": true,
+   "info": {
+    "idle": 3.2,
+    "walk": 1.131,
+    "carry": 3.2,
+    "carryLow": 3.2,
+    "walkCarry": 1.131,
+    "walkCarryLow": 1.131,
+    "pick": 0.7,
+    "wave": 1.4,
+    "run": 1.51
+   }
+  },
+  {
+   "name": "4. A new household starts Player 1 as V56; an older save without a model keeps the Classic model; Player 2 is never V56",
+   "passed": true,
+   "info": {
+    "newGame": "v56"
+   }
+  },
+  {
+   "name": "5. Player 1 with V56 is built from the asset with the game animation set, the hero bone map, the carry anchor between the hands, and the contact shadow; the Classic hero is untouched",
+   "passed": true,
+   "info": {
+    "idle": {
+     "handGap": 0.569,
+     "anchorY": 0.841,
+     "anchorZ": -0.049,
+     "lowFoot": 0.109
+    },
+    "walk": {
+     "handGap": 0.629,
+     "anchorY": 0.805,
+     "anchorZ": 0.078,
+     "lowFoot": 0.159
+    },
+    "carry": {
+     "handGap": 0.136,
+     "anchorY": 1.224,
+     "anchorZ": 0.409,
+     "lowFoot": 0.109
+    },
+    "carryLow": {
+     "handGap": 0.312,
+     "anchorY": 0.874,
+     "anchorZ": 0.194,
+     "lowFoot": 0.109
+    },
+    "walkCarry": {
+     "handGap": 0.136,
+     "anchorY": 1.211,
+     "anchorZ": 0.5,
+     "lowFoot": 0.159
+    }
+   }
+  },
+  {
+   "name": "6. The kit goes on V56 and its torso and neck pieces hang at the hero joint heights",
+   "passed": true,
+   "info": {
+    "pieces": [
+     "kit50_bag",
+     "kit50_head",
+     "kit50_head",
+     "kit50_neck"
+    ],
+    "torso": 0.95,
+    "neck": 1.36
+   }
+  },
+  {
+   "name": "7. The creator offers Classic and V56 in the Body tab for Player 1 only, and the world redraws Player 1 when the choice changes",
+   "passed": true,
+   "info": {
+    "sigChanges": true
+   }
+  }
+ ]
+}
