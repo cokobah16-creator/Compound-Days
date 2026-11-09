@@ -66,3 +66,11 @@ The separate `.github/workflows/character-v64.yml` pipeline runs this page with 
 **A green workflow proves only that the Three.js/GLTFLoader benchmark works for the already shipped V55 model. It does not certify V63** because the repaired candidate GLB is not present in the GitHub repository. To decide V63 camera readiness, the reviewer must run the CLI with the actual V63 GLB and attach its separate 60-case result plus mobile creator screenshots.
 
 The CI workflow also does not run a true iPhone Safari benchmark.
+
+
+## Actual V64 benchmark runner self-test — 9 Nov 2026
+
+- GitHub Actions [successful run](https://github.com/cokobah16-creator/Compound-Days/actions/runs/42650569213) executed the **V55-as-candidate** fixture under headless Chromium, using the checked-out game's real Three.js r128 and GLTFLoader. The job installed Playwright Chromium and generated one JSON and screenshot artifact.
+- Result: **30 V55-as-candidate test cases passed, 0 zero-triangle failures, 0 page/console errors**. The workflow also exercised 30 V55 baseline cases, for **60 total**.
+- This is a proper renderer **harness proof**. It does **not** demonstrate V63. The V63 GLB is not in GitHub and was not passed to the runner.
+- Local V63 combined model inventory independently measured: `Player1_V61_NINE_ACTIONS_BOUND_FIXED.glb`, **11,795,724 bytes**, SHA256 `acf6851c76f4cd5010fc7737c294db70b0951f8e02f7a2d6cd85cde74e4359f0`, 27 joints, 9 actions, Armature scale 1.0, **131,691 triangles including the temporary fitting geometry**. The earlier 91,654-triangle number describes the original source model, **not** the combined V63 preview. This higher total makes optimization more urgent before mobile approval.
