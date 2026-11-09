@@ -57,3 +57,12 @@ The V63 binaries were available locally; their 27 joint hierarchy, nine clips an
 ### Ownership and release policy
 
 The V64 PR should remain draft until the JSON report and two phone-sized screen captures are attached. Do not merge the replacement avatar or change `dist/assets/characters/efe.gltf.json` as part of this test.
+
+
+## V55 baseline self-test in GitHub Actions
+
+The separate `.github/workflows/character-v64.yml` pipeline runs this page with **the shipped V55 hero as both the baseline and candidate**. `check/fixture-v64-hero-glb.cjs` converts the shipped V55 embedded glTF JSON to equivalent binary GLB so it can go through the candidate file input. The workflow installs Playwright/Chromium and executes the same 60-case bench, then attaches JSON and a screenshot.
+
+**A green workflow proves only that the Three.js/GLTFLoader benchmark works for the already shipped V55 model. It does not certify V63** because the repaired candidate GLB is not present in the GitHub repository. To decide V63 camera readiness, the reviewer must run the CLI with the actual V63 GLB and attach its separate 60-case result plus mobile creator screenshots.
+
+The CI workflow also does not run a true iPhone Safari benchmark.
