@@ -1,9 +1,9 @@
 {
-  "build": "v55-64d0feab",
+  "build": "v61-7275e9f6",
   "passed": true,
   "checks": [
     {
-      "name": "Hero loads from efe.gltf.json (fetched with the build revision query) with 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras",
+      "name": "Player 1's V61 file is requested first and the classic hero efe.gltf.json second, both with the build revision query (classic only with HERO61 disabled); the classic hero has 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras",
       "passed": true,
       "details": {
         "joints": 27,
@@ -30,7 +30,13 @@
           1.7034,
           0.0261
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v55-64d0feab"
+        "requestUrls": [
+          "assets/characters/player1-v61.glb?v=v61-7275e9f6",
+          "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+        ],
+        "classicOnlyUrls": [
+          "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+        ]
       }
     },
     {
@@ -308,7 +314,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v55-64d0feab"
+        "build": "v61-7275e9f6"
       }
     }
   ],

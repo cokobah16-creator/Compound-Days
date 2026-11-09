@@ -1,0 +1,511 @@
+{
+ "build": "v61-7275e9f6",
+ "passed": true,
+ "checks": [
+  {
+   "name": "The asset is a GLB 2.0 with one 27-joint skin in hero order, scale 1 on every joint and on the mesh's ancestors, orthonormal inverse binds with Hips at about (-0.006, -0.937, -0.016) m, the Body mesh of six primitives [skin, hair, top, bottom, shoe, top] with exactly POSITION/NORMAL/TEXCOORD_0/JOINTS_0/WEIGHTS_0 and no morph targets, one JPEG, eight clips the game recognises, root extras headCentre/hairMount/version 61, and under 5.5 MB",
+   "passed": true,
+   "info": {
+    "bytes": 5101400,
+    "sha256": "7b6548f0b0243d99e0389514cd930cb763bdff5c7b8d6eec01e74bc0ab21f62b",
+    "jsonChunkBytes": 165184,
+    "binChunkBytes": 4936188,
+    "generator": "Compound Days v61 hero converter (metre nodes, albedo only, no underlay, no morphs)",
+    "joints": 27,
+    "inverseBindSha256": "7a05724cba031825037b17cf218191d596834fa4768377c90100f073eaaca611",
+    "inverseBindDeterminants": [
+     1,
+     1
+    ],
+    "hipsInverseBindTranslation": [
+     -0.0059,
+     -0.9369,
+     -0.0162
+    ],
+    "primitives": [
+     "skin",
+     "hair",
+     "top",
+     "bottom",
+     "shoe",
+     "top"
+    ],
+    "trianglesByMaterial": {
+     "skin": 16115,
+     "hair": 29939,
+     "top": 15438,
+     "bottom": 24744,
+     "shoe": 5418
+    },
+    "triangles": 91654,
+    "image": {
+     "mime": "image/jpeg",
+     "bytes": 238284
+    },
+    "clips": [
+     "Idle",
+     "Walk",
+     "Carry",
+     "CarryLow",
+     "WalkCarry",
+     "WalkCarryLow",
+     "Pick",
+     "Wave"
+    ],
+    "extras": {
+     "headCentre": [
+      -0.0019,
+      1.5452,
+      0.0555
+     ],
+     "hairMount": {
+      "x": 0,
+      "y": 1.5452,
+      "z": 0,
+      "scale": 0.43,
+      "headR": 0.3
+     },
+     "version": 61,
+     "visualRevision": "v61",
+     "source": "Player1_V61_BLUE_FITTING_MOBILE.glb",
+     "sourceSha256": "c2950c3493fad3501513d214d7d67ee55356e080f02c1573b7d3814062991514"
+    }
+   }
+  },
+  {
+   "name": "makeAvatar(lookFor(0)) is the V61 figure: hero61 on the group, rig hero, the six skinned primitives visible (the hair among them), no wear_ mesh and no hairMount/wardrobeHair (also when the look's hair file is not cached), every textured material carrying the albedo in the asset's own colour (white for skin, hair, bottom and shoe; the asset's blue for the tee) with vertex colours off on materials whose geometry has no COLOR attribute, the underarm patch in that blue without a map, skin marked for authored-v34, 8 actions, current idle, an empty wardrobe report",
+   "passed": true,
+   "info": {
+    "skinnedMeshes": 6,
+    "visible": 6,
+    "triangles": 91654,
+    "colours": {
+     "skin": [
+      1,
+      1,
+      1
+     ],
+     "hair": [
+      1,
+      1,
+      1
+     ],
+     "top": [
+      0.32,
+      0.49,
+      0.77
+     ],
+     "bottom": [
+      1,
+      1,
+      1
+     ],
+     "shoe": [
+      1,
+      1,
+      1
+     ],
+     "patch": [
+      0.32,
+      0.49,
+      0.77
+     ]
+    },
+    "wearMeshes": 0,
+    "hairMounts": 0,
+    "actions": 8,
+    "current": "idle",
+    "wardrobe": {
+     "garments": [],
+     "hair": null
+    }
+   }
+  },
+  {
+   "name": "The clips drive it: walking bobs the Hips and selects walk, carrying selects carry and walkCarryLow, and the idle pose spans 1.68 to 1.72 m from the soles by skinned vertex bounds",
+   "passed": true,
+   "info": {
+    "walkBob": 0.0391,
+    "hipsWorldY": [
+     0.9391,
+     0.9427,
+     0.9447,
+     0.9424,
+     0.9358,
+     0.9274,
+     0.9194,
+     0.9142,
+     0.9092,
+     0.9056,
+     0.9069,
+     0.9171
+    ],
+    "idle": {
+     "minY": 0,
+     "maxY": 1.7,
+     "height": 1.7,
+     "vertices": 386670
+    },
+    "clipDurations": {
+     "idle": 0.033,
+     "walk": 1.067,
+     "carry": 2.2,
+     "carryLow": 2.2,
+     "walkCarry": 1.033,
+     "walkCarryLow": 1.033,
+     "pick": 2.5,
+     "wave": 2
+    }
+   }
+  },
+  {
+   "name": "heroLoad requests player1-v61.glb with the build revision query first and the classic efe.gltf.json second (authored-v34's wrapper, which installs its passes from a fresh state), both plain urls restored; with HERO61 disabled only the classic request is made",
+   "passed": true,
+   "info": {
+    "enabled": [
+     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
+     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+    ],
+    "authored34InstalledByHeroLoad": true,
+    "disabled": [
+     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+    ],
+    "alreadyReady": [
+     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+    ]
+   }
+  },
+  {
+   "name": "Fallback: when the V61 request fails the state is error, the Menu says why in words (a failed download, which GLTFLoader reports as a ProgressEvent, reads 'network error') and names the figure Player 1 uses, the classic asset was requested as before and makeAvatar(lookFor(0)) builds the classic hero with its wardrobe; a file without the joints is rejected before it is marked ready",
+   "passed": true,
+   "info": {
+    "requests": [
+     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
+     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+    ],
+    "state": "error",
+    "error": "simulated: request blocked",
+    "warning": "[Compound Days] V61 file for Player 1 not used; the classic asset stands in: simulated: request blocked",
+    "status": "V61 file not used (simulated: request blocked). Character asset: loading assets/characters/efe.gltf.json…",
+    "statusClassicReady": "V61 file not used (simulated: request blocked). Player 1 uses the classic hero. Character asset: assets/characters/efe.gltf.json loaded in 0 ms (8 clips).",
+    "progressEventError": "network error",
+    "classicAvatar": {
+     "hero61": false,
+     "rig": "hero",
+     "wear": 7,
+     "wearHair": 2
+    },
+    "rejected": "not a usable humanoid rig (skinned meshes: 0, missing joints: hips, head, lefthand, righthand, leftarm, rightarm, leftupleg, rightupleg)"
+   }
+  },
+  {
+   "name": "Everyone else is unchanged: makeAvatar(lookFor(1)) and the neighbours (CAST) are the classic hero with their wardrobe, not V61; Player 1 is the classic hero when V61 is disabled or a look opts out",
+   "passed": true,
+   "info": {
+    "player2": {
+     "rig": "hero",
+     "wearMeshes": 6
+    },
+    "castWearMeshes": {
+     "ada": 7,
+     "tunde": 8,
+     "bassey": 9,
+     "nkechi": 6,
+     "oyelaran": 5
+    },
+    "disabledPlayer1": {
+     "rig": "hero",
+     "wearMeshes": 7
+    },
+    "optedOutPlayer1": {
+     "rig": "hero",
+     "wearMeshes": 7
+    }
+   }
+  },
+  {
+   "name": "The Menu line names player1-v61.glb and says what Player 1 wears and that kit is not drawn on the V61 figure (the classic line's Player 1 fragment dropped, Player 2's kept); when the classic asset failed it says who uses the built-in figure, never that Player 1 does; disabled it is the classic line; loading it says so. Player 1's option thumbnails render the choice on the classic figure (the look opts out of V61), Player 2's unchanged",
+   "passed": true,
+   "info": {
+    "ready": "Character asset: assets/characters/player1-v61.glb loaded in 0 ms (8 clips). Player 1 wears the V61 look; Player 1’s skin tone, hair, headwear and outfit choices colour the portraits, not the V61 figure, and kit pieces are not drawn on it. Classic asset: assets/characters/efe.gltf.json loaded in 0 ms (8 clips). Player 2: modelled body; hair hair_boxbraids; clothes cd_ankara, cd_shoes_sandals.",
+    "classicFailed": "Character asset: assets/characters/player1-v61.glb loaded in 0 ms (8 clips). Player 1 wears the V61 look; Player 1’s skin tone, hair, headwear and outfit choices colour the portraits, not the V61 figure, and kit pieces are not drawn on it. The classic asset failed as well (simulated efe failure); Player 2 and the neighbours use the game’s built-in figure.",
+    "disabled": "Character asset: assets/characters/efe.gltf.json loaded in 0 ms (8 clips). Player 2: modelled body; hair hair_boxbraids; clothes cd_ankara, cd_shoes_sandals.",
+    "loading": "Character asset: loading assets/characters/player1-v61.glb… Classic asset: assets/characters/efe.gltf.json loaded in 0 ms (8 clips). Player 2: modelled body; hair hair_boxbraids; clothes cd_ankara, cd_shoes_sandals.",
+    "thumbnailLooks": [
+     {
+      "pi": 0,
+      "rig": "hero",
+      "hair": "braids",
+      "hero61": false,
+      "built61": false
+     },
+     {
+      "pi": 1,
+      "rig": "hero",
+      "hair": "braids",
+      "built61": false
+     }
+    ]
+   }
+  },
+  {
+   "name": "Player 1's creator panel carries the V61 note once, after the Skin tone field and before the Hair field (under polish-v30's tab row); a panel re-opened with the note already in its html keeps one; Player 2's panel and a panel opened before the file is ready carry none; the kit panel carries its own line only while Player 1, drawn with V61, is the selected wearer",
+   "passed": true,
+   "info": {
+    "note": "Player 1 now uses the new V61 character, which wears its own look. The skin tone, hair, headwear and outfit chosen here colour Player 1’s portraits, not this figure.",
+    "player1Notes": 1,
+    "reopenedNotes": 1,
+    "player2Notes": 0,
+    "beforeReadyNotes": 0,
+    "kitNote": "Player 1 is drawn as the V61 figure, which shows no kit pieces; a piece Player 1 puts on is recorded here and drawn only on the classic hero (?hero=v55).",
+    "kitNotesPlayer2": 0,
+    "kitNotesClassic": 0
+   }
+  },
+  {
+   "name": "The real load path: with both players standing, a GLTFLoader.load that answers the V61 request rebuilds Player 1 as V61 (Player 2 untouched), records bytes and a load time, and remounts Player 1's preview; a later failure rebuilds Player 1 from the classic asset and remounts the preview again",
+   "passed": true,
+   "info": {
+    "requests": [
+     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
+     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+    ],
+    "player1": {
+     "before": false,
+     "after": true
+    },
+    "player2Untouched": true,
+    "bytes": 5101400,
+    "previewMounts": [
+     [
+      "pv3d0",
+      0
+     ]
+    ],
+    "failure": {
+     "state": "error",
+     "error": "simulated: late failure",
+     "player1Hero61": false,
+     "wearMeshes": 7,
+     "previewMounts": [
+      [
+       "pv3d0",
+       0
+      ]
+     ]
+    }
+   }
+  },
+  {
+   "name": "The switch: ?hero=v55 and a stored cd3-hero=v55 turn the file off, ?hero=v61 forces it on over the stored choice, anything else leaves it on",
+   "passed": true,
+   "info": {
+    "plain": true,
+    "v55": false,
+    "v55second": false,
+    "v55prefixOnly": true,
+    "stored": false,
+    "storedOther": true,
+    "forceOverStored": true,
+    "hashOnly": true,
+    "undefinedArgs": true
+   }
+  },
+  {
+   "name": "The creator face view: for a V61 preview the camera comes from HERO61.faceCam and frames the head (Head bone in the lower middle of the view, HeadTop_End in the upper half); for a classic preview head-v55's camera is untouched",
+   "passed": true,
+   "info": {
+    "v61": {
+     "cam": [
+      0,
+      1.585,
+      0.84
+     ],
+     "hero61": true,
+     "head": {
+      "world": [
+       -0.011,
+       1.439,
+       -0.055
+      ],
+      "ndc": [
+       -0.061,
+       -0.532
+      ]
+     },
+     "headTop": {
+      "world": [
+       0.006,
+       1.682,
+       -0.023
+      ],
+      "ndc": [
+       0.036,
+       0.575
+      ]
+     }
+    },
+    "classic": {
+     "cam": [
+      0,
+      1.64,
+      1.06
+     ],
+     "hero61": false,
+     "head": {
+      "world": [
+       0,
+       1.429,
+       0.021
+      ],
+      "ndc": [
+       0,
+       -0.715
+      ]
+     },
+     "headTop": {
+      "world": [
+       0,
+       1.879,
+       0.029
+      ],
+      "ndc": [
+       0,
+       1.032
+      ]
+     }
+    }
+   }
+  },
+  {
+   "name": "Kit (kit-v50) is not mounted on the V61 figure: a Player 1 look wearing a hat and kit shoes builds V61 with no kit50 group and its own shoe primitive visible, while the same look as the classic figure, and Player 2, carry the kit as before",
+   "passed": true,
+   "info": {
+    "v61": {
+     "kitObjects": 0,
+     "shoeVisible": [
+      true
+     ]
+    },
+    "classic": {
+     "kitObjects": 27,
+     "shoeVisible": [
+      false
+     ]
+    },
+    "player2KitObjects": 5
+   }
+  },
+  {
+   "name": "A failure inside the V61 build (hero61Dress throwing) marks V61 'error' with the reason, warns, and returns the classic figure for Player 1 with its wardrobe, leaving the classic asset 'ready' with its own gltf and clips; the Menu then says why and what Player 1 uses",
+   "passed": true,
+   "info": {
+    "classicAvatar": {
+     "rig": "hero",
+     "wearMeshes": 7
+    },
+    "state": "error",
+    "error": "figure could not be built: simulated dress failure",
+    "classicAsset": {
+     "state": "ready",
+     "gltfRestored": true,
+     "clipsRestored": true
+    },
+    "status": "V61 file not used (figure could not be built: simulated dress failure). Player 1 uses the classic hero. Character asset: assets/characters/efe.gltf.json loaded in 0 ms (8 clips)."
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 the asset's colours are not restored after the game's paint",
+   "check": 2,
+   "result": "red",
+   "first": "skin colour: 0.2788942634659966 differs from 1 by more than 0.000001"
+  },
+  {
+   "name": "M2 the hair primitive stays hidden",
+   "check": 2,
+   "result": "red",
+   "first": "hair hidden\n\nfalse !== true\n"
+  },
+  {
+   "name": "M3 the wardrobe is equipped on the V61 figure",
+   "check": 2,
+   "result": "red",
+   "first": "Expected values to be strictly equal:\n\n13 !== 6\n"
+  },
+  {
+   "name": "M4 the built-in and wardrobe hair mounts are left in place",
+   "check": 2,
+   "result": "red",
+   "first": "hairMount left on the V61 figure\n\n1 !== 0\n"
+  },
+  {
+   "name": "M5 the V61 request drops the build revision query",
+   "check": 4,
+   "result": "red",
+   "first": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'assets/characters/player1-v61.glb',\n-   'assets/characters/player1-v61.glb?v=v61-7275e9f6',\n    'assets/characters/efe.gltf.json?v=v61-7275e9f6'\n  ]\n"
+  },
+  {
+   "name": "M6 the skin materials are not marked for authored-v34's calibration",
+   "check": 2,
+   "result": "red",
+   "first": "skin colour: 0.78 differs from 1 by more than 0.000001"
+  },
+  {
+   "name": "M7 the load-success callback no longer rebuilds Player 1 and the preview",
+   "check": 9,
+   "result": "red",
+   "first": "Player 1 not rebuilt as V61 when the file arrived\n\nfalse !== true\n"
+  },
+  {
+   "name": "M8 the load-failure path no longer rebuilds Player 1 from the classic asset",
+   "check": 9,
+   "result": "red",
+   "first": "Player 1 still V61 after the failure\n\ntrue !== false\n"
+  },
+  {
+   "name": "M9 the ?hero=v55 switch is broken (v56)",
+   "check": 10,
+   "result": "red",
+   "first": "v55 -> true\n\ntrue !== false\n"
+  },
+  {
+   "name": "M10 the face view camera is not set for the V61 head",
+   "check": 11,
+   "result": "red",
+   "first": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n    0,\n+   1.64,\n+   1.06\n-   1.585,\n-   0.84\n  ]\n"
+  },
+  {
+   "name": "M11 the face camera numbers no longer frame the head (y 1.0)",
+   "check": 11,
+   "result": "red",
+   "first": "V61 head top y (the tester measured 0.575): 0.327 differs from 0.575 by more than 0.1"
+  },
+  {
+   "name": "M12 the duplicate-note guard is removed from openPanel",
+   "check": 8,
+   "result": "red",
+   "first": "re-opening a panel that already carries the note doubles it\n\n2 !== 1\n"
+  },
+  {
+   "name": "M13 kit pieces are dressed onto the V61 figure",
+   "check": 12,
+   "result": "red",
+   "first": "kit50 objects on the V61 figure\n\n27 !== 0\n"
+  },
+  {
+   "name": "M14 a failure in the V61 build is rethrown instead of falling back to the classic figure",
+   "check": 13,
+   "result": "red",
+   "first": "simulated dress failure"
+  },
+  {
+   "name": "M15 a failed download is reported as the stringified ProgressEvent",
+   "check": 5,
+   "result": "red",
+   "first": "a ProgressEvent is reported as [object Object]\n+ actual - expected\n\n+ '[object Object]'\n- 'network error'\n"
+  }
+ ],
+ "method": "GLB bytes parsed directly; runtime state and geometry in Node with the shipped Three.js r128 and glTF loader (check/runtime-harness.cjs), the V61 file parsed by the same loader and installed through hero61Install, the module's load-success path, and the full heroLoad path through a stubbed GLTFLoader.load that answers or fails the V61 request. Each mutant is a one-place change to a temp copy of hero-v61.js run in a child process. No browser, GPU or phone test: framing, colour and cost are the browser pass."
+}
