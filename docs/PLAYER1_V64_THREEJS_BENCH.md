@@ -74,3 +74,10 @@ The CI workflow also does not run a true iPhone Safari benchmark.
 - Result: **30 V55-as-candidate test cases passed, 0 zero-triangle failures, 0 page/console errors**. The workflow also exercised 30 V55 baseline cases, for **60 total**.
 - This is a proper renderer **harness proof**. It does **not** demonstrate V63. The V63 GLB is not in GitHub and was not passed to the runner.
 - Local V63 combined model inventory independently measured: `Player1_V61_NINE_ACTIONS_BOUND_FIXED.glb`, **11,795,724 bytes**, SHA256 `acf6851c76f4cd5010fc7737c294db70b0951f8e02f7a2d6cd85cde74e4359f0`, 27 joints, 9 actions, Armature scale 1.0, **131,691 triangles including the temporary fitting geometry**. The earlier 91,654-triangle number describes the original source model, **not** the combined V63 preview. This higher total makes optimization more urgent before mobile approval.
+
+
+## V55 Pick close-up caveat and revised pixel gate
+
+The first **whole-framebuffer** smoke run exposed a camera edge case in the shipped V55 hero: at 42% into **Pick**, its head bends outside a static face-close-up crop. The renderer still submits 86,626 triangles, but the framebuffer can be fully background at all three sizes. Failing the V55-as-V55 fixture for this would be a false positive when evaluating a *candidate-specific regression*.
+
+V64 therefore reports two independent observations: (a) submitted WebGL triangles, and (b) full-frame visible pixels. It **blocks** a candidate if V55 submits triangles but the candidate submits none, or V55 has visible pixels and the candidate has none. When both have no visible pixels, the case is explicitly marked **inconclusive due to shared camera framing**, rather than silently considered a successful face render. The full game still needs real tracking/head motion camera tests.
