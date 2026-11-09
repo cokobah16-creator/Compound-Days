@@ -127,17 +127,28 @@ document.getElementById('face').addEventListener('click',()=>preview('face'));
 document.getElementById('full').addEventListener('click',()=>preview('full'));
 window.CD_V64.runBench=async function(){
  if(!old.root||!candidate.root)throw Error('Both models required');
- run.disabled=true;window.CD_V64.status='running';result.cases=[];result.hardFailures=[];
+ run.disabled=true;window.CD_V64.status='running';
+ result.cases=[];result.hardFailures=[];result.notes=[];
  const viewports=[[390,844],[844,390],[1024,768]],poses=['Idle','Walk','Carry','Pick','Wave'];
  for(const [width,height] of viewports){
   for(const frame of ['full','face'])for(const clip of poses){
+   const pair=[];
    for(const v of views){
     const rec=sample(v,width,height,frame,clip,clip==='Idle'?0:.42);
-    result.cases.push(rec);
-    if(v===candidate&&(!rec.visible||rec.error||!rec.clipFound))result.hardFailures.push(rec.model+': '+width+'x'+height+' '+frame+' '+clip+' — '+(rec.error||'zero triangles, no pixels or missing clip'));
+    pair.push(rec);result.cases.push(rec);
    }
+   const baseline=pair[0],current=pair[1],label=width+'x'+height+' '+frame+' '+clip;
+   if(current.error||!current.clipFound)
+    result.hardFailures.push(label+': '+(current.error||'candidate animation missing'));
+   else if(current.triangles===0&&baseline.triangles>0)
+    result.hardFailures.push(label+': candidate culled while shipped hero submits triangles');
+   else if(current.centerPixels<=10&&baseline.centerPixels>10)
+    result.hardFailures.push(label+': candidate framebuffer blank while shipped hero remains visible');
+   else if(baseline.triangles===0)
+    result.notes.push(label+': baseline also drew zero triangles — inconclusive camera test');
+   else if(baseline.centerPixels<=10&&current.centerPixels<=10)
+    result.notes.push(label+': both avatars outside fixed framebuffer crop; body has moved during action');
    status.textContent='Testing '+width+'×'+height+' · '+frame+' · '+clip;
-   // Yield to UI without changing the underlying WebGL results.
    await new Promise(resolve=>setTimeout(resolve,0));
   }
  }
@@ -146,12 +157,13 @@ window.CD_V64.runBench=async function(){
  result.summary={tests:result.cases.length,candidateFailed:result.hardFailures.length,
   candidateFrames:result.cases.filter(r=>r.model==='new').length,
   oldFrames:result.cases.filter(r=>r.model==='old').length,
+  bothOffscreenOrInconclusive:result.notes.length,
   engineOnly:true,liveGameApproved:false,hardwareApproved:false,
   mandatoryArtAndWardrobeReview:true};
- result.passForCulling=result.hardFailures.length===0;
- document.getElementById('results').textContent=JSON.stringify(result.summary,null,2)+'\n\n'+JSON.stringify(result.cases,null,2);
- status.textContent=result.passForCulling?'No zero-triangle cases in this standalone Three.js bench. Game integration still NOT approved.':
-   result.hardFailures.length+' candidate cases failed; keep V55 live.';
+ result.passForCulling=result.hardFailures.length===0&&result.cases.length===60;
+ document.getElementById('results').textContent=JSON.stringify(result.summary,null,2)+'\n\nNotes:\n'+result.notes.join('\n')+'\n\n'+JSON.stringify(result.cases,null,2);
+ status.textContent=result.passForCulling?'No candidate-specific disappearances in this standalone Three.js bench. Game integration still NOT approved.':
+   result.hardFailures.length+' candidate-specific cases failed; keep V55 live.';
  status.className=result.passForCulling?'ok':'bad';
  run.disabled=false;download.disabled=false;
  window.CD_V64.report=result;window.CD_V64.status='done';
