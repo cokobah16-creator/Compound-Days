@@ -15,6 +15,8 @@ assert(loader.includes('THREE.GLTFLoader = GLTFLoader'),'vendored loader missing
 assert(html.includes('assets/characters/efe.gltf.json'),'current hero reference missing');
 assert(html.includes("file.arrayBuffer()"),'local file reader missing');
 assert(html.includes('Save comparison PNG'),'snapshot control missing');
+assert(html.includes("boneTransform(i,p)"),'skinned bounds computation missing');
+assert(html.includes('<option value="run">Run</option>'),'run animation audition option missing');
 assert(html.includes('not')||html.includes('Not'),'user-facing caution missing');
 assert(vercel.rewrites.some(x=>x.source==='/character-audition.html'&&x.destination==='/dist/character-audition.html'),'Vercel path missing');
 assert(fs.existsSync(path.join(root,'docs/CHARACTER_V56_MODEL_REPLACEMENT.md')),'art contract missing');
