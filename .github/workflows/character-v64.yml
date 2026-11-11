@@ -1,0 +1,44 @@
+name: V64 Three.js renderer smoke test
+
+on:
+  pull_request:
+    paths:
+      - 'dist/character-v64-bench.html'
+      - 'check/bench-character-v64.cjs'
+      - 'check/fixture-v64-hero-glb.cjs'
+      - 'check/verify-character-v64-harness.cjs'
+      - '.github/workflows/character-v64.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  baseline-self-test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Check out full game source
+        uses: actions/checkout@v4
+      - name: Use Node.js 22
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify local renderer harness and safety defaults
+        run: node check/verify-character-v64-harness.cjs
+      - name: Build the V55-as-candidate baseline fixture
+        run: node check/fixture-v64-hero-glb.cjs /tmp/compound-days-v55-selftest.glb
+      - name: Install headless browser
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Three.js Chromium baseline self-test (not V63 approval)
+        run: node check/bench-character-v64.cjs /tmp/compound-days-v55-selftest.glb artifacts/character-v64-baseline
+      - name: Attach screenshot and JSON evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: character-v64-v55-self-test
+          path: artifacts/character-v64-baseline/
+          if-no-files-found: warn
+          retention-days: 14

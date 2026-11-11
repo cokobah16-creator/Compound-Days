@@ -14,6 +14,10 @@
       "destination": "/dist/character-audition.html"
     },
     {
+      "source": "/character-v64-bench.html",
+      "destination": "/dist/character-v64-bench.html"
+    },
+    {
       "source": "/assets/:path*",
       "destination": "/dist/assets/:path*"
     },
