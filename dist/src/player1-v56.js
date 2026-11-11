@@ -25,10 +25,12 @@ function p1v56Load(){
    // swap in for Player 1 if already on screen, and the creator preview if it is open
    if(typeof players!=='undefined'&&players.length&&players[0]) refreshAvatar(0);
    const pv=document.getElementById('pv3d0'); if(pv&&S&&S.p) mountPreview(pv,lookFor(0));
-  }catch(e){ P1V56.state='error'; P1V56.error=e.message||String(e); console.warn('[Compound Days] V56 model rejected, using the Classic model:',P1V56.error); } },
+  }catch(e){ P1V56.state='error'; P1V56.error=e.message||String(e); console.warn('[Compound Days] V56 model rejected, using the Classic model:',P1V56.error); p1v56Fallback(); } },
   ev=>{ if(ev&&ev.total) P1V56.bytes=ev.total; },
-  e=>{ P1V56.state='error'; P1V56.error=(e&&(e.message||e.statusText))||'network error'; console.warn('[Compound Days] V56 model failed to load, using the Classic model:',P1V56.error); });
+  e=>{ P1V56.state='error'; P1V56.error=(e&&(e.message||e.statusText))||'network error'; console.warn('[Compound Days] V56 model failed to load, using the Classic model:',P1V56.error); p1v56Fallback(); });
 }
+// after a failed load, the creator's waiting preview (Next disabled) is mounted again so the Classic model shows and Next comes back
+function p1v56Fallback(){ try{ const pv=typeof document!=='undefined'&&document.getElementById('pv3d0'); if(pv&&pv.querySelector('.creator30-loading')&&S&&S.p) mountPreview(pv,lookFor(0)); }catch(e){} }
 // named so the harness can hand it a parsed asset
 function p1v56Accept(g){
  const bones=heroFindBones(g.scene); const missing=['hips','spine','neck','head','lefthand','righthand','leftarm','rightarm','leftupleg','rightupleg','leftfoot','rightfoot'].filter(k=>!bones[k]);
