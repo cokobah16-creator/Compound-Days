@@ -1,5 +1,5 @@
 {
- "build": "v61-7275e9f6",
+ "build": "v61-d31820eb",
  "passed": true,
  "checks": [
   {
@@ -163,15 +163,15 @@
    "passed": true,
    "info": {
     "enabled": [
-     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
-     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+     "assets/characters/player1-v61.glb?v=v61-d31820eb",
+     "assets/characters/efe.gltf.json?v=v61-d31820eb"
     ],
     "authored34InstalledByHeroLoad": true,
     "disabled": [
-     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+     "assets/characters/efe.gltf.json?v=v61-d31820eb"
     ],
     "alreadyReady": [
-     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+     "assets/characters/efe.gltf.json?v=v61-d31820eb"
     ]
    }
   },
@@ -180,8 +180,8 @@
    "passed": true,
    "info": {
     "requests": [
-     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
-     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+     "assets/characters/player1-v61.glb?v=v61-d31820eb",
+     "assets/characters/efe.gltf.json?v=v61-d31820eb"
     ],
     "state": "error",
     "error": "simulated: request blocked",
@@ -267,8 +267,8 @@
    "passed": true,
    "info": {
     "requests": [
-     "assets/characters/player1-v61.glb?v=v61-7275e9f6",
-     "assets/characters/efe.gltf.json?v=v61-7275e9f6"
+     "assets/characters/player1-v61.glb?v=v61-d31820eb",
+     "assets/characters/efe.gltf.json?v=v61-d31820eb"
     ],
     "player1": {
      "before": false,
@@ -444,7 +444,7 @@
    "name": "M5 the V61 request drops the build revision query",
    "check": 4,
    "result": "red",
-   "first": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'assets/characters/player1-v61.glb',\n-   'assets/characters/player1-v61.glb?v=v61-7275e9f6',\n    'assets/characters/efe.gltf.json?v=v61-7275e9f6'\n  ]\n"
+   "first": "Expected values to be strictly deep-equal:\n+ actual - expected\n\n  [\n+   'assets/characters/player1-v61.glb',\n-   'assets/characters/player1-v61.glb?v=v61-d31820eb',\n    'assets/characters/efe.gltf.json?v=v61-d31820eb'\n  ]\n"
   },
   {
    "name": "M6 the skin materials are not marked for authored-v34's calibration",
