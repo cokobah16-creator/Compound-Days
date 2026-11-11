@@ -1,0 +1,13 @@
+{
+  "name": "compound-days-player1-v56",
+  "private": true,
+  "type": "module",
+  "description": "Builds dist/assets/characters/player1-v56.glb from source/player1_v56 (see build.mjs)",
+  "dependencies": {
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@gltf-transform/functions": "4.5.1",
+    "meshoptimizer": "0.22.0",
+    "sharp": "0.35.5"
+  }
+}
