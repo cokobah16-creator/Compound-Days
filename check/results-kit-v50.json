@@ -1,5 +1,5 @@
 {
- "build": "v51-c8deb323",
+ "build": "v65-4e43cc89",
  "passed": true,
  "checks": [
   {
@@ -35,7 +35,7 @@
    "passed": true,
    "info": {
     "hero": [
-     42,
+     34,
      0
     ],
     "built": [

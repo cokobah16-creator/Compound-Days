@@ -1,0 +1,119 @@
+{
+ "build": "v65-4e43cc89",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Twelve outfits in the creator, the six existing ones first; every outfit lists its modelled clothes, any jewellery and one of seven footwear styles, and every file is there",
+   "passed": true,
+   "info": {
+    "sets": [
+     "tee: cd_tee cd_shoes_sneakers",
+     "office: cd_office cd_office_jewellery cd_shoes_loafers",
+     "ankara: cd_ankara cd_shoes_sandals",
+     "track: cd_track cd_shoes_runners",
+     "kaftan: cd_kaftan cd_kaftan_jewellery cd_shoes_sandals",
+     "lounge: cd_lounge cd_shoes_slides",
+     "skirtset: cd_skirtset cd_skirtset_jewellery cd_shoes_maryjanes",
+     "overalls: cd_overalls cd_shoes_sneakers",
+     "jumpsuit: cd_jumpsuit cd_jumpsuit_jewellery cd_shoes_heels",
+     "linen: cd_linen cd_linen_jewellery cd_shoes_sandals",
+     "utility: cd_utility cd_shoes_sneakers",
+     "wrapdress: cd_wrapdress cd_wrapdress_jewellery cd_shoes_heels"
+    ]
+   }
+  },
+  {
+   "name": "2. Every modelled asset is skinned to the hero's 27 joints and says what it is: clothes keep the base top and bottom on as skin, footwear replaces the base shoe and sole, open shoes carry a skin foot",
+   "passed": true,
+   "info": {
+    "cd_ankara": "3 meshes: CD_ankara, CD_cream, CD_navy",
+    "cd_jumpsuit": "1 meshes: CD_burgundy",
+    "cd_jumpsuit_jewellery": "1 meshes: CD_gold",
+    "cd_kaftan": "3 meshes: CD_brown, CD_cream, CD_navy",
+    "cd_kaftan_jewellery": "3 meshes: CD_brown, CD_cream, CD_gold",
+    "cd_linen": "1 meshes: CD_sage",
+    "cd_linen_jewellery": "1 meshes: CD_gold",
+    "cd_lounge": "2 meshes: CD_cream, CD_terracotta",
+    "cd_office": "5 meshes: CD_brown, CD_charcoal, CD_cream, CD_gold, CD_ivory",
+    "cd_office_jewellery": "3 meshes: CD_brown, CD_cream, CD_gold",
+    "cd_overalls": "4 meshes: CD turned denim, CD_cream, CD_denim, CD_gold",
+    "cd_shoes_heels": "4 meshes: CD_brown, CD_cognac, CD_gold, skin",
+    "cd_shoes_loafers": "2 meshes: CD_brown, CD_cognac",
+    "cd_shoes_maryjanes": "3 meshes: CD_brown, CD_burgundy, CD_gold",
+    "cd_shoes_runners": "5 meshes: CD_cream, CD_green, CD_ochre, CD_rubber, CD_white",
+    "cd_shoes_sandals": "3 meshes: CD_brown, CD_cognac, skin",
+    "cd_shoes_slides": "3 meshes: CD_brown, CD_cream, skin",
+    "cd_shoes_sneakers": "4 meshes: CD_cream, CD_green, CD_rubber, CD_white",
+    "cd_skirtset": "1 meshes: CD_ankara",
+    "cd_skirtset_jewellery": "2 meshes: CD_cognac, CD_gold",
+    "cd_tee": "3 meshes: CD_blue, CD_denim, CD_denim_turned_cuff",
+    "cd_track": "3 meshes: CD_cream, CD_gold, CD_green",
+    "cd_utility": "4 meshes: CD_brown, CD_cream, CD_olive, CD_sand",
+    "cd_wrapdress": "2 meshes: CD_cream, CD_terracotta",
+    "cd_wrapdress_jewellery": "1 meshes: CD_gold"
+   }
+  },
+  {
+   "name": "3. Every outfit dresses the hero: all its pieces are equipped, the base top and bottom turn to the wearer's skin, the base shoes are hidden, and no base clothing colour is left showing",
+   "passed": true,
+   "info": {
+    "tee": "7 pieces",
+    "office": "10 pieces",
+    "ankara": "6 pieces",
+    "track": "8 pieces",
+    "kaftan": "9 pieces",
+    "lounge": "5 pieces",
+    "skirtset": "6 pieces",
+    "overalls": "8 pieces",
+    "jumpsuit": "6 pieces",
+    "linen": "5 pieces",
+    "utility": "8 pieces",
+    "wrapdress": "7 pieces"
+   }
+  },
+  {
+   "name": "4. A look still built before the wardrobe arrives (or without it) falls back to the painted body as before",
+   "passed": true
+  },
+  {
+   "name": "5. Random looks keep the original six outfits, and the creator offers all twelve",
+   "passed": true,
+   "info": {
+    "random": [
+     "ankara",
+     "kaftan",
+     "lounge",
+     "office",
+     "tee",
+     "track"
+    ]
+   }
+  },
+  {
+   "name": "6. A worn kit shoe still replaces the outfit's modelled footwear",
+   "passed": true
+  },
+  {
+   "name": "7. Bisi keeps her plum and gold on the modelled Ankara two-piece",
+   "passed": true,
+   "info": {
+    "CD_navy": {
+     "hex": "25061b",
+     "map": false
+    },
+    "CD_cream": {
+     "hex": "e28907",
+     "map": false
+    },
+    "CD_ankara": {
+     "hex": "ffffff",
+     "map": true
+    }
+   }
+  },
+  {
+   "name": "8. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}

@@ -1,12 +1,12 @@
 {
-  "build": "v51-c8deb323",
+  "build": "v65-4e43cc89",
   "passed": true,
   "checks": [
     {
       "name": "Real 1. A companion household plays days 1 to 3 by real actions: basket and jollof, housewarming, seedling, a fish for Mama Nkechi, catches sold, the armchair on the veranda, the harvest, deliveries, paint, the veranda evening, three ratings and both day-3 answers",
       "passed": true,
       "info": {
-        "sold": 1,
+        "sold": 2,
         "ratings": [
           2,
           3,
@@ -32,8 +32,8 @@
       "name": "Real 2. The copy button’s text keeps the first-evening timeline and the readable days, and ends with a CD35/1 data block whose length and check value hold and whose records equal S.life.days exactly; with no clipboard the page that shows it is titled “Timeline and days”",
       "passed": true,
       "info": {
-        "blockLines": 24,
-        "blockChars": 1428,
+        "blockLines": 25,
+        "blockChars": 1499,
         "days": 4
       }
     },
@@ -52,7 +52,7 @@
         "gapHours": 20,
         "minutes": [
           22.49,
-          22.59,
+          22.69,
           22.72
         ],
         "statuses": [
@@ -70,14 +70,14 @@
       "name": "Real 5. Without the block (an older build’s paste) the readable lines give the same times, ratings, answers and events, with minutes to 0.1 and a note saying so",
       "passed": true,
       "info": {
-        "events": 16
+        "events": 20
       }
     },
     {
       "name": "Real 6. The command line: two files of one tester, the plain report and --json agree with the module; exit code 0; an unreadable file gives a message and exit code 2",
       "passed": true,
       "info": {
-        "row": "amaka 4 22.5 / 22.6 / 22.7 2 3 3 2/2 0:20 day 3"
+        "row": "amaka 4 22.5 / 22.7 / 22.7 2 3 3 2/2 0:20 day 3"
       }
     },
     {

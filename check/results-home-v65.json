@@ -1,0 +1,84 @@
+{
+ "build": "v65-4e43cc89",
+ "passed": true,
+ "checks": [
+  {
+   "name": "1. Twenty renders: every collection piece and finish has its picture under assets/home, and the sheet order is the Finds order then the five paints",
+   "passed": true,
+   "info": {
+    "pictures": 20
+   }
+  },
+  {
+   "name": "2. Finds shows the renders: each of the fifteen furniture cards and the five paint cards carries its picture, and each paint keeps its colour swatch under its render",
+   "passed": true,
+   "info": {
+    "pictures": 20
+   }
+  },
+  {
+   "name": "3. Home and Build show the renders: storage, the room grid and the Build catalogue use the pictures; the paint chips carry the render inside their colour dot",
+   "passed": true
+  },
+  {
+   "name": "4. The collection counts what the household has owned: a purchase, a placement or a paint adds to it, storing or replacing a piece never takes it away, and the Home page shows the count",
+   "passed": true,
+   "info": {
+    "before": 0,
+    "afterBuy": 1,
+    "afterPaint": 2,
+    "shown": "HOME COLLECTION · 2 OF 20"
+   }
+  },
+  {
+   "name": "5. The twentieth piece goes in the album once, with a toast",
+   "passed": true,
+   "info": {
+    "day": 1
+   }
+  },
+  {
+   "name": "6. The nine rebuilt pieces build as groups for both the room and the ghost, and building them draws nothing from the seeded Math.random sequence",
+   "passed": true,
+   "info": {
+    "plant": 22,
+    "lamp": 6,
+    "chairs": 44,
+    "rug": 1,
+    "art": 3,
+    "planter": 43,
+    "shelf": 33,
+    "speaker": 12,
+    "kitchen": 31
+   }
+  },
+  {
+   "name": "7. The patterned finishes: Adire indigo walls and the terrazzo and teak floors carry a pattern map and keep the paint’s own colour; the plain finishes and Original have no pattern",
+   "passed": true,
+   "info": {
+    "indigo/terrazzo": {
+     "wallMap": "indigo",
+     "wallColor": "26407a",
+     "floorMap": "terrazzo",
+     "floorColor": "b69f7a"
+    },
+    "palm/teak": {
+     "wallMap": null,
+     "wallColor": "658454",
+     "floorMap": "teak",
+     "floorColor": "441f0e"
+    },
+    "ochre/base": {
+     "wallMap": null,
+     "wallColor": "c99442",
+     "floorMap": null,
+     "floorColor": "94210b"
+    }
+   }
+  },
+  {
+   "name": "8. Determinism: two runs give identical reports",
+   "passed": true
+  }
+ ]
+}

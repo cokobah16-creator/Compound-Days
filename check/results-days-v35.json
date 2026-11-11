@@ -1,5 +1,5 @@
 {
-  "build": "v51-c8deb323",
+  "build": "v65-4e43cc89",
   "passed": true,
   "checks": [
     {
@@ -58,9 +58,9 @@
       "passed": true,
       "info": {
         "first": {
-          "bite": 4,
-          "steps": 20,
-          "fish": "croaker",
+          "bite": 2.8,
+          "steps": 14,
+          "fish": "snapper",
           "how": "keep"
         }
       }
@@ -76,11 +76,12 @@
       "name": "A9. Path A day 2: catches sold from the catch card until the purse reaches ₦9,000 (one or two)",
       "passed": true,
       "info": {
-        "sold": 1,
-        "purse": 9600,
+        "sold": 2,
+        "purse": 9900,
         "bites": [
-          4,
-          3.2
+          2.8,
+          3.6,
+          3.8
         ]
       }
     },
@@ -89,7 +90,7 @@
       "passed": true,
       "info": {
         "toast": "Woven armchair is in Build storage. Ola: “That one is correct. The flat will thank us.”",
-        "purse": 600
+        "purse": 900
       }
     },
     {
@@ -140,7 +141,7 @@
           2000,
           1500
         ],
-        "purse": 5600
+        "purse": 5900
       }
     },
     {
@@ -228,12 +229,16 @@
             "at-rocks",
             "cast",
             "bite",
-            "catch croaker",
+            "catch snapper",
             "request nkechi:1",
             "cast",
             "bite",
-            "catch snapper",
-            "sell catch:snapper",
+            "catch mullet",
+            "sell catch:mullet",
+            "cast",
+            "bite",
+            "catch tilapia",
+            "sell catch:tilapia",
             "buy armchair",
             "place armchair:veranda",
             "place armchair:veranda",
@@ -298,12 +303,12 @@
         "purseAfterErrand": 2700,
         "sold": 5,
         "bites": [
-          4,
-          3.8,
-          3.4,
           3.6,
+          2.4,
+          2.4,
           3.2,
-          4
+          2.4,
+          4.4
         ],
         "cell": [
           5,

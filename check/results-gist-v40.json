@@ -1,5 +1,5 @@
 {
- "build": "v51-c8deb323",
+ "build": "v65-4e43cc89",
  "passed": true,
  "checks": [
   {
@@ -80,9 +80,9 @@
     },
     "tune12": "Compound meeting this week.",
     "withoutV40": {
-     "dayThree": "d27c9aa8:16232",
-     "closed": "18b42858:87020",
-     "layer2": "1da77b6d:180856"
+     "dayThree": "f1b0e941:16264",
+     "closed": "15b6a525:87125",
+     "layer2": "d401d1c9:181066"
     }
    }
   },
@@ -442,9 +442,9 @@
     },
     "stool": 18,
     "matchFirst": {
-     "insert": "gs40-fb-ba3",
+     "insert": "gs40-fb-ba7",
      "withReaction": [
-      "gs40-fb-ba3",
+      "gs40-fb-ba7",
       "gs40-ret-ad1"
      ]
     },
@@ -819,8 +819,8 @@
      "poolDry": {},
      "swapsByTier": {
       "mallam": 6,
-      "season": 63,
-      "evergreen": 5,
+      "season": 64,
+      "evergreen": 4,
       "v38": 23
      },
      "mallamBye": [
@@ -1140,7 +1140,7 @@
      "cardUp": "0 blocked, 0 levelAt, no rebuild"
     },
     "sceneCount": {
-     "objects": 2314,
+     "objects": 2223,
      "sameAsWithout": true
     }
    }
@@ -1812,16 +1812,16 @@
  },
  "withoutV39": {
   "error": null,
-  "scene": 2312,
-  "random": 0,
+  "scene": 2221,
+  "random": 68,
   "hooks": "7,7,17,false,false",
   "hooksRef": "7,7,17,false,false",
   "passed": true
  },
  "withoutV38": {
   "error": null,
-  "scene": 2312,
-  "random": 0,
+  "scene": 2221,
+  "random": 68,
   "hooks": "6,6,17,false,false",
   "hooksRef": "6,6,17,false,false",
   "passed": true

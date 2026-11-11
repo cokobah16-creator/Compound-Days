@@ -55,10 +55,12 @@ const FOOTBALL37={v:2,t:0,playT:0,
  // foot the feet's scale; shoulderIn and armIn the shoulder and arm joints pulled in (narrower shoulders); chest the chest's width (spine1 x, the neck and
  // shoulders counter-scaled); limbX the thighs' and arms' width (slighter limbs). Applied once to the face meshes: eyes the eye parts' scale about each
  // eyeball (lowered eyesDown), mouth the lips' and tongue's scale. Every factor at 1 (and head [1.06,1.06,1.06], scale 0.84/0.80) is the v37 look.
+ // v55: the anatomical adult head is smaller than the v21 head (crown 1.775 against about 1.86), so the head bone is 1.25 times the v37 child values
+ // ([1.21,1.16,1.19]) to keep the children 1.45 m and 1.39 m with a child-sized head.
  KIDS:{kemi:{idle:[-25.0,9.4],speed:2.7,scale:0.780,liteScale:0.769,r:0.28,aimSd:10,look:{skin:'#6E4630',hair:'twists',outfit:'tee',oc:'#F2C14E'},
-        head:[1.21,1.16,1.19],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88},
+        head:[1.51,1.45,1.49],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88},
        emeka:{idle:[-21.0,10.2],speed:2.4,scale:0.749,liteScale:0.738,r:0.27,aimSd:13,look:{skin:'#905F3F',hair:'low',outfit:'tee',oc:'#F4F1EA'},
-        head:[1.21,1.16,1.19],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88}},
+        head:[1.51,1.45,1.49],leg:0.91,foot:1.04,shoulderIn:0.80,armIn:0.80,chest:0.88,limbX:0.90,eyes:1.10,eyesDown:0.006,mouth:0.88}},
  // the hero rig at rest (efe.gltf.json, model units): the Hips joint 0.86 above the sole, the thighs 0.03 below it, thigh 0.37, shin 0.36, the sole 0.10 below
  // the Foot joint; the shoulder joints at x 0.07 and the arm joints at 0.145; the mouth's centre in Head-joint space
  KID_RIG:{hips:0.86,upOff:0.03,thigh:0.37,shin:0.36,sole:0.10,shoulderX:0.07,armX:0.145,mouthC:[0,0.174,0.219]},

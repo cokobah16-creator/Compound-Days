@@ -1,5 +1,5 @@
 {
-  "build": "v51-c8deb323",
+  "build": "v65-4e43cc89",
   "passed": true,
   "checks": [
     {
@@ -101,9 +101,9 @@
       "info": {
         "first": [
           "hair_locs",
-          "tee",
-          "jeans",
-          "sneakers"
+          "cd_tee",
+          "cd_shoes_sneakers",
+          "hair_boxbraids"
         ]
       }
     },

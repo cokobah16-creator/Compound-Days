@@ -1,5 +1,5 @@
 {
-  "build": "v51-c8deb323",
+  "build": "v65-4e43cc89",
   "passed": true,
   "checks": [
     {
@@ -279,8 +279,8 @@
           "fov": 28,
           "position": [
             0,
-            1.68,
-            1.4
+            1.64,
+            1.06
           ]
         },
         "creator body": {
