@@ -1,5 +1,5 @@
 {
- "build": "v56-e7802f6e",
+ "build": "v56-1925aa14",
  "passed": true,
  "checks": [
   {
@@ -732,7 +732,7 @@
      "walkFrames": 600,
      "blockedPoints": 3000,
      "boxesNow": "c5bb00c9:175",
-     "digest": "13f84de6",
+     "digest": "1a414b17",
      "sameAsWithout": true,
      "worldSignature": "f27b15e:175"
     },
