@@ -40,3 +40,11 @@ Costs are from a software-rendered browser harness, not a real phone benchmark. 
 ## Next character work
 
 The hands and wrists still look somewhat rigid, and the V61 tee retains small black marks near the side and upper arm. These are asset-level issues. Repair them in Blender from the V61 source with clean topology and exported skinned mesh, instead of adding extra geometry from procedural code. Next actual creator milestone should be fitting one separate outfit to V61's bind matrices, hiding covered under-body sections, and testing walk/carry/bend.
+
+## Final multi-angle review (12 November 2026)
+
+[GitHub Actions #43183381538](https://github.com/cokobah16-creator/Compound-Days/actions/runs/43183381538) passed both the V67 mobile render and the legacy V61/wardrobe regressions. Its `compound-days-v67-relaxed-idle` artifact contains original idle, relaxed front, three-quarter, profile, back and walking PNGs plus the machine-readable measurements.
+
+Human inspection of the six-view sheet found that the new arms sit naturally closer to the torso in front, three-quarter, profile and back views. The existing Walk animation remains active and shows a different bent-leg frame, not the pose override. Small shirt-side artifacts and stiff hands remain; those are not solved by this change.
+
+The workflow's second job also prepared the deterministic build stamp and package-manifest files as an artifact, without committing them to `master`. Release remains gated on updating those checked files and completing an iPhone Safari check.
