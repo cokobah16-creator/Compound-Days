@@ -51,7 +51,8 @@ const server=http.createServer((req,res)=>{
     swatchRects:el&&el.getBoundingClientRect().toJSON(),tab:tab&&tab.outerHTML.slice(0,200),
     panelChildren:document.getElementById('panel')?.children.length};
   });console.log('CREATOR DIAGNOSTIC',JSON.stringify(diag));
-  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'visible',timeout:5000});
+  await page.locator('.shirt66-picker .shirt66-swatch').first().scrollIntoViewIfNeeded({timeout:15000});
+  assert(await page.locator('.shirt66-swatch').first().isVisible(),'The shirt colour palette cannot be scrolled into view');
   await page.waitForFunction(()=>typeof prevChar!=='undefined'&&prevChar&&prevChar.userData&&prevChar.userData.hero61,null,{timeout:50000});
   const before=await page.evaluate(()=>{
    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original'})});
@@ -62,7 +63,8 @@ const server=http.createServer((req,res)=>{
   await defaultCanvas.waitFor({state:'visible',timeout:15000});
   await page.waitForTimeout(200);
   const png1=await defaultCanvas.screenshot({path:path.join(out,'shirt66-sky-mobile.png')});
-  await page.locator('[data-act="shirt66set"][data-v="coral"]').click();
+  await page.locator('[data-act="shirt66set"][data-v="coral"]').scrollIntoViewIfNeeded({timeout:15000});
+  await page.locator('[data-act="shirt66set"][data-v="coral"]').click({timeout:15000});
   await page.waitForFunction(()=>S.p[0]?.colors?.shirt66==='coral'&&prevChar?.userData?.shirt66==='coral',null,{timeout:30000});
   const after=await page.evaluate(()=>{
    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original',textured:!!o.material?.map})});
