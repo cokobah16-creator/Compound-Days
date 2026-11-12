@@ -1,0 +1,41 @@
+name: V66 Player 1 wardrobe palette
+
+on:
+  pull_request:
+    paths:
+      - 'dist/index.html'
+      - 'dist/src/shirt-v66.js'
+      - 'dist/src/shirt-v66.css'
+      - 'check/verify-shirt-v66.cjs'
+      - 'check/bench-shirt-v66.cjs'
+      - '.github/workflows/shirt-v66.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  shirt-color-smoke:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Verify shirt material and creator controls
+        run: node check/verify-shirt-v66.cjs
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Compare real V61 shader on phone-sized creator
+        run: node check/bench-shirt-v66.cjs artifacts/v66-shirt
+      - name: Upload before and after screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compound-days-v66-shirt-mobile
+          path: artifacts/v66-shirt
+          retention-days: 14
+          if-no-files-found: warn
