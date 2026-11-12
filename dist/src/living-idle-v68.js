@@ -44,7 +44,24 @@ function life68Rotate(g,bone,figureAxis,radians){
  bone.quaternion.premultiply(new THREE.Quaternion().setFromAxisAngle(parentAxis,radians));
  bone.updateMatrixWorld(true);
 }
+// Some imported Idle clips omit rotation tracks on individual bones. If we
+// simply add offsets every frame, they accumulate into extreme poses. Always
+// restore the previous frame's original local quaternions BEFORE AnimationMixer
+// and V67 process the next frame; then capture fresh originals for this frame.
+function life68Restore(g){
+ const st=g&&g.userData&&g.userData.life68;
+ if(!st||!st.base||!g.hero||!g.hero.bones)return false;
+ for(const key of Object.keys(st.base)){
+  const bone=g.hero.bones[key],q=st.base[key];
+  if(bone&&q)bone.quaternion.fromArray(q);
+ }
+ st.base=null;st.applied=false;
+ g.updateMatrixWorld(true);
+ return true;
+}
 function life68Apply(g,dt){
+ // Also safe if the function is invoked directly by a review tool.
+ life68Restore(g);
  if(!life68Eligible(g)){
   if(g&&g.userData&&g.userData.life68)g.userData.life68.fade=0;
   return false;
@@ -58,6 +75,12 @@ function life68Apply(g,dt){
  const soft=st.fade*st.fade*(3-2*st.fade);
  const breathing=Math.sin(st.phase), glance=Math.sin(st.phase*.51), glance2=Math.sin(st.phase*.78+.45);
  g.updateMatrixWorld(true);
+ st.base={
+  spine2:b.spine2.quaternion.toArray(),
+  head:b.head.quaternion.toArray(),
+  lefthand:b.lefthand.quaternion.toArray(),
+  righthand:b.righthand.quaternion.toArray()
+ };
  life68Rotate(g,b.spine2,new THREE.Vector3(1,0,0),LIFE68.spineBreath*breathing*soft);
  life68Rotate(g,b.head,new THREE.Vector3(0,1,0),LIFE68.headYaw*glance*soft);
  life68Rotate(g,b.head,new THREE.Vector3(1,0,0),LIFE68.headNod*glance2*soft);
@@ -81,6 +104,7 @@ if(typeof pose67WavePlaying==='function'){
 if(typeof animAvatar==='function'){
  const life68OriginalAnim=animAvatar;
  animAvatar=function(g,t,moving,carrying,speed,dt){
+  try{life68Restore(g);}catch(e){}
   const result=life68OriginalAnim.apply(this,arguments);
   try{
    if(moving||carrying) {
