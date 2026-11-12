@@ -1,5 +1,5 @@
 {
- "build": "v61-d31820eb",
+ "build": "v66-4e074ab0",
  "passed": true,
  "checks": [
   {
@@ -80,9 +80,9 @@
     },
     "tune12": "Compound meeting this week.",
     "withoutV40": {
-     "dayThree": "9206c97d:16831",
-     "closed": "1f9a2cb9:89663",
-     "layer2": "4a33a509:186156"
+     "dayThree": "ed989db1:16166",
+     "closed": "fbc604db:87017",
+     "layer2": "ebdf456d:180850"
     }
    }
   },
@@ -1140,7 +1140,7 @@
      "cardUp": "0 blocked, 0 levelAt, no rebuild"
     },
     "sceneCount": {
-     "objects": 2221,
+     "objects": 2223,
      "sameAsWithout": true
     }
    }
@@ -1812,7 +1812,7 @@
  },
  "withoutV39": {
   "error": null,
-  "scene": 2219,
+  "scene": 2221,
   "random": 68,
   "hooks": "7,7,17,false,false",
   "hooksRef": "7,7,17,false,false",
@@ -1820,7 +1820,7 @@
  },
  "withoutV38": {
   "error": null,
-  "scene": 2219,
+  "scene": 2221,
   "random": 68,
   "hooks": "6,6,17,false,false",
   "hooksRef": "6,6,17,false,false",

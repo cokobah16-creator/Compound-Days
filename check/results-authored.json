@@ -1,5 +1,5 @@
 {
-  "build": "v61-d31820eb",
+  "build": "v66-4e074ab0",
   "passed": true,
   "checks": [
     {
@@ -31,11 +31,11 @@
           0.0261
         ],
         "requestUrls": [
-          "assets/characters/player1-v61.glb?v=v61-d31820eb",
-          "assets/characters/efe.gltf.json?v=v61-d31820eb"
+          "assets/characters/player1-v61.glb?v=v66-4e074ab0",
+          "assets/characters/efe.gltf.json?v=v66-4e074ab0"
         ],
         "classicOnlyUrls": [
-          "assets/characters/efe.gltf.json?v=v61-d31820eb"
+          "assets/characters/efe.gltf.json?v=v66-4e074ab0"
         ]
       }
     },
@@ -314,7 +314,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v61-d31820eb"
+        "build": "v66-4e074ab0"
       }
     }
   ],

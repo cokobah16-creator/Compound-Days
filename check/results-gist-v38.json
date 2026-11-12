@@ -1,5 +1,5 @@
 {
- "build": "v61-d31820eb",
+ "build": "v66-4e074ab0",
  "passed": true,
  "checks": [
   {
@@ -47,7 +47,7 @@
       true
      ]
     },
-    "digest": "7de60636:16855",
+    "digest": "29cce7ab:16190",
     "lines": [
      "te04",
      "ne04",
@@ -66,7 +66,7 @@
     },
     "glasses": "out at 12:00, no record",
     "withoutModules": {
-     "digest": "7de60636:16855",
+     "digest": "29cce7ab:16190",
      "lines": [
       "te04",
       "ne04",
@@ -848,7 +848,7 @@
      "items": 1
     },
     "hung": {
-     "pieceTop": 1.87,
+     "pieceTop": 1.82,
      "shelfBottom": 1.89
     },
     "todayComplete": true,
@@ -1076,7 +1076,7 @@
      "stepRan": true
     },
     "sceneCount": {
-     "objects": 2219,
+     "objects": 2221,
      "sameAsWithout": true
     }
    }

@@ -144,3 +144,7 @@ Runtime rules on the V61 figure (`dist/src/hero-v61.js`, checked by `node check/
 - `frustumCulled` stays off on the skinned meshes, as `makeHeroAvatar` sets it.
 
 `verify-authored.cjs` keeps checking the V55 fallback and the authored wardrobe against the contract above.
+
+## Player 1 V56 (build v56, removed in v61)
+
+Build v56 drew Player 1 from a second asset, `dist/assets/characters/player1-v56.glb` (the owner's Meshy V56 pack), chosen in the creator's Body tab. On the owner's call (11 Nov 2026) V61 replaced it: v61 removes `dist/src/player1-v56.js`, the V56 GLB and `check/verify-player1-v56.cjs`. The pack and its build tool stay in `source/player1_v56/` and `tools/player1_v56/`. A save whose Player 1 has `model: 'v56'` is drawn with V61 like every other save; the field is ignored.
