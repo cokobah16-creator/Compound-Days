@@ -71,6 +71,35 @@ const server=http.createServer((req,res)=>{
  assert(angles.leftWristDegrees>1&&angles.leftWristDegrees<5,'Left wrist outside safe range');
  assert(angles.rightWristDegrees>1&&angles.rightWristDegrees<5,'Right wrist outside safe range');
  assert.notEqual(off.sha256,on.sha256,'Before and after images are identical');
+ // Long-idle endurance: a bone that has no Idle rotation track must NOT
+ // accumulate V68 offsets across successive frames. Sample 15 simulated
+ // seconds, then disable V68 and confirm the original idle returns.
+ const endurance=await page.evaluate(base=>{
+  const g=prevChar, B=g.hero.bones;
+  const Q=key=>B[key].getWorldQuaternion(new THREE.Quaternion());
+  const start={};for(const key of ['spine2','head','lefthand','righthand'])start[key]=new THREE.Quaternion().fromArray(base[key]);
+  const maxima={spine2:0,head:0,lefthand:0,righthand:0};
+  for(let i=0;i<900;i++){
+   animAvatar(g,i/60,false,false,0,1/60);
+   g.updateMatrixWorld(true);
+   for(const key of Object.keys(maxima)){
+    const degrees=Q(key).angleTo(start[key])*180/Math.PI;
+    maxima[key]=Math.max(maxima[key],degrees);
+   }
+  }
+  LIFE68.enabled=false;animAvatar(g,16,false,false,0,1/60);g.updateMatrixWorld(true);
+  const returned={};
+  for(const key of Object.keys(maxima))returned[key]=Q(key).angleTo(start[key])*180/Math.PI;
+  return {maxima,returned,restored:!g.userData.life68?.base};
+ },{spine2:off.metrics.spine,head:off.metrics.head,lefthand:off.metrics.leftHand,righthand:off.metrics.rightHand});
+ assert(endurance.maxima.spine2<2.5,'Breathing rotation grew over time');
+ assert(endurance.maxima.head<4.2,'Head drift accumulated during idle');
+ assert(endurance.maxima.lefthand<6.5&&endurance.maxima.righthand<6.5,'Wrist rotation accumulated');
+ assert(endurance.restored,'Saved base rotation not released when disabled');
+ for(const key of Object.keys(endurance.returned))
+  assert(endurance.returned[key]<.15,'Original pose was not restored for '+key);
+ LIFE68.enabled=true;
+
  const gating=await page.evaluate(()=>{
   LIFE68.enabled=true;const g=prevChar;
   const idle=life68Apply(g,1/60);
@@ -86,7 +115,7 @@ const server=http.createServer((req,res)=>{
  assert(gating.idle&&!gating.walk&&!gating.carry&&!gating.pick&&gating.pickActive&&gating.v67BlocksPick);
  assert(!gating.legacy&&gating.notPlayer2,'V68 affected wrong model');
  assert.equal(errors.length,0,errors.join('\n'));
- const report={result:'PASS',baseline:off,candidate:on,angles,gating,errors,
+ const report={result:'PASS',baseline:off,candidate:on,angles,endurance,gating,errors,
   limitations:['Software Chromium—not physical iPhone Safari',
    'V61 has no individually rigged fingers or face morphs',
    'Original imported animations and V67 pose remain the release baseline']};
