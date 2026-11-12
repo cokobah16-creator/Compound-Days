@@ -1,0 +1,42 @@
+name: V68 living idle render gate
+on:
+  pull_request:
+    paths:
+      - 'dist/src/living-idle-v68.js'
+      - 'dist/index.html'
+      - 'check/bench-living-idle-v68.cjs'
+      - '.github/workflows/living-idle-v68.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  living-idle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax and existing V61/V66 contract tests
+        run: |
+          node --check dist/src/living-idle-v68.js
+          node --check check/bench-living-idle-v68.cjs
+          node check/verify-hero-v61.cjs
+          node check/verify-shirt-v66.cjs
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Render V67 and V68 on the actual mobile character
+        run: node check/bench-living-idle-v68.cjs artifacts/v68-living-idle
+      - name: Upload before and after previews and numerical results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compound-days-v68-idle
+          path: artifacts/v68-living-idle/
+          if-no-files-found: warn
+          retention-days: 14
