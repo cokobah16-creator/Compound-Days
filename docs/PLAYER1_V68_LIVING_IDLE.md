@@ -36,3 +36,9 @@ The V61 rig has 27 joints and **no finger joints or facial morph targets**. Thes
 4. Verify on Safari/iPhone and Android at real interaction speeds (headless software Chromium is not a device test).
 
 **No replacement mesh is created.** Live character remains unchanged until a reviewed merge.
+
+## Browser regression diagnosis
+
+The first V68 screenshot failed review: the head pitched dramatically and the wrists curled unnaturally. Root cause: the V61 imported Idle clip does not necessarily rewrite every joint each frame, so simple procedural quaternion increments accumulated without bound. The corrected implementation **restores last frame's saved original local joint quaternions before the AnimationMixer and V67 run**, then snapshots their new output before adding the small offsets for this frame. The `check/bench-living-idle-v68.cjs` regression test tests a continuous 15-second idle and checks return to the V67 baseline when disabled.
+
+The corrected 95-frame Chromium capture and angle comparison passed in [run #43186334174](https://github.com/cokobah16-creator/Compound-Days/actions/runs/43186334174). Changes measured at its capture: torso 0.666°, head 1.382°, wrists 3.075°/2.692° relative to the V67 pose. These are single-frame angles, not a quantified animation quality score. The endurance check is a separate additional gate before release.
