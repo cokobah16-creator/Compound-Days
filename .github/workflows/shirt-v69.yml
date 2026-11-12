@@ -1,0 +1,46 @@
+name: V69 Shirt Seam Geometry Review
+
+on:
+  pull_request:
+    paths:
+      - 'tools/player1_v69_seam.py'
+      - 'check/bench-shirt-v69.cjs'
+      - '.github/workflows/shirt-v69.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  patch-material-audition:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install local analysis/runtime tools
+        run: |
+          python -m pip install --quiet numpy pillow
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Build candidate from shipped production V61 binary
+        run: |
+          python tools/player1_v69_seam.py \
+            dist/assets/characters/player1-v61.glb \
+            artifacts/v69/player1-v69-seam-review.glb \
+            artifacts/v69/v69-seam-metrics.json
+      - name: Compare original and candidate on Three.js mobile creator
+        run: node check/bench-shirt-v69.cjs artifacts/v69 artifacts/v69/player1-v69-seam-review.glb
+      - name: Attach candidate GLB, JSON and mobile screenshots
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: Compound-Days-V69-Right-Underarm-Review
+          path: artifacts/v69/
+          retention-days: 14
+          if-no-files-found: warn
