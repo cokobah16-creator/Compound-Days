@@ -65,6 +65,7 @@ const server=http.createServer((req,res)=>{
   leftWristDegrees:angular(off.metrics.leftHand,on.metrics.leftHand)*180/Math.PI,
   rightWristDegrees:angular(off.metrics.rightHand,on.metrics.rightHand)*180/Math.PI
  };
+ console.log('V68 ANGLE DIAGNOSTIC',JSON.stringify({angles,off:off.metrics,on:on.metrics}));
  assert(angles.spineDegrees>.4&&angles.spineDegrees<2.5,'Breathing torso movement outside safe range');
  assert(angles.headDegrees>.4&&angles.headDegrees<3,'Head motion outside safe range');
  assert(angles.leftWristDegrees>1&&angles.leftWristDegrees<5,'Left wrist outside safe range');
