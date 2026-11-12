@@ -1,5 +1,5 @@
 {
-  "build": "v56-1925aa14",
+  "build": "v65-64844e5a",
   "passed": true,
   "checks": [
     {
@@ -30,7 +30,7 @@
           1.7034,
           0.0261
         ],
-        "requestUrl": "assets/characters/efe.gltf.json?v=v56-1925aa14"
+        "requestUrl": "assets/characters/efe.gltf.json?v=v65-64844e5a"
       }
     },
     {
@@ -308,7 +308,7 @@
       "name": "Menu shows the build id and the id carries the authored-character prefix",
       "passed": true,
       "details": {
-        "build": "v56-1925aa14"
+        "build": "v65-64844e5a"
       }
     }
   ],
