@@ -23,6 +23,10 @@ jobs:
           node --check dist/src/pose-v67.js
           node --check check/bench-pose-v67.cjs
           node check/verify-shirt-v66.cjs
+      - name: Test existing hero and wardrobe compatibility
+        run: |
+          node check/verify-hero-v61.cjs
+          node check/verify-wardrobe-v52.cjs
       - name: Install Chromium and Playwright
         run: |
           npm install --no-save playwright
@@ -36,4 +40,24 @@ jobs:
           name: compound-days-v67-relaxed-idle
           path: artifacts/v67-pose/
           if-no-files-found: warn
+          retention-days: 14
+
+  release-metadata:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Calculate deterministic V67 build ID and manifest on clean checkout
+        run: |
+          python3 tools/stamp-build.py
+          python3 tools/package-manifest.py
+          git diff --stat
+          test -s PACKAGE_MANIFEST.json
+      - name: Attach proposed release metadata (not automatically committed)
+        uses: actions/upload-artifact@v4
+        with:
+          name: v67-proposed-release-metadata
+          path: |
+            dist/index.html
+            PACKAGE_MANIFEST.json
           retention-days: 14
