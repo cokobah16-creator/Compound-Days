@@ -29,3 +29,18 @@ The November 2026 mobile captures showed the V61 replacement body now looks more
 5. Only after tests are green should the PR be merged into `master`.
 
 This is not a facial retopology, full outfit swap, or new hair system. The next wardrobe milestone is a properly skinned second garment on the V61/V63 compatible bind pose, with hidden-under-clothes geometry and mobile LOD checks.
+
+
+## Verified Chromium outcome — 12 November 2026
+
+[GitHub Actions run #43160792589](https://github.com/cokobah16-creator/Compound-Days/actions/runs/43160792589) completed **SUCCESS**.
+
+- V61 body loaded at mobile 390×844 in Chromium with the actual bundled Three.js renderer.
+- Six colour buttons were present on the Player 1 Clothes tab.
+- A delegated click on Coral stored `S.p[0].colors.shirt66=coral`, and the refreshed **actual V61 preview** displayed `hero61` + `shirt66=coral`.
+- The textured shirt primitive and the untextured underarm repair primitive both used the Coral material; skin and hair were untouched.
+- Sky and Coral generated distinct real WebGL canvas PNG files (different SHA-256 fingerprints).
+- Player 2 had no colour picker or extra `colors` state. Serialization retained the colour while leaving the hair and outfit IDs unchanged.
+- No console/page errors. The workflow uploaded two real renderer PNGs and `shirt66-results.json` in `compound-days-v66-shirt-mobile`.
+
+**Evidence scope:** This test used software headless Chromium, and the click was dispatched through the browser DOM handler rather than a physical touch. It does not substitute for user testing the scroll/tap interaction on an iPhone, nor does it prove the original authored 12-outfit wardrobe is compatible. Continue to hold deployment pending normal build stamp, full game harness and a real-phone creator check.
