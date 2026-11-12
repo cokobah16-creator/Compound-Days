@@ -35,6 +35,14 @@ const server=http.createServer((req,res)=>{
    palette:document.querySelectorAll('.shirt66-swatch').length,
    panelText:document.getElementById('panel')?.textContent?.slice(0,220)
   }));console.log('SETUP DEBUG',JSON.stringify(setupDiag));
+  const visDiag=await page.evaluate(()=>{
+   const el=document.querySelector('.shirt66-swatch'); const path=[];
+   for(let n=el;n&&path.length<9;n=n.parentElement){const c=getComputedStyle(n),b=n.getBoundingClientRect();
+    path.push({tag:n.tagName,cls:String(n.className).slice(0,70),display:c.display,visibility:c.visibility,opacity:c.opacity,
+     width:b.width,height:b.height,x:b.x,y:b.y,hidden:!!n.hidden});}
+   return path;
+  });console.log('SWATCH LAYOUT',JSON.stringify(visDiag));
+  await page.screenshot({path:path.join(out,'shirt66-debug-panel.png'),fullPage:true});
   await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'attached',timeout:5000});
   const diag=await page.evaluate(()=>{
    const el=document.querySelector('.shirt66-swatch'),field=el&&el.closest('.field'),tab=document.querySelector('[data-act="creator30tab"][data-v="clothes"]'),ov=document.getElementById('ov');
