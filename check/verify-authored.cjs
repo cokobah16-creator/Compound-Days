@@ -48,10 +48,12 @@ let build=null;const checks=[];
  assert(extras,'root extras missing');for(const k of ['x','y','z','scale','headR'])assert.equal(typeof extras.hairMount[k],'number',k);
  assert(Array.isArray(extras.headCentre)&&extras.headCentre.length===3);finite(extras.headCentre);
  const heroIBM=ibmBytes('assets/characters/efe.gltf.json',0)[0],heroSha=crypto.createHash('sha256').update(heroIBM).digest('hex').slice(0,12);
- // boot() fetches the hero through authored-v34's heroLoad wrapper: a revision query like the wardrobe's, the plain path restored.
- const heroUrl=run("(()=>{const L=THREE.GLTFLoader.prototype.load;let seen=null;THREE.GLTFLoader.prototype.load=function(u){seen=u;};const st=HERO.state;HERO.state='idle';try{heroLoad();}finally{THREE.GLTFLoader.prototype.load=L;HERO.state=st;}return seen;})()");
- assert.equal(heroUrl,'assets/characters/efe.gltf.json?v='+run('BUILD_ID'));assert.equal(run('HERO.url'),'assets/characters/efe.gltf.json');assert.equal(run('AUTHORED34.installed'),true);
- pass('Hero loads from efe.gltf.json (fetched with the build revision query) with 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras',{joints:27,clips:CLIPS,inverseBindSha:heroSha,hairMount:extras.hairMount,headCentre:extras.headCentre,requestUrl:heroUrl});
+ // v61: boot() requests Player 1's V61 file first (hero-v61's heroLoad wrapper) and then the classic hero through authored-v34's wrapper, both with a revision query like the wardrobe's, the plain paths restored; with HERO61 disabled only the classic request is made.
+ const heroUrls=run("(()=>{const L=THREE.GLTFLoader.prototype.load;const seen=[];THREE.GLTFLoader.prototype.load=function(u){seen.push(u);};const st=HERO.state,st61=HERO61.state;HERO.state='idle';HERO61.state='idle';try{heroLoad();}finally{THREE.GLTFLoader.prototype.load=L;HERO.state=st;HERO61.state=st61;}return seen;})()");
+ same(heroUrls,['assets/characters/player1-v61.glb?v='+run('BUILD_ID'),'assets/characters/efe.gltf.json?v='+run('BUILD_ID')]);assert.equal(run('HERO.url'),'assets/characters/efe.gltf.json');assert.equal(run('HERO61.url'),'assets/characters/player1-v61.glb');assert.equal(run('AUTHORED34.installed'),true);
+ const classicOnly=run("(()=>{const L=THREE.GLTFLoader.prototype.load;const seen=[];THREE.GLTFLoader.prototype.load=function(u){seen.push(u);};const st=HERO.state,en=HERO61.enabled;HERO.state='idle';HERO61.enabled=false;try{heroLoad();}finally{THREE.GLTFLoader.prototype.load=L;HERO.state=st;HERO61.enabled=en;}return seen;})()");
+ same(classicOnly,['assets/characters/efe.gltf.json?v='+run('BUILD_ID')]);
+ pass('Player 1\'s V61 file is requested first and the classic hero efe.gltf.json second, both with the build revision query (classic only with HERO61 disabled); the classic hero has 27 joints in hero order, 8 clips, five material-named body primitives and hairMount/headCentre extras',{joints:27,clips:CLIPS,inverseBindSha:heroSha,hairMount:extras.hairMount,headCentre:extras.headCentre,requestUrls:heroUrls,classicOnlyUrls:classicOnly});
 
  // 2. The authored wardrobe pieces (v21 hair, v52 outfits), bound exactly like the hero.
  same(Object.keys(run('WARDROBE.cache')).sort(),V21_WARDROBE); // the harness parses the files itself; the in-page loader (WARDROBE.failed) is a browser matter
