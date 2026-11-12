@@ -48,6 +48,32 @@ const server=http.createServer((req,res)=>{
  assert(original.metrics.right-relaxed.metrics.right>=4,'Right arm failed to lower');
  assert(relaxed.metrics.handSpan<original.metrics.handSpan-.045,'Hands not sufficiently closer');
  assert.notEqual(original.hash,relaxed.hash,'Rendered preview unchanged');
+
+ // The front-only pass can hide a broken side silhouette. Render three more
+ // views on the SAME live skinned avatar, plus a frame of its real Walk clip.
+ const views={};
+ for(const [id,yaw] of [['three-quarter',-.58],['profile',Math.PI/2],['back',Math.PI]]){
+  const data=await page.evaluate(yaw=>{
+   const g=prevChar;CREATOR30.yaw=yaw;g.rotation.y=yaw;
+   for(let i=0;i<20;i++)animAvatar(g,3+i/60,false,false,0,1/60);
+   g.updateMatrixWorld(true);prevR.render(prevScene,prevCam);
+   return {pose:g.current,weight:g.userData.pose67?.weight||0,img:prevR.domElement.toDataURL('image/png')};
+  },yaw);
+  assert.equal(data.pose,'idle','Not in idle for '+id);assert(data.weight>.98,'Pose not settled for '+id);
+  const png=Buffer.from(data.img.split(',')[1],'base64');assert(png.length>500,'Blank view '+id);
+  const name='v67-'+id+'-idle.png';fs.writeFileSync(path.join(out,name),png);
+  views[id]={name,hash:crypto.createHash('sha256').update(png).digest('hex')};
+ }
+ const walking=await page.evaluate(()=>{
+  const g=prevChar;CREATOR30.yaw=-.4;g.rotation.y=-.4;
+  for(let i=0;i<40;i++)animAvatar(g,4+i/60,true,false,3.2,1/60);
+  g.updateMatrixWorld(true);prevR.render(prevScene,prevCam);
+  return {clip:g.current,weight:g.userData.pose67?.weight||0,img:prevR.domElement.toDataURL('image/png')};
+ });
+ assert.equal(walking.clip,'walk');assert.equal(walking.weight,0,'Pose correction must disengage during walk');
+ const walkPNG=Buffer.from(walking.img.split(',')[1],'base64');assert(walkPNG.length>500);
+ fs.writeFileSync(path.join(out,'v67-walking-unchanged.png'),walkPNG);
+ views.walk={clip:walking.clip,hash:crypto.createHash('sha256').update(walkPNG).digest('hex')};
  const modes=await page.evaluate(()=>{
   POSE67.enabled=true;const g=prevChar;
   const idle=pose67Apply(g,1/60);
@@ -58,7 +84,7 @@ const server=http.createServer((req,res)=>{
  });
  assert(modes.idle&&!modes.walk&&!modes.carry&&!modes.classic);
  assert.equal(errors.length,0,errors.join('\n'));
- const report={result:'PASS',original,relaxed,modes,errors,limitations:['headless SwiftShader not real iPhone','human pose review before release']};
+ const report={result:'PASS',original,relaxed,views,modes,errors,limitations:['headless SwiftShader not real iPhone','human pose review before release']};
  fs.writeFileSync(path.join(out,'pose-v67-results.json'),JSON.stringify(report,null,2)+'\n');
  console.log(JSON.stringify(report,null,2));
  }catch(e){console.error('V67 FAIL:',e.stack||String(e));process.exitCode=1}
