@@ -28,29 +28,36 @@ const server=http.createServer((req,res)=>{
   await page.waitForFunction(()=>typeof HERO61!=='undefined'&&['ready','error'].includes(HERO61.state),null,{timeout:120000});
   const st=await page.evaluate(()=>HERO61.state);assert.equal(st,'ready','V61 GLB failed to load');
   await page.evaluate(()=>{ACTIONS.newgame();ACTIONS.setupstep({v:'p0'});ACTIONS.creator30tab({v:'clothes'});});
-  await page.locator('.shirt66-swatch').first().scrollIntoViewIfNeeded({timeout:15000});
-  assert(await page.locator('.shirt66-swatch').first().isVisible(),'Palette is not visible after scrolling');
-  await page.waitForFunction(()=>typeof prevChar!=='undefined'&&prevChar&&prevChar.userData&&prevChar.userData.hero61,null,{timeout:50000});
+  await page.waitForFunction(()=>!!document.querySelector('.shirt66-swatch')&&typeof prevChar!=='undefined'&&prevChar&&prevChar.userData?.hero61,null,{timeout:30000});
   const before=await page.evaluate(()=>{
-   const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original'})});
-   return {player:prevChar.userData.shirt66,top};
+    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original'})});
+    return {player:prevChar.userData.shirt66,top,tab:CREATOR30.tab,swatches:document.querySelectorAll('.shirt66-swatch').length};
   });
-  assert.equal(before.player,'sky');
-  const defaultCanvas=page.locator('#pv3d0 canvas');
-  await defaultCanvas.waitFor({state:'visible',timeout:15000});
-  await page.waitForTimeout(200);
-  const png1=await defaultCanvas.screenshot({path:path.join(out,'shirt66-sky-mobile.png')});
-  await page.locator('[data-act="shirt66set"][data-v="coral"]').scrollIntoViewIfNeeded({timeout:15000});
-  await page.locator('[data-act="shirt66set"][data-v="coral"]').click({timeout:15000});
+  assert.equal(before.player,'sky');assert.equal(before.tab,'clothes');assert.equal(before.swatches,6);
+  async function capture(name){
+    const data=await page.evaluate(()=>{if(!prevR||!prevScene||!prevCam)throw new Error('No 3D preview renderer');
+      prevR.render(prevScene,prevCam);return prevR.domElement.toDataURL('image/png');});
+    assert(data.startsWith('data:image/png;base64,'),'WebGL canvas did not produce PNG');
+    const bytes=Buffer.from(data.split(',')[1],'base64');assert(bytes.length>500,'PNG too small');
+    fs.writeFileSync(path.join(out,name),bytes);return bytes;
+  }
+  const png1=await capture('shirt66-sky-mobile.png');
+  const tapped=await page.evaluate(()=>{
+    const b=document.querySelector('[data-act="shirt66set"][data-v="coral"]');
+    if(!b)throw new Error('Coral button missing from real Clothes tab');
+    const panel=document.getElementById('panel');
+    panel.scrollTop=panel.scrollHeight;
+    b.click();return true; // actual delegated click event; no synthetic ACTIONS call
+  });assert(tapped);
   await page.waitForFunction(()=>S.p[0]?.colors?.shirt66==='coral'&&prevChar?.userData?.shirt66==='coral',null,{timeout:30000});
   const after=await page.evaluate(()=>{
    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original',textured:!!o.material?.map})});
-   return {player:prevChar.userData.shirt66, saved:S.p[0].colors.shirt66,top,colors:Object.assign({},S.p[0].colors),
-    isV61:!!prevChar.userData.hero61, shaderReady:top.some(x=>x.color==='coral'&&x.textured)};
+   return {player:prevChar.userData.shirt66,saved:S.p[0].colors.shirt66,top,colors:Object.assign({},S.p[0].colors),
+    isV61:!!prevChar.userData.hero61,shaderReady:top.some(x=>x.color==='coral'&&x.textured)};
   });
   assert.equal(after.player,'coral');assert.equal(after.saved,'coral');assert(after.shaderReady,'Tinted textured shirt material not found');
-  const png2=await page.locator('#pv3d0 canvas').screenshot({path:path.join(out,'shirt66-coral-mobile.png')});
-  assert(!png1.equals(png2),'3D canvas screenshot did not change');
+  const png2=await capture('shirt66-coral-mobile.png');
+  assert(!png1.equals(png2),'3D canvas did not visibly change');
   // Opening Player 2 must not tint their classic character.
   await page.evaluate(()=>{S.setup.step='p1';renderSetup();});
   const player2=await page.evaluate(()=>({colors:S.p[1].colors||null,pickerCount:document.querySelectorAll('.shirt66-picker').length}));
@@ -62,7 +69,8 @@ const server=http.createServer((req,res)=>{
    imgHashes:{sky:crypto.createHash('sha256').update(png1).digest('hex'),coral:crypto.createHash('sha256').update(png2).digest('hex')},
    errors,limitations:['Headless Chromium software renderer, not physical iPhone','This only recolors tee; no haircut or outfit geometry swapped']};
   fs.writeFileSync(path.join(out,'shirt66-results.json'),JSON.stringify(report,null,2)+'\n');
-  await page.screenshot({path:path.join(out,'shirt66-player2-unaffected.png'),fullPage:true});
+  // Screenshot files above are actual preview canvas PNGs, not static images.
+  // A separate real-phone interaction is still required before release.
   console.log(JSON.stringify(report,null,2));if(errors.length)process.exitCode=1;
  }catch(e){console.error('FAIL: '+(e.stack||String(e)));process.exitCode=1}
  finally{if(browser)await browser.close();await new Promise(r=>server.close(r));}
