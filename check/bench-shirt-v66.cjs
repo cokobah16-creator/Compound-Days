@@ -28,7 +28,15 @@ const server=http.createServer((req,res)=>{
   await page.waitForFunction(()=>typeof HERO61!=='undefined'&&['ready','error'].includes(HERO61.state),null,{timeout:120000});
   const st=await page.evaluate(()=>HERO61.state);assert.equal(st,'ready','V61 GLB failed to load');
   await page.evaluate(()=>{S=newState();S.setup={step:'p0'};renderSetup();ACTIONS.creator30tab({v:'clothes'});});
-  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{timeout:30000});
+  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'attached',timeout:15000});
+  const diag=await page.evaluate(()=>{
+   const el=document.querySelector('.shirt66-swatch'),field=el&&el.closest('.field'),tab=document.querySelector('[data-act="creator30tab"][data-v="clothes"]'),ov=document.getElementById('ov');
+   return {tab:typeof CREATOR30!=='undefined'?CREATOR30.tab:null,overlay:ov&&ov.className,fieldHidden:field?.hidden,
+    fieldDisplay:field&&getComputedStyle(field).display,swatchDisplay:el&&getComputedStyle(el).display,
+    swatchRects:el&&el.getBoundingClientRect().toJSON(),tab:tab&&tab.outerHTML.slice(0,200),
+    panelChildren:document.getElementById('panel')?.children.length};
+  });console.log('CREATOR DIAGNOSTIC',JSON.stringify(diag));
+  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'visible',timeout:5000});
   await page.waitForFunction(()=>typeof prevChar!=='undefined'&&prevChar&&prevChar.userData&&prevChar.userData.hero61,null,{timeout:50000});
   const before=await page.evaluate(()=>{
    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original'})});
