@@ -27,8 +27,15 @@ const server=http.createServer((req,res)=>{
   await page.goto(url,{waitUntil:'domcontentloaded',timeout:90000});
   await page.waitForFunction(()=>typeof HERO61!=='undefined'&&['ready','error'].includes(HERO61.state),null,{timeout:120000});
   const st=await page.evaluate(()=>HERO61.state);assert.equal(st,'ready','V61 GLB failed to load');
-  await page.evaluate(()=>{S=newState();S.setup={step:'p0'};renderSetup();ACTIONS.creator30tab({v:'clothes'});});
-  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'attached',timeout:15000});
+  await page.evaluate(()=>{ACTIONS.newgame();ACTIONS.setupstep({v:'p0'});ACTIONS.creator30tab({v:'clothes'});});
+  await page.waitForTimeout(400);
+  const setupDiag=await page.evaluate(()=>({
+   phase:S?.phase,setup:S?.setup?.step,hero:HERO61.state,tab:CREATOR30.tab,
+   overlay:document.getElementById('ov')?.className,fields:[...document.querySelectorAll('#panel .field')].map(f=>({label:f.querySelector('label')?.textContent,hidden:f.hidden,display:getComputedStyle(f).display})),
+   palette:document.querySelectorAll('.shirt66-swatch').length,
+   panelText:document.getElementById('panel')?.textContent?.slice(0,220)
+  }));console.log('SETUP DEBUG',JSON.stringify(setupDiag));
+  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'attached',timeout:5000});
   const diag=await page.evaluate(()=>{
    const el=document.querySelector('.shirt66-swatch'),field=el&&el.closest('.field'),tab=document.querySelector('[data-act="creator30tab"][data-v="clothes"]'),ov=document.getElementById('ov');
    return {tab:typeof CREATOR30!=='undefined'?CREATOR30.tab:null,overlay:ov&&ov.className,fieldHidden:field?.hidden,
