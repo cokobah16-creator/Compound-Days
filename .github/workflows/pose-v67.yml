@@ -1,0 +1,39 @@
+name: V67 relaxed Player 1 pose
+on:
+  pull_request:
+    paths:
+      - 'dist/src/pose-v67.js'
+      - 'dist/index.html'
+      - 'check/bench-pose-v67.cjs'
+      - '.github/workflows/pose-v67.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  mobile-creator-pose:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check original clip and new pass syntax
+        run: |
+          node --check dist/src/pose-v67.js
+          node --check check/bench-pose-v67.cjs
+          node check/verify-shirt-v66.cjs
+      - name: Install Chromium and Playwright
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Compare V61 and V67 idle poses on mobile renderer
+        run: node check/bench-pose-v67.cjs artifacts/v67-pose
+      - name: Upload mobile PNGs and measured angles
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compound-days-v67-relaxed-idle
+          path: artifacts/v67-pose/
+          if-no-files-found: warn
+          retention-days: 14
