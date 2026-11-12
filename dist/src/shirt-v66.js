@@ -96,7 +96,9 @@ function shirt66MountPicker(){
  const outfit=panel.querySelector('[data-act="setp"][data-i="0"][data-k="outfit"]');
  const field=outfit&&outfit.closest?outfit.closest('.field'):null;
  if(!field||field.querySelector('.shirt66-picker'))return false;
- field.insertAdjacentHTML('beforeend',shirt66PickerHTML(S.p[0]));
+ const options=field.querySelector('.opts');
+ if(options) options.insertAdjacentHTML('beforebegin',shirt66PickerHTML(S.p[0]));
+ else field.insertAdjacentHTML('beforeend',shirt66PickerHTML(S.p[0]));
  return true;
 }
 if(typeof HERO61!=='undefined'){
