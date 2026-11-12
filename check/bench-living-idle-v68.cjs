@@ -98,7 +98,7 @@ const server=http.createServer((req,res)=>{
  assert(endurance.restored,'Saved base rotation not released when disabled');
  for(const key of Object.keys(endurance.returned))
   assert(endurance.returned[key]<.15,'Original pose was not restored for '+key);
- LIFE68.enabled=true;
+ await page.evaluate(()=>{LIFE68.enabled=true;});
 
  const gating=await page.evaluate(()=>{
   LIFE68.enabled=true;const g=prevChar;
