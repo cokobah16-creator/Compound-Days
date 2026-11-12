@@ -43,21 +43,43 @@ jobs:
           retention-days: 14
 
   release-metadata:
+    # Only update this exact review branch, after checks succeed.
+    if: >-
+      github.event_name == 'pull_request' &&
+      github.event.pull_request.head.repo.full_name == github.repository &&
+      github.event.pull_request.head.ref == 'feat/v67-relaxed-player1-idle-20261112'
+    needs: mobile-creator-pose
+    permissions:
+      contents: write
     runs-on: ubuntu-latest
     timeout-minutes: 10
     steps:
       - uses: actions/checkout@v4
-      - name: Calculate deterministic V67 build ID and manifest on clean checkout
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          fetch-depth: 0
+      - name: Ensure the tested revision is the revision being stamped
+        run: test "$(git rev-parse HEAD)" = "${{ github.event.pull_request.head.sha }}"
+      - name: Recompute deterministic build stamp and package manifest
         run: |
           python3 tools/stamp-build.py
           python3 tools/package-manifest.py
-          git diff --stat
           test -s PACKAGE_MANIFEST.json
-      - name: Attach proposed release metadata (not automatically committed)
+          git diff --stat
+      - name: Upload exact metadata for audit
         uses: actions/upload-artifact@v4
         with:
-          name: v67-proposed-release-metadata
+          name: v67-stamped-metadata
           path: |
             dist/index.html
             PACKAGE_MANIFEST.json
           retention-days: 14
+      - name: Commit corrected metadata to the review branch only
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add dist/index.html PACKAGE_MANIFEST.json
+          if ! git diff --cached --quiet; then
+            git commit -m "chore(v67): stamp validated build and package manifest"
+            git push origin "HEAD:${{ github.event.pull_request.head.ref }}"
+          fi
