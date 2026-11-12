@@ -28,31 +28,8 @@ const server=http.createServer((req,res)=>{
   await page.waitForFunction(()=>typeof HERO61!=='undefined'&&['ready','error'].includes(HERO61.state),null,{timeout:120000});
   const st=await page.evaluate(()=>HERO61.state);assert.equal(st,'ready','V61 GLB failed to load');
   await page.evaluate(()=>{ACTIONS.newgame();ACTIONS.setupstep({v:'p0'});ACTIONS.creator30tab({v:'clothes'});});
-  await page.waitForTimeout(400);
-  const setupDiag=await page.evaluate(()=>({
-   phase:S?.phase,setup:S?.setup?.step,hero:HERO61.state,tab:CREATOR30.tab,
-   overlay:document.getElementById('ov')?.className,fields:[...document.querySelectorAll('#panel .field')].map(f=>({label:f.querySelector('label')?.textContent,hidden:f.hidden,display:getComputedStyle(f).display})),
-   palette:document.querySelectorAll('.shirt66-swatch').length,
-   panelText:document.getElementById('panel')?.textContent?.slice(0,220)
-  }));console.log('SETUP DEBUG',JSON.stringify(setupDiag));
-  const visDiag=await page.evaluate(()=>{
-   const el=document.querySelector('.shirt66-swatch'); const path=[];
-   for(let n=el;n&&path.length<9;n=n.parentElement){const c=getComputedStyle(n),b=n.getBoundingClientRect();
-    path.push({tag:n.tagName,cls:String(n.className).slice(0,70),display:c.display,visibility:c.visibility,opacity:c.opacity,
-     width:b.width,height:b.height,x:b.x,y:b.y,hidden:!!n.hidden});}
-   return path;
-  });console.log('SWATCH LAYOUT',JSON.stringify(visDiag));
-  await page.screenshot({path:path.join(out,'shirt66-debug-panel.png'),fullPage:true});
-  await page.waitForSelector('.shirt66-picker .shirt66-swatch',{state:'attached',timeout:5000});
-  const diag=await page.evaluate(()=>{
-   const el=document.querySelector('.shirt66-swatch'),field=el&&el.closest('.field'),tab=document.querySelector('[data-act="creator30tab"][data-v="clothes"]'),ov=document.getElementById('ov');
-   return {tab:typeof CREATOR30!=='undefined'?CREATOR30.tab:null,overlay:ov&&ov.className,fieldHidden:field?.hidden,
-    fieldDisplay:field&&getComputedStyle(field).display,swatchDisplay:el&&getComputedStyle(el).display,
-    swatchRects:el&&el.getBoundingClientRect().toJSON(),tab:tab&&tab.outerHTML.slice(0,200),
-    panelChildren:document.getElementById('panel')?.children.length};
-  });console.log('CREATOR DIAGNOSTIC',JSON.stringify(diag));
-  await page.locator('.shirt66-picker .shirt66-swatch').first().scrollIntoViewIfNeeded({timeout:15000});
-  assert(await page.locator('.shirt66-swatch').first().isVisible(),'The shirt colour palette cannot be scrolled into view');
+  await page.locator('.shirt66-swatch').first().scrollIntoViewIfNeeded({timeout:15000});
+  assert(await page.locator('.shirt66-swatch').first().isVisible(),'Palette is not visible after scrolling');
   await page.waitForFunction(()=>typeof prevChar!=='undefined'&&prevChar&&prevChar.userData&&prevChar.userData.hero61,null,{timeout:50000});
   const before=await page.evaluate(()=>{
    const top=[];prevChar.traverse(o=>{if(o.isMesh&&o.userData.hero61Slot==='top')top.push({name:o.name,color:o.material?.userData?.cdShirt66||'original'})});
