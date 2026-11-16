@@ -1,0 +1,308 @@
+{
+ "build": "v71-12c6662e",
+ "passed": true,
+ "checks": [
+  {
+   "name": "The file is a GLB 2.0 under 5.5 MB with one 27-joint skin, the Body mesh of six primitives [skin, hair, top, bottom, shoe, top] with exactly POSITION/NORMAL/TEXCOORD_0/JOINTS_0/WEIGHTS_0 and no morph targets, five materials that all carry the one JPEG (no second texture, no untextured material), 91,648 triangles, eight clips the game recognises, root extras version 71 naming the delivered candidate, and no accessor or buffer view that nothing references",
+   "passed": true,
+   "info": {
+    "bytes": 5163200,
+    "sha256": "3d1e0c437aadc5fa460235afb9eb473f722f25fb2842d95b92690feead32b328",
+    "v61Bytes": 5101400,
+    "generator": "Compound Days v61 hero converter (metre nodes, albedo only, no underlay, no morphs); V70 local garment chart rebuild; V71 carry-walk shoulder clearance; V71 game asset (panel on the shared albedo, unreferenced data dropped)",
+    "primitives": [
+     "skin",
+     "hair",
+     "top",
+     "bottom",
+     "shoe",
+     "top"
+    ],
+    "trianglesByMaterial": {
+     "skin": 16111,
+     "hair": 29939,
+     "top": 15436,
+     "bottom": 24744,
+     "shoe": 5418
+    },
+    "triangles": 91648,
+    "accessors": 600,
+    "bufferViews": 601,
+    "clips": [
+     "Idle",
+     "Walk",
+     "Carry",
+     "CarryLow",
+     "WalkCarry",
+     "WalkCarryLow",
+     "Pick",
+     "Wave"
+    ],
+    "extras": {
+     "version": 71,
+     "visualRevision": "v71-shared-albedo",
+     "candidateSha256": "79c78e311ab324ad804e3ead5263930030b54753027b49e839f9e1fd32c77fe7",
+     "changedClip": "WalkCarry",
+     "shoulderCarryBlend": 0.6
+    }
+   }
+  },
+  {
+   "name": "Against player1-v61.glb: the same albedo bytes, joints, joint transforms and inverse binds; hair, trousers and shoes triangle for triangle; the skin minus four triangles; every tee triangle outside the panel at its V61 position, UV and weights (normals renewed only beside the join); and every animation track byte for byte except the two WalkCarry shoulder rotations, which keep their key times and move by at most 18.6 degrees",
+   "passed": true,
+   "info": {
+    "channels": 570,
+    "changedTracks": {
+     "WalkCarry/LeftShoulder/rotation": {
+      "keys": 32,
+      "degrees": [
+       14.25,
+       16.18
+      ]
+     },
+     "WalkCarry/RightShoulder/rotation": {
+      "keys": 32,
+      "degrees": [
+       15.31,
+       18.5
+      ]
+     }
+    },
+    "skinTrianglesRemoved": 4,
+    "teeTrianglesOutsidePanel": 14666,
+    "teeTrianglesWithRenewedNormals": 378,
+    "v61TeeAndPatchTriangles": 15438
+   }
+  },
+  {
+   "name": "The rebuilt underarm panel: 770 triangles on 435 vertices with no edge shared by more than two of them, drawn with the tee's own material, every UV on one flat cloth texel of the albedo, and stitched: each of its 98 open edges is an open edge of the tee at the same two positions, and each of those vertices has a tee vertex at its position with the same joints and weights, so the join cannot open when the figure moves",
+   "passed": true,
+   "info": {
+    "triangles": 770,
+    "vertices": 435,
+    "uv": [
+     0.73046875,
+     0.29296875
+    ],
+    "openEdges": 98,
+    "stitchedEdges": 98,
+    "rimVertices": 98,
+    "rimVerticesSkinnedLikeTheTee": 98
+   }
+  },
+  {
+   "name": "The switch: ?hero=v61 and a stored cd3-hero=v61 keep the V61 file, ?hero=v71 forces the V71 file over the stored choice, anything else (?hero=v55 and a stored v55 among them, which hero-v61 answers) names the V71 file",
+   "passed": true,
+   "info": {
+    "plain": true,
+    "v61": false,
+    "v61second": false,
+    "v61prefixOnly": true,
+    "stored": false,
+    "v71OverStored": true,
+    "v55": true,
+    "storedV55": true,
+    "storedOther": true
+   }
+  },
+  {
+   "name": "heroLoad requests player1-v71.glb with the build revision query first and the classic efe.gltf.json second; with the switch at V61 the first request is player1-v61.glb; a file that is loading or loaded is not renamed; with HERO61 disabled only the classic request is made",
+   "passed": true,
+   "info": {
+    "v71": [
+     "assets/characters/player1-v71.glb?v=v71-12c6662e",
+     "assets/characters/efe.gltf.json?v=v71-12c6662e",
+     "url:assets/characters/player1-v71.glb"
+    ],
+    "v61": [
+     "assets/characters/player1-v61.glb?v=v71-12c6662e",
+     "assets/characters/efe.gltf.json?v=v71-12c6662e",
+     "url:assets/characters/player1-v61.glb"
+    ],
+    "alreadyReady": [
+     "assets/characters/efe.gltf.json?v=v71-12c6662e",
+     "url:assets/characters/held.glb"
+    ],
+    "classicOnly": [
+     "assets/characters/efe.gltf.json?v=v71-12c6662e",
+     "url:assets/characters/player1-v71.glb"
+    ]
+   }
+  },
+  {
+   "name": "Installed through hero61Install and built by makeAvatar(lookFor(0)), the V71 file is the V61 figure: six visible skinned primitives in file order, every one of them carrying the albedo (no flat patch left), the tee and its panel in the asset's blue, skin, hair, trousers and shoes white, no wardrobe or hair mount, 8 actions and the hand and head bones",
+   "passed": true,
+   "info": {
+    "skinnedMeshes": 6,
+    "slots": [
+     "skin",
+     "hair",
+     "top",
+     "bottom",
+     "shoe",
+     "top"
+    ],
+    "allCarryTheAlbedo": true,
+    "colours": {
+     "skin": [
+      1,
+      1,
+      1
+     ],
+     "hair": [
+      1,
+      1,
+      1
+     ],
+     "top": [
+      0.32,
+      0.49,
+      0.77
+     ],
+     "bottom": [
+      1,
+      1,
+      1
+     ],
+     "shoe": [
+      1,
+      1,
+      1
+     ]
+    },
+    "actions": 8
+   }
+  },
+  {
+   "name": "The shirt colour reaches the whole tee: with Player 1's shirt set to coral both tee primitives (the tee and its panel) carry the coral material over the albedo and nothing else is recoloured; back on sky they are the asset's own again",
+   "passed": true,
+   "info": {
+    "coral": [
+     {
+      "slot": "skin",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "hair",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "top",
+      "shirt": "coral",
+      "albedo": true
+     },
+     {
+      "slot": "bottom",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "shoe",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "top",
+      "shirt": "coral",
+      "albedo": true
+     }
+    ],
+    "sky": [
+     {
+      "slot": "skin",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "hair",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "top",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "bottom",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "shoe",
+      "shirt": null,
+      "albedo": true
+     },
+     {
+      "slot": "top",
+      "shirt": null,
+      "albedo": true
+     }
+    ]
+   }
+  },
+  {
+   "name": "WalkCarry holds the hands out where Carry holds them: at 32 points of the stride the game's carry anchor (the midpoint of the two hand bones, where placeCarried hangs an object) stays at least 0.14 m in front of the hips on the V71 file, where the V61 file lets it fall under 0.10 m, and it starts within 0.07 m of the standing Carry anchor (V61: about 0.14 m), so a carried object no longer jumps toward the body when Player 1 sets off; Carry itself is the same in both files",
+   "passed": true,
+   "info": {
+    "v71": {
+     "carryForward": 0.1945,
+     "walkCarryForward": [
+      0.1528,
+      0.1626
+     ],
+     "startJump": 0.0681
+    },
+    "v61": {
+     "carryForward": 0.1945,
+     "walkCarryForward": [
+      0.0787,
+      0.09
+     ],
+     "startJump": 0.1467
+    }
+   }
+  }
+ ],
+ "mutants": [
+  {
+   "name": "M1 ?hero=v61 no longer keeps the V61 file",
+   "check": 4,
+   "result": "red",
+   "first": "v61"
+  },
+  {
+   "name": "M2 a stored cd3-hero=v61 is ignored",
+   "check": 4,
+   "result": "red",
+   "first": "stored"
+  },
+  {
+   "name": "M3 the file is renamed while a request is out or answered",
+   "check": 5,
+   "result": "red",
+   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/efe.gltf.json?v=v71-12c6662e',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/efe.gltf.json?v=v71-12c6662e',\n  'url:assets/characters/held.glb'\n]"
+  },
+  {
+   "name": "M4 the module names the V61 file",
+   "check": 5,
+   "result": "red",
+   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/player1-v61.glb?v=v71-12c6662e',\n  'assets/characters/efe.gltf.json?v=v71-12c6662e',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/player1-v71.glb?v=v71-12c6662e',\n  'assets/characters/efe.gltf.json?v=v71-12c6662e',\n  'url:assets/characters/player1-v71.glb'\n]"
+  },
+  {
+   "name": "A1 the panel wears a material of its own name (as the delivered candidate did)",
+   "check": 7,
+   "result": "red",
+   "first": "Expected values to be loosely deep-equal:\n\n[\n  'skin',\n  'hair',\n  'top',\n  'bottom',\n  'shoe',\n  'top_v70_rebuilt_panel'\n]\n\nshould loosely deep-equal\n\n[\n  'skin',\n  'hair',\n  'top',\n  'bottom',\n  'shoe',\n  'top'\n]"
+  },
+  {
+   "name": "A2 the WalkCarry shoulders are the V61 ones",
+   "check": 8,
+   "result": "red",
+   "first": "V71 anchor falls to 0.0787 m in front of the hips"
+  }
+ ],
+ "method": "GLB bytes of player1-v71.glb and player1-v61.glb parsed directly and compared; runtime state in Node with the shipped Three.js r128 and glTF loader (check/runtime-harness.cjs), both files parsed by the same loader and installed through hero61Install, the figure built by makeAvatar, the clips sampled through the figure's own mixer and the game's carryAnchor. Each mutant is a one-place change to a temp copy of garment-v71.js, or to a temp copy of the V71 file, run in a child process. No browser, GPU or phone test: the picture of the panel under the arm in both shirt colours is check/bench-garment-v71.cjs, and triangle crossings between hands and tee were counted by the delivered package, not here."
+}
