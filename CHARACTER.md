@@ -148,3 +148,14 @@ Runtime rules on the V61 figure (`dist/src/hero-v61.js`, checked by `node check/
 ## Player 1 V56 (build v56, removed in v61)
 
 Build v56 drew Player 1 from a second asset, `dist/assets/characters/player1-v56.glb` (the owner's Meshy V56 pack), chosen in the creator's Body tab. On the owner's call (11 Nov 2026) V61 replaced it: v61 removes `dist/src/player1-v56.js`, the V56 GLB and `check/verify-player1-v56.cjs`. The pack and its build tool stay in `source/player1_v56/` and `tools/player1_v56/`. A save whose Player 1 has `model: 'v56'` is drawn with V61 like every other save; the field is ignored.
+
+## From v71: Player 1 loads `player1-v71.glb`; `player1-v61.glb` is one switch away
+
+From build v71, `dist/src/garment-v71.js` names `dist/assets/characters/player1-v71.glb` for `hero-v61.js` to load: the V61 figure with the rebuilt underarm panel (V70) and the `WalkCarry` shoulder clearance (V71). Everything in "From v61" above still holds, with these differences in the file:
+
+- **Body.** Six primitives, materials in this order: `skin` (16,111 triangles), `hair` (29,939), `top` (14,666), `bottom` (24,744), `shoe` (5,418) and a second `top` (770, the underarm panel); 91,648 triangles and 6 draw calls. All six carry the albedo; there is no untextured patch any more, and the file has five materials.
+- **One albedo, one tee material.** `hero-v61.js` draws every textured primitive with the first albedo it finds and `shirt-v66.js` recolours materials named `top`. A primitive that belongs to the tee must use the `top` material and UVs on that albedo; a second texture or a differently named material is not drawn correctly (`docs/PLAYER1_V71_GARMENT_CARRYWALK.md`, section 2).
+- **Clips.** The same eight; only the `LeftShoulder` and `RightShoulder` rotations of `WalkCarry` differ from V61.
+- **Switch.** `?hero=v61` or `localStorage['cd3-hero']='v61'` loads `player1-v61.glb`; `?hero=v71` forces the V71 file; `?hero=v55` loads the classic hero.
+
+`tools/player1_v71_shared_albedo.py` makes the file from the delivered V71 candidate; `check/verify-garment-v71.cjs` and `check/bench-garment-v71.cjs` check it.

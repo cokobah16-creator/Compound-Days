@@ -35,7 +35,9 @@ PLAYTESTS
 
 CONTENTS
 - dist/: playable game, JavaScript, styles, models, textures and vendor libraries.
-- dist/assets/characters/player1-v61.glb: the V61 Player 1 character (dist/src/hero-v61.js loads it);
+- dist/assets/characters/player1-v71.glb: the V61 Player 1 character with the V70 underarm panel and the V71
+  carry-walk (dist/src/garment-v71.js names it, dist/src/hero-v61.js loads it; docs/PLAYER1_V71_GARMENT_CARRYWALK.md);
+  dist/assets/characters/player1-v61.glb: the V61 file as first shipped, drawn with ?hero=v61;
   dist/assets/characters/efe.gltf.json: the classic authored character; Player 1's fallback and the body of
   Player 2, the neighbours and the sellers;
   dist/assets/wardrobe/: its 16 pieces (worn on efe.gltf.json only).

@@ -1,0 +1,53 @@
+name: V71 Player 1 garment and carry-walk
+
+on:
+  pull_request:
+    paths:
+      - 'dist/index.html'
+      - 'dist/src/garment-v71.js'
+      - 'dist/src/hero-v61.js'
+      - 'dist/src/shirt-v66.js'
+      - 'dist/assets/characters/player1-v71.glb'
+      - 'tools/player1_v71_shared_albedo.py'
+      - 'check/verify-garment-v71.cjs'
+      - 'check/bench-garment-v71.cjs'
+      - '.github/workflows/garment-v71.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  garment-carrywalk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Check the V71 file, the switch and the figure the game builds
+        run: |
+          node --check dist/src/garment-v71.js
+          node check/verify-garment-v71.cjs
+          git diff --exit-code check/results-garment-v71.json
+      - name: Check the V61 file, the classic hero, the shirt colours and the wardrobe still pass
+        run: |
+          node check/verify-hero-v61.cjs
+          node check/verify-authored.cjs
+          node check/verify-shirt-v66.cjs
+          node check/verify-wardrobe-v52.cjs
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Render the panel, walk and carry on a phone-sized page
+        run: node check/bench-garment-v71.cjs artifacts/v71-garment
+      - name: Upload the pictures and measurements
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compound-days-v71-garment-carrywalk
+          path: artifacts/v71-garment
+          retention-days: 14
+          if-no-files-found: warn

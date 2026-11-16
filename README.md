@@ -27,6 +27,10 @@ The owner sent a sheet of twenty Blender renders, “Make the flat feel like you
 
 `check/verify-home-v65.cjs` (8 checks) covers the pictures, the panels, the collection and its album line, the rebuilt pieces drawing nothing from the seeded sequence, and the patterned finishes.
 
+## v71 — Player 1's underarm panel and carry-walk
+
+Player 1 is now drawn from `dist/assets/characters/player1-v71.glb`: the V61 figure with the owner's two asset repairs, the rebuilt shirt panel under the left arm (V70) and `WalkCarry` shoulders that keep the hands in front of the tee (V71). `dist/src/garment-v71.js` names the file for `hero-v61.js`; `player1-v61.glb` stays in the build and `?hero=v61` draws it. The delivered candidate's panel had a material and texture of its own that the game cannot draw, so `tools/player1_v71_shared_albedo.py` puts the panel on the tee's material and the shared albedo and drops unreferenced data (5,163,200 bytes). Checked by `node check/verify-garment-v71.cjs` (8 checks, 6 mutants) and `node check/bench-garment-v71.cjs` (real renderer, phone-sized page). Not checked on a physical phone. Full account: `docs/PLAYER1_V71_GARMENT_CARRYWALK.md`. The build id prefix is `v71-`.
+
 ## v61 — The V61 character is live for Player 1
 
 (Built as v61; merged after v65 Home collection, so its build id is numbered v66.)
