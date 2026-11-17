@@ -1,0 +1,59 @@
+name: v71b two phones stay one household
+
+on:
+  pull_request:
+    paths:
+      - 'dist/index.html'
+      - 'dist/src/pair-v71b.js'
+      - 'dist/src/together-v47.js'
+      - 'dist/src/turn-v49.js'
+      - 'dist/src/slots-v47.js'
+      - 'dist/src/bridge-v34b.js'
+      - 'dist/src/feel-v34.js'
+      - 'dist/src/first-evening-v33.js'
+      - 'check/two-phones.cjs'
+      - 'check/verify-pair-v71b.cjs'
+      - 'check/bench-pair-v71b.cjs'
+      - 'check/local-peer-server.cjs'
+      - '.github/workflows/pair-v71b.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  two-phones:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Two copies of the game joined through the real room code (14 checks)
+        run: |
+          node --check dist/src/pair-v71b.js
+          node check/verify-pair-v71b.cjs
+          git diff --exit-code check/results-pair-v71b.json
+      - name: One-phone play, the save slots and the remote-replay bridge still pass
+        run: |
+          node check/verify-slots-v47.cjs
+          node check/verify-bridge.cjs
+          node check/verify-feel.cjs
+          node check/verify-v33.cjs
+          node check/verify-v34.cjs
+          node check/verify-tune-v35.cjs
+      - name: Install headless Chromium
+        run: |
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+      - name: Two and three real browsers over WebRTC with a local signalling server
+        run: node check/bench-pair-v71b.cjs artifacts/v71b-pair
+      - name: Upload the browser results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: compound-days-v71b-pair
+          path: artifacts/v71b-pair
+          retention-days: 14
+          if-no-files-found: warn
