@@ -1,5 +1,5 @@
 {
-  "build": "v71-d02a85a3",
+  "build": "v71-4812c7bf",
   "passed": true,
   "checks": [
     {
@@ -231,6 +231,22 @@
           "Host photo:picture",
           "Guest photo:picture"
         ]
+      }
+    },
+    {
+      "name": "One player sits on the sofa: only that player is seated, and the partner, with no panel, walks on",
+      "passed": true,
+      "info": {
+        "sitter": {
+          "panel": true,
+          "sitting": true
+        },
+        "partner": {
+          "panel": false,
+          "seated": false,
+          "seating": false
+        },
+        "partnerWalked": 1.36
       }
     }
   ],
