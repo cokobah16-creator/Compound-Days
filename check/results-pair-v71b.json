@@ -1,0 +1,238 @@
+{
+  "build": "v71-d02a85a3",
+  "passed": true,
+  "checks": [
+    {
+      "name": "A normal join: the guest’s character screen survives the host’s household, its choices reach the host, and after moving in the guest takes the host’s household",
+      "passed": true,
+      "info": {
+        "guestStepAfterJoin": "p1",
+        "guestChoiceKept": "afro",
+        "hostSees": [
+          "afro",
+          "kaftan"
+        ],
+        "revAndCountAtMoveIn": [
+          [
+            5,
+            4
+          ],
+          [
+            5,
+            4
+          ]
+        ],
+        "code": "palm-****"
+      }
+    },
+    {
+      "name": "Eight presses that are never sent leave the guest in step: the host’s next household is taken; the graphics-quality press stays on its own phone",
+      "passed": true,
+      "info": {
+        "countBefore": [
+          4,
+          4
+        ],
+        "countAfter": [
+          4,
+          4
+        ]
+      }
+    },
+    {
+      "name": "Two purchases made while the link was down for ten seconds: fourteen seconds after it returns both phones hold the host’s household, and the guest is told its change did not arrive",
+      "passed": true,
+      "info": {
+        "purseWhileApart": [
+          6000,
+          3000
+        ],
+        "purseAfter": [
+          6000,
+          6000
+        ],
+        "guestTold": 1,
+        "catchUps": 1
+      }
+    },
+    {
+      "name": "Two purchases in the same instant with money for one: the purse is charged once and three seconds later both phones show the same single purchase",
+      "passed": true,
+      "info": {
+        "eachPhoneFirstShowed": [
+          [
+            {
+              "tomato": 1
+            },
+            {}
+          ],
+          [
+            {},
+            {
+              "tomato": 1
+            }
+          ]
+        ],
+        "bothNow": [
+          {
+            "tomato": 1
+          },
+          {}
+        ]
+      }
+    },
+    {
+      "name": "Four carries with Build, two by each player: no piece is left in the partner’s hands, none is duplicated, and both phones hold the same flat",
+      "passed": true,
+      "info": {
+        "pieces": 5,
+        "storageAfter": [],
+        "handsAfter": [
+          [
+            null,
+            null
+          ],
+          [
+            null,
+            null
+          ]
+        ]
+      }
+    },
+    {
+      "name": "Two different pieces put on one cell in the same instant: the host’s stands, the other is back in storage on both phones, and nothing is lost",
+      "passed": true,
+      "info": {
+        "storage": [
+          "plant"
+        ],
+        "hands": [
+          null,
+          null
+        ]
+      }
+    },
+    {
+      "name": "Both players press the night panel’s only button in the same instant: one day passes and both phones wake to the same market",
+      "passed": true,
+      "info": {
+        "day": [
+          2,
+          2
+        ],
+        "market": [
+          "2:5950",
+          "2:5950"
+        ]
+      }
+    },
+    {
+      "name": "The sofa is carried through the door: it is placed once, at the same moment and with the same words on both phones, and the household is written while the “It is in” panel is still open",
+      "passed": true,
+      "info": {
+        "framesToTheDoor": 8,
+        "both": {
+          "state": "placed",
+          "sofas": 1,
+          "words": "The sofa went in first try. Nobody will believe it.",
+          "panel": true,
+          "carrying": false
+        },
+        "documentWhilePanelOpen": [
+          "placed",
+          "placed"
+        ]
+      }
+    },
+    {
+      "name": "The partner’s page reloads in the middle of the carry: the sofa is set down with a message, the remaining player walks freely, and the reloaded phone finds the sofa where it was left and lifts it again",
+      "passed": true,
+      "info": {
+        "movedFromTheGate": 2.02,
+        "apartAfterReload": 0.001,
+        "walkedFreely": 3.4
+      }
+    },
+    {
+      "name": "Both pages close and reopen (the guest first): both players stand where they were, one in the flat and one on Market Road, not at the gate",
+      "passed": true,
+      "info": {
+        "stood": [
+          [
+            -6.4,
+            4.2
+          ],
+          [
+            15.5,
+            -2.1
+          ]
+        ],
+        "standNow": [
+          [
+            -6.4,
+            4.2
+          ],
+          [
+            15.5,
+            -2.1
+          ]
+        ]
+      }
+    },
+    {
+      "name": "The phone that held the meeting point sleeps for a minute and a half and wakes: it joins the phone that took over, both see each other, and they hold one household",
+      "passed": true,
+      "info": {
+        "roles": [
+          "guest",
+          "hub"
+        ],
+        "askedForItsOldPlace": 1
+      }
+    },
+    {
+      "name": "A third device typing the code while two phones play is turned away and keeps nothing; the starter’s phone, with its storage cleared, joins by code and gets Player 1’s seat back",
+      "passed": true,
+      "info": {
+        "thirdDeviceSees": "Could not join That household already has two phones playing. If one of th",
+        "seatsAfterTheStarterReturns": [
+          0,
+          1
+        ]
+      }
+    },
+    {
+      "name": "“Start a new household” in the two-phone Menu offers to leave: the household stays as it was on both phones, the partner plays on, and Continue together brings the leaver back",
+      "passed": true,
+      "info": {
+        "asked": [
+          "pairleave71b",
+          "close"
+        ],
+        "partnerUntouchedAfter": "120 s"
+      }
+    },
+    {
+      "name": "After both phones reopen, opening the album brings both players’ pictures back on both phones; a picture that is not an image data address is not drawn",
+      "passed": true,
+      "info": {
+        "hooksPerFrame": 17,
+        "picturesBeforeOpeningTheAlbum": [
+          [
+            "Host photo:none",
+            "Guest photo:none"
+          ],
+          [
+            "Host photo:none",
+            "Guest photo:none"
+          ]
+        ],
+        "picturesAfter": [
+          "Host photo:picture",
+          "Guest photo:picture"
+        ]
+      }
+    }
+  ],
+  "method": "Two or three copies of the shipped game logic in Node, joined through the real room code in dist/src/together-v47.js over a stand-in for PeerJS with one world clock (check/two-phones.cjs). State and replay order only: no browser, no real network, no public PeerJS service, no phone."
+}
