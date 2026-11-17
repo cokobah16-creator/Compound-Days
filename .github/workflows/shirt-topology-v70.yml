@@ -1,0 +1,47 @@
+name: V70 underarm topology diagnostic
+on:
+  pull_request:
+    paths:
+      - 'tools/player1_v70_topology_audit.py'
+      - '.github/workflows/shirt-topology-v70.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  seam-topology:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: pip install numpy pillow
+      - name: Rebuild V69 UV-only candidate without touching production
+        run: |
+          mkdir -p artifacts/v70
+          python tools/player1_v69_seam.py dist/assets/characters/player1-v61.glb artifacts/v70/v69-uv-candidate.glb artifacts/v70/v69-metrics.json
+      - name: Audit baseline and candidate mesh boundaries
+        run: |
+          python tools/player1_v70_topology_audit.py dist/assets/characters/player1-v61.glb artifacts/v70/v61-topology.json
+          python tools/player1_v70_topology_audit.py artifacts/v70/v69-uv-candidate.glb artifacts/v70/v69-topology.json
+      - name: Confirm UV-only repair cannot change patch topology
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+          a=json.loads(Path('artifacts/v70/v61-topology.json').read_text())
+          b=json.loads(Path('artifacts/v70/v69-topology.json').read_text())
+          keys=['main_triangles','patch_triangles','patch_degenerate_triangles',
+                'patch_boundary_edges','patch_boundary_edges_matching_main',
+                'patch_boundary_edges_not_matching_main','patch_nonmanifold_edges']
+          for k in keys:
+              assert a[k]==b[k],f'{k} unexpectedly changed: {a[k]} vs {b[k]}'
+          print('PASS: V69 UV repair preserves topology, and geometry issues require a separate sculpt')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: compound-days-v70-topology-evidence
+          path: artifacts/v70/*.json
+          if-no-files-found: warn
