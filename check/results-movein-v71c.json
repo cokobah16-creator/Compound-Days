@@ -1,0 +1,119 @@
+{
+  "build": "v71-93eb6aa7",
+  "passed": true,
+  "checks": [
+    {
+      "name": "One screen, two players: the move-in panel introduces the mission; each half shows its player’s card in their own keys with a ring at their end; taking an end and lifting move each card on, and a gold ring shows where to go",
+      "passed": true,
+      "info": {
+        "cards": [
+          "MOVING DAY · STEP 3 OF 5 In through the gate Walk together to the gold ring. The sofa stays between you. Press E again to set it down.",
+          "MOVING DAY · STEP 3 OF 5 In through the gate Walk together to the gold ring. The sofa stays between you. Press Enter again to set it down."
+        ],
+        "goal": [
+          3.9,
+          5
+        ]
+      }
+    },
+    {
+      "name": "One screen, two players: the card and the gold ring follow the carried sofa from the street to the door; set down halfway, both cards ask to pick it up again",
+      "passed": true,
+      "info": {
+        "stages": [
+          [
+            4,
+            7.6,
+            "3",
+            "In through the gate"
+          ],
+          [
+            2,
+            2,
+            "4",
+            "Left, to the narrow passage"
+          ],
+          [
+            -1.75,
+            2.3,
+            "4",
+            "Up the passage"
+          ],
+          [
+            -1.75,
+            4.2,
+            "5",
+            "Through the door, end first"
+          ],
+          [
+            -3,
+            4.85,
+            "5",
+            "Through the door, end first"
+          ]
+        ],
+        "afterSettingDown": "MOVING DAY · STEP 1 OF 5 Pick it up again Walk with W A S D to the blue ring by the sofa, then press E ."
+      }
+    },
+    {
+      "name": "With a companion: only the player’s view has a card; the companion takes the other end; the card goes through the gate, the courtyard, the passage and the door; \"It is in\" says what was learned; then the card and the rings are gone",
+      "passed": true,
+      "info": {
+        "companionLine": "MOVING DAY · STEP 1 OF 5 Take an end Press E to take this end.",
+        "stagesInOrder": [
+          "gate",
+          "courtyard",
+          "passage",
+          "door"
+        ],
+        "frames": 244,
+        "seconds": 8.1
+      }
+    },
+    {
+      "name": "Tips during the carry: pushing into a wall without the sofa moving, heading for the stairs side of the courtyard and fifteen seconds without getting closer each bring a short tip, which goes again after six seconds",
+      "passed": true,
+      "info": {
+        "framesUntilTheWallTip": 89,
+        "wall": "set it down. Caught on a wall? Step back together, then turn: the sofa swings between you.",
+        "east": "Your door is the other way: left, through the narrow passage.",
+        "slow": "Head for the gold ring."
+      }
+    },
+    {
+      "name": "Each player is told their own controls: keys, a gamepad or touch, on the left or right of a shared screen, or anywhere on the screen when they play alone with a companion",
+      "passed": true,
+      "info": {
+        "touch": [
+          "Drag on the left of the screen to walk to the blue ring by the sofa, then tap Act .",
+          "Drag on the right of the screen to walk to the gold ring by the sofa, then tap Act ."
+        ],
+        "pad": [
+          "Walk with the left stick to the blue ring by the sofa, then press A .",
+          "Walk with the left stick to the gold ring by the sofa, then press A ."
+        ],
+        "key": [
+          "Walk with W A S D to the blue ring by the sofa, then press E .",
+          "Walk with the arrow keys to the gold ring by the sofa, then press Enter ."
+        ],
+        "companionTouch": "Drag your thumb on the screen to walk to the blue ring by the sofa, then tap Act ."
+      }
+    },
+    {
+      "name": "No mission when the first-evening guidance is paused, for a household not following it, or once the sofa is in; it adds nothing to the saved household, no per-frame hook, and draws nothing from the random sequence",
+      "passed": true,
+      "info": {
+        "tickHooks": 17
+      }
+    },
+    {
+      "name": "Two phones: each phone shows only its own player’s card; waiting for the partner, and the partner not being connected, are said plainly; both phones reach the last step together and both say what was learned",
+      "passed": true,
+      "info": {
+        "waiting": "MOVING DAY · STEP 2 OF 5 Lift it together You have your end. It lifts when Ada takes the other one.",
+        "alone": "MOVING DAY · STEP 2 OF 5 Lift it together Ada is not connected. The sofa needs both of you."
+      }
+    }
+  ],
+  "method": "Actual game state in Node with shipped Three.js and the authored hero: the mission card as text, the rings as scene objects. Two phones on check/two-phones.cjs. Layout on phone screens is checked in check/bench-movein-v71c.cjs."
+}

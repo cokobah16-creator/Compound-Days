@@ -1,5 +1,5 @@
 {
- "build": "v71-4812c7bf",
+ "build": "v71-93eb6aa7",
  "passed": true,
  "checks": [
   {
@@ -110,21 +110,21 @@
    "passed": true,
    "info": {
     "v71": [
-     "assets/characters/player1-v71.glb?v=v71-4812c7bf",
-     "assets/characters/efe.gltf.json?v=v71-4812c7bf",
+     "assets/characters/player1-v71.glb?v=v71-93eb6aa7",
+     "assets/characters/efe.gltf.json?v=v71-93eb6aa7",
      "url:assets/characters/player1-v71.glb"
     ],
     "v61": [
-     "assets/characters/player1-v61.glb?v=v71-4812c7bf",
-     "assets/characters/efe.gltf.json?v=v71-4812c7bf",
+     "assets/characters/player1-v61.glb?v=v71-93eb6aa7",
+     "assets/characters/efe.gltf.json?v=v71-93eb6aa7",
      "url:assets/characters/player1-v61.glb"
     ],
     "alreadyReady": [
-     "assets/characters/efe.gltf.json?v=v71-4812c7bf",
+     "assets/characters/efe.gltf.json?v=v71-93eb6aa7",
      "url:assets/characters/held.glb"
     ],
     "classicOnly": [
-     "assets/characters/efe.gltf.json?v=v71-4812c7bf",
+     "assets/characters/efe.gltf.json?v=v71-93eb6aa7",
      "url:assets/characters/player1-v71.glb"
     ]
    }
@@ -283,13 +283,13 @@
    "name": "M3 the file is renamed while a request is out or answered",
    "check": 5,
    "result": "red",
-   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/efe.gltf.json?v=v71-4812c7bf',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/efe.gltf.json?v=v71-4812c7bf',\n  'url:assets/characters/held.glb'\n]"
+   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/efe.gltf.json?v=v71-93eb6aa7',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/efe.gltf.json?v=v71-93eb6aa7',\n  'url:assets/characters/held.glb'\n]"
   },
   {
    "name": "M4 the module names the V61 file",
    "check": 5,
    "result": "red",
-   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/player1-v61.glb?v=v71-4812c7bf',\n  'assets/characters/efe.gltf.json?v=v71-4812c7bf',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/player1-v71.glb?v=v71-4812c7bf',\n  'assets/characters/efe.gltf.json?v=v71-4812c7bf',\n  'url:assets/characters/player1-v71.glb'\n]"
+   "first": "Expected values to be loosely deep-equal:\n\n[\n  'assets/characters/player1-v61.glb?v=v71-93eb6aa7',\n  'assets/characters/efe.gltf.json?v=v71-93eb6aa7',\n  'url:assets/characters/player1-v61.glb'\n]\n\nshould loosely deep-equal\n\n[\n  'assets/characters/player1-v71.glb?v=v71-93eb6aa7',\n  'assets/characters/efe.gltf.json?v=v71-93eb6aa7',\n  'url:assets/characters/player1-v71.glb'\n]"
   },
   {
    "name": "A1 the panel wears a material of its own name (as the delivered candidate did)",
