@@ -60,6 +60,9 @@ function det3(m){return m[0]*(m[5]*m[10]-m[6]*m[9])-m[4]*(m[1]*m[10]-m[2]*m[9])+
 async function inner(only){
  const harness=require('./runtime-harness.cjs');
  const {run,context,THREE}=await harness.load();
+ // v71: these checks describe the V61 file. garment-v71.js names the V71 file by default; its switch is set the way ?hero=v61 sets it,
+ // so every request below is for player1-v61.glb as before. check/verify-garment-v71.cjs covers the V71 file and the switch itself.
+ run("if(typeof GARMENT71!=='undefined') GARMENT71.enabled=false;");
  const checks=[];
  const check=(n,name,fn)=>{if(only&&!only.includes(n))return;try{const info=fn();checks.push({n,name,passed:true,info});}catch(e){checks.push({n,name,passed:false,failure:e.message});}};
  const V61URL=GLB+'?v='+run('BUILD_ID'), CLASSICURL=CLASSIC+'?v='+run('BUILD_ID');
