@@ -1,0 +1,38 @@
+name: V69 character geometry contract
+on:
+  pull_request:
+    paths:
+      - 'tools/inspect-player1-v69.cjs'
+      - 'check/verify-player1-v69.cjs'
+      - 'docs/PLAYER1_V69_GEOMETRY_BRIEF.md'
+      - '.github/workflows/character-v69.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  inspect-contract:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate V69 inspector syntax
+        run: |
+          node --check tools/inspect-player1-v69.cjs
+          node --check check/verify-player1-v69.cjs
+      - name: Run positive and negative GLB fixtures
+        run: node check/verify-player1-v69.cjs
+      - name: Confirm original V61 compatibility remains
+        run: node check/verify-hero-v61.cjs
+      - name: Inspect old V61 GLB as baseline only
+        run: |
+          node tools/inspect-player1-v69.cjs dist/assets/characters/player1-v61.glb > v61-v69-readiness.json
+          node -e "const x=require('./v61-v69-readiness.json');if(x.passed)throw Error('Old V61 unexpectedly meets new V69 face/finger requirements'); console.log('V61 appropriately lacks V69 requirements:',x.issues.join('; '))"
+      - name: Upload baseline gap report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: v69-v61-geometry-gap
+          path: v61-v69-readiness.json
+          if-no-files-found: warn
