@@ -21,6 +21,7 @@ Nothing here was tested on phones. See section 5.
 | The sofa | Each phone decided for itself that the sofa was in. Nothing was written while the host's "It is in" panel stood open. Positions were never written, so a reload put the sofa back at the gate on one phone only. A partner who dropped left the other player tied to the sofa. | The sofa goes in once, as one shared action from the host. The household records where the players, the sofa and the crate are. If the partner is not connected, the sofa is set down with a message. |
 | A phone that slept | A phone that held the meeting point, slept, and woke to find the other phone holding it asked for its old place for ever. Both phones played on separately with no message. | It joins the phone that holds the meeting point. |
 | A third device | Anyone typing the code walked in as a second Player 2. The player who started the household, coming back by code alone, also became Player 2. | A device joining by code takes the seat nobody is using and is turned away when both are in use. |
+| Sitting on the sofa | When one player sat down, the other phone's own player was seated too, with no panel, and could not move until they opened and closed their own Menu. | Only the player who sat is seated. |
 | Smaller | The graphics-quality button changed the partner's setting too. "Start a new household" in the two-phone Menu replaced the shared household. Album pictures never came back after reopening. | The quality button stays on its own phone. The Menu button reads "Leave this household" and leaves; the household stays as it was on both phones. Opening the album fetches the pictures this phone has not got. |
 
 ## 2. How each wrap works
@@ -47,6 +48,7 @@ Nothing here was tested on phones. See section 5.
 8. **Smaller.** `quality` and `netlobby` are added to `LOCAL_ONLY`. `newconfirm` and `newgame` in two-phone play
    open a "Leave this household?" panel; leaving keeps the stored place, so Continue together returns.
    `openAlbum` calls `netLoadPhotos`, which had no caller, and drops any picture that is not an image data address.
+   `sitStart` is skipped on the phone that is only replaying the partner's sit.
 
 The catch-up and the sofa rule ride on the existing two-phone tick (`netTick`), so the per-frame hook list is
 unchanged (17).
@@ -57,7 +59,7 @@ unchanged (17).
 room code in `dist/src/together-v47.js`. The DOM, WebGL, PeerJS and time are stand-ins (its header lists them);
 every game script is real. `Math.random` is seeded and no wall clock is read, so results repeat byte for byte.
 
-`check/verify-pair-v71b.cjs` plays 14 scenarios on it:
+`check/verify-pair-v71b.cjs` plays 15 scenarios on it:
 
 | | Scenario | On the build before (v71-12c6662e) |
 | ---: | --- | --- |
@@ -75,8 +77,9 @@ every game script is real. `Math.random` is seeded and no wall clock is read, so
 | 12 | A third device; the starter returning by code with storage cleared | fails: the third device is let in |
 | 13 | "Start a new household" in the two-phone Menu | fails: no way to leave |
 | 14 | Album pictures after both reopen; a picture that is not an image | fails: no pictures |
+| 15 | One player sits on the sofa | fails: the partner is seated and cannot walk |
 
-All 14 pass on this build and all 14 fail on the build before it, run with `COMPOUND_GAME_DIR` pointed at that
+All 15 pass on this build and all 15 fail on the build before it, run with `COMPOUND_GAME_DIR` pointed at that
 build's `dist`.
 
 `check/bench-pair-v71b.cjs` repeats four of them in real browsers: one headless Chromium process per phone, the

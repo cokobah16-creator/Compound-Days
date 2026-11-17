@@ -21,8 +21,9 @@
    7. A device joining by code with no stored place took Player 2's seat even when a phone was already playing it.
       It now takes the seat nobody is using, and is turned away when both are in use.
    8. Smaller: the graphics-quality button and the lobby's back arrow were replayed on the partner's phone; the
-      online Menu's "Start a new household" replaced the shared household instead of leaving it; album pictures
-      never came back after reopening, and an album picture that is not an image is no longer drawn.
+      online Menu's "Start a new household" replaced the shared household instead of leaving it; one player sitting
+      on the sofa seated the other phone's own player, who then could not move; album pictures never came back
+      after reopening, and an album picture that is not an image is no longer drawn.
 
    Not changed here: which copy wins when two phones played apart (still the higher revision), who may send which
    action, the household code as the only key, and a piece on the cell inside the flat door shutting the flat (keeping
@@ -192,6 +193,10 @@ if(typeof ACTIONS!=='undefined'){
 if(typeof openMenu==='function'){ const openMenu71b=openMenu;
  // wrap: in two-phone play the Menu button says what it does now
  openMenu=function(){ const r=openMenu71b.apply(this,arguments); try{ if(pairOnline71b()&&panel&&panel.querySelectorAll) panel.querySelectorAll('[data-act="newconfirm"]').forEach(b=>{ b.textContent='Leave this household'; }); }catch(e){} return r; };
+}
+if(typeof sitStart==='function'){ const sitStart71b=sitStart;
+ // wrap: a partner sitting down on their phone no longer seats this phone's own player (who then could not move)
+ sitStart=function(){ if(pairOnline71b()&&typeof silentMode==='function'&&silentMode()) return; return sitStart71b.apply(this,arguments); };
 }
 function pairPhotoOk71b(src){ return typeof src==='string'&&/^data:image\/(jpeg|png|webp);base64,[A-Za-z0-9+\/=]+$/.test(src); }
 if(typeof openAlbum==='function'){ const openAlbum71b=openAlbum;

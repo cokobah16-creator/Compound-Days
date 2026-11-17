@@ -164,6 +164,17 @@ let failed=0;const step=async(n,what,fn)=>{try{await fn();}catch(e){failed++;con
   B.run("S.memories[S.memories.length-1].img='x\" onerror=\"alert(1)';openAlbum();");assert.equal(B.J("/onerror/.test(String(panel.innerHTML))"),false,'a picture that is not an image is dropped');noErrors();
   pass('After both phones reopen, opening the album brings both players’ pictures back on both phones; a picture that is not an image data address is not drawn',{hooksPerFrame:A.J('TICK_HOOKS.length'),picturesBeforeOpeningTheAlbum:beforeOpen,picturesAfter:want});});
 
+
+ /* 15. One player sits on the sofa: the other is not seated and walks on. */
+ await step(15,'One player sits on the sofa: the other is not seated and walks on',async()=>{const {A,B}=await two();
+  A.run("S.sofa.state='placed';placeAuto('sofa');rebuildFurniture();if(sofa)sofa.g.visible=false;NET.dirty=true;");await T.play([A,B],2);      // set-up: the sofa is in the flat
+  const sp=A.J('sofaPos()');assert(sp&&B.J('!!sofaPos()'),'both phones have the sofa in the flat');A.run(`tp(0,${sp[0]-0.5},${sp[1]+0.6})`);B.run(`tp(1,${sp[0]+0.5},${sp[1]+0.6})`);await T.play([A,B],1);
+  A.run("dispatch('hs',{i:0,id:'sit'})");await T.settle(300);
+  const a=A.J("({panel:overlayOpen()&&/The sofa/.test(String(panel.innerHTML)),sitting:!!players[0].g.sitting})"),b=B.J("({panel:overlayOpen(),seated:!!players[1].g.sitting,seating:!!SEATING30.active})");
+  assert.deepEqual(a,{panel:true,sitting:true},'the player who sat is seated with the sofa panel');assert.deepEqual(b,{panel:false,seated:false,seating:false},'the partner is not seated');
+  const from=B.J('[players[1].g.position.x,players[1].g.position.z]');await T.play([A,B],1,[[0,0],[0,1]]);const to=B.J('[players[1].g.position.x,players[1].g.position.z]'),walked=Math.hypot(to[0]-from[0],to[1]-from[1]);
+  assert(walked>0.5,'the partner walks: '+walked);assert.equal(A.run("clickBtn('close')"),'ok');await T.play([A,B],1);assert.equal(A.J('!!players[0].g.sitting'),false);noErrors();
+  pass('One player sits on the sofa: only that player is seated, and the partner, with no panel, walks on',{sitter:a,partner:b,partnerWalked:+walked.toFixed(2)});});
  fresh();
  const report={build,passed:failed===0,checks,method:'Two or three copies of the shipped game logic in Node, joined through the real room code in dist/src/together-v47.js over a stand-in for PeerJS with one world clock (check/two-phones.cjs). State and replay order only: no browser, no real network, no public PeerJS service, no phone.'};
  fs.writeFileSync(path.join(__dirname,'results-pair-v71b.json'),JSON.stringify(report,null,2)+'\n');if(failed)process.exitCode=1;
