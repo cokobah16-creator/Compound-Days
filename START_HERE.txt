@@ -43,6 +43,8 @@ CONTENTS
   dist/assets/wardrobe/: its 16 pieces (worn on efe.gltf.json only).
 - dist/src/pair-v71b.js: two phones stay one household (docs/TWO_PHONES_V71B.md); check/two-phones.cjs runs two
   copies of the game together and check/verify-pair-v71b.cjs and check/bench-pair-v71b.cjs are its checks.
+- dist/src/movein-v71c.js and .css: the sofa move taught as the first mission (README, v71c); check/verify-movein-v71c.cjs
+  and check/bench-movein-v71c.cjs are its checks.
 - tools/: wardrobe, hair and material authoring tools, the build stamp, the manifest tool and
   the testers' tools (gates-v35.cjs, quiet-v38.cjs) and the reader's-sheet tools (reader-v38.cjs,
   reader-v39.cjs, reader-v40.cjs, reader-v41.cjs).
