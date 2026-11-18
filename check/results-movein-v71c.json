@@ -1,29 +1,41 @@
 {
-  "build": "v71-93eb6aa7",
+  "build": "v71-e0b1f939",
   "passed": true,
   "checks": [
     {
-      "name": "One screen, two players: the move-in panel introduces the mission; each half shows its player’s card in their own keys with a ring at their end; taking an end and lifting move each card on, and a gold ring shows where to go",
+      "name": "One screen, two players: the move-in panel introduces the mission; each half shows its player’s card in their own keys with a ring at their end; taking an end and lifting move each card on; one is told to go first and the other to walk behind, and a gold ring in front of the gate shows where to walk",
       "passed": true,
       "info": {
         "cards": [
-          "MOVING DAY · STEP 3 OF 5 In through the gate Walk together to the gold ring. The sofa stays between you. Press E again to set it down.",
-          "MOVING DAY · STEP 3 OF 5 In through the gate Walk together to the gold ring. The sofa stays between you. Press Enter again to set it down."
+          "MOVING DAY · STEP 3 OF 5 In through the gate You go first, Ola behind you: walk to the gold ring. It only fits through the gate end first. Press E again to set it down.",
+          "MOVING DAY · STEP 3 OF 5 In through the gate Walk behind Efe, who goes first to the gold ring. It only fits through the gate end first. Press Enter again to set it down."
         ],
         "goal": [
-          3.9,
-          5
+          4,
+          7.3
         ]
       }
     },
     {
-      "name": "One screen, two players: the card and the gold ring follow the carried sofa from the street to the door; set down halfway, both cards ask to pick it up again",
+      "name": "One screen, two players: the card and the gold ring follow the carried sofa from the street to the door, one ring at a time (in front of the gate, through it, past the crate while it blocks the passage, in front of the passage, the end of the hall, the door); a leg lasts until the back end is through; set down halfway, both cards ask to pick it up again",
       "passed": true,
       "info": {
         "stages": [
           [
             4,
-            7.6,
+            8,
+            "3",
+            "In through the gate"
+          ],
+          [
+            4,
+            6.2,
+            "3",
+            "In through the gate"
+          ],
+          [
+            4,
+            5,
             "3",
             "In through the gate"
           ],
@@ -31,13 +43,25 @@
             2,
             2,
             "4",
-            "Left, to the narrow passage"
+            "The crate in front of the passage is in the way"
+          ],
+          [
+            2,
+            2,
+            "4",
+            "Across the courtyard to the gold ring in front of the passage"
           ],
           [
             -1.75,
             2.3,
             "4",
-            "Up the passage"
+            "Along the passage"
+          ],
+          [
+            -1.75,
+            3.5,
+            "4",
+            "Along the passage"
           ],
           [
             -1.75,
@@ -75,7 +99,7 @@
       "passed": true,
       "info": {
         "framesUntilTheWallTip": 89,
-        "wall": "set it down. Caught on a wall? Step back together, then turn: the sofa swings between you.",
+        "wall": " walk straight at the opening: your companion follows and the sofa goes through end first.",
         "east": "Your door is the other way: left, through the narrow passage.",
         "slow": "Head for the gold ring."
       }
@@ -112,6 +136,23 @@
       "info": {
         "waiting": "MOVING DAY · STEP 2 OF 5 Lift it together You have your end. It lifts when Ada takes the other one.",
         "alone": "MOVING DAY · STEP 2 OF 5 Lift it together Ada is not connected. The sofa needs both of you."
+      }
+    },
+    {
+      "name": "Following only the card: standing on a gold ring moves the card on (and a tip about the last ring goes) and carrying the sofa back undoes it; two players walking different ways are told so; with a companion, walking at each ring in turn takes the sofa in; two players, one walking at the rings and the other behind, take it through the gate end first",
+      "passed": true,
+      "info": {
+        "onTheRing": "MOVING DAY · STEP 4 OF 5 Along the passage Straight along th",
+        "carriedBack": "MOVING DAY · STEP 3 OF 5 In through the gate You go first, O",
+        "apart": "You are walking different ways.",
+        "companion": {
+          "seconds": 7.4,
+          "bumps": 31
+        },
+        "twoPlayersThroughTheGate": {
+          "seconds": 3.3,
+          "bumps": 0
+        }
       }
     }
   ],

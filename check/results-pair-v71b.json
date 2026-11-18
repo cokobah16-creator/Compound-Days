@@ -1,5 +1,5 @@
 {
-  "build": "v71-93eb6aa7",
+  "build": "v71-e0b1f939",
   "passed": true,
   "checks": [
     {
@@ -40,19 +40,29 @@
       }
     },
     {
-      "name": "Two purchases made while the link was down for ten seconds: fourteen seconds after it returns both phones hold the host’s household, and the guest is told its change did not arrive",
+      "name": "A dropped link: after eight seconds what both did arrives and nobody is told anything was lost; after 45 seconds (the connection dies) the guest’s purchase is kept when the host did nothing meanwhile, and when both acted the host’s stands and the guest is told",
       "passed": true,
       "info": {
-        "purseWhileApart": [
-          6000,
-          3000
+        "shortDrop": [
+          {
+            "pepper": 1
+          },
+          {
+            "tomato": 1
+          }
         ],
-        "purseAfter": [
-          6000,
-          6000
+        "longDropGuestOnly": [
+          {},
+          {
+            "tomato": 1
+          }
         ],
-        "guestTold": 1,
-        "catchUps": 1
+        "longDropBoth": [
+          {
+            "pepper": 1
+          },
+          {}
+        ]
       }
     },
     {
@@ -113,7 +123,7 @@
       }
     },
     {
-      "name": "Both players press the night panel’s only button in the same instant: one day passes and both phones wake to the same market",
+      "name": "Both players press the night panel’s only button in the same instant: one day passes, both phones wake to the same market and both keep their morning page",
       "passed": true,
       "info": {
         "day": [
@@ -121,8 +131,8 @@
           2
         ],
         "market": [
-          "2:5950",
-          "2:5950"
+          "2:7150",
+          "2:7150"
         ]
       }
     },
@@ -247,6 +257,127 @@
           "seating": false
         },
         "partnerWalked": 1.36
+      }
+    },
+    {
+      "name": "What is in each player’s hands is part of the household: a reload, leaving from the Menu, two players taking one piece and a placement lost with the connection neither lose nor duplicate a piece",
+      "passed": true,
+      "info": {
+        "reloadWhileCarrying": "still in the hands",
+        "sameInstant": "the host’s player holds it; the guest is told",
+        "leaveWhileCarrying": "still in the hands",
+        "lostPlacement": "back in the hands, the guest told"
+      }
+    },
+    {
+      "name": "A third device turned away from a household keeps nothing of it and never shows its world; its own saved household is untouched after Try again and Back",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "The guest’s walking speed and Bigger text survive the host’s household; the speed reaches the host, the text size stays on the guest’s phone",
+      "passed": true,
+      "info": {
+        "guest": [
+          0.8,
+          true
+        ]
+      }
+    },
+    {
+      "name": "A night panel left open on a phone that slept while the other pressed it: it closes when the new day arrives, and a press for the past night does nothing; one day passes",
+      "passed": true,
+      "info": {
+        "day": 2
+      }
+    },
+    {
+      "name": "The sofa: a phone locked for ten seconds mid-carry and a reload of two seconds leave it set down in one place on both phones; a phone still carrying a sofa the household says is in lets go and can walk; a household from an older build does not move it back to the gate",
+      "passed": true,
+      "info": {
+        "lockedPhone": "down on both, in one place",
+        "olderHost": "the guest lets go and walks",
+        "quickReload": "one place",
+        "olderHostSetDown": "where it was carried, on both"
+      }
+    },
+    {
+      "name": "One player swaps the stations as the other answers: the swap does not apply, both stations can be finished and the dish is served on both phones",
+      "passed": true,
+      "info": {
+        "dish": [
+          "undefined:82"
+        ]
+      }
+    },
+    {
+      "name": "Deliveries held for three seconds while the host writes: the guest’s purchase never disappears from its bag, arrives at the host, and nobody is told anything was lost",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "A phone wakes alone after twenty seconds while the host has Build open: both phones hold the same household and the fridge is not duplicated",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "A picture taken while the partner was away is shown by the phone that holds the meeting point next time; two pictures taken in the same instant are never shown under each other’s caption",
+      "passed": true,
+      "info": {
+        "holder": [
+          "Taken alone:A"
+        ],
+        "sameInstant": [
+          [
+            "From Bola:none",
+            "From Ada:none"
+          ],
+          [
+            "From Bola:B",
+            "From Ada:none"
+          ]
+        ]
+      }
+    },
+    {
+      "name": "What the guest did while it was alone, and that reached the host inside the household the guest wrote, is kept and nobody is told it was lost: a purchase just after the channel is replaced, two purchases while the host’s phone is locked, a table put down between channels",
+      "passed": true,
+      "info": {
+        "channelReplaced": "kept on both, nobody told, at 100, 600 and 1000 ms",
+        "hostLocked": "both purchases kept, nobody told",
+        "placement": "placed on both, nobody told"
+      }
+    },
+    {
+      "name": "Deliveries held for two seconds and the guest’s link to the meeting service dropping meanwhile: its channel to the host stays, so nothing is taken for lost; both purchases are kept and nobody is told anything",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "A picture taken on the guest phone while the connection was down is drawn in the other phone’s album once the room has joined again by itself, with no reload",
+      "passed": true,
+      "info": {
+        "got": [
+          "B"
+        ]
+      }
+    },
+    {
+      "name": "Two players leave a household, play another together, and come back to the first by its code, Player 1 typing it first: each phone is back in its own seat",
+      "passed": true,
+      "info": {
+        "seats": [
+          [
+            true,
+            0,
+            "Ada"
+          ],
+          [
+            true,
+            1,
+            "Bola"
+          ]
+        ]
       }
     }
   ],
