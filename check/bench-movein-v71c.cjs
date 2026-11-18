@@ -4,7 +4,7 @@
 //
 // For each screen (desktop, phone portrait and landscape; one screen with two players, a companion, and two phones over
 // WebRTC with check/local-peer-server.cjs): the mission card is shown in each player's own view, inside it, readable,
-// and over none of the HUD (player cards, prompt, bag, top bar, partner card, touch controls). Then the sofa is lifted
+// and over none of the HUD (player cards, prompt, bag, top bar, partner card, touch controls), and a toast does not cover it. Then the sofa is lifted
 // and carried a little: the gold ring is drawn, and when the next place is off screen an arrow sits at the edge of the
 // view. A picture of every screen is saved.
 const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
@@ -22,9 +22,11 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
  add('top bar',document.getElementById('topbar')); for(const i of [0,1]){ const h=document.getElementById('half'+i); if(!h||!R(h)) continue;
   add('player card '+i,h.querySelector('.pcard')); add('prompt '+i,h.querySelector('.pr')); add('bag '+i,h.querySelector('.inv')); add('partner card '+i,h.querySelector('.ocard')); }
  document.querySelectorAll('#touch .act').forEach((b,k)=>add('act button '+k,b)); document.querySelectorAll('#touch .zone').forEach((z,k)=>add('stick zone '+k,z));
+ // a toast raised now (they come as the card changes step: "Lifted. Carry it together.") must not cover a card
+ let toastR=null; const tEl=document.getElementById('toast'); if(tEl&&typeof toast==='function'&&document.querySelector('.mv71c.on')){ toast('Lifted. Carry it together.'); toastR=R(tEl); }
  const cards=[]; for(const i of [0,1]){ const h=document.getElementById('half'+i), c=h&&h.querySelector('.mv71c.on'), r=R(c); if(!r) continue; const hr=R(h);
   cards.push({i,r,inHalf:!!hr&&r.x1>=hr.x1&&r.x2<=hr.x2+1&&r.y1>=hr.y1&&r.y2<=hr.y2+1,inScreen:r.x1>=0&&r.y1>=0&&r.x2<=innerWidth&&r.y2<=innerHeight,
-   covers:others.filter(o=>hit(r,o.r)).map(o=>o.n),text:[...c.children].map(x=>x.textContent).join(' ').replace(/\s+/g,' ').trim(),font:parseFloat(getComputedStyle(c.querySelector('.mv71c-d')).fontSize)}); }
+   covers:others.filter(o=>hit(r,o.r)).map(o=>o.n),underToast:!!hit(r,toastR),text:[...c.children].map(x=>x.textContent).join(' ').replace(/\s+/g,' ').trim(),font:parseFloat(getComputedStyle(c.querySelector('.mv71c-d')).fontSize)}); }
  const arrows=[...document.querySelectorAll('.mv71c-arrow')].map(a=>R(a)).filter(Boolean);
  return {w:innerWidth,h:innerHeight,cards,arrows,single:singleIdx()}; };
 (async()=>{
@@ -41,9 +43,9 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
  const inWorld=()=>!!(typeof S!=='undefined'&&S&&S.phase==='play'&&players.length===2&&sofa);
  // let the game draw a few frames, then the layout and a picture of the page as a player sees it
  const look=async(P,name)=>{ await P.page.evaluate(()=>new Promise(r=>{ let n=0; const f=()=>{ if(++n>=8) r(); else requestAnimationFrame(f); }; requestAnimationFrame(f); })); await sleep(600);
-  const L=await P.page.evaluate(LAYOUT); await P.page.screenshot({path:path.join(out,name+'.png')}); return L; };
+  const L=await P.page.evaluate(LAYOUT); await P.page.screenshot({path:path.join(out,name+'.png'),timeout:120000}); return L; };
  const ok=(L,want,label)=>{ assert.equal(L.cards.length,want,label+': '+want+' card(s) shown, got '+L.cards.length);
-  for(const c of L.cards){ assert(c.inHalf,label+': card '+c.i+' outside its view'); assert(c.inScreen,label+': card '+c.i+' off screen'); assert.deepEqual(c.covers,[],label+': card '+c.i+' covers '+c.covers); assert(c.font>=12,label+': card text '+c.font+' px'); } };
+  for(const c of L.cards){ assert(c.inHalf,label+': card '+c.i+' outside its view'); assert(c.inScreen,label+': card '+c.i+' off screen'); assert.deepEqual(c.covers,[],label+': card '+c.i+' covers '+c.covers); assert(!c.underToast,label+': a toast covers card '+c.i); assert(c.font>=12,label+': card text '+c.font+' px'); } };
  const local=P=>P.page.evaluate(()=>{ NET.on=false; AI.on=false; dispatch('newgame'); S.p[0].name='Efe'; S.p[1].name='Ola'; dispatch('setupstep',{v:'p0'}); dispatch('setupnext',{i:0}); dispatch('setupnext',{i:1}); });
  const companion=P=>P.page.evaluate(()=>{ NET.on=false; dispatch('aiStart'); S.p[0].name='Efe'; S.p[1].name='Ola'; dispatch('setupnext',{i:0}); dispatch('setupnext',{i:1}); });
  const closePanels=P=>P.page.evaluate(()=>{ for(let k=0;k<4&&overlayOpen();k++){ const c=panel.querySelector('[data-act="close"]'); if(c) c.click(); else closePanel(); } });
@@ -58,8 +60,8 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
    const b=await look(P,'1-'+z.n+'-carry'); ok(b,2,z.n+' carry'); const st=await P.page.evaluate(()=>({carrying:!!sofa.carrying,goal:MOVEIN71C.goal&&MOVEIN71C.goal.visible,stage:moveinRoute71c()}));
    assert.equal(st.carrying,true,z.n+': carrying'); assert.equal(st.goal,true,z.n+': gold ring drawn');
    // the next place off screen: the arrow sits at the edge of each view, inside the screen and over no card
-   await P.page.evaluate(()=>{ MOVEIN71C.saved=MOVEIN71C.target.gate.slice(); MOVEIN71C.target.gate=[-28,-20]; MOVEIN71C.target.courtyard=MOVEIN71C.target.courtyard; });
-   const c=await look(P,'1-'+z.n+'-arrow'); await P.page.evaluate(()=>{ MOVEIN71C.target.gate=MOVEIN71C.saved; });
+   await P.page.evaluate(()=>{ MOVEIN71C.saved=JSON.stringify(MOVEIN71C.target); for(const k of Object.keys(MOVEIN71C.target)) MOVEIN71C.target[k]=[[-28,-20,0.1]]; });   // every ring far away, off screen
+   const c=await look(P,'1-'+z.n+'-arrow'); await P.page.evaluate(()=>{ MOVEIN71C.target=JSON.parse(MOVEIN71C.saved); });
    assert(c.arrows.length>=1,z.n+': an edge arrow'); for(const r of c.arrows){ assert(r.x1>=0&&r.y1>=0&&r.x2<=c.w&&r.y2<=c.h,z.n+': arrow on screen '+JSON.stringify(r)); for(const k of c.cards) assert(!(r.x1<k.r.x2&&k.r.x1<r.x2&&r.y1<k.r.y2&&k.r.y1<r.y2),z.n+': arrow over a card'); }
    assert.deepEqual(P.errors,[],z.n+': page errors');
    pass('One screen, two players, '+z.n.replace(/-/g,' ')+': both cards in their own views, over none of the HUD; lifted and carried, the gold ring is drawn; with the next place off screen an arrow sits at the edge',{cards:b.cards.map(k=>({player:k.i+1,box:k.r,text:k.text.slice(0,60)})),arrows:c.arrows.length,stage:st.stage});
