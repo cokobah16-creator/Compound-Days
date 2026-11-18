@@ -1,0 +1,54 @@
+{
+  "build": "v71-890b3555",
+  "passed": true,
+  "checks": [
+    {
+      "name": "One-phone play: the log never starts, nothing is written to the phone, the Menu offers no log and no banner is drawn; the per-frame hook list is unchanged",
+      "passed": true,
+      "info": {
+        "tickHooks": 17
+      }
+    },
+    {
+      "name": "A normal session: both phones log build, site, device and time zone, the room lines with room ids, who they are (the guest only once the room has said), the partner on the same build, each action sent and received with the same number, no refused household, status lines with when the partner was last heard and its clock, and an error caught while replaying an action; storage is never written inside a game call; nothing kept, shown or saved contains the household code or its secret part; the Menu offers the log, which shows lines as text, saves a dated .txt file, falls back to showing the text to copy, clears, and opens on this phone only",
+      "passed": true,
+      "info": {
+        "numbered": "buy #3"
+      }
+    },
+    {
+      "name": "Trouble is logged: a phone locked for forty seconds notes the pause, the host the silence, the guest going and its return, and the guest its attempts to get back; the log survives a reload; a device turned away logs why and its Could not join panel offers the log; when both acted apart the guest names its action that never reached the host; when only the guest did, it logs its offer and the host logs taking the guest’s household",
+      "passed": true,
+      "info": {
+        "locked": "pause, silence, retries, reload, refusal",
+        "bothActed": "the lost action named",
+        "guestOnly": "offer and take logged"
+      }
+    },
+    {
+      "name": "Never kept: the household code typed after \"palm-\", in capitals, only its secret part, or after a first try with only \"palm-\" in the field (the joining panel is named, not quoted); an action name or field from the other phone with a line break in it, or one this build does not know (only counted); a partner build that is not a build name is called unrecognised and not shown",
+      "passed": true,
+      "info": {
+        "typed": 5
+      }
+    },
+    {
+      "name": "Limits and life: a line repeated within ten seconds gets a count; after 3000 long lines the phone keeps the newest, at most 1500 lines and 180 KB, and the file says older lines were dropped; one-phone play afterwards is not recorded and its Menu does not offer the log; a log with nothing from the last seven days is dropped when the page opens",
+      "passed": true,
+      "info": {
+        "kept": 884
+      }
+    },
+    {
+      "name": "Different builds: each phone shows a one-line notice whose Details name both builds, with Reload and hide, and logs it; hidden it stays away; Reload writes the log and reloads the page; play is never blocked. Different sites: the message names both and asks to open the same address, with no Reload",
+      "passed": true,
+      "info": {}
+    },
+    {
+      "name": "A partner on a build from before the check (the real previous build’s page, from git history): the phone with the check says the partner should reload, and offers no Reload of its own; the two still play together",
+      "passed": true,
+      "info": {}
+    }
+  ],
+  "method": "Two or three copies of the shipped game in one Node process, joined through the real room code over a stand-in for PeerJS (check/two-phones.cjs); one world clock, seeded random numbers. Not a phone test."
+}
