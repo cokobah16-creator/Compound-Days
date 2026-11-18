@@ -13,7 +13,13 @@
 // writes the same results file on every run.
 const fs=require('fs'),path=require('path'),vm=require('vm');
 const root=process.env.COMPOUND_GAME_DIR||path.resolve(__dirname,'..','dist');
-const THREE=require(path.join(root,'assets/vendor/three-r128.min.js'));
+// every phone gets its own copy of three.js: the game patches the library, and a shared copy would chain one phone's
+// patches onto the next and keep every closed phone alive
+const THREE_SRC=fs.readFileSync(path.join(root,'assets/vendor/three-r128.min.js'),'utf8');
+function freshThree(){ const m={exports:{}}; new Function('module','exports','self','window',THREE_SRC)(m,m.exports,{},undefined); const T=m.exports;
+ T.FileLoader.prototype.load=function(url,onLoad,onProgress,onError){try{let b;if(url.startsWith('data:'))b=Buffer.from(url.split(',')[1],'base64');else b=fs.readFileSync(path.resolve(root,url.split('?')[0]));const data=this.responseType==='arraybuffer'?b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength):b.toString();Promise.resolve().then(()=>onLoad(data));return data;}catch(e){if(onError)onError(e);else throw e;}};
+ T.ImageLoader.prototype.load=function(url,onLoad){const image={width:1,height:1};Promise.resolve().then(()=>onLoad(image));return image;};
+ return T; }
 const noop=()=>{};
 
 /* ---------- one world clock and scheduler for every phone ---------- */
@@ -33,12 +39,17 @@ Date.now=()=>W.t;
 /* ---------- the PeerJS stand-in ---------- */
 class Emitter{constructor(){this.h={};}on(ev,fn){(this.h[ev]=this.h[ev]||[]).push(fn);return this;}
   emit(ev,a){(this.h[ev]||[]).slice().forEach(fn=>{try{fn(a);}catch(e){W.errors.push({tag:'peer:'+ev,msg:String(e&&e.stack||e).slice(0,300)});}});}}
-class FakeConn extends Emitter{constructor(peer,remoteId){super();this.owner=peer;this.peer=remoteId;this.open=false;this.closed=false;this.remote=null;}
+// A reliable data channel, as WebRTC's is: while either side's network is down a message waits on its connection and
+// arrives, in order, when the network is back; it is lost only if the connection closes first (the beat in
+// together-v47.js closes a side that has been silent for 30 s).
+class FakeConn extends Emitter{constructor(peer,remoteId){super();this.owner=peer;this.peer=remoteId;this.open=false;this.closed=false;this.remote=null;this.held=[];}
   send(m){if(!this.open||!this.remote)return;const copy=JSON.stringify(m),r=this.remote,a=this.owner.label,b=r.owner.label;
     if(m&&m.t==='ev'&&m.type==='act'&&m.data)W.wire.push({from:a,name:m.data.name});
-    if(W.cut.has(a)||W.cut.has(b))return;                                   // lost while either side is cut off
-    schedule(W.lat,()=>{if(r.open&&!W.cut.has(b))r.emit('data',JSON.parse(copy));},'net');}
-  close(){if(this.closed)return;this.closed=true;const was=this.open;this.open=false;const r=this.remote;if(was)this.emit('close');
+    if(W.cut.has(a)||W.cut.has(b)){this.held.push(copy);return;}            // waits while either side is cut off
+    this.deliver(copy);}
+  deliver(copy){const r=this.remote,b=r.owner.label;schedule(W.lat,()=>{if(r.open&&!this.closed)r.emit('data',JSON.parse(copy));},'net');}
+  release(){if(this.closed||!this.open||!this.remote)return;const q=this.held;this.held=[];q.forEach(c=>this.deliver(c));}
+  close(){if(this.closed)return;this.closed=true;this.held=[];const was=this.open;this.open=false;const r=this.remote;if(was)this.emit('close');
     if(r&&!r.closed&&!W.cut.has(this.owner.label)&&!W.cut.has(r.owner.label))schedule(W.lat,()=>r.close(),'net');}}
 function peerClassFor(label){return class FakePeer extends Emitter{
   constructor(id,opts){super();if(id&&typeof id==='object'){opts=id;id=null;}this.label=label;this.destroyed=false;this.disconnected=false;this.id=null;this._last=null;this.conns=[];
@@ -59,11 +70,14 @@ function sleep(phone){W.cut.add(phone.label);W.frozen.add(phone.label);W.log.pus
 // the signalling server gives up on a silent phone and frees its ids
 function serverDrops(phone){(W.peers[phone.label]||[]).forEach(p=>{if(W.server.get(p.id)===p){W.server.delete(p.id);p._dropped=true;}});W.log.push('server frees '+phone.label);}
 // it unlocks: its channels are dead, and if the server dropped it, it hears so and tries to come back
-function wake(phone){W.cut.delete(phone.label);W.frozen.delete(phone.label);W.log.push(phone.label+' WAKES');
-  (W.peers[phone.label]||[]).forEach(p=>{if(p.destroyed)return;p.conns.forEach(c=>{if(c.open){c.closed=true;c.open=false;c.emit('close');}});
-    if(p._dropped){p._dropped=false;p.emit('error',Object.assign(new Error('Lost connection to server.'),{type:'network'}));p._disconnect();}});}
-// the network drops for one phone while its page keeps running
-function cut(phone,on){if(on)W.cut.add(phone.label);else W.cut.delete(phone.label);}
+function wake(phone){W.log.push(phone.label+' WAKES');
+  (W.peers[phone.label]||[]).forEach(p=>{if(p.destroyed)return;p.conns.forEach(c=>{if(c.open){c.held=[];c.closed=true;c.open=false;c.emit('close');}});});
+  W.cut.delete(phone.label);W.frozen.delete(phone.label);
+  (W.peers[phone.label]||[]).forEach(p=>{if(p.destroyed)return;if(p._dropped){p._dropped=false;p.emit('error',Object.assign(new Error('Lost connection to server.'),{type:'network'}));p._disconnect();}});}
+// the network drops for one phone while its page keeps running; when it comes back, what waited on a connection that
+// is still open arrives
+function cut(phone,on){if(on){W.cut.add(phone.label);return;}W.cut.delete(phone.label);
+  for(const k of Object.keys(W.peers))(W.peers[k]||[]).forEach(p=>p.conns.forEach(c=>{if(c.remote&&!W.cut.has(c.owner.label)&&!W.cut.has(c.remote.owner.label))c.release();}));}
 // the page closes or reloads: channels close cleanly and its timers are gone
 function kill(phone){(W.peers[phone.label]||[]).forEach(p=>{try{p.destroy();}catch(e){}});W.peers[phone.label]=[];W.q=W.q.filter(x=>owner(x.tag)!==phone.label);W.frozen.delete(phone.label);W.cut.delete(phone.label);phone.dead=true;}
 
@@ -79,13 +93,11 @@ const HTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
 const SCRIPTS=[...HTML.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].map(([full,attr,body])=>{const src=attr.match(/src="([^"]+)"/);
   if(src)return src[1].includes('three-r128')?null:{name:src[1],code:fs.readFileSync(path.join(root,src[1]),'utf8')};
   return /else \{ boot\(\); \}/.test(body)?null:{name:'index-inline.js',code:body};}).filter(Boolean);   // the last inline block boots WebGL: definitions only
-const parse=file=>new Promise((resolve,reject)=>new THREE.GLTFLoader().parse(fs.readFileSync(path.join(root,file),'utf8'),'',resolve,reject));
-THREE.FileLoader.prototype.load=function(url,onLoad,onProgress,onError){try{let b;if(url.startsWith('data:'))b=Buffer.from(url.split(',')[1],'base64');else b=fs.readFileSync(path.resolve(root,url.split('?')[0]));const data=this.responseType==='arraybuffer'?b.buffer.slice(b.byteOffset,b.byteOffset+b.byteLength):b.toString();Promise.resolve().then(()=>onLoad(data));return data;}catch(e){if(onError)onError(e);else throw e;}};
-THREE.ImageLoader.prototype.load=function(url,onLoad){const image={width:1,height:1};Promise.resolve().then(()=>onLoad(image));return image;};
 let perfSkew=0;
 // label names the phone; opts.storage carries a previous page's localStorage (a reload or a reopen)
 async function makePhone(label,opts){
   opts=opts||{};const els=new Map(),storage=new Map(opts.storage||[]),perf0=1000+(perfSkew++)*307000;   // each page was opened at a different moment
+  const THREE=freshThree(); const parse=file=>new Promise((resolve,reject)=>new THREE.GLTFLoader().parse(fs.readFileSync(path.join(root,file),'utf8'),'',resolve,reject));
   const document={getElementById:id=>{if(!els.has(id))els.set(id,element(id));return els.get(id);},createElement:()=>element(),createElementNS:()=>element(),addEventListener:noop,querySelector:()=>null,querySelectorAll:()=>[],body:element('body'),documentElement:element('html'),fonts:{ready:Promise.resolve()},hidden:false,head:element('head'),baseURI:'http://local.test/',activeElement:null,readyState:'complete'};
   const context={THREE,document,console:{log:noop,info:noop,debug:noop,warn:(...a)=>{W.log.push(label+' warn '+String(a[0]).slice(0,60)+' '+String(a[1]||'').slice(0,40));},error:(...a)=>{W.errors.push({tag:label+':console.error',msg:a.map(String).join(' ').slice(0,300)});}},
     URL,URLSearchParams,Blob,TextDecoder,TextEncoder,ArrayBuffer,Uint8Array,Float32Array,Uint16Array,Uint32Array,DataView,Buffer,Math,Date,Promise,Map,Set,WeakMap,
@@ -126,7 +138,7 @@ const flush=()=>new Promise(r=>setImmediate(r));
 async function play(phones,seconds,sticks,dt){dt=dt||1/30;const n=Math.round(seconds/dt);
   for(let k=0;k<n;k++){phones.forEach((p,ix)=>{if(p.dead||W.frozen.has(p.label))return;const v=(sticks&&sticks[ix])||[0,0],vv=typeof v==='function'?v(k):v;
     try{p.run(`simFrame(${dt},${vv[0]},${vv[1]})`);}catch(e){W.errors.push({tag:p.label+':frame',msg:String(e&&e.stack||e).slice(0,300)});}});
-   advance(dt*1000);if(k%5===0)await flush();}
+   await flush();advance(dt*1000);await flush();}   // promise continuations run where a browser runs them: before the next message
   await flush();}
 // let timers and messages run with no frames drawn (a lobby, a panel)
 async function settle(ms){for(let k=0;k<Math.ceil((ms||400)/50);k++){advance(50);await flush();}}

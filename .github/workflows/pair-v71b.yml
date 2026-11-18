@@ -30,7 +30,7 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Two copies of the game joined through the real room code (15 checks)
+      - name: Two copies of the game joined through the real room code (28 checks)
         run: |
           node --check dist/src/pair-v71b.js
           node check/verify-pair-v71b.cjs
