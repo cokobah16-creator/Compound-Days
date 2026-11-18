@@ -45,6 +45,8 @@ CONTENTS
   copies of the game together and check/verify-pair-v71b.cjs and check/bench-pair-v71b.cjs are its checks.
 - dist/src/movein-v71c.js and .css: the sofa move taught as the first mission (README, v71c); check/verify-movein-v71c.cjs
   and check/bench-movein-v71c.cjs are its checks.
+- dist/src/session-v71d.js and .css: each phone's session log and the build check (docs/SESSION_LOG_V71D.md);
+  check/verify-session-v71d.cjs and check/bench-session-v71d.cjs are its checks.
 - tools/: wardrobe, hair and material authoring tools, the build stamp, the manifest tool and
   the testers' tools (gates-v35.cjs, quiet-v38.cjs) and the reader's-sheet tools (reader-v38.cjs,
   reader-v39.cjs, reader-v40.cjs, reader-v41.cjs).

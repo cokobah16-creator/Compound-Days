@@ -21,6 +21,7 @@ const http=require('node:http'),fs=require('node:fs'),path=require('node:path'),
 
 const MIME={'.html':'text/html; charset=utf-8','.js':'text/javascript; charset=utf-8','.css':'text/css; charset=utf-8','.json':'application/json','.glb':'model/gltf-binary','.gltf':'model/gltf+json','.bin':'application/octet-stream','.webp':'image/webp','.png':'image/png','.jpg':'image/jpeg','.jpeg':'image/jpeg','.svg':'image/svg+xml','.ico':'image/x-icon','.woff2':'font/woff2','.woff':'font/woff','.ttf':'font/ttf','.mp3':'audio/mpeg','.ogg':'audio/ogg','.wav':'audio/wav','.txt':'text/plain; charset=utf-8','.webmanifest':'application/manifest+json'};
 function staticServer(root){
+  root=path.resolve(root);   // a folder given with '..' in it still serves its files
   const hits={turn:0,notFound:[]};
   const server=http.createServer((req,res)=>{
     let u; try{ u=decodeURIComponent(new URL(req.url,'http://localhost').pathname); }catch(e){ res.writeHead(400).end(); return; }

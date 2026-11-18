@@ -1,10 +1,12 @@
-name: v71b two phones stay one household
+name: two phones (v71b one household, v71d session log and build check)
 
 on:
   pull_request:
     paths:
       - 'dist/index.html'
       - 'dist/src/pair-v71b.js'
+      - 'dist/src/session-v71d.js'
+      - 'dist/src/session-v71d.css'
       - 'dist/src/together-v47.js'
       - 'dist/src/turn-v49.js'
       - 'dist/src/slots-v47.js'
@@ -14,6 +16,8 @@ on:
       - 'check/two-phones.cjs'
       - 'check/verify-pair-v71b.cjs'
       - 'check/bench-pair-v71b.cjs'
+      - 'check/verify-session-v71d.cjs'
+      - 'check/bench-session-v71d.cjs'
       - 'check/local-peer-server.cjs'
       - '.github/workflows/pair-v71b.yml'
   workflow_dispatch:
@@ -27,6 +31,8 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0   # the session check takes the build before it from history
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
@@ -35,6 +41,11 @@ jobs:
           node --check dist/src/pair-v71b.js
           node check/verify-pair-v71b.cjs
           git diff --exit-code check/results-pair-v71b.json
+      - name: The session log and the build check, on two and three copies of the game (7 checks)
+        run: |
+          node --check dist/src/session-v71d.js
+          node check/verify-session-v71d.cjs
+          git diff --exit-code check/results-session-v71d.json
       - name: One-phone play, the save slots and the remote-replay bridge still pass
         run: |
           node check/verify-slots-v47.cjs
@@ -49,6 +60,8 @@ jobs:
           npx playwright install --with-deps chromium
       - name: Two and three real browsers over WebRTC with a local signalling server
         run: node check/bench-pair-v71b.cjs artifacts/v71b-pair
+      - name: The session log saved as a real file, and the version banner, in real browsers
+        run: node check/bench-session-v71d.cjs artifacts/v71b-pair/session
       - name: Upload the browser results
         if: always()
         uses: actions/upload-artifact@v4

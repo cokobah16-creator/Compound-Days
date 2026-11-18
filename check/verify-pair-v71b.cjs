@@ -211,7 +211,7 @@ let failed=0;const step=async(n,what,fn)=>{try{await fn();}catch(e){failed++;con
  /* 17. A device that is turned away keeps the household it had. */
  await step(17,'A device that is turned away keeps the household it had',async()=>{const {A,B,code}=await two();const C=await phone('C');
   C.run("NET.on=false;dispatch('newgame');S.p[0].name='Cee';S.p[1].name='Dee';dispatch('setupstep',{v:'p0'});dispatch('setupnext',{i:0});dispatch('setupnext',{i:1});closePanel();S.money=4321;save();");await T.settle(200);C.run("S=null;openTitle();");
-  const mine=()=>JSON.stringify([...C.storage.entries()].filter(([k])=>!/^cd3-(net|online|quality|shadows)/.test(k)).sort());const before=mine();
+  const mine=()=>JSON.stringify([...C.storage.entries()].filter(([k])=>!/^cd3-(net|online|quality|shadows|session71d)/.test(k)).sort());const before=mine();
   C.run("var worldN=0;{const e=enterWorld;enterWorld=function(){worldN++;return e.apply(this,arguments);};}");const aBefore=A.J('[S.money,S.aseq||0]');
   await T.join(C,code);assert.equal(C.run('NET.on'),false);assert.equal(C.run('S'),null,'nothing of the refused household is held');assert.equal(mine(),before);
   C.run("dispatch('netjoin')");await T.settle(300);assert.equal(mine(),before,'untouched after Try again');

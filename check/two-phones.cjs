@@ -89,12 +89,16 @@ function element(id){
     addEventListener:noop,removeEventListener:noop,setAttribute:noop,getAttribute:()=>null,appendChild(c){this.children.push(c);c.parentNode=this;if(c&&typeof c.onload==='function')Promise.resolve().then(()=>c.onload());return c;},removeChild:noop,remove:noop,contains:()=>true,querySelector:()=>null,querySelectorAll:()=>[],
     insertAdjacentHTML(where,h){if(where==='afterbegin')this.innerHTML=String(h)+this.innerHTML;else this.innerHTML=this.innerHTML+String(h);},getContext:()=>ctx,toDataURL:()=>'data:image/jpeg;base64,PHOTO',getBoundingClientRect:()=>({left:0,top:0,width:390,height:800,bottom:800,right:390}),focus:noop,blur:noop};
 }
-const HTML=fs.readFileSync(path.join(root,'index.html'),'utf8');
-const SCRIPTS=[...HTML.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].map(([full,attr,body])=>{const src=attr.match(/src="([^"]+)"/);
-  if(src)return src[1].includes('three-r128')?null:{name:src[1],code:fs.readFileSync(path.join(root,src[1]),'utf8')};
+// the page's scripts, from a build's dist folder (a phone can be given another build with opts.root: an older one)
+const scriptCache=new Map();
+function scriptsFor(dir){ if(scriptCache.has(dir)) return scriptCache.get(dir); const HTML=fs.readFileSync(path.join(dir,'index.html'),'utf8');
+ const list=[...HTML.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/g)].map(([full,attr,body])=>{const src=attr.match(/src="([^"]+)"/);
+  if(src)return src[1].includes('three-r128')?null:{name:src[1],code:fs.readFileSync(path.join(dir,src[1]),'utf8')};
   return /else \{ boot\(\); \}/.test(body)?null:{name:'index-inline.js',code:body};}).filter(Boolean);   // the last inline block boots WebGL: definitions only
+ scriptCache.set(dir,list); return list; }
 let perfSkew=0;
-// label names the phone; opts.storage carries a previous page's localStorage (a reload or a reopen)
+// label names the phone; opts.storage carries a previous page's localStorage (a reload or a reopen); opts.root loads
+// the page from another build's dist folder
 async function makePhone(label,opts){
   opts=opts||{};const els=new Map(),storage=new Map(opts.storage||[]),perf0=1000+(perfSkew++)*307000;   // each page was opened at a different moment
   const THREE=freshThree(); const parse=file=>new Promise((resolve,reject)=>new THREE.GLTFLoader().parse(fs.readFileSync(path.join(root,file),'utf8'),'',resolve,reject));
@@ -111,7 +115,7 @@ async function makePhone(label,opts){
     clearInterval:h=>{if(h&&typeof h==='object'){h.dead=true;cancel(h.id);}},
     requestAnimationFrame:()=>0,cancelAnimationFrame:noop,RTCPeerConnection:function(){},WebSocket:function(){},Peer:peerClassFor(label)};
   context.window=context;context.self=context;vm.createContext(context);
-  for(const s of SCRIPTS)vm.runInContext(s.code,context,{filename:s.name});
+  for(const s of scriptsFor(opts.root||root))vm.runInContext(s.code,context,{filename:s.name});
   const run=code=>vm.runInContext(code,context),J=code=>JSON.parse(run('JSON.stringify('+code+')'));
   context.loadedHero=await parse('assets/characters/efe.gltf.json');
   run("HERO.gltf=loadedHero;HERO.state='ready';HERO.clips={};for(const c of loadedHero.animations){const n=heroClipName(c.name);if(n)HERO.clips[n]=c;}if(typeof presenceBakeBase==='function')presenceBakeBase();if(typeof authored34Install==='function')authored34Install();");
@@ -130,7 +134,7 @@ async function makePhone(label,opts){
     function panelButtons(){ const out=[]; const re=/<button([^>]*)>/g; let m; const h=String(panel.innerHTML); while((m=re.exec(h))){ const a=m[1]; const act=(a.match(/data-act="([^"]*)"/)||[])[1]; if(!act) continue; const d={}; a.replace(/data-([a-z0-9-]+)="([^"]*)"/g,(x,k,v)=>{ if(k!=='act') d[k]=v; return x; }); out.push({act,d,disabled:/\\sdisabled/.test(a)}); } return out; }
     function clickBtn(act,pred){ if(!overlayOpen()) return 'no-panel'; const bs=panelButtons().filter(b=>b.act===act&&(!pred||pred(b.d))); if(!bs.length) return 'no-button'; if(bs[0].disabled) return 'disabled'; dispatch(act,Object.assign({},bs[0].d)); return 'ok'; }
     function tp(i,x,z){ const p=players[i]; p.g.position.set(x,0,z); p.prev=[x,z]; p.y=levelAt(x,z); p.lvl=lvlOf(p.y); p.g.baseY=p.y; }`);
-  const phone={label,run,J,context,storage,document,dead:false,el:id=>document.getElementById(id)};
+  const phone={label,run,J,context,storage,document,dead:false,el:id=>document.getElementById(id),root:opts.root};
   return phone;
 }
 const flush=()=>new Promise(r=>setImmediate(r));
@@ -153,7 +157,7 @@ async function pair(A,B,o){o=o||{};
 // type a code into the Join panel and press Join
 async function join(P,code){P.run("dispatch('netjoin')");P.el('jc').value=code;P.run("dispatch('netjoingo')");await settle(3200);}
 // the page reloads (or is opened again later) with what it had stored, and taps Continue together
-async function reopen(P,o){if(!P.dead)kill(P);const N=await makePhone(P.label,{storage:[...P.storage]});if(!(o&&o.titleOnly)){N.run("dispatch('netresume')");await settle((o&&o.wait)||3000);}return N;}
+async function reopen(P,o){if(!P.dead)kill(P);const N=await makePhone(P.label,{storage:[...P.storage],root:P.root});if(!(o&&o.titleOnly)){N.run("dispatch('netresume')");await settle((o&&o.wait)||3000);}return N;}
 // the household as both phones should agree on it
 const SHARED="({day:S.day,money:S.money,pantry:S.pantry,baskets:S.p.map(p=>p.basket||{}),items:S.home.items.map(i=>i.type+'@'+i.x+','+i.y).sort(),storage:S.home.storage.slice().sort(),dishes:S.dishes.map(d=>d.r+':'+d.quality),sofa:S.sofa.state,names:S.p.map(p=>p.name),mkt:S.mkt&&S.mkt.day+':'+S.mkt.items.rice.price})";
 const shared=P=>P.J(SHARED);
