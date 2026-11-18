@@ -23,8 +23,11 @@
    Every step is worked out from what the world shows (who holds which end, whether it is lifted, where the sofa is,
    and which gold ring a holder has reached during this carry), never saved, so it is the same after a reload and on
    both phones of a two-phone household, and nothing new travels between phones. Only the player's own view gets a
-   card: on one screen both halves, with a companion or on two phones only this phone's player. On a narrow screen a
-   toast that would cover the card is shown just below it.
+   card: on one screen both halves, with a companion or on two phones only this phone's player. A card shows in full
+   when its step or tip changes; a few seconds on, where it would cover the player, the sofa or the ring (on a phone the
+   camera frames them just under it), only its title stays, beside the player card if under it the title would still
+   cover them, and out of sight until the next step or tip if neither fits. On a narrow screen a toast that would cover the card is
+   shown just below it.
 
    It adds nothing to the saved household and no per-frame hook (it rides on updateSofaCarry and updateBall, which the
    frame loop calls every frame, and on updateHUD). It reads no wall clock: its time is the sum of the
@@ -46,9 +49,11 @@ const MOVEIN71C={version:1,
  slowTip:{s:15,gain:0.3},           // carrying this long without getting this much closer: the "head for the ring" tip
  pushS:1.8,                         // pushing this long while the sofa stays within 0.25 m: the wall tip too
  tipS:6,tipGap:12,
+ fullS:6,                   // a card shows in full this long after its step or tip changes; then, where it would cover the player,
+                            // the sofa or the ring (a phone), only its title (and tip) stay
  colour:['blue','gold'],hex:['#6F8DE0','#E3A72F'],gold:'#F2C14E',
  t:0,carryT:0,best:Infinity,bestAt:0,bumps:[],bumped:false,pushFrom:null,pushT:0,pushB:0,route:'',tip:['',''],tipAt:[-99,-99],tipLast:{},g:null,ends:[],goal:null,
- cards:[null,null],arrows:[null,null],arrowOn:[false,false],shown:[null,null],stage:['',''],tight:[false,false],lastBump:0,leg:-1,wp:0,legId:'',lead:null
+ cards:[null,null],arrows:[null,null],arrowOn:[false,false],shown:[null,null],stage:['',''],tight:[false,false],lastBump:0,leg:-1,wp:0,legId:'',lead:null,fullUntil:[-99,-99],tipSeen:['',''],mini:[false,false],pushYaw:0
 };
 
 /* ---------- what the world shows ---------- */
@@ -147,13 +152,14 @@ function moveinTips71c(dt,bumped){ const M=MOVEIN71C;
  for(const i of [0,1]) if(M.tip[i]&&M.t-M.tipAt[i]>M.tipS) M.tip[i]='';
  if(!sofa.carrying){ M.carryT=0; M.best=Infinity; M.bumps.length=0; M.pushFrom=null; M.route=''; M.tip=['','']; return; }   // tips are about the carry
  M.carryT+=dt;
- if(bumped){ M.bumps.push(M.t); while(M.bumps.length&&M.t-M.bumps[0]>M.bumpTip.win) M.bumps.shift();
-  if(M.bumps.length>=M.bumpTip.frames){ M.bumps.length=0; moveinWallTip71c(); } }
+ while(M.bumps.length&&M.t-M.bumps[0]>M.bumpTip.win) M.bumps.shift();   // the blocked frames of the last few seconds
+ if(bumped){ M.bumps.push(M.t); if(M.bumps.length>=M.bumpTip.frames){ M.bumps.length=0; moveinWallTip71c(); } }
  // pushing on the stick or keys without the sofa getting anywhere: a holder is walking into a wall, or the sofa does not fit that way
  const pushing=moveinViews71c().some(i=>(sofa.holder||[]).includes(i)&&!(moveinCompanion71c()&&i===AI.i)&&(()=>{ const v=typeof inputVec==='function'?inputVec(i):[0,0]; return Math.hypot(v[0],v[1])>0.3; })()),
   pos=[sofa.g.position.x,sofa.g.position.z];
  if(!pushing) M.pushFrom=null;
- else if(!M.pushFrom||Math.hypot(pos[0]-M.pushFrom[0],pos[1]-M.pushFrom[1])>0.25){ M.pushFrom=pos; M.pushT=0; M.pushB=sofa.bump||0; }
+ else if(!M.pushFrom||Math.hypot(pos[0]-M.pushFrom[0],pos[1]-M.pushFrom[1])>0.25||Math.abs(Math.atan2(Math.sin(sofa.g.rotation.y-M.pushYaw),Math.cos(sofa.g.rotation.y-M.pushYaw)))>0.35){
+  M.pushFrom=pos; M.pushT=0; M.pushB=sofa.bump||0; M.pushYaw=sofa.g.rotation.y; }   // moving, or turning the sofa round: progress
  else if((M.pushT+=dt)>M.pushS){ M.pushT=0;
   // on two phones a partner whose phone is not walking (a panel open there, or standing still) holds the sofa back without any wall
   const online=typeof NET!=='undefined'&&NET.on, still=online&&NET.otherPres&&!NET.otherPres.mv&&(sofa.bump||0)===M.pushB;
@@ -161,11 +167,11 @@ function moveinTips71c(dt,bumped){ const M=MOVEIN71C;
   else if((sofa.bump||0)===M.pushB&&moveinApart71c()) moveinTip71c('apart','You are walking different ways. Walk the same way, one in front of the other.');
   else moveinWallTip71c(); }
  const r=moveinLeg71c()+M.wp,T=moveinGoal71c();
- if(r!==M.route){ M.route=r; M.best=Infinity; M.bestAt=M.carryT; }   // a new ring to head for: progress is measured from here
+ if(r!==M.route){ if(M.route) M.tip=['','']; M.route=r; M.best=Infinity; M.bestAt=M.carryT; }   // a new ring to head for: progress is measured from here, and a tip about the last one goes
  if(moveinLeg71c()==='courtyard'&&sofa.g.position.x>5.2) moveinTip71c('east','Your door is the other way: left, through the narrow passage.');
  const d=Math.hypot(sofa.g.position.x-T[0],sofa.g.position.z-T[1]);
  if(d<M.best-M.slowTip.gain||M.best===Infinity){ M.best=d; M.bestAt=M.carryT; }
- else if(M.carryT-M.bestAt>M.slowTip.s){ M.bestAt=M.carryT; M.best=d;
+ else if(M.carryT-M.bestAt>M.slowTip.s&&!M.bumps.length){ M.bestAt=M.carryT; M.best=d;   // not while it keeps catching: the wall tip says what to do then
   const onIt=(sofa.holder||[]).some(h=>h!==null&&h!==undefined&&players[h]&&Math.hypot(players[h].g.position.x-T[0],players[h].g.position.z-T[1])<(T[2]||0.75));
   moveinTip71c('slow',onIt?'A little further: it is in once all of the sofa is through the door.':'Head for the gold ring'+(M.arrowOn.some(Boolean)?': the arrow at the edge of the screen points to it.':'.')); }
 }
@@ -205,18 +211,36 @@ function moveinCards71c(on){ const M=MOVEIN71C, views=on?moveinViews71c():[];
   if(!el) continue; if(!mine){ if(el.className.indexOf(' on')>=0) el.className='mv71c p'+i; M.shown[i]=null; continue; }
   const c=moveinCard71c(i), html=`<div class="mv71c-k">MOVING DAY · STEP ${c.n} OF 5</div><div class="mv71c-t">${c.title}</div><div class="mv71c-d">${c.d}</div>${c.f?`<div class="mv71c-f">${c.f}</div>`:''}${c.tip?`<div class="mv71c-tip">${esc(c.tip)}</div>`:''}`;
   const fresh=M.stage[i]!==c.id; M.stage[i]=c.id;
+  if(fresh||(c.tip&&c.tip!==M.tipSeen[i])) M.fullUntil[i]=M.t+M.fullS; M.tipSeen[i]=c.tip;
   if(M.shown[i]!==html){ el.innerHTML=html; M.shown[i]=html; }
-  el.className='mv71c on p'+i+(M.tight[i]?' tight':'')+(c.tip?' hastip':'')+(fresh?' fresh':''); moveinPlace71c(i,el); }
+  el.className='mv71c on p'+i+(M.tight[i]?' tight':'')+(M.mini[i]?' mini':'')+(c.tip?' hastip':'')+(fresh?' fresh':''); moveinPlace71c(i,el); }
 }
 // on a real screen: the card sits just under the player's own card, and turns compact when the space above the bag and the
-// prompt is too short for it (a phone held sideways); it is measured in its full form each time, so it grows back
+// prompt is too short for it (a phone held sideways), down to its title when even that does not fit. A few seconds after
+// its step or tip changed, it also shows only its title where in full it would cover the player, the sofa or the ring it
+// points to (the camera frames them just under it on a phone). It is measured in full form each time, so it grows back.
 function moveinPlace71c(i,el){ try{ const M=MOVEIN71C, half=document.getElementById('half'+i), pc=half&&half.querySelector&&half.querySelector('.pcard');
  if(!pc||typeof pc.getBoundingClientRect!=='function'||typeof el.getBoundingClientRect!=='function') return;
  const h=half.getBoundingClientRect(), p=pc.getBoundingClientRect(); if(!(p.height>0)||!(h.height>0)) return;
- const top=Math.round(p.bottom-h.top+8); el.style.top=top+'px';
- el.classList.remove('tight'); const c=el.getBoundingClientRect(); let floor=h.height;
+ const top=Math.round(p.bottom-h.top+8); el.style.top=top+'px'; el.style.left=el.style.right='';
+ el.classList.remove('tight'); el.classList.remove('mini'); el.classList.remove('gone'); let c=el.getBoundingClientRect(); let floor=h.height;
  for(const s of ['.inv','.pr.on']){ const o=half.querySelector(s); if(!o) continue; const r=o.getBoundingClientRect(); if(r.height>0&&r.left<c.right&&c.left<r.right) floor=Math.min(floor,r.top-h.top); }
- M.tight[i]=c.height>floor-top-8; el.classList.toggle('tight',M.tight[i]); }catch(e){} }
+ M.tight[i]=c.height>floor-top-8; el.classList.toggle('tight',M.tight[i]); if(M.tight[i]) c=el.getBoundingClientRect();
+ M.mini[i]=(M.tight[i]&&c.height>floor-top-8)||(M.t>M.fullUntil[i]&&moveinCovers71c(i,{x1:c.left-h.left-12,x2:c.right-h.left+12,y1:c.top-h.top-12,y2:c.bottom-h.top+12}));
+ el.classList.toggle('mini',M.mini[i]);
+ // a small view where even the title would cover them: beside the player card instead of under it, or out of sight until
+ // the next step or tip
+ const box=r=>({x1:r.left-h.left,x2:r.right-h.left,y1:r.top-h.top,y2:r.bottom-h.top}); let m=el.getBoundingClientRect();
+ if(M.mini[i]&&M.t>M.fullUntil[i]&&moveinCovers71c(i,box(m))){ const left=m.left-h.left<h.width/2; el.style.top=Math.round(p.top-h.top)+'px';
+  if(left){ el.style.left=Math.round(p.right-h.left+8)+'px'; el.style.right='auto'; } else { el.style.right=Math.round(h.right-p.left+8)+'px'; el.style.left='auto'; }
+  m=el.getBoundingClientRect(); const hud=['.ocard','.inv','.pr.on'].map(s=>half.querySelector(s)).concat([document.getElementById('topbar')]).filter(o=>o&&typeof o.getBoundingClientRect==='function').map(o=>o.getBoundingClientRect()).filter(r=>r.height>0);
+  if(m.left<h.left+4||m.right>h.right-4||moveinCovers71c(i,box(m))||hud.some(r=>r.left<m.right&&m.left<r.right&&r.top<m.bottom&&m.top<r.bottom)){ el.style.top=top+'px'; el.style.left=el.style.right=''; el.classList.add('gone'); } } }catch(e){} }
+// does a box in view i (in the view's own pixels) cover the player, the sofa, or the ring the card points to?
+function moveinCovers71c(i,b){ const c=typeof cams!=='undefined'&&cams[i], vp=typeof v21Viewport==='function'?v21Viewport(i):null; if(!c||!vp||typeof c.updateMatrixWorld!=='function') return false;
+ c.updateMatrixWorld(); const pts=[], p=players[i]&&players[i].g; if(p) pts.push([p.position.x,0.2,p.position.z],[p.position.x,1.6,p.position.z]);
+ pts.push([sofa.g.position.x,0.4,sofa.g.position.z]); if(sofa.carrying){ const T=moveinGoal71c(); pts.push([T[0],0.05,T[1]]); }
+ else { const r=MOVEIN71C.ends[i]; if(r&&r.visible) pts.push([r.position.x,0.05,r.position.z]); }
+ return pts.some(q=>{ const v=new THREE.Vector3(q[0],q[1],q[2]).project(c); if(v.z>1) return false; const x=(v.x+1)/2*vp.w, y=(1-v.y)/2*vp.h; return x>=b.x1&&x<=b.x2&&y>=b.y1&&y<=b.y2; }); }
 function moveinArrows71c(on){ const M=MOVEIN71C, views=on&&sofa.carrying?moveinViews71c():[];
  for(const i of [0,1]){ M.arrowOn[i]=false; let el=M.arrows[i];
   if(!views.includes(i)){ if(el) el.style.display='none'; continue; }
@@ -242,7 +266,7 @@ function moveinOff71c(){ const M=MOVEIN71C; moveinWorld71c(false); moveinCards71
 // a toast that would cover a mission card (a narrow screen: both are near the top) is shown just below the lowest card it meets
 function moveinToast71c(){ try{ const M=MOVEIN71C, t=document.getElementById('toast'); if(!t||!t.style||t.style.top||typeof t.getBoundingClientRect!=='function'||!moveinOn71c()) return;   // a set top: a journal page placed it
  const r=t.getBoundingClientRect(); if(!(r.height>0)) return; let top=null;
- for(const c of M.cards){ if(!c||c.className.indexOf(' on')<0||typeof c.getBoundingClientRect!=='function') continue; const b=c.getBoundingClientRect();
+ for(const c of M.cards){ if(!c||c.className.indexOf(' on')<0||c.classList.contains('gone')||typeof c.getBoundingClientRect!=='function') continue; const b=c.getBoundingClientRect();
   if(b.height>0&&r.left<b.right&&b.left<r.right&&r.top<b.bottom&&b.top<r.bottom) top=Math.max(top===null?0:top,Math.round(b.bottom+8)); }
  if(top!==null) t.style.top=top+'px'; }catch(e){} }
 if(typeof toastSpot34b==='function'){ const spot71c=toastSpot34b;
@@ -266,7 +290,7 @@ if(typeof updateBall==='function'){ const ball71c=updateBall;
  updateBall=function(dt){ const r=ball71c.apply(this,arguments); try{ moveinFrame71c(+dt||0); }catch(e){} return r; };
 }
 // a new world (a new household, Continue, a reload): nothing of the last carry's tips carries over
-function moveinReset71c(){ const M=MOVEIN71C; M.tip=['','']; M.tipAt=[-99,-99]; M.tipLast={}; M.carryT=0; M.best=Infinity; M.bumps=[]; M.pushFrom=null; M.route=''; M.leg=-1; M.wp=0; M.legId=''; M.lead=null; M.stage=['','']; M.shown=[null,null]; }
+function moveinReset71c(){ const M=MOVEIN71C; M.tip=['','']; M.tipAt=[-99,-99]; M.tipLast={}; M.carryT=0; M.best=Infinity; M.bumps=[]; M.pushFrom=null; M.route=''; M.leg=-1; M.wp=0; M.legId=''; M.lead=null; M.stage=['','']; M.shown=[null,null]; M.fullUntil=[-99,-99]; M.tipSeen=['','']; M.mini=[false,false]; }
 if(typeof enterWorld==='function'){ const enter71c=enterWorld;
  // wrap: entering the world starts the mission's tips afresh
  enterWorld=function(){ moveinReset71c(); return enter71c.apply(this,arguments); };

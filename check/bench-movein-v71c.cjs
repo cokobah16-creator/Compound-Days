@@ -2,7 +2,7 @@
 // "Moving day" (dist/src/movein-v71c.js) in a real browser: headless Chromium, software GL, the game's own pages.
 // Run: node check/bench-movein-v71c.cjs [out-dir]     (default artifacts/v71c-movein; needs playwright + Chromium)
 //
-// For each screen (desktop, phone portrait and landscape; one screen with two players, a companion, and two phones over
+// For each screen (desktop, phone portrait and landscape at two sizes; one screen with two players, a companion, and two phones over
 // WebRTC with check/local-peer-server.cjs): the mission card is shown in each player's own view, inside it, readable,
 // and over none of the HUD (player cards, prompt, bag, top bar, partner card, touch controls), and a toast does not cover it. Then the sofa is lifted
 // and carried a little: the gold ring is drawn, and when the next place is off screen an arrow sits at the edge of the
@@ -51,7 +51,8 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
  const closePanels=P=>P.page.evaluate(()=>{ for(let k=0;k<4&&overlayOpen();k++){ const c=panel.querySelector('[data-act="close"]'); if(c) c.click(); else closePanel(); } });
  try{
   /* 1. one screen, two players, at three screen sizes: taking the ends, then the carry */
-  const sizes=[{n:'desktop-1280x800',ctx:{viewport:{width:1280,height:800}}},{n:'phone-portrait-390x844',ctx:{viewport:{width:390,height:844},isMobile:true,hasTouch:true}},{n:'phone-landscape-844x390',ctx:{viewport:{width:844,height:390},isMobile:true,hasTouch:true}}];
+  const sizes=[{n:'desktop-1280x800',ctx:{viewport:{width:1280,height:800}}},{n:'phone-portrait-390x844',ctx:{viewport:{width:390,height:844},isMobile:true,hasTouch:true}},{n:'phone-landscape-844x390',ctx:{viewport:{width:844,height:390},isMobile:true,hasTouch:true}},
+   {n:'small-phone-portrait-360x640',ctx:{viewport:{width:360,height:640},isMobile:true,hasTouch:true}},{n:'small-phone-landscape-740x360',ctx:{viewport:{width:740,height:360},isMobile:true,hasTouch:true}}];
   for(const z of sizes){ const P=await open(z); await local(P); await P.page.waitForFunction(inWorld,null,{timeout:240000});
    const intro=await P.page.evaluate(()=>(panel.querySelector('.hint')||{}).textContent||''); assert(/Your first job together/.test(intro),'move-in panel: '+intro);
    await closePanels(P); const a=await look(P,'1-'+z.n+'-take'); ok(a,2,z.n+' take'); assert(a.cards.every(c=>/STEP 1 OF 5 Take an end/.test(c.text)),JSON.stringify(a.cards.map(c=>c.text)));
@@ -59,12 +60,18 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
    await P.page.evaluate(()=>{ keys['w']=true; keys['arrowup']=true; }); await sleep(2500); await P.page.evaluate(()=>{ keys['w']=false; keys['arrowup']=false; });
    const b=await look(P,'1-'+z.n+'-carry'); ok(b,2,z.n+' carry'); const st=await P.page.evaluate(()=>({carrying:!!sofa.carrying,goal:MOVEIN71C.goal&&MOVEIN71C.goal.visible,stage:moveinRoute71c()}));
    assert.equal(st.carrying,true,z.n+': carrying'); assert.equal(st.goal,true,z.n+': gold ring drawn');
+   // a few seconds into the step: no card covers its player, the sofa or the gold ring (where it would, only its title shows)
+   await P.page.evaluate(()=>{ MOVEIN71C.fullUntil=[-99,-99]; updateHUD(); });
+   const hid=await P.page.evaluate(()=>moveinViews71c().map(i=>{ const el=MOVEIN71C.cards[i], h=document.getElementById('half'+i).getBoundingClientRect(), c=el.getBoundingClientRect();
+    return {i,mini:el.classList.contains('mini'),gone:el.classList.contains('gone'),covers:moveinCovers71c(i,{x1:c.left-h.left,x2:c.right-h.left,y1:c.top-h.top,y2:c.bottom-h.top})}; }));
+   const cv=await look(P,'1-'+z.n+'-later'); ok(cv,hid.filter(k=>!k.gone).length,z.n+' later');
+   for(const k of hid) assert(k.gone||!k.covers,z.n+': card '+k.i+' covers its player, the sofa or the ring'+(k.mini?' even as its title':''));
    // the next place off screen: the arrow sits at the edge of each view, inside the screen and over no card
    await P.page.evaluate(()=>{ MOVEIN71C.saved=JSON.stringify(MOVEIN71C.target); for(const k of Object.keys(MOVEIN71C.target)) MOVEIN71C.target[k]=[[-28,-20,0.1]]; });   // every ring far away, off screen
    const c=await look(P,'1-'+z.n+'-arrow'); await P.page.evaluate(()=>{ MOVEIN71C.target=JSON.parse(MOVEIN71C.saved); });
    assert(c.arrows.length>=1,z.n+': an edge arrow'); for(const r of c.arrows){ assert(r.x1>=0&&r.y1>=0&&r.x2<=c.w&&r.y2<=c.h,z.n+': arrow on screen '+JSON.stringify(r)); for(const k of c.cards) assert(!(r.x1<k.r.x2&&k.r.x1<r.x2&&r.y1<k.r.y2&&k.r.y1<r.y2),z.n+': arrow over a card'); }
    assert.deepEqual(P.errors,[],z.n+': page errors');
-   pass('One screen, two players, '+z.n.replace(/-/g,' ')+': both cards in their own views, over none of the HUD; lifted and carried, the gold ring is drawn; with the next place off screen an arrow sits at the edge',{cards:b.cards.map(k=>({player:k.i+1,box:k.r,text:k.text.slice(0,60)})),arrows:c.arrows.length,stage:st.stage});
+   pass('One screen, two players, '+z.n.replace(/-/g,' ')+': both cards in their own views, over none of the HUD; lifted and carried, the gold ring is drawn; a few seconds on no card covers its player, the sofa or the ring; with the next place off screen an arrow sits at the edge',{cards:b.cards.map(k=>({player:k.i+1,box:k.r,text:k.text.slice(0,60)})),titleOnly:hid.filter(k=>k.mini&&!k.gone).map(k=>k.i+1),outOfSight:hid.filter(k=>k.gone).map(k=>k.i+1),arrows:c.arrows.length,stage:st.stage});
    await P.browser.close(); }
   /* 2. a companion, phone portrait: one card, in the player's own view */
   { const P=await open(sizes[1]); await companion(P); await P.page.waitForFunction(inWorld,null,{timeout:240000}); await closePanels(P);

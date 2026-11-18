@@ -248,7 +248,7 @@ let failed=0;const step=async(n,what,fn)=>{try{await fn();}catch(e){failed++;con
   {let {A,B}=await two();await lift(A,B);await T.play([A,B],1.2,[[0,-1],[0,-1]]);T.kill(B);await T.play([A],2);B=await T.reopen(B);live.push(B);await T.play([A,B],3);   // back after 2 s, before an idle write
    const pa=A.J('[sofa.g.position.x,sofa.g.position.z]'),pb=B.J('[sofa.g.position.x,sofa.g.position.z]');assert(Math.hypot(pa[0]-pb[0],pa[1]-pb[1])<0.05,'one place: '+pa+' / '+pb);out.quickReload='one place';}
   {const {A,B}=await two();A.run("{const s=stripState;stripState=function(){const o=s.apply(this,arguments);delete o.hands71b;if(o.sofa)o.sofa.pos=[4,8.6];return o;};}");   // a host on an older build: its household never moves the sofa
-   await lift(A,B);await T.play([A,B],1.2,[[0,-1],[0,-1]]);assert.equal(B.run('pressAct()'),'sofa');await T.play([A,B],12);
+   await lift(A,B);await T.play([A,B],1.2,[[0,-1],[0,-1]]);assert.equal(B.run('pressAct()'),'drop');await T.play([A,B],12);
    const pa=A.J('[sofa.g.position.x,sofa.g.position.z]'),pb=B.J('[sofa.g.position.x,sofa.g.position.z]');assert.deepEqual([A.J('!!sofa.carrying'),B.J('!!sofa.carrying')],[false,false]);
    assert(Math.hypot(pa[0]-pb[0],pa[1]-pb[1])<0.05&&Math.hypot(pb[0]-4,pb[1]-8.6)>1,'set down where it was carried, on both: '+pa+' / '+pb);out.olderHostSetDown='where it was carried, on both';}
   noErrors();pass('The sofa: a phone locked for ten seconds mid-carry and a reload of two seconds leave it set down in one place on both phones; a phone still carrying a sofa the household says is in lets go and can walk; a household from an older build does not move it back to the gate',out);});

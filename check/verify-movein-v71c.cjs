@@ -120,8 +120,10 @@ const ROUTE=[[4.0,7.5],[4.1,5.4],[3.3,4.4],[2.2,2.4],[-0.4,0.6],[-3.0,0.6],[-1.7
     run(`mvFrame(${JSON.stringify(v[0])},${JSON.stringify(v[1])})`);if(f%15===0)run('updateHUD()');}
    return f;};
   // standing on the ring moves the card on, though the sofa's centre, a metre behind, is not there yet
-  local();settle();run("dispatch('hs',{i:0,id:'sofa'});dispatch('hs',{i:1,id:'sofa'});crate.position.x=-3.2;players[0].g.position.set(-1.75,0,-0.45);players[1].g.position.set(-0.2,0,0.6);mvFrame();");
+  local();settle();run("dispatch('hs',{i:0,id:'sofa'});dispatch('hs',{i:1,id:'sofa'});crate.position.x=-3.2;mvFrame();MOVEIN71C.tip=['Head for the gold ring.','Head for the gold ring.'];MOVEIN71C.tipAt=[MOVEIN71C.t,MOVEIN71C.t];");
+  run("players[0].g.position.set(-1.75,0,-0.45);players[1].g.position.set(-0.2,0,0.6);mvFrame();");
   assert.equal(J('moveinRoute71c()'),'courtyard','the sofa is still in the courtyard');let c=J('mvHUD()');assert(/STEP 4 OF 5 Along the passage/.test(c[0]),'on the ring in front of the passage: '+c[0]);
+  assert(!/Head for the gold ring/.test(c[0]+c[1]),'a tip about the last ring goes with it');
   assert.deepEqual(J('mvRings()').goal,[-1.75,5.3]);out.onTheRing=c[0].slice(0,60);
   run("players[0].g.position.set(4,0,4.0);players[1].g.position.set(4,0,5.9);mvFrame();");c=J('mvHUD()');assert(/STEP 3 OF 5 In through the gate/.test(c[0]),'carried back to the gate: '+c[0]);out.carriedBack=c[0].slice(0,60);
   // two players walking different ways: their own tip, not the wall's
@@ -140,7 +142,7 @@ const ROUTE=[[4.0,7.5],[4.1,5.4],[3.3,4.4],[2.2,2.4],[-0.4,0.6],[-3.0,0.6],[-1.7
    run(`mvFrame(${JSON.stringify(Math.hypot(...toG)>0.15?toG:[0,0])},${JSON.stringify(Math.hypot(P[0][0]-P[1][0],P[0][1]-P[1][1])>1.7&&Math.hypot(...toA)>0.1?toA:[0,0])})`);}
   assert.equal(J('moveinLeg71c()'),'courtyard','two players through the gate: '+JSON.stringify(J('[sofa.g.position.x,sofa.g.position.z]')));assert(J('Math.max(sofaEnd(0)[1],sofaEnd(1)[1])')<5.78,'with the back end clear of the gate posts');
   out.twoPlayersThroughTheGate={seconds:+(frames/30).toFixed(1),bumps:J('sofa.bump||0')};
-  pass('Following only the card: standing on a gold ring moves the card on and carrying the sofa back undoes it; two players walking different ways are told so; with a companion, walking at each ring in turn takes the sofa in; two players, one walking at the rings and the other behind, take it through the gate end first',out);});
+  pass('Following only the card: standing on a gold ring moves the card on (and a tip about the last ring goes) and carrying the sofa back undoes it; two players walking different ways are told so; with a companion, walking at each ring in turn takes the sofa in; two players, one walking at the rings and the other behind, take it through the gate end first',out);});
 
  const report={build,passed:failed===0,checks,method:'Actual game state in Node with shipped Three.js and the authored hero: the mission card as text, the rings as scene objects. Two phones on check/two-phones.cjs. Layout on phone screens is checked in check/bench-movein-v71c.cjs.'};
  fs.writeFileSync(path.join(__dirname,'results-movein-v71c.json'),JSON.stringify(report,null,2)+'\n');if(failed)process.exitCode=1;
