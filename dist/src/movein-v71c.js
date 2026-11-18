@@ -27,7 +27,8 @@
    when its step or tip changes; a few seconds on, where it would cover the player, the sofa or the ring (on a phone the
    camera frames them just under it), only its title stays, beside the player card if under it the title would still
    cover them, and out of sight until the next step or tip if neither fits. On a narrow screen a toast that would cover the card is
-   shown just below it.
+   shown just below it, and the sofa's own step toasts ("Lifted", "Set down", "has one end") are left out while a card
+   says the same.
 
    It adds nothing to the saved household and no per-frame hook (it rides on updateSofaCarry and updateBall, which the
    frame loop calls every frame, and on updateHUD). It reads no wall clock: its time is the sum of the
@@ -263,12 +264,18 @@ function moveinArrows71c(on){ const M=MOVEIN71C, views=on&&sofa.carrying?moveinV
 }
 function moveinOff71c(){ const M=MOVEIN71C; moveinWorld71c(false); moveinCards71c(false); for(const el of M.arrows) if(el) el.style.display='none'; M.arrowOn=[false,false]; M.tip=['','']; }
 
-// a toast that would cover a mission card (a narrow screen: both are near the top) is shown just below the lowest card it meets
+// any other toast that would cover a mission card (a narrow screen: both are near the top) is shown just below the lowest card it meets
 function moveinToast71c(){ try{ const M=MOVEIN71C, t=document.getElementById('toast'); if(!t||!t.style||t.style.top||typeof t.getBoundingClientRect!=='function'||!moveinOn71c()) return;   // a set top: a journal page placed it
  const r=t.getBoundingClientRect(); if(!(r.height>0)) return; let top=null;
  for(const c of M.cards){ if(!c||c.className.indexOf(' on')<0||c.classList.contains('gone')||typeof c.getBoundingClientRect!=='function') continue; const b=c.getBoundingClientRect();
   if(b.height>0&&r.left<b.right&&b.left<r.right&&r.top<b.bottom&&b.top<r.bottom) top=Math.max(top===null?0:top,Math.round(b.bottom+8)); }
  if(top!==null) t.style.top=top+'px'; }catch(e){} }
+if(typeof toast==='function'){ const toast71c=toast;
+ // wrap: while a mission card is shown, the sofa's own step toasts are left out: the card already says it, and on a phone
+ // they would cover the card or, below it, the carry
+ toast=function(t){ if(typeof t==='string'&&/^(Lifted\. Carry it together\.|Set down\.|.+ has one end\. Now the other\.)$/.test(t)&&moveinOn71c()&&MOVEIN71C.cards.some(c=>c&&c.className.indexOf(' on')>=0)) return;
+  return toast71c.apply(this,arguments); };
+}
 if(typeof toastSpot34b==='function'){ const spot71c=toastSpot34b;
  // wrap: the base place for toasts (and the journal's), then clear of the mission card; this runs every frame and on each toast
  toastSpot34b=function(){ const r=spot71c.apply(this,arguments); moveinToast71c(); return r; };

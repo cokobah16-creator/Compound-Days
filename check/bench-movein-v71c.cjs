@@ -22,13 +22,14 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
  add('top bar',document.getElementById('topbar')); for(const i of [0,1]){ const h=document.getElementById('half'+i); if(!h||!R(h)) continue;
   add('player card '+i,h.querySelector('.pcard')); add('prompt '+i,h.querySelector('.pr')); add('bag '+i,h.querySelector('.inv')); add('partner card '+i,h.querySelector('.ocard')); }
  document.querySelectorAll('#touch .act').forEach((b,k)=>add('act button '+k,b)); document.querySelectorAll('#touch .zone').forEach((z,k)=>add('stick zone '+k,z));
- // a toast raised now (they come as the card changes step: "Lifted. Carry it together.") must not cover a card
- let toastR=null; const tEl=document.getElementById('toast'); if(tEl&&typeof toast==='function'&&document.querySelector('.mv71c.on')){ toast('Lifted. Carry it together.'); toastR=R(tEl); }
+ // the sofa's own step toasts are left out while a card is shown; any other toast raised now must not cover a card
+ let toastR=null, stepToast=false; const tEl=document.getElementById('toast'); if(tEl&&typeof toast==='function'&&document.querySelector('.mv71c.on')){
+  tEl.textContent=''; tEl.classList.remove('on'); toast('Lifted. Carry it together.'); stepToast=tEl.classList.contains('on'); toast('Tomatoes into Ola’s bag'); toastR=R(tEl); }
  const cards=[]; for(const i of [0,1]){ const h=document.getElementById('half'+i), c=h&&h.querySelector('.mv71c.on'), r=R(c); if(!r) continue; const hr=R(h);
   cards.push({i,r,inHalf:!!hr&&r.x1>=hr.x1&&r.x2<=hr.x2+1&&r.y1>=hr.y1&&r.y2<=hr.y2+1,inScreen:r.x1>=0&&r.y1>=0&&r.x2<=innerWidth&&r.y2<=innerHeight,
    covers:others.filter(o=>hit(r,o.r)).map(o=>o.n),underToast:!!hit(r,toastR),text:[...c.children].map(x=>x.textContent).join(' ').replace(/\s+/g,' ').trim(),font:parseFloat(getComputedStyle(c.querySelector('.mv71c-d')).fontSize)}); }
  const arrows=[...document.querySelectorAll('.mv71c-arrow')].map(a=>R(a)).filter(Boolean);
- return {w:innerWidth,h:innerHeight,cards,arrows,single:singleIdx()}; };
+ return {w:innerWidth,h:innerHeight,cards,arrows,single:singleIdx(),stepToast}; };
 (async()=>{
  const web=await staticServer(root), sig=await signalServer(), base='http://127.0.0.1:'+web.port+'/';
  const report={build:null,passed:false,checks:[]}; const browsers=[];
@@ -45,7 +46,7 @@ const LAYOUT=()=>{ const R=el=>{ if(!el) return null; const cs=getComputedStyle(
  const look=async(P,name)=>{ await P.page.evaluate(()=>new Promise(r=>{ let n=0; const f=()=>{ if(++n>=8) r(); else requestAnimationFrame(f); }; requestAnimationFrame(f); })); await sleep(600);
   const L=await P.page.evaluate(LAYOUT); await P.page.screenshot({path:path.join(out,name+'.png'),timeout:120000}); return L; };
  const ok=(L,want,label)=>{ assert.equal(L.cards.length,want,label+': '+want+' card(s) shown, got '+L.cards.length);
-  for(const c of L.cards){ assert(c.inHalf,label+': card '+c.i+' outside its view'); assert(c.inScreen,label+': card '+c.i+' off screen'); assert.deepEqual(c.covers,[],label+': card '+c.i+' covers '+c.covers); assert(!c.underToast,label+': a toast covers card '+c.i); assert(c.font>=12,label+': card text '+c.font+' px'); } };
+  for(const c of L.cards){ assert(c.inHalf,label+': card '+c.i+' outside its view'); assert(c.inScreen,label+': card '+c.i+' off screen'); assert.deepEqual(c.covers,[],label+': card '+c.i+' covers '+c.covers); assert(!c.underToast,label+': a toast covers card '+c.i); assert(!L.stepToast,label+': a sofa step toast shown over the card'); assert(c.font>=12,label+': card text '+c.font+' px'); } };
  const local=P=>P.page.evaluate(()=>{ NET.on=false; AI.on=false; dispatch('newgame'); S.p[0].name='Efe'; S.p[1].name='Ola'; dispatch('setupstep',{v:'p0'}); dispatch('setupnext',{i:0}); dispatch('setupnext',{i:1}); });
  const companion=P=>P.page.evaluate(()=>{ NET.on=false; dispatch('aiStart'); S.p[0].name='Efe'; S.p[1].name='Ola'; dispatch('setupnext',{i:0}); dispatch('setupnext',{i:1}); });
  const closePanels=P=>P.page.evaluate(()=>{ for(let k=0;k<4&&overlayOpen();k++){ const c=panel.querySelector('[data-act="close"]'); if(c) c.click(); else closePanel(); } });
